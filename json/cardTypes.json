@@ -1,0 +1,17 @@
+{
+  "cardTypes": {
+    "Ally":        {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Event":       {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Identity":    {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Resource":    {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Support":     {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Attachment":  {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Environment": {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Main Scheme": {"width": 1.39, "height": 1.0,  "tokens": ["damage", "threat", "generic", "acceleration"] },
+    "Minion":      {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Obligation":  {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Side Scheme": {"width": 1.39, "height": 1.0,  "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Treachery":   {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] },
+    "Villain":     {"width": 1.0,  "height": 1.39, "tokens": ["damage", "threat", "generic", "acceleration", "confused", "stunned", "tough"] }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "cardBacks": {
+    "encounter": {"width": 1.0, "height": 1.39, "imageUrl": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/EncounterBack.jpg"},
+    "player":    {"width": 1.0, "height": 1.39, "imageUrl": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/HeroBack.jpg"},
+    "villain":   {"width": 1.0, "height": 1.39, "imageUrl": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/VillainBack.jpg"}
+  }
+}

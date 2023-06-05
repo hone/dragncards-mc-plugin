@@ -1,0 +1,5 @@
+{
+  "gameProperties": {
+    "villainHealth": {"type": "integer", "default": 0}
+  }
+}

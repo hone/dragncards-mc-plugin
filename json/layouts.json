@@ -1,0 +1,17 @@
+{
+  "layouts": {
+    "standard1Player": {
+      "cardSize": 13,
+      "rowSpacing": 3,
+      "chat": {"left": "63%", "top": "84%", "width": "25%", "height": "16%"},
+      "browse": {"type": "fan", "direction": "horizontal", "left": "0%", "top": "48%", "width": "88%", "height": "16%"},
+      "defaultVariants": {
+        "players": 1
+      },
+      "regions": [
+      ],
+      "tableButtons": [
+      ]
+    } 
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "labels": {
+    "encounterDeck": {
+      "English": "Encounter Deck"
+    },
+    "encounterDiscard": {
+      "English": "Encounter Discard"
+    },
+    "mainSchemeDeck": {
+      "English": "Main Scheme Deck"
+    },
+    "mainSchemeDiscard": {
+      "English": "Main Scheme Discard"
+    },
+    "encounter2Deck": {
+      "English": "Secondary Encounter Deck"
+    },
+    "encouter2Discard": {
+      "English": "Secondary Encounter Discard"
+    },
+    "encounter3Deck": {
+      "English": "Third Encounter Deck"
+    },
+    "encounter3Discard": {
+      "English": "Third Encounter Discard"
+    },
+    "victory": {
+      "English": "Victory Display"
+    },
+    "villaian": {
+      "English": "Villain"
+    },
+    "mainScheme": {
+      "English": "Main Scheme"
+    },
+    "sideSchemes": {
+      "English": "Side Schemes"
+    },
+    "player1Hand": {
+      "English": "Player 1 Hand"
+    },
+    "player1Deck": {
+      "English": "Player 1 Deck"
+    },
+    "player1Discard": {
+      "English": "Player 1 Discard"
+    },
+    "player1Play1": {
+      "English": "Player 1 Play Area 1"
+    },
+    "player1Play2": {
+      "English": "Player 1 Play Area 2"
+    },
+    "player1Play3": {
+      "English": "Player 1 Play Area 3"
+    },
+    "player1Play4": {
+      "English": "Player 1 Play Area 4"
+    },
+    "player1Engaged": {
+      "English": "Player 1 Engaged Area"
+    },
+    "player1Event": {
+      "English": "Player 1 Current Event"
+    },
+    "step-0.0": {
+      "English": "Beginning of Round"
+    },
+    "step-0.1": {
+      "English": "End of Round"
+    },
+    "step-1.1": {
+      "English": "Player Turn"
+    },
+    "step-1.2": {
+      "English": "End of Player Phase"
+    },
+    "step-2.1": {
+      "English": "Place threat on the main scheme."
+    },
+    "step-2.2": {
+      "English": "The villain activates once per player, along with any eligible minions"
+    },
+    "step-2.3": {
+      "English": "Deal one encounter card to each player."
+    },
+    "step-2.4": {
+      "English": "Reveal encounter cards."
+    },
+    "step-2.5": {
+      "English": "Pass the first player token and end the round."
+    }
+  }
+}

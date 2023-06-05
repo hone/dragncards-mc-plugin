@@ -1,0 +1,5 @@
+{
+  "layoutMenu": [
+    {"labelId": "standard1Player", "layoutId": "standard", "numPlayers": 1}
+  ]
+}
