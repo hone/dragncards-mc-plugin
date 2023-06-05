@@ -9,7 +9,7 @@ async fn main() {
         .await
         .unwrap()
         .into_iter()
-        .map(|card| dragncards::Card::from(card))
+        .map(dragncards::Card::from)
         .collect();
     let mut wtr = WriterBuilder::new()
         .delimiter(b'\t')

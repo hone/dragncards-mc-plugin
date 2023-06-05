@@ -30,7 +30,7 @@ pub enum TypeCode {
 }
 
 pub async fn get_cards() -> Result<Vec<Card>, reqwest::Error> {
-    Ok(reqwest::get(CARDS_API).await?.json::<Vec<Card>>().await?)
+    reqwest::get(CARDS_API).await?.json::<Vec<Card>>().await
 }
 
 #[cfg(test)]
