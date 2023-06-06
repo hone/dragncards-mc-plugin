@@ -1,0 +1,6 @@
+{
+  "spawnExistingCardModal": {
+    "columnProperties": ["name"],
+    "spawnGroupIds": ["sharedSideSchemes", "player1Play1"]
+  }
+}
