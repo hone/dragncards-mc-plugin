@@ -1,12 +1,26 @@
 use serde::{Deserialize, Serialize};
 
 const CARDS_API: &str = "https://marvelcdb.com/api/public/cards/?encounter=1";
+const PACKS_API: &str = "https://marvelcdb.com/api/public/packs";
 
 #[derive(Deserialize)]
 pub struct Card {
     pub name: String,
     pub type_code: TypeCode,
+    pub pack_code: String,
     pub code: String,
+    pub position: u32,
+}
+
+#[derive(Deserialize)]
+pub struct Pack {
+    pub name: String,
+    pub code: String,
+    pub position: u32,
+    pub known: u32,
+    pub total: u32,
+    pub url: String,
+    pub id: u32,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -30,7 +44,11 @@ pub enum TypeCode {
 }
 
 pub async fn get_cards() -> Result<Vec<Card>, reqwest::Error> {
-    reqwest::get(CARDS_API).await?.json::<Vec<Card>>().await
+    reqwest::get(CARDS_API).await?.json().await
+}
+
+pub async fn get_packs() -> Result<Vec<Pack>, reqwest::Error> {
+    reqwest::get(PACKS_API).await?.json().await
 }
 
 #[cfg(test)]
