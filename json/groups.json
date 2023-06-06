@@ -110,7 +110,7 @@
     },
     "sharedVillain": {
       "labelId": "villain",
-      "tableLabelId": "villin",
+      "tableLabelId": "villain",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -129,7 +129,7 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": true,
-        "deckGroupId": "sharedMainScheme"
+        "deckGroupId": "sharedMainSchemeDeck"
       }
     },
     "sharedSideSchemes": {
@@ -250,6 +250,18 @@
         "controller": "player1",
         "inPlay": true,
         "deckGroupId": "player1Engaged"
+      }
+    },
+    "player1NemesisSet": {
+      "labelId": "player1NemesisSet",
+      "tableLableId": "player1NemesisSet",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "player1",
+        "inPlay": false,
+        "deckGroupId": "player1NemesisSet"
       }
     }
   }

@@ -27,7 +27,7 @@
     "victory": {
       "English": "Victory Display"
     },
-    "villaian": {
+    "villain": {
       "English": "Villain"
     },
     "mainScheme": {
@@ -89,6 +89,9 @@
     },
     "step-2.5": {
       "English": "Pass the first player token and end the round."
+    },
+    "beginning": {
+      "English": "Beginning"
     }
   }
 }
