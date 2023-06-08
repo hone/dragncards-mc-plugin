@@ -1,6 +1,14 @@
 {
   "hotkeys": {
-    "token": [],
+    "token": [
+      {"key": "1", "tokenType": "damage",       "labelId": "damageToken"},
+      {"key": "2", "tokenType": "threat",       "labelId": "threatToken"},
+      {"key": "3", "tokenType": "generic",      "labelId": "genericToken"},
+      {"key": "4", "tokenType": "acceleration", "labelId": "accelerationToken"},
+      {"key": "5", "tokenType": "confused",     "labelId": "confusedToken"},
+      {"key": "6", "tokenType": "stunned",      "labelId": "stunnedToken"},
+      {"key": "7", "tokenType": "tough",        "labelId": "toughToken"}
+    ],
     "game": [],
     "card": []
   }

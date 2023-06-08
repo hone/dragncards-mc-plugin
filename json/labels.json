@@ -92,6 +92,30 @@
     },
     "beginning": {
       "English": "Beginning"
+    },
+    "end": {
+      "English": "End"
+    },
+    "damageToken": {
+      "English": "damage"
+    },
+    "threatToken": {
+      "English": "threat"
+    },
+    "genericToken": {
+      "English": "generic"
+    },
+    "accelerationToken": {
+      "English": "acceleration"
+    },
+    "confusedToken": {
+      "English": "confused"
+    },
+    "stunnedToken": {
+      "English": "stunned"
+    },
+    "toughToken": {
+      "English": "tough"
     }
   }
 }
