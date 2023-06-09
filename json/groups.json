@@ -180,6 +180,17 @@
         "deckGroupId": "player1Discard"
       }
     },
+    "player1Identity": {
+      "labelId": "player1Identity",
+      "tableLabelId": "player1Identity",
+      "canHaveAttachments": true,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "B",
+        "controller": "player1",
+        "inPlay": true
+      }
+    },
     "player1Play1": {
       "labelId": "player1Play1",
       "tableLabelId": "player1Play1",
