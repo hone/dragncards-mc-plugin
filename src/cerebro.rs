@@ -18,7 +18,7 @@ pub struct Pack {
     pub number: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, PartialEq)]
 pub enum PackType {
     #[serde(rename = "Campaign Expansion")]
     CampaignExpansion,
@@ -32,13 +32,13 @@ pub enum PackType {
     Supplements,
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Card {
     pub id: String,
     pub deleted: bool,
     pub official: bool,
-    pub classification: Classicification,
+    pub classification: Classification,
     pub name: String,
     pub subname: Option<String>,
     pub rules: Option<String>,
@@ -46,8 +46,8 @@ pub struct Card {
     pub printings: Vec<Printing>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub enum Classicification {
+#[derive(Clone, Deserialize, PartialEq, Serialize)]
+pub enum Classification {
     Aggression,
     Basic,
     Determination,
@@ -58,7 +58,7 @@ pub enum Classicification {
     Protection,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, PartialEq, Serialize)]
 pub enum CardType {
     Ally,
     #[serde(rename = "Alter-Ego")]
@@ -84,7 +84,7 @@ pub enum CardType {
     Villain,
 }
 
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Printing {
     pub artificial_id: String,
@@ -96,11 +96,17 @@ pub struct Printing {
 }
 
 pub async fn get_packs() -> Result<Vec<Pack>, reqwest::Error> {
-    reqwest::get(PACKS_API).await?.json().await
+    let mut packs: Vec<Pack> = reqwest::get(PACKS_API).await?.json().await?;
+    packs.sort_by(|a, b| a.number.cmp(&b.number));
+
+    Ok(packs)
 }
 
 pub async fn get_cards() -> Result<Vec<Card>, reqwest::Error> {
-    reqwest::get(CARDS_API).await?.json().await
+    let mut cards: Vec<Card> = reqwest::get(CARDS_API).await?.json().await?;
+    cards.sort_by(|a, b| a.id.cmp(&b.id));
+
+    Ok(cards)
 }
 
 #[cfg(test)]
