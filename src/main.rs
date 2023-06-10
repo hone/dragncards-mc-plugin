@@ -94,8 +94,6 @@ async fn main() {
                         atoi::<usize>(printing_a.pack_number.as_bytes())
                             .cmp(&atoi::<usize>(printing_b.pack_number.as_bytes()))
                     });
-                    //let pack_cards: Vec<cerebro::Card> =
-                    //    value.into_iter().map(|(card, _)| card.clone()).collect();
 
                     let nemesis_types = vec![
                         CardType::Obligation,
