@@ -1,3 +1,6 @@
+pub mod database;
+pub mod decks;
+
 use clap::Parser;
 
 #[derive(Parser)]
@@ -5,12 +8,6 @@ use clap::Parser;
 #[command(bin_name = "dragncards-mc")]
 pub enum DragncardsMcCli {
     // Build Database of cards
-    Database(DatabaseArgs),
+    Database(database::DatabaseArgs),
     Decks,
-}
-
-#[derive(clap::Args)]
-pub struct DatabaseArgs {
-    #[arg(long)]
-    pub output: Option<std::path::PathBuf>,
 }
