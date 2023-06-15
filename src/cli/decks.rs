@@ -1,5 +1,5 @@
 use crate::{
-    cerebro::{self, CardType},
+    cerebro::{self, CardType, PackType},
     dragncards, marvelcdb,
 };
 use atoi::atoi;
@@ -51,7 +51,7 @@ pub async fn execute() {
 
     for pack in packs
         .iter()
-        .filter(|pack| hero_packs.contains(&pack.id) && !pack.incomplete)
+        .filter(|pack| pack.r#type == PackType::HeroPack && !pack.incomplete)
     {
         let value = packs_map.get_mut(&pack.id);
         if let Some(value) = value {
@@ -60,62 +60,71 @@ pub async fn execute() {
                     .cmp(&atoi::<usize>(printing_b.pack_number.as_bytes()))
             });
 
-            let nemesis_types = vec![
-                CardType::Obligation,
-                CardType::Minion,
-                CardType::SideScheme,
-                CardType::Treachery,
-            ];
-            let mut player_cards: Vec<_> = value
-                .iter()
-                .take_while(|(card, _)| card.r#type != CardType::Obligation)
-                .collect();
-            let (mut nemesis_cards, _): (Vec<_>, Vec<_>) = value
-                .iter()
-                .partition(|(card, _)| nemesis_types.contains(&card.r#type));
-            player_cards.append(&mut nemesis_cards);
-
-            let deck = player_cards
-                .into_iter()
-                .filter_map(|(card, printing)| {
-                    // Double Sided cards shouldn't be loaded twice
-                    if card.id.ends_with("B") {
-                        return None;
-                    }
-                    let mut load_group_id = match card.r#type {
-                        CardType::Obligation => "sharedEncounterDeck",
-                        CardType::Minion | CardType::SideScheme | CardType::Treachery => {
-                            "playerNNemesisSet"
-                        }
-                        CardType::Hero => "playerNIdentity",
-                        _ => "playerNDeck",
-                    };
-                    // Put Permanent Cards into play
-                    if let Some(rules) = card.rules.as_ref() {
-                        if rules.contains("Permanent") {
-                            load_group_id = "playerNPlay1";
-                        }
-                    }
-                    println!(
-                        "{}: {}",
-                        card.name,
-                        marvelcdb::card_id(&pack.number, &printing.pack_number)
-                    );
-                    let quantity = marvelcdb_cards
+            let deck = match pack.r#type {
+                PackType::HeroPack => {
+                    let nemesis_types = vec![
+                        CardType::Obligation,
+                        CardType::Minion,
+                        CardType::SideScheme,
+                        CardType::Treachery,
+                    ];
+                    let mut player_cards: Vec<_> = value
                         .iter()
-                        .find(|card| {
-                            card.code == marvelcdb::card_id(&pack.number, &printing.pack_number)
+                        .take_while(|(card, _)| card.r#type != CardType::Obligation)
+                        .collect();
+                    let (mut nemesis_cards, _): (Vec<_>, Vec<_>) = value
+                        .iter()
+                        .partition(|(card, _)| nemesis_types.contains(&card.r#type));
+                    player_cards.append(&mut nemesis_cards);
+
+                    player_cards
+                        .into_iter()
+                        .filter_map(|(card, printing)| {
+                            // Double Sided cards shouldn't be loaded twice
+                            if card.id.ends_with("B") {
+                                return None;
+                            }
+                            let mut load_group_id = match card.r#type {
+                                CardType::Obligation => "sharedEncounterDeck",
+                                CardType::Minion | CardType::SideScheme | CardType::Treachery => {
+                                    "playerNNemesisSet"
+                                }
+                                CardType::Hero => "playerNIdentity",
+                                _ => "playerNDeck",
+                            };
+                            // Put Permanent Cards into play
+                            if let Some(rules) = card.rules.as_ref() {
+                                if rules.contains("Permanent") {
+                                    load_group_id = "playerNPlay1";
+                                }
+                            }
+                            println!(
+                                "{}: {}",
+                                card.name,
+                                marvelcdb::card_id(&pack.number, &printing.pack_number)
+                            );
+                            let quantity = marvelcdb_cards
+                                .iter()
+                                .find(|card| {
+                                    card.code
+                                        == marvelcdb::card_id(&pack.number, &printing.pack_number)
+                                })
+                                .unwrap()
+                                .quantity;
+                            Some(dragncards::decks::Card {
+                                load_group_id: load_group_id.to_string(),
+                                quantity,
+                                uuid: dragncards::database::uuid(&card.id),
+                                _name: card.name.clone(),
+                            })
                         })
-                        .unwrap()
-                        .quantity;
-                    Some(dragncards::decks::Card {
-                        load_group_id: load_group_id.to_string(),
-                        quantity,
-                        uuid: dragncards::database::uuid(&card.id),
-                        _name: card.name.clone(),
-                    })
-                })
-                .collect::<Vec<dragncards::decks::Card>>();
+                        .collect::<Vec<dragncards::decks::Card>>()
+                },
+                PackType::ScenarioPack => {
+                    value.iter().map(|card| 
+                },
+                _ => Vec::new(),
+            };
 
             pre_built_decks.insert(
                 pack.name.clone(),
