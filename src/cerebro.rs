@@ -3,6 +3,7 @@ use uuid::Uuid;
 
 const PACKS_API: &str = "https://cerebro-beta-bot.herokuapp.com/packs";
 const CARDS_API: &str = "https://cerebro-beta-bot.herokuapp.com/cards";
+const SETS_API: &str = "https://cerebro-beta-bot.herokuapp.com/sets";
 
 #[derive(Deserialize)]
 #[serde(rename_all = "PascalCase")]
@@ -95,6 +96,34 @@ pub struct Printing {
     pub unique_art: bool,
 }
 
+#[derive(Clone, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct Set {
+    pub id: Uuid,
+    pub official: bool,
+    pub name: String,
+    pub r#type: SetType,
+    pub modulars: Option<u32>,
+    pub pack_id: Uuid,
+    pub requires: Option<Vec<Uuid>>,
+}
+
+#[derive(Clone, Deserialize)]
+pub enum SetType {
+    #[serde(rename = "Campaign Set")]
+    Campaign,
+    #[serde(rename = "Hero Set")]
+    Hero,
+    #[serde(rename = "Modular Set")]
+    Modular,
+    #[serde(rename = "Nemesis Set")]
+    Nemesis,
+    #[serde(rename = "Supplementary Set")]
+    Supplementary,
+    #[serde(rename = "Villain Set")]
+    Villain,
+}
+
 pub async fn get_packs() -> Result<Vec<Pack>, reqwest::Error> {
     let mut packs: Vec<Pack> = reqwest::get(PACKS_API).await?.json().await?;
     packs.sort_by(|a, b| a.number.cmp(&b.number));
@@ -107,6 +136,12 @@ pub async fn get_cards() -> Result<Vec<Card>, reqwest::Error> {
     cards.sort_by(|a, b| a.id.cmp(&b.id));
 
     Ok(cards)
+}
+
+pub async fn get_sets() -> Result<Vec<Set>, reqwest::Error> {
+    let sets: Vec<Set> = reqwest::get(SETS_API).await?.json().await?;
+
+    Ok(sets)
 }
 
 #[cfg(test)]
@@ -124,6 +159,13 @@ mod tests {
     fn it_parses_packs_fixture() {
         let result: Result<Vec<Pack>, _> =
             serde_json::from_str(include_str!("../fixtures/cerebro/packs.json"));
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn it_parses_sets_fixture() {
+        let result: Result<Vec<Set>, _> =
+            serde_json::from_str(include_str!("../fixtures/cerebro/sets.json"));
         assert!(result.is_ok());
     }
 }
