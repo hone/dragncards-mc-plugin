@@ -1,7 +1,7 @@
 {
   "browse": {
     "filterPropertySideA": "type",
-    "filterValuesSideA": ["ally", "attachment", "event", "resource", "support", "upgrade", "minion", "side_scheme", "obligation", "treachery"],
+    "filterValuesSideA": ["Ally", "Attachment", "Event", "Resource", "Support", "Upgrade", "Minion", "Side Scheme", "Obligation", "Treachery"],
     "textPropertiesSideA": ["name"]
   }
 }
