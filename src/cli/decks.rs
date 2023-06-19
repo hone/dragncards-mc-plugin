@@ -114,7 +114,18 @@ pub async fn execute(args: DecksArgs) {
                         }
 
                         let load_group_id = match card.r#type {
-                            CardType::MainScheme => "sharedMainSchemeDeck",
+                            CardType::MainScheme => {
+                                if card
+                                    .stage
+                                    .as_ref()
+                                    .map(|stage| stage == "1A")
+                                    .unwrap_or(false)
+                                {
+                                    "sharedMainScheme"
+                                } else {
+                                    "sharedMainSchemeDeck"
+                                }
+                            }
                             CardType::Villain => "sharedVillain",
                             _ => "sharedEncounterDeck",
                         };
