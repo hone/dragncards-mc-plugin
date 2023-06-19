@@ -86,7 +86,7 @@ mod tests {
     #[test]
     #[ignore]
     fn it_parses_api() {
-        let result = tokio_test::block_on(get_cards());
+        let result = tokio_test::block_on(get_cards(None));
         assert!(result.is_ok());
     }
 }
