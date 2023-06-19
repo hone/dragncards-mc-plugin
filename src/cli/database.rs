@@ -5,10 +5,12 @@ use csv::WriterBuilder;
 pub struct DatabaseArgs {
     #[arg(long)]
     pub output: Option<std::path::PathBuf>,
+    #[arg(long, default_value_t = false)]
+    pub offline: bool,
 }
 
 pub async fn execute(args: DatabaseArgs) {
-    let cards: Vec<Card> = cerebro::get_cards()
+    let cards: Vec<Card> = cerebro::get_cards(Some(args.offline))
         .await
         .unwrap()
         .into_iter()

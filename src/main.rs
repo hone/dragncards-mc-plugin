@@ -12,8 +12,8 @@ async fn main() {
         DragncardsMcCli::Database(args) => {
             cli::database::execute(args).await;
         }
-        DragncardsMcCli::Decks => {
-            cli::decks::execute().await;
+        DragncardsMcCli::Decks(args) => {
+            cli::decks::execute(args).await;
         }
     }
 }

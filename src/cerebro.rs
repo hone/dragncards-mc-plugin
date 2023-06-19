@@ -1,4 +1,10 @@
-use serde::{Deserialize, Serialize};
+use lazy_static::lazy_static;
+use regex::Regex;
+use serde::{
+    de::{self, Visitor},
+    Deserialize, Deserializer, Serialize,
+};
+use std::fmt;
 use uuid::Uuid;
 
 const PACKS_API: &str = "https://cerebro-beta-bot.herokuapp.com/packs";
@@ -40,6 +46,7 @@ pub struct Card {
     pub deleted: bool,
     pub official: bool,
     pub classification: Classification,
+    pub incomplete: bool,
     pub name: String,
     pub subname: Option<String>,
     pub rules: Option<String>,
@@ -90,10 +97,103 @@ pub enum CardType {
 pub struct Printing {
     pub artificial_id: String,
     pub pack_id: Uuid,
-    pub pack_number: String,
+    pub pack_number: PackNumber,
     pub set_id: Option<Uuid>,
-    pub set_number: Option<String>,
+    pub set_number: Option<SetNumber>,
     pub unique_art: bool,
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct PackNumber(pub String);
+
+struct PackNumberVisitor;
+
+impl<'de> Visitor<'de> for PackNumberVisitor {
+    type Value = PackNumber;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("an integer or an integer followed by A, B, or C")
+    }
+
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        lazy_static! {
+            static ref PACK_NUMBER_RE: Regex = Regex::new(r"(\d+[A-C]?)").unwrap();
+        }
+
+        if let Some(captures) = PACK_NUMBER_RE.captures(value) {
+            Ok(PackNumber(format!("{:0>2}", &captures[0])))
+        } else {
+            Err(E::custom(format!(
+                "not an integer or integer followed by A, B, or C: {value}"
+            )))
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for PackNumber {
+    fn deserialize<D>(deserializer: D) -> Result<PackNumber, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_str(PackNumberVisitor)
+    }
+}
+
+#[derive(Clone)]
+pub struct SetNumber(pub std::ops::RangeInclusive<u32>);
+
+impl SetNumber {
+    pub fn length(&self) -> u32 {
+        self.0.end() - self.0.start() + 1
+    }
+}
+
+struct SetNumberVisitor;
+
+impl<'de> Visitor<'de> for SetNumberVisitor {
+    type Value = SetNumber;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("an integer or range separated by a dash")
+    }
+
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        lazy_static! {
+            static ref SET_NUMBER_RE: Regex = Regex::new(r"(\d+)(-(\d+))?").unwrap();
+        }
+        if let Some(captures) = SET_NUMBER_RE.captures(value) {
+            let start = captures[1]
+                .parse::<u32>()
+                .map_err(|_| E::custom(format!("Need an initial integer: {value}")))?;
+            let end = captures
+                .get(3)
+                .map(|m| {
+                    m.as_str()
+                        .parse::<u32>()
+                        .map_err(|_| E::custom(format!("Not in range format: {value}")))
+                })
+                .unwrap_or(Ok(start))?;
+
+            Ok(SetNumber(start..=end))
+        } else {
+            Err(E::custom(format!("Not in range format: {value}")))
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for SetNumber {
+    fn deserialize<D>(deserializer: D) -> Result<SetNumber, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_str(SetNumberVisitor)
+    }
 }
 
 #[derive(Clone, Deserialize)]
@@ -108,7 +208,7 @@ pub struct Set {
     pub requires: Option<Vec<Uuid>>,
 }
 
-#[derive(Clone, Deserialize)]
+#[derive(Clone, Deserialize, PartialEq)]
 pub enum SetType {
     #[serde(rename = "Campaign Set")]
     Campaign,
@@ -124,22 +224,36 @@ pub enum SetType {
     Villain,
 }
 
-pub async fn get_packs() -> Result<Vec<Pack>, reqwest::Error> {
-    let mut packs: Vec<Pack> = reqwest::get(PACKS_API).await?.json().await?;
+pub async fn get_packs(offline: Option<bool>) -> Result<Vec<Pack>, reqwest::Error> {
+    let mut packs: Vec<Pack> = if offline.unwrap_or(false) {
+        serde_json::from_str(include_str!("../fixtures/cerebro/packs.json")).unwrap()
+    } else {
+        reqwest::get(PACKS_API).await?.json().await?
+    };
+
     packs.sort_by(|a, b| a.number.cmp(&b.number));
 
     Ok(packs)
 }
 
-pub async fn get_cards() -> Result<Vec<Card>, reqwest::Error> {
-    let mut cards: Vec<Card> = reqwest::get(CARDS_API).await?.json().await?;
+pub async fn get_cards(offline: Option<bool>) -> Result<Vec<Card>, reqwest::Error> {
+    let mut cards: Vec<Card> = if offline.unwrap_or(false) {
+        serde_json::from_str(include_str!("../fixtures/cerebro/cards.json")).unwrap()
+    } else {
+        reqwest::get(CARDS_API).await?.json().await?
+    };
+
     cards.sort_by(|a, b| a.id.cmp(&b.id));
 
     Ok(cards)
 }
 
-pub async fn get_sets() -> Result<Vec<Set>, reqwest::Error> {
-    let sets: Vec<Set> = reqwest::get(SETS_API).await?.json().await?;
+pub async fn get_sets(offline: Option<bool>) -> Result<Vec<Set>, reqwest::Error> {
+    let sets: Vec<Set> = if offline.unwrap_or(false) {
+        serde_json::from_str(include_str!("../fixtures/cerebro/sets.json")).unwrap()
+    } else {
+        reqwest::get(SETS_API).await?.json().await?
+    };
 
     Ok(sets)
 }

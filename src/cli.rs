@@ -9,5 +9,5 @@ use clap::Parser;
 pub enum DragncardsMcCli {
     // Build Database of cards
     Database(database::DatabaseArgs),
-    Decks,
+    Decks(decks::DecksArgs),
 }
