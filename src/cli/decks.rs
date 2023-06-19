@@ -96,7 +96,7 @@ pub async fn execute(args: DecksArgs) {
         });
     }
 
-    // build scenarios + modulars
+    // build scenarios, modulars, campaign, nemesis set
     for pack in packs.iter() {
         let sets = pack_set_map.get(&pack.id).unwrap();
         let decks = sets
@@ -113,23 +113,33 @@ pub async fn execute(args: DecksArgs) {
                             return None;
                         }
 
-                        let load_group_id = match card.r#type {
-                            CardType::MainScheme => {
-                                if card
-                                    .stage
-                                    .as_ref()
-                                    .map(|stage| stage == "1A")
-                                    .unwrap_or(false)
-                                {
-                                    "sharedMainScheme"
-                                } else {
-                                    "sharedMainSchemeDeck"
-                                }
+                        let load_group_id = match set.r#type {
+                            SetType::Modular | SetType::Villain => {
+                                let load_group_id = match card.r#type {
+                                    CardType::MainScheme => {
+                                        if card
+                                            .stage
+                                            .as_ref()
+                                            .map(|stage| stage == "1A")
+                                            .unwrap_or(false)
+                                        {
+                                            "sharedMainScheme"
+                                        } else {
+                                            "sharedMainSchemeDeck"
+                                        }
+                                    }
+                                    CardType::Villain => "sharedVillain",
+                                    _ => "sharedEncounterDeck",
+                                };
+
+                                Some(load_group_id)
                             }
-                            CardType::Villain => "sharedVillain",
-                            _ => "sharedEncounterDeck",
+                            SetType::Nemesis => Some("playerNNemesisSet"),
+                            SetType::Campaign => Some("sharedCampaignDeck"),
+                            _ => None,
                         };
-                        Some(dragncards::decks::Card {
+
+                        load_group_id.map(|load_group_id| dragncards::decks::Card {
                             load_group_id: load_group_id.to_string(),
                             quantity: ordered_card
                                 .set_number

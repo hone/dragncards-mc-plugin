@@ -96,6 +96,18 @@
         "deckGroupId": "sharedEncounter3Discard"
       }
     },
+    "sharedCampaignDeck": {
+      "labelId": "campaignDeck",
+      "tableLabelId": "campaignDeck",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "shared",
+        "inPlay": false,
+        "deckGroupId": "sharedCampaignDeck"
+      }
+    },
     "sharedVictory": {
       "labelId": "victory",
       "tableLabelId": "victory",
