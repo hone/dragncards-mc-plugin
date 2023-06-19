@@ -13,24 +13,12 @@ use std::{
 };
 use uuid::Uuid;
 
+const TOUCHED_ID: &str = "38002";
+
 #[derive(clap::Args)]
 pub struct DecksArgs {
     #[arg(long, default_value_t = false)]
     pub offline: bool,
-}
-
-struct OrderedCard<'a> {
-    pub pack_number: PackNumber,
-    pub set_number: Option<SetNumber>,
-    pub card: &'a Card,
-}
-
-fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> OrderedCard<'a> {
-    OrderedCard {
-        set_number: printing.set_number.clone(),
-        pack_number: printing.pack_number.clone(),
-        card,
-    }
 }
 
 pub async fn execute(args: DecksArgs) {
@@ -216,12 +204,13 @@ pub async fn execute(args: DecksArgs) {
                     CardType::Minion | CardType::SideScheme | CardType::Treachery => {
                         "playerNNemesisSet"
                     }
-                    CardType::Hero => "playerNIdentity",
+                    // Hero/AlterEgo are consistently
+                    CardType::Hero | CardType::AlterEgo => "playerNIdentity",
                     _ => "playerNDeck",
                 };
                 // Put Permanent Cards into play
                 if let Some(rules) = card.rules.as_ref() {
-                    if rules.contains("Permanent") {
+                    if rules.contains("Permanent") || card.id == TOUCHED_ID {
                         load_group_id = "playerNPlay1";
                     }
                 }
@@ -258,4 +247,18 @@ pub async fn execute(args: DecksArgs) {
     let json = serde_json::to_string_pretty(&dragncards::decks::Doc { pre_built_decks }).unwrap();
     let mut file = File::create("json/preBuiltDecks.json").unwrap();
     write!(file, "{json}").unwrap();
+}
+
+struct OrderedCard<'a> {
+    pub pack_number: PackNumber,
+    pub set_number: Option<SetNumber>,
+    pub card: &'a Card,
+}
+
+fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> OrderedCard<'a> {
+    OrderedCard {
+        set_number: printing.set_number.clone(),
+        pack_number: printing.pack_number.clone(),
+        card,
+    }
 }
