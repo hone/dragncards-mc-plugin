@@ -556,5 +556,18 @@
     "Incomplete": true,
     "Number": "42",
     "ReleaseStatus": null
+  },
+  {
+    "Deleted": false,
+    "Id": "ae22b08d-5557-46f4-96c2-5ee809460c45",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "X-23",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": true,
+    "Number": "43",
+    "ReleaseStatus": null
   }
 ]
