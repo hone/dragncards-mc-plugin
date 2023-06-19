@@ -101,7 +101,6 @@ pub async fn execute(args: DecksArgs) {
         let sets = pack_set_map.get(&pack.id).unwrap();
         let decks = sets
             .iter()
-            .filter(|set| set.r#type != SetType::Hero)
             .map(|set| {
                 let deck: Vec<dragncards::decks::Card> = set_card_map
                     .get(&set.id)
