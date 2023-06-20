@@ -1,13 +1,13 @@
 {
   "hotkeys": {
     "token": [
-      {"key": "1", "tokenType": "damage",       "labelId": "damageToken"},
-      {"key": "2", "tokenType": "threat",       "labelId": "threatToken"},
-      {"key": "3", "tokenType": "generic",      "labelId": "genericToken"},
-      {"key": "4", "tokenType": "acceleration", "labelId": "accelerationToken"},
-      {"key": "5", "tokenType": "confused",     "labelId": "confusedToken"},
-      {"key": "6", "tokenType": "stunned",      "labelId": "stunnedToken"},
-      {"key": "7", "tokenType": "tough",        "labelId": "toughToken"}
+      {"key": "1", "tokenType": "damage",       "label": "damageToken"},
+      {"key": "2", "tokenType": "threat",       "label": "threatToken"},
+      {"key": "3", "tokenType": "generic",      "label": "genericToken"},
+      {"key": "4", "tokenType": "acceleration", "label": "accelerationToken"},
+      {"key": "5", "tokenType": "confused",     "label": "confusedToken"},
+      {"key": "6", "tokenType": "stunned",      "label": "stunnedToken"},
+      {"key": "7", "tokenType": "tough",        "label": "toughToken"}
     ],
     "game": [],
     "card": []

@@ -2,22 +2,22 @@
   "phases": [
     {
       "phaseId": "Beginning",
-      "labelId": "beginning",
+      "label": "beginning",
       "height": "10%"
     },
     {
       "phaseId": "Player",
-      "labelId": "player",
+      "label": "player",
       "height": "30%"
     },
     {
       "phaseId": "Villain",
-      "labelId": "villain",
+      "label": "villain",
       "height": "50%"
     },
     {
       "phaseId": "End",
-      "labelId": "end",
+      "label": "end",
       "height": "10%"
     }
   ]

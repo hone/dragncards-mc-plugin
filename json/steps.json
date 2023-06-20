@@ -1,13 +1,13 @@
 {
   "steps": [
-    {"stepId": "0.0", "phaseId": "Beginning", "labelId": "step-0.0"},
-    {"stepId": "1.1", "phaseId": "Player",    "labelId": "step-1.1"},
-    {"stepId": "1.2", "phaseId": "Player",    "labelId": "step-1.2"},
-    {"stepId": "2.1", "phaseId": "Villain",   "labelId": "step-2.1"},
-    {"stepId": "2.2", "phaseId": "Villain",   "labelId": "step-2.2"},
-    {"stepId": "2.3", "phaseId": "Villain",   "labelId": "step-2.3"},
-    {"stepId": "2.4", "phaseId": "Villain",   "labelId": "step-2.4"},
-    {"stepId": "2.5", "phaseId": "Villain",   "labelId": "step-2.5"},
-    {"stepId": "0.1", "phaseId": "End",       "labelId": "step-0.1"}
+    {"stepId": "0.0", "phaseId": "Beginning", "label": "step-0.0"},
+    {"stepId": "1.1", "phaseId": "Player",    "label": "step-1.1"},
+    {"stepId": "1.2", "phaseId": "Player",    "label": "step-1.2"},
+    {"stepId": "2.1", "phaseId": "Villain",   "label": "step-2.1"},
+    {"stepId": "2.2", "phaseId": "Villain",   "label": "step-2.2"},
+    {"stepId": "2.3", "phaseId": "Villain",   "label": "step-2.3"},
+    {"stepId": "2.4", "phaseId": "Villain",   "label": "step-2.4"},
+    {"stepId": "2.5", "phaseId": "Villain",   "label": "step-2.5"},
+    {"stepId": "0.1", "phaseId": "End",       "label": "step-0.1"}
   ]
 }
