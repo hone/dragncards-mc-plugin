@@ -99,65 +99,63 @@ pub async fn execute(args: DecksArgs) {
     // build scenarios, modulars, campaign, nemesis set
     for pack in packs.iter() {
         let sets = pack_set_map.get(&pack.id).unwrap();
-        let decks = sets
-            .iter()
-            .map(|set| {
-                let deck: Vec<dragncards::decks::Card> = set_card_map
-                    .get(&set.id)
-                    .unwrap()
-                    .iter()
-                    .filter_map(|ordered_card| {
-                        let card = ordered_card.card;
-                        if card.id.ends_with("B") {
-                            return None;
-                        }
+        let decks = sets.iter().map(|set| {
+            let deck: Vec<dragncards::decks::Card> = set_card_map
+                .get(&set.id)
+                .unwrap()
+                .iter()
+                .filter_map(|ordered_card| {
+                    let card = ordered_card.card;
+                    if card.id.ends_with("B") {
+                        return None;
+                    }
 
-                        let load_group_id = match set.r#type {
-                            SetType::Modular | SetType::Villain => {
-                                let load_group_id = match card.r#type {
-                                    CardType::MainScheme => {
-                                        if card
-                                            .stage
-                                            .as_ref()
-                                            .map(|stage| stage == "1A")
-                                            .unwrap_or(false)
-                                        {
-                                            "sharedMainScheme"
-                                        } else {
-                                            "sharedMainSchemeDeck"
-                                        }
+                    let load_group_id = match set.r#type {
+                        SetType::Modular | SetType::Villain => {
+                            let load_group_id = match card.r#type {
+                                CardType::MainScheme => {
+                                    if card
+                                        .stage
+                                        .as_ref()
+                                        .map(|stage| stage == "1A")
+                                        .unwrap_or(false)
+                                    {
+                                        "sharedMainScheme"
+                                    } else {
+                                        "sharedMainSchemeDeck"
                                     }
-                                    CardType::Villain => "sharedVillain",
-                                    _ => "sharedEncounterDeck",
-                                };
+                                }
+                                CardType::Villain => "sharedVillain",
+                                _ => "sharedEncounterDeck",
+                            };
 
-                                Some(load_group_id)
-                            }
-                            SetType::Nemesis => Some("playerNNemesisSet"),
-                            SetType::Campaign => Some("sharedCampaignDeck"),
-                            _ => None,
-                        };
+                            Some(load_group_id)
+                        }
+                        SetType::Nemesis => Some("playerNNemesisSet"),
+                        SetType::Campaign => Some("sharedCampaignDeck"),
+                        _ => None,
+                    };
 
-                        load_group_id.map(|load_group_id| dragncards::decks::Card {
-                            load_group_id: load_group_id.to_string(),
-                            quantity: ordered_card
-                                .set_number
-                                .as_ref()
-                                .map(|i| i.length())
-                                .unwrap_or(1),
-                            uuid: dragncards::database::uuid(&card.id),
-                            _name: card.name.clone(),
-                        })
+                    load_group_id.map(|load_group_id| dragncards::decks::Card {
+                        load_group_id: load_group_id.to_string(),
+                        quantity: ordered_card
+                            .set_number
+                            .as_ref()
+                            .map(|i| i.length())
+                            .unwrap_or(1),
+                        uuid: dragncards::database::uuid(&card.id),
+                        _name: card.name.clone(),
                     })
-                    .collect();
-                (
-                    set.name.clone(),
-                    dragncards::decks::PreBuiltDeck {
-                        name: set.name.clone(),
-                        cards: deck,
-                    },
-                )
-            });
+                })
+                .collect();
+            (
+                set.name.clone(),
+                dragncards::decks::PreBuiltDeck {
+                    name: set.name.clone(),
+                    cards: deck,
+                },
+            )
+        });
 
         for (key, value) in decks.into_iter() {
             pre_built_decks.insert(key, value);
@@ -197,22 +195,17 @@ pub async fn execute(args: DecksArgs) {
                 .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
         });
 
-        let nemesis_types = vec![
-            CardType::Obligation,
-            CardType::Minion,
-            CardType::SideScheme,
-            CardType::Treachery,
-        ];
         let mut player_cards: Vec<_> = value
             .iter()
             .take_while(|(card, _)| card.r#type != CardType::Obligation)
             .collect();
-        let (mut nemesis_cards, _): (Vec<_>, Vec<_>) = value
+        let nemesis_card = value
             .iter()
-            .partition(|(card, _)| nemesis_types.contains(&card.r#type));
-        player_cards.append(&mut nemesis_cards);
+            .find(|(card, _)| card.r#type == CardType::Obligation)
+            .unwrap();
+        player_cards.push(nemesis_card);
 
-        let deck = player_cards
+        let mut deck = player_cards
             .into_iter()
             .filter_map(|(card, printing)| {
                 // Double Sided cards shouldn't be loaded twice
@@ -234,11 +227,6 @@ pub async fn execute(args: DecksArgs) {
                         load_group_id = "playerNPlay1";
                     }
                 }
-                println!(
-                    "{}: {}",
-                    card.name,
-                    marvelcdb::card_id(&pack.number, &printing.pack_number.0)
-                );
                 let quantity = marvelcdb_cards
                     .iter()
                     .find(|card| {
@@ -254,6 +242,16 @@ pub async fn execute(args: DecksArgs) {
                 })
             })
             .collect::<Vec<dragncards::decks::Card>>();
+
+        let nemesis_set_name = &pack_set_map
+            .get(&pack.id)
+            .unwrap()
+            .iter()
+            .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&pack.name))
+            .next()
+            .unwrap()
+            .name;
+        deck.extend(pre_built_decks.get(nemesis_set_name).unwrap().cards.clone());
 
         pre_built_decks.insert(
             pack.name.clone(),

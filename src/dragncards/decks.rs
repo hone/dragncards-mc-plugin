@@ -14,7 +14,7 @@ pub struct PreBuiltDeck {
     pub cards: Vec<Card>,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Card {
     pub load_group_id: String,
