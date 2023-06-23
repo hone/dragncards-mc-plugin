@@ -1,15 +1,17 @@
 {
   "hotkeys": {
     "token": [
-      {"key": "1", "tokenType": "damage",       "label": "damageToken"},
-      {"key": "2", "tokenType": "threat",       "label": "threatToken"},
-      {"key": "3", "tokenType": "generic",      "label": "genericToken"},
-      {"key": "4", "tokenType": "acceleration", "label": "accelerationToken"},
-      {"key": "5", "tokenType": "confused",     "label": "confusedToken"},
-      {"key": "6", "tokenType": "stunned",      "label": "stunnedToken"},
-      {"key": "7", "tokenType": "tough",        "label": "toughToken"}
+      {"key": "1", "tokenType": "damage",       "label": "id:damageToken"},
+      {"key": "2", "tokenType": "threat",       "label": "id:threatToken"},
+      {"key": "3", "tokenType": "generic",      "label": "id:genericToken"},
+      {"key": "4", "tokenType": "acceleration", "label": "id:accelerationToken"},
+      {"key": "5", "tokenType": "confused",     "label": "id:confusedToken"},
+      {"key": "6", "tokenType": "stunned",      "label": "id:stunnedToken"},
+      {"key": "7", "tokenType": "tough",        "label": "id:toughToken"}
     ],
     "game": [],
-    "card": []
+    "card": [
+      {"key": "F", "actionList": "flipCard", "label": "id:flip"}
+    ]
   }
 }

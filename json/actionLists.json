@@ -1,3 +1,18 @@
 {
-  "actionLists": {}
+  "actionLists": {
+    "flipCard": [
+      ["COND",
+        ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
+        [
+          ["LOG", "$PLAYER_N", " flipped ", "$ACTIVE_FACE.name", " facedown."],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
+        ],
+        true,
+        [
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
+          ["LOG", "$PLAYER_N", " flipped ", "$ACTIVE_FACE.name", " faceup."]
+        ]
+      ]
+    ]
+  }
 }

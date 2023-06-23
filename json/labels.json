@@ -233,6 +233,9 @@
     },
     "myDeck": {
       "English": "My Deck"
+    },
+    "flip": {
+      "English": "Flip Card"
     }
   }
 }
