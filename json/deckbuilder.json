@@ -14,11 +14,11 @@
       {"propName": "type", "label": "id:type"}
     ],
     "spawnGroups": [
-      {"id": "playerNDeck", "label": "id:myDeck"},
-      {"id": "player1Deck", "label": "id:player1Deck"},
-      {"id": "player2Deck", "label": "id:player2Deck"},
-      {"id": "player3Deck", "label": "id:player3Deck"},
-      {"id": "player4Deck", "label": "id:player4Deck"}
+      {"loadGroupId": "playerNDeck", "label": "id:myDeck"},
+      {"loadGroupId": "player1Deck", "label": "id:player1Deck"},
+      {"loadGroupId": "player2Deck", "label": "id:player2Deck"},
+      {"loadGroupId": "player3Deck", "label": "id:player3Deck"},
+      {"loadGroupId": "player4Deck", "label": "id:player4Deck"}
     ]
   }
 }
