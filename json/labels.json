@@ -119,6 +119,18 @@
     },
     "toughToken": {
       "English": "tough"
+    },
+    "round": {
+      "English": "round"
+    },
+    "villainHitPoints": {
+      "English": "Villain Hit Points"
+    },
+    "hitPoints": {
+      "English": "Hit Points"
+    },
+    "handSize": {
+      "English": "Hand Size"
     }
   }
 }
