@@ -6,11 +6,7 @@ use crate::{
 };
 use atoi::atoi;
 use indexmap::IndexMap;
-use std::{
-    collections::{HashMap, HashSet},
-    fs::File,
-    io::Write,
-};
+use std::{collections::HashMap, fs::File, io::Write};
 use uuid::Uuid;
 
 const TOUCHED_ID: &str = "38002";

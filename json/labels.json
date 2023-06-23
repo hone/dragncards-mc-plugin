@@ -66,6 +66,96 @@
     "player1Event": {
       "English": "Player 1 Current Event"
     },
+    "player2Hand": {
+      "English": "Player 1 Hand"
+    },
+    "player2Deck": {
+      "English": "Player 1 Deck"
+    },
+    "player2Discard": {
+      "English": "Player 1 Discard"
+    },
+    "player2Identity": {
+      "English": "Player 1 Identity"
+    },
+    "player2Play1": {
+      "English": "Player 1 Play Area 1"
+    },
+    "player2Play2": {
+      "English": "Player 1 Play Area 2"
+    },
+    "player2Play3": {
+      "English": "Player 1 Play Area 3"
+    },
+    "player2Play4": {
+      "English": "Player 1 Play Area 4"
+    },
+    "player2Engaged": {
+      "English": "Player 1 Engaged Area"
+    },
+    "player2Event": {
+      "English": "Player 1 Current Event"
+    },
+    "player3Hand": {
+      "English": "Player 1 Hand"
+    },
+    "player3Deck": {
+      "English": "Player 1 Deck"
+    },
+    "player3Discard": {
+      "English": "Player 1 Discard"
+    },
+    "player3Identity": {
+      "English": "Player 1 Identity"
+    },
+    "player3Play1": {
+      "English": "Player 1 Play Area 1"
+    },
+    "player3Play2": {
+      "English": "Player 1 Play Area 2"
+    },
+    "player3Play3": {
+      "English": "Player 1 Play Area 3"
+    },
+    "player3Play4": {
+      "English": "Player 1 Play Area 4"
+    },
+    "player3Engaged": {
+      "English": "Player 1 Engaged Area"
+    },
+    "player3Event": {
+      "English": "Player 1 Current Event"
+    },
+    "player4Hand": {
+      "English": "Player 1 Hand"
+    },
+    "player4Deck": {
+      "English": "Player 1 Deck"
+    },
+    "player4Discard": {
+      "English": "Player 1 Discard"
+    },
+    "player4Identity": {
+      "English": "Player 1 Identity"
+    },
+    "player4Play1": {
+      "English": "Player 1 Play Area 1"
+    },
+    "player4Play2": {
+      "English": "Player 1 Play Area 2"
+    },
+    "player4Play3": {
+      "English": "Player 1 Play Area 3"
+    },
+    "player4Play4": {
+      "English": "Player 1 Play Area 4"
+    },
+    "player4Engaged": {
+      "English": "Player 1 Engaged Area"
+    },
+    "player4Event": {
+      "English": "Player 1 Current Event"
+    },
     "step-0.0": {
       "English": "Beginning of Round"
     },
@@ -131,6 +221,18 @@
     },
     "handSize": {
       "English": "Hand Size"
+    },
+    "name": {
+      "English": "name"
+    },
+    "classification": {
+      "English": "classification"
+    },
+    "type": {
+      "English": "type"
+    },
+    "myDeck": {
+      "English": "My Deck"
     }
   }
 }

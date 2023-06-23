@@ -13,6 +13,7 @@ pub struct Card {
     pub classification: Classification,
     pub image_url: String,
     pub card_back: CardBack,
+    pub traits: Option<String>,
 }
 
 impl From<CerebroCard> for Card {
@@ -30,6 +31,7 @@ impl From<CerebroCard> for Card {
             classification: card.classification,
             image_url,
             card_back,
+            traits: card.traits.map(|traits| traits.join(",")),
         }
     }
 }

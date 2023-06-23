@@ -53,6 +53,7 @@ pub struct Card {
     pub r#type: CardType,
     pub printings: Vec<Printing>,
     pub stage: Option<String>,
+    pub traits: Option<Vec<String>>,
 }
 
 #[derive(Clone, Deserialize, PartialEq, Serialize)]
