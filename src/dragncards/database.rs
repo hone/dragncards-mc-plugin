@@ -14,6 +14,7 @@ pub struct Card {
     pub image_url: String,
     pub card_back: CardBack,
     pub traits: Option<String>,
+    pub hand_size: Option<u32>,
 }
 
 impl From<CerebroCard> for Card {
@@ -32,6 +33,7 @@ impl From<CerebroCard> for Card {
             image_url,
             card_back,
             traits: card.traits.map(|traits| traits.join(",")),
+            hand_size: card.hand.map(|hand_size| hand_size.parse::<u32>().unwrap()),
         }
     }
 }
