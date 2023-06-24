@@ -65,13 +65,12 @@ fn image_url(card: &CerebroCard) -> String {
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
-    // deal with identity and double sided cards
-    if card.id.parse::<u32>().is_err() {
-        return CardBack::DoubleSided;
+    // deal with 3 sided card
+    if card.id.ends_with("C") {
+        return CardBack::Player;
     }
 
     match card.r#type {
-        // this SHOULD be covered by the above
         CardType::Hero | CardType::AlterEgo => CardBack::DoubleSided,
         CardType::Ally
         | CardType::Event
