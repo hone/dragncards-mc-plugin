@@ -234,6 +234,9 @@
     "myDeck": {
       "English": "My Deck"
     },
+    "exhaustReady": {
+      "English": "Exhaust / Ready"
+    },
     "flip": {
       "English": "Flip Card"
     }
