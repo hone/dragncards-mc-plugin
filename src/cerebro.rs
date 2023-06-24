@@ -55,6 +55,7 @@ pub struct Card {
     pub stage: Option<String>,
     pub traits: Option<Vec<String>>,
     pub hand: Option<String>,
+    pub health: Option<String>,
 }
 
 #[derive(Clone, Deserialize, PartialEq, Serialize)]
