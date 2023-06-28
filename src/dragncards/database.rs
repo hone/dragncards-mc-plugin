@@ -50,7 +50,14 @@ pub enum CardBack {
 }
 
 pub fn uuid(code: &str) -> Uuid {
-    Uuid::new_v5(&Uuid::NAMESPACE_OID, code.as_bytes())
+    let id = if code.ends_with("B") {
+        let mut chars = code.chars();
+        chars.next_back();
+        format!("{}A", chars.as_str())
+    } else {
+        String::from(code)
+    };
+    Uuid::new_v5(&Uuid::NAMESPACE_OID, id.as_bytes())
 }
 
 fn image_url(card: &CerebroCard) -> String {
