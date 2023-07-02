@@ -198,9 +198,9 @@
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
-        "inPlay": true,
         "currentSide": "B",
-        "controller": "player1"
+        "controller": "player1",
+        "inPlay": true
       }
     },
     "player1Play1": {

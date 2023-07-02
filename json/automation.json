@@ -1,6 +1,17 @@
 {
     "automation": {
-        "rules": [
+        "postLoadActionList": [
+            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
+                ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
+                ["COND", 
+                    ["EQUAL", "$CARD.sides.A.type", "Alter-Ego"],
+                    ["SET", "/cardById/$CARD_ID/currentSide", "A"],
+                    ["EQUAL", "$CARD.sides.B.type", "Alter-Ego"],
+                    ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+                ]
+            ]]
+        ],
+        "gameRules": [
             { 
                 "_comment": "When a card enters play, if it has a hand size, set the player's hand size to that value.",
                 "type": "trigger", 
@@ -11,16 +22,10 @@
                     ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
                     ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
                 ]
-            },
-            { 
-                "_comment": "Default side up in the identity group is side B. So when a card enters play, if it's a hero, flip it to side A.",
-                "type": "trigger", 
-                "listenTo": [["cardById", "*", "inPlay"]],
-                "condition": ["AND", "$TARGET.inPlay", ["PREV", ["NOT", "$TARGET.inPlay"]], ["EQUAL", "$TARGET.currentFace.type", "Hero"]],
-                "then": [
-                    ["SET", "/cardById/$TARGET_ID/currentSide", "A"]
-                ]
             }
-        ]
+        ],
+        "cards": {
+            
+        }
     }
 }
