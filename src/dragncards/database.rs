@@ -14,6 +14,8 @@ pub struct Card {
     pub image_url: String,
     pub card_back: CardBack,
     pub traits: Option<String>,
+    pub hand_size: Option<u32>,
+    pub hit_points: Option<String>,
 }
 
 impl From<CerebroCard> for Card {
@@ -32,6 +34,8 @@ impl From<CerebroCard> for Card {
             image_url,
             card_back,
             traits: card.traits.map(|traits| traits.join(",")),
+            hand_size: card.hand.map(|hand_size| hand_size.parse::<u32>().unwrap()),
+            hit_points: card.health,
         }
     }
 }
@@ -46,7 +50,14 @@ pub enum CardBack {
 }
 
 pub fn uuid(code: &str) -> Uuid {
-    Uuid::new_v5(&Uuid::NAMESPACE_OID, code.as_bytes())
+    let id = if code.ends_with("B") {
+        let mut chars = code.chars();
+        chars.next_back();
+        format!("{}A", chars.as_str())
+    } else {
+        String::from(code)
+    };
+    Uuid::new_v5(&Uuid::NAMESPACE_OID, id.as_bytes())
 }
 
 fn image_url(card: &CerebroCard) -> String {
@@ -63,13 +74,12 @@ fn image_url(card: &CerebroCard) -> String {
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
-    // deal with identity and double sided cards
-    if card.id.parse::<u32>().is_err() {
-        return CardBack::DoubleSided;
+    // deal with 3 sided card
+    if card.id.ends_with("C") {
+        return CardBack::Player;
     }
 
     match card.r#type {
-        // this SHOULD be covered by the above
         CardType::Hero | CardType::AlterEgo => CardBack::DoubleSided,
         CardType::Ally
         | CardType::Event

@@ -1,5 +1,21 @@
 {
   "actionLists": {
+    "toggleExhaust": [
+      ["COND",
+        ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 90], "$ACTIVE_CARD.inPlay"],
+        [
+          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", false],
+          ["LOG", "$PLAYER_N", " readied ", "$ACTIVE_FACE.name", "."]
+        ],
+        ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 0], "$ACTIVE_CARD.inPlay"],
+        [
+          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 90],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", true],
+          ["LOG", "$PLAYER_N", " exhausted ", "$ACTIVE_FACE.name", "."]
+        ]
+      ]
+    ],
     "flipCard": [
       ["COND",
         ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],

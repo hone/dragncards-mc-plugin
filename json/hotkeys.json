@@ -11,6 +11,7 @@
     ],
     "game": [],
     "card": [
+      {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"}
     ]
   }
