@@ -1,0 +1,5 @@
+{
+    "faceProperties": {
+        "handSize" : {"type": "integer", "default": null}
+    }
+}

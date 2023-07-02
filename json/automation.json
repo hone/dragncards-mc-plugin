@@ -1,0 +1,26 @@
+{
+    "automation": {
+        "rules": [
+            { 
+                "_comment": "When a card enters play, if it has a hand size, set the player's hand size to that value.",
+                "type": "trigger", 
+                "listenTo": [["cardById", "*", "inPlay"], ["cardById", "*", "currentSide"]],
+                "condition": ["AND", "$TARGET.inPlay", ["NOT_EQUAL", "$TARGET.currentFace.handSize", null]],
+                "then": [
+                    ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
+                    ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
+                    ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
+                ]
+            },
+            { 
+                "_comment": "Default side up in the identity group is side B. So when a card enters play, if it's a hero, flip it to side A.",
+                "type": "trigger", 
+                "listenTo": [["cardById", "*", "inPlay"]],
+                "condition": ["AND", "$TARGET.inPlay", ["PREV", ["NOT", "$TARGET.inPlay"]], ["EQUAL", "$TARGET.currentFace.type", "Hero"]],
+                "then": [
+                    ["SET", "/cardById/$TARGET_ID/currentSide", "A"]
+                ]
+            }
+        ]
+    }
+}
