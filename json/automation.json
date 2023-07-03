@@ -30,7 +30,7 @@
             { 
                 "_comment": "When a card enters play or flips, if it has a hand size, set the player's hand size to that value.",
                 "type": "trigger", 
-                "listenTo": [["cardById", "*", "inPlay"], ["cardById", "*", "currentSide"]],
+                "listenTo": ["/cardById/*/inPlay", "/cardById/*/currentSide"],
                 "condition": ["AND", "$TARGET.inPlay", ["NOT_EQUAL", "$TARGET.currentFace.handSize", null]],
                 "then": [
                     ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
