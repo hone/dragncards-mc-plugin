@@ -24,6 +24,9 @@
     "encounter3Discard": {
       "English": "Third Encounter Discard"
     },
+    "campaignDeck": {
+      "English": "Campaign Deck"
+    },
     "victory": {
       "English": "Victory Display"
     },
@@ -66,95 +69,107 @@
     "player1Event": {
       "English": "Player 1 Current Event"
     },
+    "player1NemesisSet": {
+      "English": "Player 1 Nemesis Set"
+    },
     "player2Hand": {
-      "English": "Player 1 Hand"
+      "English": "Player 2 Hand"
     },
     "player2Deck": {
-      "English": "Player 1 Deck"
+      "English": "Player 2 Deck"
     },
     "player2Discard": {
-      "English": "Player 1 Discard"
+      "English": "Player 2 Discard"
     },
     "player2Identity": {
-      "English": "Player 1 Identity"
+      "English": "Player 2 Identity"
     },
     "player2Play1": {
-      "English": "Player 1 Play Area 1"
+      "English": "Player 2 Play Area 1"
     },
     "player2Play2": {
-      "English": "Player 1 Play Area 2"
+      "English": "Player 2 Play Area 2"
     },
     "player2Play3": {
-      "English": "Player 1 Play Area 3"
+      "English": "Player 2 Play Area 3"
     },
     "player2Play4": {
-      "English": "Player 1 Play Area 4"
+      "English": "Player 2 Play Area 4"
     },
     "player2Engaged": {
-      "English": "Player 1 Engaged Area"
+      "English": "Player 2 Engaged Area"
     },
     "player2Event": {
-      "English": "Player 1 Current Event"
+      "English": "Player 2 Current Event"
+    },
+    "player2NemesisSet": {
+      "English": "Player 2 Nemesis Set"
     },
     "player3Hand": {
-      "English": "Player 1 Hand"
+      "English": "Player 3 Hand"
     },
     "player3Deck": {
-      "English": "Player 1 Deck"
+      "English": "Player 3 Deck"
     },
     "player3Discard": {
-      "English": "Player 1 Discard"
+      "English": "Player 3 Discard"
     },
     "player3Identity": {
-      "English": "Player 1 Identity"
+      "English": "Player 3 Identity"
     },
     "player3Play1": {
-      "English": "Player 1 Play Area 1"
+      "English": "Player 3 Play Area 1"
     },
     "player3Play2": {
-      "English": "Player 1 Play Area 2"
+      "English": "Player 3 Play Area 2"
     },
     "player3Play3": {
-      "English": "Player 1 Play Area 3"
+      "English": "Player 3 Play Area 3"
     },
     "player3Play4": {
-      "English": "Player 1 Play Area 4"
+      "English": "Player 3 Play Area 4"
     },
     "player3Engaged": {
-      "English": "Player 1 Engaged Area"
+      "English": "Player 3 Engaged Area"
     },
     "player3Event": {
-      "English": "Player 1 Current Event"
+      "English": "Player 3 Current Event"
+    },
+    "player3NemesisSet": {
+      "English": "Player 3 Nemesis Set"
     },
     "player4Hand": {
-      "English": "Player 1 Hand"
+      "English": "Player 4 Hand"
     },
     "player4Deck": {
-      "English": "Player 1 Deck"
+      "English": "Player 4 Deck"
     },
     "player4Discard": {
-      "English": "Player 1 Discard"
+      "English": "Player 4 Discard"
     },
     "player4Identity": {
-      "English": "Player 1 Identity"
+      "English": "Player 4 Identity"
     },
     "player4Play1": {
-      "English": "Player 1 Play Area 1"
+      "English": "Player 4 Play Area 1"
     },
     "player4Play2": {
-      "English": "Player 1 Play Area 2"
+      "English": "Player 4 Play Area 2"
     },
     "player4Play3": {
-      "English": "Player 1 Play Area 3"
+      "English": "Player 4 Play Area 3"
     },
     "player4Play4": {
-      "English": "Player 1 Play Area 4"
+      "English": "Player 4 Play Area 4"
     },
     "player4Engaged": {
-      "English": "Player 1 Engaged Area"
+      "English": "Player 4 Engaged Area"
     },
     "player4Event": {
-      "English": "Player 1 Current Event"
+      "English": "Player 4 Current Event"
+    },
+    "player4NemesisSet": {
+      "English": "Player 4 Nemesis Set"
     },
     "step-0.0": {
       "English": "Beginning of Round"
@@ -183,11 +198,29 @@
     "step-2.5": {
       "English": "Pass the first player token and end the round."
     },
-    "beginning": {
+    "standard1Player": {
+      "English": "1 Player"
+    },
+    "standard2Player": {
+      "English": "2 Players"
+    },
+    "standard3Player": {
+      "English": "3 Players"
+    },
+    "standard4Player": {
+      "English": "4 Players"
+    },
+    "beginningPhase": {
       "English": "Beginning"
     },
-    "end": {
+    "endPhase": {
       "English": "End"
+    },
+    "playerPhase": {
+      "English": "Player"
+    },
+    "villainPhase": {
+      "English": "Villain"
     },
     "damageToken": {
       "English": "damage"
@@ -240,56 +273,11 @@
     "flip": {
       "English": "Flip Card"
     },
-    "campaignDeck": {
-      "English": "Campaign Deck"
+    "discard": {
+      "English": "Discard"
     },
-    "player1NemesisSet": {
-      "English": "Player 1 Nemesis Set"
-    },
-    "player2NemesisSet": {
-      "English": "Player 2 Nemesis Set"
-    },
-    "player3NemesisSet": {
-      "English": "Player 3 Nemesis Set"
-    },
-    "player4NemesisSet": {
-      "English": "Player 4 Nemesis Set"
-    },
-    "standard1Player": {
-      "English": "Standard 1 Player"
-    },
-    "standard2Player": {
-      "English": "Standard 2 Player"
-    },
-    "standard3Player": {
-      "English": "Standard 3 Player"
-    },
-    "standard4Player": {
-      "English": "Standard 4 Player"
-    },
-    "damage": {
-      "English": "Damage"
-    },
-    "threat": {
-      "English": "Threat"
-    },
-    "generic": {
-      "English": "Generic"
-    },
-    "acceleration": {
-      "English": "Acceleration"
-    },
-    "confused": {
-      "English": "Confused"
-    },
-    "stunned": {
-      "English": "Stunned"
-    },
-    "tough": {
-      "English": "Tough"
-    },
-    "player": {
-      "English": "Player"
+    "zeroTokens": {
+      "English": "Remove all Tokens"
     }
 
   }

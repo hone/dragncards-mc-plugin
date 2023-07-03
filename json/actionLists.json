@@ -31,86 +31,86 @@
       ]
     ],
     "shuffleIntoDeck": [
-        ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
-        ["DEFINE", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
-        ["SHUFFLE_GROUP", "$GROUP_ID"],
-        ["LOG", "$PLAYER_N", " shuffled ", "$ACTIVE_FACE.name", " into ", "$GAME.groupById.$GROUP_ID.name", "."]
+      ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
+      ["DEFINE", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
+      ["SHUFFLE_GROUP", "$GROUP_ID"],
+      ["LOG", "$PLAYER_N", " shuffled ", "$ACTIVE_FACE.name", " into ", "$GAME.groupById.$GROUP_ID.name", "."]
     ],
     "zeroTokens": [
-        ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
-        ["LOG", "$PLAYER_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
+      ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
+      ["LOG", "$PLAYER_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
     ],
 
     "revealEncounterFaceup": [
       ["DEFINE", "$REVEAL_FACEDOWN", false],
       ["ACTION_LIST", "revealEncounter"]
-  ],
-  "revealEncounterFacedown": [
+    ],
+    "revealEncounterFacedown": [
       ["DEFINE", "$REVEAL_FACEDOWN", true],
       ["ACTION_LIST", "revealEncounter"]
-  ],
-  "revealSecondaryFaceup": [
+    ],
+    "revealSecondaryFaceup": [
       ["DEFINE", "$REVEAL_FACEDOWN", false],
       ["ACTION_LIST", "revealSecondary"]
-  ],
-  "revealSecondaryFacedown": [
+    ],
+    "revealSecondaryFacedown": [
       ["DEFINE", "$REVEAL_FACEDOWN", true],
       ["ACTION_LIST", "revealSecondary"]
-  ],
-  "revealEncounter": [
+    ],
+    "revealEncounter": [
       ["COND",
-          ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
-          [      
-            ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
-            ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
-          ]
+        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
+        [
+          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
+          ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
+        ]
       ],
       ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
       ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
       ["COND",
-          "$REVEAL_FACEDOWN",
-          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds", 
-              ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-          ]
+        "$REVEAL_FACEDOWN",
+        ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
+          ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+        ]
       ],
       ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
-  ],
-  "revealSecondary": [
+    ],
+    "revealSecondary": [
       ["COND",
-          ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck2.stackIds"], 0],
-          ["LOG", "$PLAYER_N", " tried to reveal a card from the second encounter deck, but it's empty."],
-          true,
-          [
-              ["DEFINE", "$STACK_ID", ["AT_INDEX", "$GAME.groupById.sharedEncounter1Deck.stackIds", 0]],
-              ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
-              ["COND",
-                  "$REVEAL_FACEDOWN",
-                  ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds", 
-                      ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-                  ]
-              ],
-              ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
-          ]
+        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck2.stackIds"], 0],
+        ["LOG", "$PLAYER_N", " tried to reveal a card from the second encounter deck, but it's empty."],
+        true,
+        [
+          ["DEFINE", "$STACK_ID", ["AT_INDEX", "$GAME.groupById.sharedEncounter1Deck.stackIds", 0]],
+          ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
+          ["COND",
+            "$REVEAL_FACEDOWN",
+            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
+              ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+            ]
+          ],
+          ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+        ]
       ]
     ],
     "dealShadow": [
+      ["COND",
+        "$ACTIVE_CARD.inPlay",
         ["COND",
-            "$ACTIVE_CARD.inPlay",
-            ["COND",
-                ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
-                [      
-                  ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
-                  ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
-                ]
-            ]
-        ],
-        [
-            ["DEFINE", "$BOOST_CARD_ID", ["GET_CARD_ID", "sharedEncounterDeck", 0, 0]],
-            ["ATTACH_CARD", "$BOOST_CARD_ID", "$ACTIVE_CARD_ID"],
-            ["SET", "/cardById/$BOOST_CARD_ID/rotation", -30],
-            ["SET", "/cardById/$BOOST_CARD_ID/currentSide", "B"],
-            ["LOG", "$PLAYER_N", " dealt a boost card to ", "$ACTIVE_FACE.name", "."]
+          ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
+          [
+            ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
+            ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
+          ]
         ]
+      ],
+      [
+        ["DEFINE", "$BOOST_CARD_ID", ["GET_CARD_ID", "sharedEncounterDeck", 0, 0]],
+        ["ATTACH_CARD", "$BOOST_CARD_ID", "$ACTIVE_CARD_ID"],
+        ["SET", "/cardById/$BOOST_CARD_ID/rotation", -30],
+        ["SET", "/cardById/$BOOST_CARD_ID/currentSide", "B"],
+        ["LOG", "$PLAYER_N", " dealt a boost card to ", "$ACTIVE_FACE.name", "."]
+      ]
     ]
   }
 }
