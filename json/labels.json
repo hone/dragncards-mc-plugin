@@ -278,6 +278,36 @@
     },
     "zeroTokens": {
       "English": "Remove all Tokens"
+    },
+    "dealBoostCard": {
+      "English": "Deal Boost Card"
+    },
+    "removeAllTokens": {
+      "English": "Remove All Tokens"
+    },
+    "shuffleIntoDeck": {
+      "English": "Shuffle Into Deck"
+    },
+    "drawCard": {
+      "English": "Draw Card"
+    },
+    "readyAll": {
+      "English": "Ready All"
+    },
+    "mulligan": {
+      "English": "Mulligan"
+    },
+    "revealSecondaryFacedown": {
+      "English": "Reveal Secondary Facedown"
+    },
+    "revealSecondaryFaceup": {
+      "English": "Reveal Secondary Faceup"
+    },
+    "revealEncounterFacedown": {
+      "English": "Reveal Encounter Facedown"
+    },
+    "revealEncounterFaceup": {
+      "English": "Reveal Encounter Faceup"
     }
 
   }
