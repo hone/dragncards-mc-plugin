@@ -158,24 +158,13 @@ pub async fn execute(args: DecksArgs) {
         }
     }
 
-    let mut hero_packs: HashSet<&Uuid> = HashSet::new();
-    let mut packs_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
+    let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
 
     for card in cards.iter() {
-        let hero = card.r#type == CardType::Hero;
         for printing in card.printings.iter() {
-            println!("{}", &printing.pack_id);
-            if hero
-                && pack_map
-                    .get(&printing.pack_id)
-                    .map(|pack| pack.r#type == PackType::HeroPack)
-                    // if incomplete pack
-                    .unwrap_or(false)
-            {
-                hero_packs.insert(&printing.pack_id);
-            }
-
-            let entry = packs_map.entry(&printing.pack_id).or_insert(Vec::new());
+            let entry = packs_card_map
+                .entry(&printing.pack_id)
+                .or_insert(Vec::new());
 
             entry.push((card, printing));
         }
@@ -185,7 +174,7 @@ pub async fn execute(args: DecksArgs) {
         .iter()
         .filter(|pack| !pack.incomplete && pack.r#type == PackType::HeroPack)
     {
-        let value = packs_map.get_mut(&pack.id).unwrap();
+        let value = packs_card_map.get_mut(&pack.id).unwrap();
         value.sort_by(|(_, printing_a), (_, printing_b)| {
             atoi::<usize>(printing_a.pack_number.0.as_bytes())
                 .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
@@ -195,50 +184,13 @@ pub async fn execute(args: DecksArgs) {
             .iter()
             .take_while(|(card, _)| card.r#type != CardType::Obligation)
             .collect();
-        let nemesis_card = value
+        let obligation_card = value
             .iter()
             .find(|(card, _)| card.r#type == CardType::Obligation)
             .unwrap();
-        player_cards.push(nemesis_card);
+        player_cards.push(obligation_card);
 
-        let mut deck = player_cards
-            .into_iter()
-            .filter_map(|(card, printing)| {
-                // Double Sided cards shouldn't be loaded twice
-                if card.id.ends_with("B") {
-                    return None;
-                }
-                let mut load_group_id = match card.r#type {
-                    CardType::Obligation => "sharedEncounterDeck",
-                    CardType::Minion | CardType::SideScheme | CardType::Treachery => {
-                        "playerNNemesisSet"
-                    }
-                    // Hero/AlterEgo are consistently
-                    CardType::Hero | CardType::AlterEgo => "playerNIdentity",
-                    _ => "playerNDeck",
-                };
-                // Put Permanent Cards into play
-                if let Some(rules) = card.rules.as_ref() {
-                    if rules.contains("Permanent") || card.id == TOUCHED_ID {
-                        load_group_id = "playerNPlay1";
-                    }
-                }
-                let quantity = marvelcdb_cards
-                    .iter()
-                    .find(|card| {
-                        card.code == marvelcdb::card_id(&pack.number, &printing.pack_number.0)
-                    })
-                    .unwrap()
-                    .quantity;
-                Some(dragncards::decks::Card {
-                    load_group_id: load_group_id.to_string(),
-                    quantity,
-                    uuid: dragncards::database::uuid(&card.id),
-                    _name: card.name.clone(),
-                })
-            })
-            .collect::<Vec<dragncards::decks::Card>>();
-
+        let mut deck = process_hero_deck(&player_cards, &pack, &&marvelcdb_cards);
         let nemesis_set_name = &pack_set_map
             .get(&pack.id)
             .unwrap()
@@ -275,4 +227,46 @@ fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> Ordere
         pack_number: printing.pack_number.clone(),
         card,
     }
+}
+
+fn process_hero_deck(
+    cards: &Vec<&(&Card, &Printing)>,
+    pack: &Pack,
+    marvelcdb_cards: &Vec<marvelcdb::Card>,
+) -> Vec<dragncards::decks::Card> {
+    cards
+        .into_iter()
+        .filter_map(|(card, printing)| {
+            // Double Sided cards shouldn't be loaded twice
+            if card.id.ends_with("B") {
+                return None;
+            }
+            let mut load_group_id = match card.r#type {
+                CardType::Obligation => "sharedEncounterDeck",
+                CardType::Minion | CardType::SideScheme | CardType::Treachery => {
+                    "playerNNemesisSet"
+                }
+                // Hero/AlterEgo are consistently
+                CardType::Hero | CardType::AlterEgo => "playerNIdentity",
+                _ => "playerNDeck",
+            };
+            // Put Permanent Cards into play
+            if let Some(rules) = card.rules.as_ref() {
+                if rules.contains("Permanent") || card.id == TOUCHED_ID {
+                    load_group_id = "playerNPlay1";
+                }
+            }
+            let quantity = marvelcdb_cards
+                .iter()
+                .find(|card| card.code == marvelcdb::card_id(&pack.number, &printing.pack_number.0))
+                .unwrap()
+                .quantity;
+            Some(dragncards::decks::Card {
+                load_group_id: load_group_id.to_string(),
+                quantity,
+                uuid: dragncards::database::uuid(&card.id),
+                _name: card.name.clone(),
+            })
+        })
+        .collect()
 }
