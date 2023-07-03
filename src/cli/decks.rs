@@ -147,7 +147,7 @@ pub async fn execute(args: DecksArgs) {
             (
                 set.name.clone(),
                 dragncards::decks::PreBuiltDeck {
-                    name: set.name.clone(),
+                    label: set.name.clone(),
                     cards: deck,
                 },
             )
@@ -252,7 +252,7 @@ pub async fn execute(args: DecksArgs) {
         pre_built_decks.insert(
             pack.name.clone(),
             dragncards::decks::PreBuiltDeck {
-                name: pack.name.clone(),
+                label: pack.name.clone(),
                 cards: deck,
             },
         );
