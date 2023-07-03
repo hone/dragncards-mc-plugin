@@ -37,7 +37,7 @@
       }
     },
     "sharedMainSchemeDiscard": {
-      "label": "id:mainSchemeDicard",
+      "label": "id:mainSchemeDiscard",
       "tableLabel": "id:mainSchemeDiscard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
