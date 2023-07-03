@@ -10,7 +10,7 @@ pub struct Doc {
 
 #[derive(Serialize)]
 pub struct PreBuiltDeck {
-    pub name: String,
+    pub label: String,
     pub cards: Vec<Card>,
 }
 
@@ -20,5 +20,6 @@ pub struct Card {
     pub load_group_id: String,
     pub quantity: u32,
     pub uuid: Uuid,
+    #[serde(rename = "_name")]
     pub _name: String,
 }

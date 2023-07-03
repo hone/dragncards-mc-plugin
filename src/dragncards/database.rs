@@ -80,7 +80,7 @@ fn card_back(card: &CerebroCard) -> CardBack {
     }
 
     match card.r#type {
-        CardType::Hero | CardType::AlterEgo => CardBack::DoubleSided,
+        CardType::Hero | CardType::AlterEgo | CardType::MainScheme => CardBack::DoubleSided,
         CardType::Ally
         | CardType::Event
         | CardType::PlayerSideScheme
