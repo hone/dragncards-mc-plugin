@@ -239,6 +239,58 @@
     },
     "flip": {
       "English": "Flip Card"
+    },
+    "campaignDeck": {
+      "English": "Campaign Deck"
+    },
+    "player1NemesisSet": {
+      "English": "Player 1 Nemesis Set"
+    },
+    "player2NemesisSet": {
+      "English": "Player 2 Nemesis Set"
+    },
+    "player3NemesisSet": {
+      "English": "Player 3 Nemesis Set"
+    },
+    "player4NemesisSet": {
+      "English": "Player 4 Nemesis Set"
+    },
+    "standard1Player": {
+      "English": "Standard 1 Player"
+    },
+    "standard2Player": {
+      "English": "Standard 2 Player"
+    },
+    "standard3Player": {
+      "English": "Standard 3 Player"
+    },
+    "standard4Player": {
+      "English": "Standard 4 Player"
+    },
+    "damage": {
+      "English": "Damage"
+    },
+    "threat": {
+      "English": "Threat"
+    },
+    "generic": {
+      "English": "Generic"
+    },
+    "acceleration": {
+      "English": "Acceleration"
+    },
+    "confused": {
+      "English": "Confused"
+    },
+    "stunned": {
+      "English": "Stunned"
+    },
+    "tough": {
+      "English": "Tough"
+    },
+    "player": {
+      "English": "Player"
     }
+
   }
 }
