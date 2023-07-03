@@ -1,8 +1,8 @@
 {
   "groups": {
     "sharedEncounterDeck": {
-      "label": "encounterDeck",
-      "tableLabel": "encounterDeck",
+      "label": "id:encounterDeck",
+      "tableLabel": "id:encounterDeck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
@@ -13,8 +13,8 @@
       }
     },
     "sharedEncounterDiscard": {
-      "label": "encounterDiscard",
-      "tableLabel": "encounterDiscard",
+      "label": "id:encounterDiscard",
+      "tableLabel": "id:encounterDiscard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -25,8 +25,8 @@
       }
     },
     "sharedMainSchemeDeck": {
-      "label": "mainSchemeDeck",
-      "tableLabel": "mainSchemeDeck",
+      "label": "id:mainSchemeDeck",
+      "tableLabel": "id:mainSchemeDeck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
@@ -37,8 +37,8 @@
       }
     },
     "sharedMainSchemeDiscard": {
-      "label": "mainSchemeDicard",
-      "tableLabel": "mainSchemeDiscard",
+      "label": "id:mainSchemeDicard",
+      "tableLabel": "id:mainSchemeDiscard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -49,8 +49,8 @@
       }
     },
     "sharedEncounter2Deck": {
-      "label": "encounter2Deck",
-      "tableLabel": "encounter2Deck",
+      "label": "id:encounter2Deck",
+      "tableLabel": "id:encounter2Deck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
@@ -61,8 +61,8 @@
       }
     },
     "sharedEncounter2Discard": {
-      "label": "encounter2Discard",
-      "tableLabel": "encounter2Discard",
+      "label": "id:encounter2Discard",
+      "tableLabel": "id:encounter2Discard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -73,8 +73,8 @@
       }
     },
     "sharedEncounter3Deck": {
-      "label": "encounter3Deck",
-      "tableLabel": "encounter3Deck",
+      "label": "id:encounter3Deck",
+      "tableLabel": "id:encounter3Deck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
@@ -85,8 +85,8 @@
       }
     },
     "sharedEncounter3Discard": {
-      "label": "encounter3Discard",
-      "tableLabel": "encounter3Discard",
+      "label": "id:encounter3Discard",
+      "tableLabel": "id:encounter3Discard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -97,8 +97,8 @@
       }
     },
     "sharedCampaignDeck": {
-      "label": "campaignDeck",
-      "tableLabel": "campaignDeck",
+      "label": "id:campaignDeck",
+      "tableLabel": "id:campaignDeck",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -109,8 +109,8 @@
       }
     },
     "sharedVictory": {
-      "label": "victory",
-      "tableLabel": "victory",
+      "label": "id:victory",
+      "tableLabel": "id:victory",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -121,8 +121,8 @@
       }
     },
     "sharedVillain": {
-      "label": "villain",
-      "tableLabel": "villain",
+      "label": "id:villain",
+      "tableLabel": "id:villain",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -133,8 +133,8 @@
       }
     },
     "sharedMainScheme": {
-      "label": "mainScheme",
-      "tableLabel": "mainScheme",
+      "label": "id:mainScheme",
+      "tableLabel": "id:mainScheme",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -145,8 +145,8 @@
       }
     },
     "sharedSideSchemes": {
-      "label": "sideSchemes",
-      "tableLabel": "sideSchemes",
+      "label": "id:sideSchemes",
+      "tableLabel": "id:sideSchemes",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -157,8 +157,8 @@
       }
     },
     "player1Hand": {
-      "label": "player1Hand",
-      "tableLabel": "player1Hand",
+      "label": "id:player1Hand",
+      "tableLabel": "id:player1Hand",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -169,32 +169,34 @@
       }
     },
     "player1Deck": {
-      "label": "player1Deck",
-      "tableLabel": "player1Deck",
+      "label": "id:player1Deck",
+      "tableLabel": "id:player1Deck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
         "currentSide": "B",
         "controller": "player1",
         "inPlay": false,
-        "deckGroupId": "player1Deck"
+        "deckGroupId": "player1Deck",
+        "discardGroupId": "player1Discard"
       }
     },
     "player1Discard": {
-      "label": "player1Discard",
-      "tableLabel": "player1Discard",
+      "label": "id:player1Discard",
+      "tableLabel": "id:player1Discard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
         "inPlay": false,
-        "deckGroupId": "player1Discard"
+        "deckGroupId": "player1Deck",
+        "discardGroupId": "player1Discard"
       }
     },
     "player1Identity": {
-      "label": "player1Identity",
-      "tableLabel": "player1Identity",
+      "label": "id:player1Identity",
+      "tableLabel": "id:player1Identity",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -204,8 +206,8 @@
       }
     },
     "player1Play1": {
-      "label": "player1Play1",
-      "tableLabel": "player1Play1",
+      "label": "id:player1Play1",
+      "tableLabel": "id:player1Play1",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -216,8 +218,8 @@
       }
     },
     "player1Play2": {
-      "label": "player1Play2",
-      "tableLabel": "player1Play2",
+      "label": "id:player1Play2",
+      "tableLabel": "id:player1Play2",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -228,8 +230,8 @@
       }
     },
     "player1Play3": {
-      "label": "player1Play3",
-      "tableLabel": "player1Play3",
+      "label": "id:player1Play3",
+      "tableLabel": "id:player1Play3",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -240,8 +242,8 @@
       }
     },
     "player1Play4": {
-      "label": "player1Play4",
-      "tableLabel": "player1Play4",
+      "label": "id:player1Play4",
+      "tableLabel": "id:player1Play4",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -252,8 +254,8 @@
       }
     },
     "player1Engaged": {
-      "label": "player1Engaged",
-      "tableLabel": "player1Engaged",
+      "label": "id:player1Engaged",
+      "tableLabel": "id:player1Engaged",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -264,8 +266,8 @@
       }
     },
     "player1Event": {
-      "label": "player1Event",
-      "tableLabel": "player1Event",
+      "label": "id:player1Event",
+      "tableLabel": "id:player1Event",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -276,8 +278,8 @@
       }
     },
     "player1NemesisSet": {
-      "label": "player1NemesisSet",
-      "tableLabel": "player1NemesisSet",
+      "label": "id:player1NemesisSet",
+      "tableLabel": "id:player1NemesisSet",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -288,8 +290,8 @@
       }
     },
     "player2Hand": {
-      "label": "player2Hand",
-      "tableLabel": "player2Hand",
+      "label": "id:player2Hand",
+      "tableLabel": "id:player2Hand",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -300,32 +302,34 @@
       }
     },
     "player2Deck": {
-      "label": "player2Deck",
-      "tableLabel": "player2Deck",
+      "label": "id:player2Deck",
+      "tableLabel": "id:player2Deck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
         "currentSide": "B",
         "controller": "player2",
         "inPlay": false,
-        "deckGroupId": "player2Deck"
+        "deckGroupId": "player2Deck",
+        "discardGroupId": "player2Discard"
       }
     },
     "player2Discard": {
-      "label": "player2Discard",
-      "tableLabel": "player2Discard",
+      "label": "id:player2Discard",
+      "tableLabel": "id:player2Discard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
         "inPlay": false,
-        "deckGroupId": "player2Discard"
+        "deckGroupId": "player2Deck",
+        "discardGroupId": "player2Discard"
       }
     },
     "player2Identity": {
-      "label": "player2Identity",
-      "tableLabel": "player2Identity",
+      "label": "id:player2Identity",
+      "tableLabel": "id:player2Identity",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -335,8 +339,8 @@
       }
     },
     "player2Play1": {
-      "label": "player2Play1",
-      "tableLabel": "player2Play1",
+      "label": "id:player2Play1",
+      "tableLabel": "id:player2Play1",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -347,8 +351,8 @@
       }
     },
     "player2Play2": {
-      "label": "player2Play2",
-      "tableLabel": "player2Play2",
+      "label": "id:player2Play2",
+      "tableLabel": "id:player2Play2",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -359,8 +363,8 @@
       }
     },
     "player2Play3": {
-      "label": "player2Play3",
-      "tableLabel": "player2Play3",
+      "label": "id:player2Play3",
+      "tableLabel": "id:player2Play3",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -371,8 +375,8 @@
       }
     },
     "player2Play4": {
-      "label": "player2Play4",
-      "tableLabel": "player2Play4",
+      "label": "id:player2Play4",
+      "tableLabel": "id:player2Play4",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -383,8 +387,8 @@
       }
     },
     "player2Engaged": {
-      "label": "player2Engaged",
-      "tableLabel": "player2Engaged",
+      "label": "id:player2Engaged",
+      "tableLabel": "id:player2Engaged",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -395,8 +399,8 @@
       }
     },
     "player2Event": {
-      "label": "player2Event",
-      "tableLabel": "player2Event",
+      "label": "id:player2Event",
+      "tableLabel": "id:player2Event",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -407,8 +411,8 @@
       }
     },
     "player2NemesisSet": {
-      "label": "player2NemesisSet",
-      "tableLabel": "player2NemesisSet",
+      "label": "id:player2NemesisSet",
+      "tableLabel": "id:player2NemesisSet",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -419,8 +423,8 @@
       }
     },
     "player3Hand": {
-      "label": "player3Hand",
-      "tableLabel": "player3Hand",
+      "label": "id:player3Hand",
+      "tableLabel": "id:player3Hand",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -431,32 +435,34 @@
       }
     },
     "player3Deck": {
-      "label": "player3Deck",
-      "tableLabel": "player3Deck",
+      "label": "id:player3Deck",
+      "tableLabel": "id:player3Deck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
         "currentSide": "B",
         "controller": "player3",
         "inPlay": false,
-        "deckGroupId": "player3Deck"
+        "deckGroupId": "player3Deck",
+        "discardGroupId": "player3Discard"
       }
     },
     "player3Discard": {
-      "label": "player3Discard",
-      "tableLabel": "player3Discard",
+      "label": "id:player3Discard",
+      "tableLabel": "id:player3Discard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
         "inPlay": false,
-        "deckGroupId": "player3Discard"
+        "deckGroupId": "player3Deck",
+        "discardGroupId": "player3Discard"
       }
     },
     "player3Identity": {
-      "label": "player3Identity",
-      "tableLabel": "player3Identity",
+      "label": "id:player3Identity",
+      "tableLabel": "id:player3Identity",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -466,8 +472,8 @@
       }
     },
     "player3Play1": {
-      "label": "player3Play1",
-      "tableLabel": "player3Play1",
+      "label": "id:player3Play1",
+      "tableLabel": "id:player3Play1",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -478,8 +484,8 @@
       }
     },
     "player3Play2": {
-      "label": "player3Play2",
-      "tableLabel": "player3Play2",
+      "label": "id:player3Play2",
+      "tableLabel": "id:player3Play2",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -490,8 +496,8 @@
       }
     },
     "player3Play3": {
-      "label": "player3Play3",
-      "tableLabel": "player3Play3",
+      "label": "id:player3Play3",
+      "tableLabel": "id:player3Play3",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -502,8 +508,8 @@
       }
     },
     "player3Play4": {
-      "label": "player3Play4",
-      "tableLabel": "player3Play4",
+      "label": "id:player3Play4",
+      "tableLabel": "id:player3Play4",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -514,8 +520,8 @@
       }
     },
     "player3Engaged": {
-      "label": "player3Engaged",
-      "tableLabel": "player3Engaged",
+      "label": "id:player3Engaged",
+      "tableLabel": "id:player3Engaged",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -526,8 +532,8 @@
       }
     },
     "player3Event": {
-      "label": "player3Event",
-      "tableLabel": "player3Event",
+      "label": "id:player3Event",
+      "tableLabel": "id:player3Event",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -538,8 +544,8 @@
       }
     },
     "player3NemesisSet": {
-      "label": "player3NemesisSet",
-      "tableLabel": "player3NemesisSet",
+      "label": "id:player3NemesisSet",
+      "tableLabel": "id:player3NemesisSet",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -550,32 +556,34 @@
       }
     },
     "player4Hand": {
-      "label": "player4Hand",
-      "tableLabel": "player4Hand",
+      "label": "id:player4Hand",
+      "tableLabel": "id:player4Hand",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
         "inPlay": false,
-        "deckGroupId": "player4Hand"
+        "deckGroupId": "player4Hand",
+        "discardGroupId": "player4Discard"
       }
     },
     "player4Deck": {
-      "label": "player4Deck",
-      "tableLabel": "player4Deck",
+      "label": "id:player4Deck",
+      "tableLabel": "id:player4Deck",
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
         "currentSide": "B",
         "controller": "player4",
         "inPlay": false,
-        "deckGroupId": "player4Deck"
+        "deckGroupId": "player4Hand",
+        "discardGroupId": "player4Discard"
       }
     },
     "player4Discard": {
-      "label": "player4Discard",
-      "tableLabel": "player4Discard",
+      "label": "id:player4Discard",
+      "tableLabel": "id:player4Discard",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -586,8 +594,8 @@
       }
     },
     "player4Identity": {
-      "label": "player4Identity",
-      "tableLabel": "player4Identity",
+      "label": "id:player4Identity",
+      "tableLabel": "id:player4Identity",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -597,8 +605,8 @@
       }
     },
     "player4Play1": {
-      "label": "player4Play1",
-      "tableLabel": "player4Play1",
+      "label": "id:player4Play1",
+      "tableLabel": "id:player4Play1",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -609,8 +617,8 @@
       }
     },
     "player4Play2": {
-      "label": "player4Play2",
-      "tableLabel": "player4Play2",
+      "label": "id:player4Play2",
+      "tableLabel": "id:player4Play2",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -621,8 +629,8 @@
       }
     },
     "player4Play3": {
-      "label": "player4Play3",
-      "tableLabel": "player4Play3",
+      "label": "id:player4Play3",
+      "tableLabel": "id:player4Play3",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -633,8 +641,8 @@
       }
     },
     "player4Play4": {
-      "label": "player4Play4",
-      "tableLabel": "player4Play4",
+      "label": "id:player4Play4",
+      "tableLabel": "id:player4Play4",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -645,8 +653,8 @@
       }
     },
     "player4Engaged": {
-      "label": "player4Engaged",
-      "tableLabel": "player4Engaged",
+      "label": "id:player4Engaged",
+      "tableLabel": "id:player4Engaged",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -657,8 +665,8 @@
       }
     },
     "player4Event": {
-      "label": "player4Event",
-      "tableLabel": "player4Event",
+      "label": "id:player4Event",
+      "tableLabel": "id:player4Event",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -669,8 +677,8 @@
       }
     },
     "player4NemesisSet": {
-      "label": "player4NemesisSet",
-      "tableLabel": "player4NemesisSet",
+      "label": "id:player4NemesisSet",
+      "tableLabel": "id:player4NemesisSet",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {
