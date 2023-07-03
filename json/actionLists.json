@@ -19,6 +19,17 @@
         ]
       ]
     ],
+    "discardCard": [
+      ["COND",
+        ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],
+        ["LOG", "$PLAYER_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
+        true,
+        [
+          ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],
+          ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0]
+        ]
+      ]
+    ],
     "flipCard": [
       ["COND",
         ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
@@ -95,7 +106,7 @@
         ]
       ]
     ],
-    "dealShadow": [
+    "dealBoostCard": [
       ["COND",
         "$ACTIVE_CARD.inPlay",
         ["COND",
@@ -115,12 +126,12 @@
       ]
     ],
     "mulligan": [
-      ["CONFIRM", "Shuffle hand into deck and draw equal number?"],
+      ["CONFIRM", "Mulligan?"],
       ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
-      ["DEFINE", "$DECK_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Deck"]],
-      ["DEFINE", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
-      ["MOVE_STACKS", "$HAND_GROUP_ID", "$DECK_GROUP_ID", "$HAND_SIZE", "shuffle"],
-      ["DRAW_CARD", "$HAND_SIZE"],
+      ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],
+      ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
+      ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
+      ["DRAW_CARD", "$DRAW_SIZE"],
       ["LOG", "$PLAYER_N", " mulliganed."]
     ],
     "readyAll": [

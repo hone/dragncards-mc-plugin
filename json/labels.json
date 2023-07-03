@@ -276,9 +276,6 @@
     "discard": {
       "English": "Discard"
     },
-    "zeroTokens": {
-      "English": "Remove all Tokens"
-    },
     "dealBoostCard": {
       "English": "Deal Boost Card"
     },
@@ -294,21 +291,23 @@
     "readyAll": {
       "English": "Ready All"
     },
-    "mulligan": {
-      "English": "Mulligan"
-    },
-    "revealSecondaryFacedown": {
-      "English": "Reveal Secondary Facedown"
-    },
-    "revealSecondaryFaceup": {
-      "English": "Reveal Secondary Faceup"
+    "removeAllTokens": {
+      "English": "Remove All Tokens"
     },
     "revealEncounterFacedown": {
-      "English": "Reveal Encounter Facedown"
+      "English": "Reveal Encounter Card"
     },
     "revealEncounterFaceup": {
-      "English": "Reveal Encounter Faceup"
+      "English": "Reveal Encounter Card Faceup"
+    },
+    "revealSecondaryFacedown": {
+      "English": "Reveal Secondary Encounter Card"
+    },
+    "revealSecondaryFaceup": {
+      "English": "Reveal Secondary Encounter Card Faceup"
+    },
+    "mulligan": {
+      "English": "Mulligan"
     }
-
   }
 }
