@@ -9,7 +9,8 @@
         "currentSide": "B",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDeck"
+        "deckGroupId": "sharedEncounterDeck",
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "sharedEncounterDiscard": {
@@ -21,7 +22,8 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDiscard"
+        "deckGroupId": "sharedEncounterDesck",
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "sharedMainSchemeDeck": {
@@ -33,7 +35,8 @@
         "currentSide": "B",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedMainSchemeDeck"
+        "deckGroupId": "sharedMainSchemeDeck",
+        "discardGroupId": "sharedMainSchemeDiscard"
       }
     },
     "sharedMainSchemeDiscard": {
@@ -45,7 +48,8 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedMainSchemeDiscard"
+        "deckGroupId": "sharedMainSchemeDeck",
+        "discardGroupId": "sharedMainSchemeDiscard"
       }
     },
     "sharedEncounter2Deck": {
@@ -57,7 +61,8 @@
         "currentSide": "B",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounter2Deck"
+        "deckGroupId": "sharedEncounter2Deck",
+        "discardGroupId": "sharedEncounter2Discard"
       }
     },
     "sharedEncounter2Discard": {
@@ -69,7 +74,8 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounter2Discard"
+        "deckGroupId": "sharedEncounter2Deck",
+        "discardGroupId": "sharedEncounter2Discard"
       }
     },
     "sharedEncounter3Deck": {
@@ -81,7 +87,8 @@
         "currentSide": "B",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounter3Deck"
+        "deckGroupId": "sharedEncounter3Deck",
+        "discardGroupId": "sharedEncounter3Discard"
       }
     },
     "sharedEncounter3Discard": {
@@ -93,7 +100,8 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounter3Discard"
+        "deckGroupId": "sharedEncounter3Deck",
+        "discardGroupId": "sharedEncounter3Discard"
       }
     },
     "sharedCampaignDeck": {
@@ -104,8 +112,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": false,
-        "deckGroupId": "sharedCampaignDeck"
+        "inPlay": false
       }
     },
     "sharedVictory": {
@@ -116,8 +123,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": false,
-        "deckGroupId": "sharedVictory"
+        "inPlay": false
       }
     },
     "sharedVillain": {
@@ -128,8 +134,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": true,
-        "deckGroupId": "sharedVillain"
+        "inPlay": true
       }
     },
     "sharedMainScheme": {
@@ -141,7 +146,8 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": true,
-        "deckGroupId": "sharedMainSchemeDeck"
+        "deckGroupId": "sharedMainSchemeDeck",
+        "discardGroupId": "sharedMainSchemeDiscard"
       }
     },
     "sharedSideSchemes": {
@@ -152,8 +158,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": true,
-        "deckGroupId": "sharedSideSchemes"
+        "inPlay": true
       }
     },
     "player1Hand": {
@@ -164,8 +169,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
-        "inPlay": false,
-        "deckGroupId": "player1Hand"
+        "inPlay": false
       }
     },
     "player1Deck": {
@@ -213,8 +217,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
-        "inPlay": true,
-        "deckGroupId": "player1Play1"
+        "inPlay": true
       }
     },
     "player1Play2": {
@@ -225,8 +228,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
-        "inPlay": true,
-        "deckGroupId": "player1Play2"
+        "inPlay": true
       }
     },
     "player1Play3": {
@@ -237,8 +239,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
-        "inPlay": true,
-        "deckGroupId": "player1Play3"
+        "inPlay": true
       }
     },
     "player1Play4": {
@@ -249,8 +250,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
-        "inPlay": true,
-        "deckGroupId": "player1Play4"
+        "inPlay": true
       }
     },
     "player1Engaged": {
@@ -261,8 +261,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": true,
-        "deckGroupId": "player1Engaged"
+        "inPlay": true
       }
     },
     "player1Event": {
@@ -273,8 +272,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player1",
-        "inPlay": true,
-        "deckGroupId": "player1Engaged"
+        "inPlay": true
       }
     },
     "player1NemesisSet": {
@@ -286,7 +284,7 @@
         "currentSide": "A",
         "controller": "player1",
         "inPlay": false,
-        "deckGroupId": "player1NemesisSet"
+        "deckGroupId": "sharedEncounterDeck"
       }
     },
     "player2Hand": {
@@ -297,8 +295,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
-        "inPlay": false,
-        "deckGroupId": "player2Hand"
+        "inPlay": false
       }
     },
     "player2Deck": {
@@ -346,8 +343,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
-        "inPlay": true,
-        "deckGroupId": "player2Play1"
+        "inPlay": true
       }
     },
     "player2Play2": {
@@ -358,8 +354,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
-        "inPlay": true,
-        "deckGroupId": "player2Play2"
+        "inPlay": true
       }
     },
     "player2Play3": {
@@ -370,8 +365,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
-        "inPlay": true,
-        "deckGroupId": "player2Play3"
+        "inPlay": true
       }
     },
     "player2Play4": {
@@ -382,8 +376,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
-        "inPlay": true,
-        "deckGroupId": "player2Play4"
+        "inPlay": true
       }
     },
     "player2Engaged": {
@@ -394,8 +387,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": true,
-        "deckGroupId": "player2Engaged"
+        "inPlay": true
       }
     },
     "player2Event": {
@@ -406,8 +398,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player2",
-        "inPlay": true,
-        "deckGroupId": "player2Engaged"
+        "inPlay": true
       }
     },
     "player2NemesisSet": {
@@ -419,7 +410,7 @@
         "currentSide": "A",
         "controller": "player2",
         "inPlay": false,
-        "deckGroupId": "player2NemesisSet"
+        "deckGroupId": "sharedEncounterDeck"
       }
     },
     "player3Hand": {
@@ -430,8 +421,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
-        "inPlay": false,
-        "deckGroupId": "player3Hand"
+        "inPlay": false
       }
     },
     "player3Deck": {
@@ -479,8 +469,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
-        "inPlay": true,
-        "deckGroupId": "player3Play1"
+        "inPlay": true
       }
     },
     "player3Play2": {
@@ -491,8 +480,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
-        "inPlay": true,
-        "deckGroupId": "player3Play2"
+        "inPlay": true
       }
     },
     "player3Play3": {
@@ -503,8 +491,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
-        "inPlay": true,
-        "deckGroupId": "player3Play3"
+        "inPlay": true
       }
     },
     "player3Play4": {
@@ -515,8 +502,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
-        "inPlay": true,
-        "deckGroupId": "player3Play4"
+        "inPlay": true
       }
     },
     "player3Engaged": {
@@ -527,8 +513,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": true,
-        "deckGroupId": "player3Engaged"
+        "inPlay": true
       }
     },
     "player3Event": {
@@ -539,8 +524,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player3",
-        "inPlay": true,
-        "deckGroupId": "player3Engaged"
+        "inPlay": true
       }
     },
     "player3NemesisSet": {
@@ -552,7 +536,7 @@
         "currentSide": "A",
         "controller": "player3",
         "inPlay": false,
-        "deckGroupId": "player3NemesisSet"
+        "deckGroupId": "sharedEncounterDeck"
       }
     },
     "player4Hand": {
@@ -563,9 +547,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
-        "inPlay": false,
-        "deckGroupId": "player4Hand",
-        "discardGroupId": "player4Discard"
+        "inPlay": false
       }
     },
     "player4Deck": {
@@ -577,7 +559,7 @@
         "currentSide": "B",
         "controller": "player4",
         "inPlay": false,
-        "deckGroupId": "player4Hand",
+        "deckGroupId": "player4Deck",
         "discardGroupId": "player4Discard"
       }
     },
@@ -590,7 +572,8 @@
         "currentSide": "A",
         "controller": "player4",
         "inPlay": false,
-        "deckGroupId": "player4Discard"
+        "deckGroupId": "player4Deck",
+        "discardGroupId": "player4Discard"
       }
     },
     "player4Identity": {
@@ -612,8 +595,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
-        "inPlay": true,
-        "deckGroupId": "player4Play1"
+        "inPlay": true
       }
     },
     "player4Play2": {
@@ -624,8 +606,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
-        "inPlay": true,
-        "deckGroupId": "player4Play2"
+        "inPlay": true
       }
     },
     "player4Play3": {
@@ -636,8 +617,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
-        "inPlay": true,
-        "deckGroupId": "player4Play3"
+        "inPlay": true
       }
     },
     "player4Play4": {
@@ -648,8 +628,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
-        "inPlay": true,
-        "deckGroupId": "player4Play4"
+        "inPlay": true
       }
     },
     "player4Engaged": {
@@ -660,8 +639,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "shared",
-        "inPlay": true,
-        "deckGroupId": "player4Engaged"
+        "inPlay": true
       }
     },
     "player4Event": {
@@ -672,8 +650,7 @@
       "onCardEnter": {
         "currentSide": "A",
         "controller": "player4",
-        "inPlay": true,
-        "deckGroupId": "player4Engaged"
+        "inPlay": true
       }
     },
     "player4NemesisSet": {
@@ -685,7 +662,7 @@
         "currentSide": "A",
         "controller": "player4",
         "inPlay": false,
-        "deckGroupId": "player4NemesisSet"
+        "deckGroupId": "sharedEncounterDeck"
       }
     }
   }
