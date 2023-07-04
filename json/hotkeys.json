@@ -18,10 +18,10 @@
       {"key": "Shift+K", "actionList": "readyAll", "label": "id:readyAll"}
     ],
     "card": [
-      {"key": "A", "actionList": "drawCard", "label": "id:drawCard"},
+      {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
-      {"key": "H", "actionList": "flipCard", "label": "id:shuffleIntoDeck"},
+      {"key": "H", "actionList": "shuffleIntoDeck", "label": "id:shuffleIntoDeck"},
       {"key": "0", "actionList": "zeroTokens", "label": "id:removeAllTokens"},
       {"key": "B", "actionList": "dealBoostCard", "label": "id:dealBoostCard"}
     ]
