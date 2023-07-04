@@ -51,6 +51,23 @@
           ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
           ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
         ]
+      },
+      {
+        "_comment": "When a player deck empties, give them an encounter deck and shuffle the deck.",
+        "type": "trigger",
+        "listenTo": ["/groupById/*/stackIds"],
+        "condition": ["AND",
+          ["EQUALS", "$TARGET_ID", ["JOIN_STRING", "$PLAYER_N", "Deck"]],
+          ["EQUALS", ["LENGTH", "$TARGET.stackIds"], 0]
+        ],
+        "then": [
+          ["DEFINE", "$DECK_GROUP_ID", ["JOIN_STRINGS", "$PLAYER_N", "Deck"]],
+          ["DEFINE", "$REVEAL_FACEDOWN", true],
+          ["ACTION_LIST", "revealEncounter"],
+          ["MOVE_STACKS", ["JOIN_STRINGS", "$PLAYER_N", "Discard"], "$DECK_GROUP_ID"],
+          ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],
+          ["LOG", "$PLAYER_N", " emptied their deck."]
+        ]
       }
     ],
     "cards": {
