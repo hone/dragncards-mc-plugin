@@ -1,46 +1,46 @@
 {
-    "automation": {
-        "postLoadActionList": [
-            ["DEFINE", "$LOADED_PLAYER_DECK", false],
-            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
-                ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
-                ["COND", 
-                    ["EQUAL", "$CARD.sides.A.type", "Alter-Ego"],
-                    [
-                        ["SET", "/cardById/$CARD_ID/currentSide", "A"],
-                        ["DEFINE", "$LOADED_PLAYER_DECK", true]
-                    ],
-                    ["EQUAL", "$CARD.sides.B.type", "Alter-Ego"],
-                    [
-                        ["SET", "/cardById/$CARD_ID/currentSide", "B"],
-                        ["DEFINE", "$LOADED_PLAYER_DECK", true]
-                    ]
-                ]
-            ]],
-            ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
-            ["COND",
-                ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0], ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0]],
-                [
-                    ["DRAW_CARD", "$GAME.playerData.$PLAYER_N.handSize"],
-                    ["LOG", "$PLAYER_N", " draws ", "$GAME.playerData.$PLAYER_N.handSize", " cards."]
-                ]
-            ]
-        ],
-        "gameRules": [
-            { 
-                "_comment": "When a card enters play or flips, if it has a hand size, set the player's hand size to that value.",
-                "type": "trigger", 
-                "listenTo": ["/cardById/*/inPlay", "/cardById/*/currentSide"],
-                "condition": ["AND", "$TARGET.inPlay", ["NOT_EQUAL", "$TARGET.currentFace.handSize", null]],
-                "then": [
-                    ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
-                    ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
-                    ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
-                ]
-            }
-        ],
-        "cards": {
-            
-        }
+  "automation": {
+    "postLoadActionList": [
+      ["DEFINE", "$LOADED_PLAYER_DECK", false],
+      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
+        ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["COND",
+          ["EQUAL", "$CARD.sides.A.type", "Alter-Ego"],
+          [
+            ["SET", "/cardById/$CARD_ID/currentSide", "A"],
+            ["DEFINE", "$LOADED_PLAYER_DECK", true]
+          ],
+          ["EQUAL", "$CARD.sides.B.type", "Alter-Ego"],
+          [
+            ["SET", "/cardById/$CARD_ID/currentSide", "B"],
+            ["DEFINE", "$LOADED_PLAYER_DECK", true]
+          ]
+        ]
+      ]],
+      ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
+      ["COND",
+        ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0], ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0]],
+        [
+          ["DRAW_CARD", "$GAME.playerData.$PLAYER_N.handSize"],
+          ["LOG", "$PLAYER_N", " draws ", "$GAME.playerData.$PLAYER_N.handSize", " cards."]
+        ]
+      ]
+    ],
+    "gameRules": [
+      {
+        "_comment": "When a card enters play or flips, if it has a hand size, set the player's hand size to that value.",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/inPlay", "/cardById/*/currentSide"],
+        "condition": ["AND", "$TARGET.inPlay", ["NOT_EQUAL", "$TARGET.currentFace.handSize", null]],
+        "then": [
+          ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
+          ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
+          ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
+        ]
+      }
+    ],
+    "cards": {
+
     }
+  }
 }

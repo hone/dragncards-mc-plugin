@@ -22,7 +22,7 @@
         "currentSide": "A",
         "controller": "shared",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDesck",
+        "deckGroupId": "sharedEncounterDeck",
         "discardGroupId": "sharedEncounterDiscard"
       }
     },
