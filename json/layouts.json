@@ -1,7 +1,7 @@
 {
   "layouts": {
     "standard1Player": {
-      "cardSize": 13,
+      "cardSize": 12,
       "rowSpacing": 3,
       "chat": {"left": "80%", "top": "80%", "width": "20%", "height": "20%"},
       "browse": {"type": "fan", "direction": "horizontal", "left": "0%", "top": "60%", "width": "100%", "height": "20%"},
