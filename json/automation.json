@@ -8,21 +8,35 @@
           ["EQUAL", "$CARD.sides.A.type", "Alter-Ego"],
           [
             ["SET", "/cardById/$CARD_ID/currentSide", "A"],
-            ["DEFINE", "$LOADED_PLAYER_DECK", true]
+            ["DEFINE", "$LOADED_PLAYER_DECK", true],
+            ["DEFINE", "$IDENTITY_CARD", "$CARD"]
           ],
           ["EQUAL", "$CARD.sides.B.type", "Alter-Ego"],
           [
             ["SET", "/cardById/$CARD_ID/currentSide", "B"],
-            ["DEFINE", "$LOADED_PLAYER_DECK", true]
+            ["DEFINE", "$LOADED_PLAYER_DECK", true],
+            ["DEFINE", "$IDENTITY_CARD", "$CARD"]
           ]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
       ["COND",
-        ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0], ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0]],
+        ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0]],
         [
-          ["DRAW_CARD", "$GAME.playerData.$PLAYER_N.handSize"],
-          ["LOG", "$PLAYER_N", " draws ", "$GAME.playerData.$PLAYER_N.handSize", " cards."]
+          ["COND",
+            ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0],
+            [
+              ["DRAW_CARD", "$GAME.playerData.$PLAYER_N.handSize"],
+              ["LOG", "$PLAYER_N", " draws ", "$GAME.playerData.$PLAYER_N.handSize", " cards."]
+            ]
+          ],
+          ["COND",
+            ["EQUAL", "$GAME.playerData.$PLAYER_N.hitPoints", 0],
+            [
+              ["SET", "/playerData/$PLAYER_N/hitPoints", "$IDENTITY_CARD.currentFace.hitPoints"],
+              ["LOG", "$PLAYER_N", " sets their hit points to ", "$GAME.playerData.$PLAYER_N.hitPoints", "."]
+            ]
+          ]
         ]
       ]
     ],
@@ -36,6 +50,23 @@
           ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
           ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
           ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
+        ]
+      },
+      {
+        "_comment": "When a player deck empties, give them an encounter deck and shuffle the deck.",
+        "type": "trigger",
+        "listenTo": ["/groupById/*/stackIds"],
+        "condition": ["AND",
+          ["EQUALS", "$TARGET_ID", ["JOIN_STRING", "$PLAYER_N", "Deck"]],
+          ["EQUALS", ["LENGTH", "$TARGET.stackIds"], 0]
+        ],
+        "then": [
+          ["DEFINE", "$DECK_GROUP_ID", ["JOIN_STRINGS", "$PLAYER_N", "Deck"]],
+          ["DEFINE", "$REVEAL_FACEDOWN", true],
+          ["ACTION_LIST", "revealEncounter"],
+          ["MOVE_STACKS", ["JOIN_STRINGS", "$PLAYER_N", "Discard"], "$DECK_GROUP_ID"],
+          ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],
+          ["LOG", "$PLAYER_N", " emptied their deck."]
         ]
       }
     ],
