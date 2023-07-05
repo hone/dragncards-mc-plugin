@@ -1,5 +1,6 @@
 {
     "faceProperties": {
-        "handSize" : {"type": "integer", "default": null}
+        "handSize" : {"type": "integer", "default": null},
+        "hitPoints" : {"type": "integer", "default": null}
     }
 }
