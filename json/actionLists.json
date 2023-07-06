@@ -71,6 +71,24 @@
       ["DEFINE", "$REVEAL_FACEDOWN", true],
       ["ACTION_LIST", "revealSecondary"]
     ],
+    "drawBoost": [
+      ["COND",
+        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
+        [
+          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
+          ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
+        ]
+      ],
+      ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
+      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
+      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
+        ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+      ],
+      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
+        ["SET", "/cardById/$CARD_ID/rotation", -30]
+      ],
+      ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+    ],
     "revealEncounter": [
       ["COND",
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],

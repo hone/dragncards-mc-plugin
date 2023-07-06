@@ -43,20 +43,21 @@ impl From<CerebroCard> for Card {
 #[derive(Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CardBack {
-    DoubleSided,
+    MultiSided,
     Encounter,
     Player,
     Villain,
 }
 
 pub fn uuid(code: &str) -> Uuid {
-    let id = if code.ends_with("B") {
+    let id = if let Ok(_) = code.parse::<u32>() {
+        code
+    } else {
         let mut chars = code.chars();
         chars.next_back();
-        format!("{}A", chars.as_str())
-    } else {
-        String::from(code)
+        chars.as_str()
     };
+
     Uuid::new_v5(&Uuid::NAMESPACE_OID, id.as_bytes())
 }
 
@@ -74,13 +75,12 @@ fn image_url(card: &CerebroCard) -> String {
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
-    // deal with 3 sided card
-    if card.id.ends_with("C") {
-        return CardBack::Player;
+    if card.id.parse::<u32>().is_err() {
+        return CardBack::MultiSided;
     }
 
     match card.r#type {
-        CardType::Hero | CardType::AlterEgo | CardType::MainScheme => CardBack::DoubleSided,
+        CardType::Hero | CardType::AlterEgo | CardType::MainScheme => CardBack::MultiSided,
         CardType::Ally
         | CardType::Event
         | CardType::PlayerSideScheme
