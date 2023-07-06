@@ -154,7 +154,7 @@
       ["LOG", "$PLAYER_N", " mulliganed."]
     ],
     "readyAll": [
-      ["FOR_EACH_KEY", "$CARD_ID", "$CARD", "$GAME.cardById",
+      ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
           ["EQUAL", "$CARD.controller", "$PLAYER_N"],
           [
