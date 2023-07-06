@@ -1,5 +1,7 @@
 use crate::{cerebro, dragncards::database::Card};
 use csv::WriterBuilder;
+use std::collections::HashMap;
+use uuid::Uuid;
 
 #[derive(clap::Args)]
 pub struct DatabaseArgs {
@@ -10,17 +12,24 @@ pub struct DatabaseArgs {
 }
 
 pub async fn execute(args: DatabaseArgs) {
+    let pack_map: HashMap<Uuid, cerebro::Pack> = cerebro::get_packs(Some(args.offline))
+        .await
+        .unwrap()
+        .into_iter()
+        .map(|pack| (pack.id.clone(), pack))
+        .collect();
     let cards: Vec<Card> = cerebro::get_cards(Some(args.offline))
         .await
         .unwrap()
         .into_iter()
         .filter_map(|card| {
             if card.official {
-                Some(Card::from(card))
+                Some(Card::new(card, &pack_map))
             } else {
                 None
             }
         })
+        .flatten()
         .collect();
     let output = args
         .output

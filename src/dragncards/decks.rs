@@ -19,7 +19,7 @@ pub struct PreBuiltDeck {
 pub struct Card {
     pub load_group_id: String,
     pub quantity: u32,
-    pub uuid: Uuid,
+    pub database_id: Uuid,
     #[serde(rename = "_name")]
     pub _name: String,
 }
