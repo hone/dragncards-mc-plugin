@@ -139,7 +139,7 @@ pub async fn execute(args: DecksArgs) {
                             .as_ref()
                             .map(|i| i.length())
                             .unwrap_or(1),
-                        uuid: dragncards::database::uuid(&card.id),
+                        database_id: dragncards::database::uuid(&card.id),
                         _name: card.name.clone(),
                     })
                 })
@@ -264,7 +264,7 @@ fn process_hero_deck(
             Some(dragncards::decks::Card {
                 load_group_id: load_group_id.to_string(),
                 quantity,
-                uuid: dragncards::database::uuid(&card.id),
+                database_id: dragncards::database::uuid(&card.id),
                 _name: card.name.clone(),
             })
         })

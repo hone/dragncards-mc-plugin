@@ -1,12 +1,17 @@
-use crate::cerebro::{Card as CerebroCard, CardType, Classification};
+use crate::{
+    cerebro::{Card as CerebroCard, CardType, Classification, Pack, Printing},
+    marvelcdb,
+};
 use serde::Serialize;
+use std::collections::HashMap;
 use uuid::Uuid;
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Card {
-    pub uuid: Uuid,
+    pub database_id: Uuid,
     pub cerebro_id: String,
+    pub marvelcdb_id: String,
     pub name: String,
     pub subname: Option<String>,
     pub r#type: CardType,
@@ -18,29 +23,40 @@ pub struct Card {
     pub hit_points: Option<String>,
 }
 
-impl From<CerebroCard> for Card {
-    fn from(card: CerebroCard) -> Card {
-        let uuid = uuid(&card.id);
+impl Card {
+    pub fn new(card: CerebroCard, packs: &HashMap<Uuid, Pack>) -> Vec<Card> {
         let card_back = card_back(&card);
-        let image_url = image_url(&card);
 
-        Card {
-            uuid,
-            cerebro_id: card.id,
-            name: card.name,
-            subname: card.subname,
-            r#type: card.r#type,
-            classification: card.classification,
-            image_url,
-            card_back,
-            traits: card.traits.map(|traits| traits.join(",")),
-            hand_size: card.hand.map(|hand_size| hand_size.parse::<u32>().unwrap()),
-            hit_points: card.health,
-        }
+        card.printings
+            .iter()
+            .map(|printing| {
+                let database_id = uuid(&printing.artificial_id);
+                let pack = packs.get(&printing.pack_id).unwrap();
+                let image_url = image_url(&card, &printing);
+
+                Card {
+                    database_id,
+                    cerebro_id: card.id.clone(),
+                    marvelcdb_id: marvelcdb::card_id(&pack.number, &printing.pack_number.0),
+                    name: card.name.clone(),
+                    subname: card.subname.clone(),
+                    r#type: card.r#type.clone(),
+                    classification: card.classification.clone(),
+                    image_url,
+                    card_back: card_back.clone(),
+                    traits: card.traits.as_ref().map(|traits| traits.join(",")),
+                    hand_size: card
+                        .hand
+                        .as_ref()
+                        .map(|hand_size| hand_size.parse::<u32>().unwrap()),
+                    hit_points: card.health.clone(),
+                }
+            })
+            .collect()
     }
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CardBack {
     MultiSided,
@@ -61,17 +77,19 @@ pub fn uuid(code: &str) -> Uuid {
     Uuid::new_v5(&Uuid::NAMESPACE_OID, id.as_bytes())
 }
 
-fn image_url(card: &CerebroCard) -> String {
+fn image_url(card: &CerebroCard, printing: &Printing) -> String {
     let official = if card.official {
         "official"
     } else {
         "unofficial"
     };
+    let id = if printing.unique_art {
+        &printing.artificial_id
+    } else {
+        &card.id
+    };
 
-    format!(
-        "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/{official}/{}.jpg",
-        card.id
-    )
+    format!("https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/{official}/{id}.jpg")
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
