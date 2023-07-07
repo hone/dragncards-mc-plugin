@@ -276,6 +276,9 @@
     "discard": {
       "English": "Discard"
     },
+    "discardRandom": {
+      "English": "Discard Random Card"
+    },
     "dealBoostCard": {
       "English": "Deal Boost Card"
     },
