@@ -1,6 +1,5 @@
 {
   "gameProperties": {
-    "round": {"type": "integer", "default": 0},
     "villainHitPoints": {"type": "integer", "default": 0}
   }
 }
