@@ -80,7 +80,7 @@
         ]
       ],
       ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
-      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
+      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
         ["SET", "/cardById/$CARD_ID/currentSide", "B"]
       ],
@@ -98,7 +98,7 @@
         ]
       ],
       ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
-      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
+      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
       ["COND",
         "$REVEAL_FACEDOWN",
         ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
@@ -114,7 +114,7 @@
         true,
         [
           ["DEFINE", "$STACK_ID", ["AT_INDEX", "$GAME.groupById.sharedEncounter1Deck.stackIds", 0]],
-          ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, false],
+          ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
           ["COND",
             "$REVEAL_FACEDOWN",
             ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
