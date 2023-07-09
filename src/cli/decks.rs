@@ -121,7 +121,7 @@ pub async fn execute(args: DecksArgs) {
                                         "sharedMainSchemeDeck"
                                     }
                                 }
-                                CardType::Villain => "sharedVillain",
+                                CardType::Villain => "sharedVillainDeck",
                                 _ => "sharedEncounterDeck",
                             };
 

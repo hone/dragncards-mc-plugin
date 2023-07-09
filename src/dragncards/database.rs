@@ -22,6 +22,7 @@ pub struct Card {
     pub hand_size: Option<u32>,
     pub hit_points_fixed: Option<i64>,
     pub hit_points_scaling: Option<i64>,
+    pub stage: Option<String>,
 }
 
 impl Card {
@@ -52,6 +53,7 @@ impl Card {
                         .map(|hand_size| hand_size.parse::<u32>().unwrap()),
                     hit_points_fixed: None,
                     hit_points_scaling: None,
+                    stage: card.stage.clone(),
                 };
 
                 if let Some(health) = card.health.as_ref() {
