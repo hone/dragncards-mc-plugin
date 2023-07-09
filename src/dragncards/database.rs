@@ -1,5 +1,5 @@
 use crate::{
-    cerebro::{Card as CerebroCard, CardType, Classification, Pack, Printing},
+    cerebro::{Card as CerebroCard, CardType, Classification, Pack, Printing, ScalingNumber},
     marvelcdb,
 };
 use serde::Serialize;
@@ -20,7 +20,8 @@ pub struct Card {
     pub card_back: CardBack,
     pub traits: Option<String>,
     pub hand_size: Option<u32>,
-    pub hit_points: Option<String>,
+    pub hit_points_fixed: Option<i64>,
+    pub hit_points_scaling: Option<i64>,
 }
 
 impl Card {
@@ -34,7 +35,7 @@ impl Card {
                 let pack = packs.get(&printing.pack_id).unwrap();
                 let image_url = image_url(&card, &printing);
 
-                Card {
+                let mut new_card = Card {
                     database_id,
                     cerebro_id: card.id.clone(),
                     marvelcdb_id: marvelcdb::card_id(&pack.number, &printing.pack_number.0),
@@ -49,8 +50,19 @@ impl Card {
                         .hand
                         .as_ref()
                         .map(|hand_size| hand_size.parse::<u32>().unwrap()),
-                    hit_points: card.health.clone(),
+                    hit_points_fixed: None,
+                    hit_points_scaling: None,
+                };
+
+                if let Some(health) = card.health.as_ref() {
+                    match health {
+                        ScalingNumber::Fixed(i) => new_card.hit_points_fixed = Some(*i as i64),
+                        ScalingNumber::Scaling(i) => new_card.hit_points_scaling = Some(*i as i64),
+                        ScalingNumber::Infinity => new_card.hit_points_fixed = Some(-1),
+                    }
                 }
+
+                new_card
             })
             .collect()
     }
