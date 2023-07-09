@@ -273,6 +273,9 @@
     "flip": {
       "English": "Flip Card"
     },
+    "toggleThirdSide": {
+      "English": "Toggle Third Side"
+    },
     "discard": {
       "English": "Discard"
     },

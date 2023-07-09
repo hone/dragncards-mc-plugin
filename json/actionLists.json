@@ -54,6 +54,20 @@
         ]
       ]
     ],
+    "toggleThirdSide": [
+      ["COND",
+        ["EQUAL", "$ACTIVE_CARD.currentSide", "B"],
+        [
+          ["LOG", "$PLAYER_N", " unfolded ", "$ACTIVE_FACE.name", "."],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "C"]
+        ],
+        ["EQUAL", "$ACTIVE_CARD.currentSide", "C"],
+        [
+          ["LOG", "$PLAYER_N", " folded ", "$ACTIVE_FACE.name", "."],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
+        ]
+      ]
+    ],
     "shuffleIntoDeck": [
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
       ["DEFINE", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],

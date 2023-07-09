@@ -23,6 +23,7 @@
       {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
+      {"key": "Shift+F", "actionList": "toggleThirdSide", "label": "id:toggleThirdSide"},
       {"key": "H", "actionList": "shuffleIntoDeck", "label": "id:shuffleIntoDeck"},
       {"key": "0", "actionList": "zeroTokens", "label": "id:removeAllTokens"},
       {"key": "X", "actionList": "discardCard", "label": "id:discard"}
