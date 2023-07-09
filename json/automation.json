@@ -2,6 +2,7 @@
   "automation": {
     "postLoadActionList": [
       ["DEFINE", "$LOADED_PLAYER_DECK", false],
+      ["DEFINE", "$LOADED_SCENARIO_DECK", false],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
         ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["COND",
@@ -16,6 +17,19 @@
             ["SET", "/cardById/$CARD_ID/currentSide", "B"],
             ["DEFINE", "$LOADED_PLAYER_DECK", true],
             ["DEFINE", "$IDENTITY_CARD", "$CARD"]
+          ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.sides.A.type", "Villain"],
+          [
+            ["DEFINE", "$LOADED_SCENARIO_DECK", true],
+            ["COND",
+              ["EQUAL", "$CARD.sides.A.stage", "I"],
+              [
+                ["DEFINE", "$VILLAIN_CARD", "$CARD"],
+                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
+              ]
+            ]
           ]
         ]
       ]],
@@ -33,7 +47,7 @@
           ["COND",
             ["EQUAL", "$GAME.playerData.$PLAYER_N.hitPoints", 0],
             [
-              ["SET", "/playerData/$PLAYER_N/hitPoints", "$IDENTITY_CARD.currentFace.hitPoints"],
+              ["SET", "/playerData/$PLAYER_N/hitPoints", "$IDENTITY_CARD.currentFace.hitPointsFixed"],
               ["LOG", "$PLAYER_N", " sets their hit points to ", "$GAME.playerData.$PLAYER_N.hitPoints", "."]
             ]
           ]
