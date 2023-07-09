@@ -314,6 +314,15 @@
     },
     "mulligan": {
       "English": "Mulligan"
+    },
+    "labelMarkAsVictory": {
+      "English": "Victory"
+    },
+    "labelMarkAsDefeat": {
+      "English": "Defeat"
+    },
+    "labelMarkAsIncomplete": {
+      "English": "Incomplete"
     }
   }
 }

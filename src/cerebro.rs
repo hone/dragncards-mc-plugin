@@ -55,7 +55,61 @@ pub struct Card {
     pub stage: Option<String>,
     pub traits: Option<Vec<String>>,
     pub hand: Option<String>,
-    pub health: Option<String>,
+    pub health: Option<ScalingNumber>,
+}
+
+#[derive(Clone)]
+pub enum ScalingNumber {
+    Fixed(u32),
+    Scaling(u32),
+    Infinity,
+}
+
+struct ScalingNumberVisitor;
+
+impl<'de> Visitor<'de> for ScalingNumberVisitor {
+    type Value = ScalingNumber;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter.write_str("an integer or integer{i} for player scaling")
+    }
+
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        lazy_static! {
+            static ref SCALING_NUMBER_RE: Regex = Regex::new(r"(\d+)(\{i\})?").unwrap();
+        }
+
+        if let Some(captures) = SCALING_NUMBER_RE.captures(value) {
+            let number = captures[1]
+                .parse::<u32>()
+                .map_err(|_| E::custom(format!("Need an integer: {value}")))?;
+            if captures.get(2).is_some() {
+                Ok(ScalingNumber::Scaling(number))
+            } else {
+                Ok(ScalingNumber::Fixed(number))
+            }
+        } else {
+            if value == "∞" {
+                Ok(ScalingNumber::Infinity)
+            } else {
+                Err(E::custom(format!(
+                    "Not an integer or integer{{i}} format: {value}"
+                )))
+            }
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for ScalingNumber {
+    fn deserialize<D>(deserializer: D) -> Result<ScalingNumber, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_str(ScalingNumberVisitor)
+    }
 }
 
 #[derive(Clone, Deserialize, PartialEq, Serialize)]

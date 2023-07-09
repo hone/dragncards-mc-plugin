@@ -1,0 +1,7 @@
+{
+  "closeRoomOptions": [
+    {"label": "id:labelMarkAsVictory", "actionList": ["SET", "/victoryState", "victory"]},
+    {"label": "id:labelMarkAsDefeat", "actionList": ["SET", "/victoryState", "defeat"]},
+    {"label": "id:labelMarkAsIncomplete", "actionList": ["SET", "/victoryState", "incomplete"]}
+  ]
+}
