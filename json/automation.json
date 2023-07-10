@@ -29,6 +29,10 @@
                 ["DEFINE", "$VILLAIN_CARD", "$CARD"],
                 ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
               ]
+            ],
+            ["COND",
+              ["EQUAL", "$CARD.sides.A.stage", "III"],
+              ["MOVE_CARD", "$CARD_ID", "sharedVillainDiscard", 0]
             ]
           ]
         ]
@@ -52,6 +56,9 @@
             ]
           ]
         ]
+      ],
+      ["COND", "$LOADED_SCENARIO_DECK",
+        ["ACTION_LIST", "setVillainHealth"]
       ]
     ],
     "gameRules": [
