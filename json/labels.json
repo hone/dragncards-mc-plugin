@@ -33,6 +33,12 @@
     "villain": {
       "English": "Villain"
     },
+    "villainDeck": {
+      "English": "Villain Deck"
+    },
+    "villainDiscard": {
+      "English": "Villain Discard"
+    },
     "mainScheme": {
       "English": "Main Scheme"
     },

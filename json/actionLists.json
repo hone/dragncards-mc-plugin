@@ -19,30 +19,41 @@
         ]
       ]
     ],
-    "discardCard": [                                                                                                                                                                                               
-      ["COND",                                                                                                                                                                                                     
-        ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],                                                                                                                                                            
-        ["LOG", "$PLAYER_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],                                                      
-        true,                                                                                                                                                                                                      
-        [                                                                                                                                                                                                          
-          ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],                                                                                                                                           
-          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],                                                                                                                                                        
-          ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],                                                                                                                                      
-          ["COND",                                                                                                                                                                                                 
-            ["AND",                                                                                                                                                                                                
-              ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Villain"],                                                                                                                                                   
-              ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]                                                                                                                        
-            ],                                                                                                                                                                                                     
-            [                                                                                                                                                                                                      
-              ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedVillainDeck.stackIds.[0]"],                                                                                                                           
-              ["DEFINE", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds.[0]"],                                                                                                                                    
-              ["LOG", "STACK: ", "$STACK_ID"],                                                                                                                                                                     
-              ["LOG", "CARD: ", "$CARD_ID"],                                                                                                                                                                       
-              ["DEFINE", "$VILLAIN_CARD", "$ACTIVE_CARD"]                                                                                                                                                          
-            ]                                                                                            
+    "setVillainHealth": [
+      ["DEFINE", "$VILLAIN_HIT_POINTS", -1],
+      ["COND",
+        ["NOT_EQUAL", "$VILLAIN_CARD.sides.A.hitPointsFixed", null],
+        ["DEFINE", "$VILLAIN_HIT_POINTS", "$VILLAIN_CARD.sides.A.hitPointsFixed"],
+        ["NOT_EQUAL", "$VILLAIN_CARD.sides.A.hitPointsScaling", null],
+        ["DEFINE", "$VILLAIN_HIT_POINTS", ["MULTIPLY", "$VILLAIN_CARD.sides.A.hitPointsScaling", "$GAME.numPlayers"]]
+      ],
+      ["SET", "/villainHitPoints", "$VILLAIN_HIT_POINTS"],
+      ["LOG", "Set villain hit points to ", "$VILLAIN_HIT_POINTS", "."]
+    ],
+    "discardCard": [
+      ["COND",
+        ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],
+        ["LOG", "$PLAYER_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
+        true,
+        [
+          ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
+          ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],
+          ["COND",
+            ["AND",
+              ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Villain"],
+              ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]
+            ],
+            [
+              ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedVillainDeck.stackIds.[0]"],
+              ["DEFINE", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds.[0]"],
+              ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
+              ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$CARD_ID"],
+              ["ACTION_LIST", "setVillainHealth"]
+            ]
           ]
-        ]         
-      ]       
+        ]
+      ]
     ],
     "discardRandomCard": [
       ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
