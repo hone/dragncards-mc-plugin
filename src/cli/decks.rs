@@ -237,8 +237,8 @@ fn process_hero_deck(
     cards
         .into_iter()
         .filter_map(|(card, printing)| {
-            // Double Sided cards shouldn't be loaded twice
-            if card.id.ends_with("B") {
+            // Multi-Sided cards shouldn't be loaded twice
+            if card.id.ends_with("B") || card.id.ends_with("C") {
                 return None;
             }
             let mut load_group_id = match card.r#type {
