@@ -19,17 +19,30 @@
         ]
       ]
     ],
-    "discardCard": [
-      ["COND",
-        ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],
-        ["LOG", "$PLAYER_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
-        true,
-        [
-          ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
-          ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0]
-        ]
-      ]
+    "discardCard": [                                                                                                                                                                                               
+      ["COND",                                                                                                                                                                                                     
+        ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],                                                                                                                                                            
+        ["LOG", "$PLAYER_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],                                                      
+        true,                                                                                                                                                                                                      
+        [                                                                                                                                                                                                          
+          ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],                                                                                                                                           
+          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],                                                                                                                                                        
+          ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],                                                                                                                                      
+          ["COND",                                                                                                                                                                                                 
+            ["AND",                                                                                                                                                                                                
+              ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Villain"],                                                                                                                                                   
+              ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]                                                                                                                        
+            ],                                                                                                                                                                                                     
+            [                                                                                                                                                                                                      
+              ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedVillainDeck.stackIds.[0]"],                                                                                                                           
+              ["DEFINE", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds.[0]"],                                                                                                                                    
+              ["LOG", "STACK: ", "$STACK_ID"],                                                                                                                                                                     
+              ["LOG", "CARD: ", "$CARD_ID"],                                                                                                                                                                       
+              ["DEFINE", "$VILLAIN_CARD", "$ACTIVE_CARD"]                                                                                                                                                          
+            ]                                                                                            
+          ]
+        ]         
+      ]       
     ],
     "discardRandomCard": [
       ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
@@ -54,19 +67,21 @@
         ]
       ]
     ],
-    "toggleThirdSide": [
-      ["COND",
-        ["EQUAL", "$ACTIVE_CARD.currentSide", "B"],
-        [
-          ["LOG", "$PLAYER_N", " unfolded ", "$ACTIVE_FACE.name", "."],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "C"]
-        ],
-        ["EQUAL", "$ACTIVE_CARD.currentSide", "C"],
-        [
-          ["LOG", "$PLAYER_N", " folded ", "$ACTIVE_FACE.name", "."],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
-        ]
-      ]
+    "setSide": [
+      ["LOG", "$PLAYER_N", " set ", "$ACTIVE_FACE.name", "to side ", "$SIDE", "."],
+      ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "$SIDE"]
+    ],
+    "setSideA": [
+      ["DEFINE", "$SIDE", "A"],
+      ["ACTION_LIST", "setSide"]
+    ],
+    "setSideB": [
+      ["DEFINE", "$SIDE", "B"],
+      ["ACTION_LIST", "setSide"]
+    ],
+    "setSideC": [
+      ["DEFINE", "$SIDE", "C"],
+      ["ACTION_LIST", "setSide"]
     ],
     "shuffleIntoDeck": [
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],

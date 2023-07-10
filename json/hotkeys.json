@@ -23,7 +23,9 @@
       {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
-      {"key": "Shift+F", "actionList": "toggleThirdSide", "label": "id:toggleThirdSide"},
+      {"key": "Alt+1", "actionList": "setSideA", "label": "id:setSideA"},
+      {"key": "Alt+2", "actionList": "setSideB", "label": "id:setSideB"},
+      {"key": "Alt+3", "actionList": "setSideC", "label": "id:setSideC"},
       {"key": "H", "actionList": "shuffleIntoDeck", "label": "id:shuffleIntoDeck"},
       {"key": "0", "actionList": "zeroTokens", "label": "id:removeAllTokens"},
       {"key": "X", "actionList": "discardCard", "label": "id:discard"}

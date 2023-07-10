@@ -273,8 +273,14 @@
     "flip": {
       "English": "Flip Card"
     },
-    "toggleThirdSide": {
-      "English": "Toggle Third Side"
+    "setSideA": {
+      "English": "Set Side A"
+    },
+    "setSideB": {
+      "English": "Set Side B"
+    },
+    "setSideC": {
+      "English": "Set Side C"
     },
     "discard": {
       "English": "Discard"
@@ -296,9 +302,6 @@
     },
     "readyAll": {
       "English": "Ready All"
-    },
-    "removeAllTokens": {
-      "English": "Remove All Tokens"
     },
     "revealEncounterFacedown": {
       "English": "Reveal Encounter Card"
