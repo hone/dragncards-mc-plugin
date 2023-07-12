@@ -1,0 +1,14 @@
+{
+  "pluginMenu": {
+    "options": [
+      {
+        "label": "id:setStandardMode",
+        "actionList": "setStandardMode"
+      },
+      {
+        "label": "id:setExpertMode",
+        "actionList": "setExpertMode"
+      }
+    ]
+  }
+}

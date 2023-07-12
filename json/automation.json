@@ -3,6 +3,18 @@
     "postLoadActionList": [
       ["DEFINE", "$LOADED_PLAYER_DECK", false],
       ["DEFINE", "$LOADED_SCENARIO_DECK", false],
+      ["COND",
+        ["EQUAL", "$GAME.mode", "standard"],
+        [
+          ["DEFINE", "$FIRST_STAGE", "I"],
+          ["DEFINE", "$DISCARDED_STAGE", "III"]
+        ],
+        ["EQUAL", "$GAME.mode", "expert"],
+        [
+          ["DEFINE", "$DISCARDED_STAGE", "I"],
+          ["DEFINE", "$FIRST_STAGE", "II"]
+        ]
+      ],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
         ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["COND",
@@ -24,14 +36,14 @@
           [
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],
             ["COND",
-              ["EQUAL", "$CARD.sides.A.stage", "I"],
+              ["EQUAL", "$CARD.sides.A.stage", "$FIRST_STAGE"],
               [
                 ["DEFINE", "$VILLAIN_CARD", "$CARD"],
                 ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
               ]
             ],
             ["COND",
-              ["EQUAL", "$CARD.sides.A.stage", "III"],
+              ["EQUAL", "$CARD.sides.A.stage", "$DISCARDED_STAGE"],
               ["MOVE_CARD", "$CARD_ID", "sharedVillainDiscard", 0]
             ]
           ]

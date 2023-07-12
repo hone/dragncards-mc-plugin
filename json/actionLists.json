@@ -213,6 +213,18 @@
         ]
       ],
       ["LOG", "$PLAYER_N", " readied all their cards."]
+    ],
+    "setMode": [
+      ["SET", "/mode", "$MODE"],
+      ["LOG", "Mode is set to ", "$MODE"]
+    ],
+    "setStandardMode": [
+      ["DEFINE", "$MODE", "standard"],
+      ["ACTION_LIST", "setMode"]
+    ],
+    "setExpertMode": [
+      ["DEFINE", "$MODE", "expert"],
+      ["ACTION_LIST", "setMode"]
     ]
   }
 }

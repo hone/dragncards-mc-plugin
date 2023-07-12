@@ -332,6 +332,12 @@
     },
     "labelMarkAsIncomplete": {
       "English": "Incomplete"
+    },
+    "setStandardMode": {
+      "English": "Set Standard Mode"
+    },
+    "setExpertMode": {
+      "English": "Set Expert Mode"
     }
   }
 }
