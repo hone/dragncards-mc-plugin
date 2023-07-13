@@ -7,12 +7,16 @@
         ["EQUAL", "$GAME.mode", "standard"],
         [
           ["DEFINE", "$FIRST_STAGE", "I"],
-          ["DEFINE", "$DISCARDED_STAGE", "III"]
+          ["DEFINE", "$DISCARDED_STAGE", "III"],
+          ["DEFINE", "$DOUBLE_SIDED_STAGE", "A1"],
+          ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "B1"]
         ],
         ["EQUAL", "$GAME.mode", "expert"],
         [
+          ["DEFINE", "$FIRST_STAGE", "II"],
           ["DEFINE", "$DISCARDED_STAGE", "I"],
-          ["DEFINE", "$FIRST_STAGE", "II"]
+          ["DEFINE", "$DOUBLE_SIDED_STAGE", "B1"],
+          ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "A1"]
         ]
       ],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
@@ -36,14 +40,20 @@
           [
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],
             ["COND",
-              ["EQUAL", "$CARD.sides.A.stage", "$FIRST_STAGE"],
+              ["OR",
+                ["EQUAL", "$CARD.sides.A.stage", "$FIRST_STAGE"],
+                ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"]
+              ],
               [
                 ["DEFINE", "$VILLAIN_CARD", "$CARD"],
                 ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
               ]
             ],
             ["COND",
-              ["EQUAL", "$CARD.sides.A.stage", "$DISCARDED_STAGE"],
+              ["OR",
+                ["EQUAL", "$CARD.sides.A.stage", "$DISCARDED_STAGE"],
+                ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_DISCARDED_STAGE"]
+              ],
               ["MOVE_CARD", "$CARD_ID", "sharedVillainDiscard", 0]
             ]
           ]
