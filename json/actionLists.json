@@ -58,6 +58,7 @@
         [
           ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],
           ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
           ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],
           ["COND",
             ["AND",
