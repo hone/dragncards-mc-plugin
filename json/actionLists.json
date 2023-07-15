@@ -35,7 +35,7 @@
       ],
       [
         ["DEFINE", "$SCHEME_CARD_ID", "$SCHEME_CARD.id"],
-        ["INCREASE_VAL", "/cardById/$SCHEME_CARD_ID/tokens/threat", "$STARTING_THREAT"],
+        ["SET", "/cardById/$SCHEME_CARD_ID/tokens/threat", "$STARTING_THREAT"],
         ["LOG", "Setting starting threat for ", "$SCHEME_CARD.sides.$SCHEME_FACE.name", " to ", "$STARTING_THREAT"]
       ]
     ],
