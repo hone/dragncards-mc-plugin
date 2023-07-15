@@ -19,6 +19,26 @@
         ]
       ]
     ],
+    "setSchemeStartingThreat": [
+      ["DEFINE", "$STARTING_THREAT", -1],
+      ["COND",
+        ["EQUAL", "$SCHEME_CARD.sides.A.type", "Main Scheme"],
+        ["DEFINE", "$SCHEME_FACE", "B"],
+        true,
+        ["DEFINE", "$SCHEME_FACE", "A"]
+      ],
+      ["COND",
+        ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
+        ["DEFINE", "$STARTING_THREAT", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed"],
+        ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
+        ["DEFINE", "$STARTING_THREAT", ["MULTIPLY", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]
+      ],
+      [
+        ["DEFINE", "$SCHEME_CARD_ID", "$SCHEME_CARD.id"],
+        ["INCREASE_VAL", "/cardById/$SCHEME_CARD_ID/tokens/threat", "$STARTING_THREAT"],
+        ["LOG", "Setting starting threat for ", "$SCHEME_CARD.sides.$SCHEME_FACE.name", " to ", "$STARTING_THREAT"]
+      ]
+    ],
     "setVillainHealth": [
       ["DEFINE", "$VILLAIN_HIT_POINTS", -1],
       ["COND",
@@ -50,6 +70,19 @@
               ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
               ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$CARD_ID"],
               ["ACTION_LIST", "setVillainHealth"]
+            ]
+          ],
+          ["COND",
+            ["AND",
+              ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Main Scheme"],
+              ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedMainSchemeDeck.stackIds"], 0]
+            ],
+            [
+              ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedMainSchemeDeck.stackIds.[0]"],
+              ["DEFINE", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds.[0]"],
+              ["MOVE_CARD", "$CARD_ID", "sharedMainScheme", 0],
+              ["DEFINE", "$SCHEME_CARD", "$GAME.cardById.$CARD_ID"],
+              ["ACTION_LIST", "setSchemeStartingThreat"]
             ]
           ]
         ]

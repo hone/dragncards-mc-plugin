@@ -23,6 +23,8 @@ pub struct Card {
     pub hit_points_fixed: Option<i64>,
     pub hit_points_scaling: Option<i64>,
     pub stage: Option<String>,
+    pub starting_threat_fixed: Option<i64>,
+    pub starting_threat_scaling: Option<i64>,
 }
 
 impl Card {
@@ -53,6 +55,8 @@ impl Card {
                         .map(|hand_size| hand_size.parse::<u32>().unwrap()),
                     hit_points_fixed: None,
                     hit_points_scaling: None,
+                    starting_threat_fixed: None,
+                    starting_threat_scaling: None,
                     stage: card.stage.clone(),
                 };
 
@@ -61,6 +65,16 @@ impl Card {
                         ScalingNumber::Fixed(i) => new_card.hit_points_fixed = Some(*i as i64),
                         ScalingNumber::Scaling(i) => new_card.hit_points_scaling = Some(*i as i64),
                         ScalingNumber::Infinity => new_card.hit_points_fixed = Some(-1),
+                    }
+                }
+
+                if let Some(starting_threat) = card.starting_threat.as_ref() {
+                    match starting_threat {
+                        ScalingNumber::Fixed(i) => new_card.starting_threat_fixed = Some(*i as i64),
+                        ScalingNumber::Scaling(i) => {
+                            new_card.starting_threat_scaling = Some(*i as i64)
+                        }
+                        ScalingNumber::Infinity => new_card.starting_threat_fixed = Some(-1),
                     }
                 }
 

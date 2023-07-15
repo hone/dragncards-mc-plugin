@@ -56,6 +56,7 @@ pub struct Card {
     pub traits: Option<Vec<String>>,
     pub hand: Option<String>,
     pub health: Option<ScalingNumber>,
+    pub starting_threat: Option<ScalingNumber>,
 }
 
 #[derive(Clone)]
@@ -92,11 +93,11 @@ impl<'de> Visitor<'de> for ScalingNumberVisitor {
                 Ok(ScalingNumber::Fixed(number))
             }
         } else {
-            if value == "∞" {
+            if value == "∞" || value == "—" || value == "–" {
                 Ok(ScalingNumber::Infinity)
             } else {
                 Err(E::custom(format!(
-                    "Not an integer or integer{{i}} format: {value}"
+                    "Not an integer, integer{{i}}, —, or ∞ format: '{value}'"
                 )))
             }
         }

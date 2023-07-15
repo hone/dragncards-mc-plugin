@@ -57,6 +57,16 @@
               ["MOVE_CARD", "$CARD_ID", "sharedVillainDiscard", 0]
             ]
           ]
+        ],
+        ["COND",
+          ["AND",
+            ["EQUAL", "$CARD.sides.A.type", "Main Scheme"],
+            ["EQUAL", "$CARD.sides.A.stage", "1A"]
+          ],
+          [
+            ["DEFINE", "$LOADED_SCENARIO_DECK", true],
+            ["DEFINE", "$SCHEME_CARD", "$CARD"]
+          ]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
@@ -80,7 +90,10 @@
         ]
       ],
       ["COND", "$LOADED_SCENARIO_DECK",
-        ["ACTION_LIST", "setVillainHealth"]
+        [
+          ["ACTION_LIST", "setVillainHealth"],
+          ["ACTION_LIST", "setSchemeStartingThreat"]
+        ]
       ]
     ],
     "gameRules": [

@@ -2,6 +2,8 @@
     "faceProperties": {
         "handSize" : {"type": "integer", "default": null},
         "hitPointsFixed" : {"type": "integer", "default": null},
-        "hitPointsScaling" : {"type": "integer", "default": null}
+        "hitPointsScaling" : {"type": "integer", "default": null},
+        "startingThreatFixed" : {"type": "integer", "default": null},
+        "startingThreatScaling" : {"type": "integer", "default": null}
     }
 }
