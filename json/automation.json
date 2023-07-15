@@ -124,6 +124,24 @@
           ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],
           ["LOG", "$PLAYER_N", " emptied their deck."]
         ]
+      },
+      {
+        "_comment": "When the encounter deck empties, give add an acceleration token and shuffle the deck.",
+        "type": "trigger",
+        "listenTo": ["/groupById/*/stackIds"],
+        "condition": ["AND",
+          ["EQUAL", "$TARGET_ID", "sharedEncounterDeck"],
+          ["EQUAL", ["LENGTH", "$TARGET.stackIds"], 0]
+        ],
+        "then": [
+          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck"],
+          ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedMainScheme.stackIds.[0]"],
+          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
+            ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/acceleration", 1]
+          ],
+          ["SHUFFLE_GROUP", "sharedEncounterDeck"],
+          ["LOG", "Encounter Deck has been emptied."]
+        ]
       }
     ],
     "cards": {
