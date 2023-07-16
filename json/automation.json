@@ -134,13 +134,11 @@
           ["EQUAL", ["LENGTH", "$TARGET.stackIds"], 0]
         ],
         "then": [
+          ["LOG", "Encounter Deck has been emptied."],
           ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck"],
-          ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedMainScheme.stackIds.[0]"],
-          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-            ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/acceleration", 1]
-          ],
-          ["SHUFFLE_GROUP", "sharedEncounterDeck"],
-          ["LOG", "Encounter Deck has been emptied."]
+          ["LOG", "Encounter Deck has been reshuffled."],
+          ["DEFINE", "$SCHEME_CARD_ID", ["GET_CARD_ID", "sharedMainScheme", 0, 0]],
+          ["INCREASE_VAL", "/cardById/$SCHEME_CARD_ID/tokens/acceleration", 1]
         ]
       }
     ],

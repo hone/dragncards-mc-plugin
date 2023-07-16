@@ -58,7 +58,6 @@
         [
           ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],
           ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
           ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],
           ["COND",
             ["AND",
@@ -180,15 +179,13 @@
           ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
         ]
       ],
-      ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
-      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
+      ["DEFINE", "$CARD_ID", ["GET_CARD_ID", "sharedEncounterDeck", 0, 0]],
+      ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, 0],
       ["COND",
         "$REVEAL_FACEDOWN",
-        ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-          ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-        ]
+        ["SET", "/cardById/$CARD_ID/currentSide", "B"]
       ],
-      ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+      ["LOG", "$PLAYER_N", " dealt an encounter card."]
     ],
     "revealSecondary": [
       ["COND",
