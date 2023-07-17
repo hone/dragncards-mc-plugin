@@ -1,0 +1,7 @@
+
+{
+    "imageUrlPrefix": {
+        "Default": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/official/",
+        "English": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/official/"
+    }
+}
