@@ -20,7 +20,7 @@
       ]
     ],
     "setSchemeStartingThreat": [
-      ["DEFINE", "$STARTING_THREAT", -1],
+      ["DEFINE", "$STARTING_THREAT", 0],
       ["COND",
         ["EQUAL", "$SCHEME_CARD.sides.A.type", "Main Scheme"],
         ["DEFINE", "$SCHEME_FACE", "B"],
@@ -29,9 +29,11 @@
       ],
       ["COND",
         ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
-        ["DEFINE", "$STARTING_THREAT", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed"],
+        ["DEFINE", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
+      ],
+      ["COND",
         ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
-        ["DEFINE", "$STARTING_THREAT", ["MULTIPLY", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]
+        ["DEFINE", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
       ],
       [
         ["DEFINE", "$SCHEME_CARD_ID", "$SCHEME_CARD.id"],

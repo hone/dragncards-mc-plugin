@@ -78,6 +78,11 @@ impl Card {
                     }
                 }
 
+                if let Some(hinder) = card.hinder() {
+                    let existing = new_card.starting_threat_scaling.unwrap_or(0);
+                    new_card.starting_threat_scaling = Some(existing + hinder as i64);
+                }
+
                 new_card
             })
             .collect()
