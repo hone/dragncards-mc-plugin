@@ -338,6 +338,12 @@
     },
     "setExpertMode": {
       "English": "Set Expert Mode"
+    },
+    "endPlayerPhase": {
+      "English": "End Player Phase"
+    },
+    "endVillainPhase": {
+      "English": "End Villain Phase"
     }
   }
 }

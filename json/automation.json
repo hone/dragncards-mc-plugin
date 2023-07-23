@@ -76,8 +76,8 @@
           ["COND",
             ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0],
             [
-              ["DRAW_CARD", "$GAME.playerData.$PLAYER_N.handSize"],
-              ["LOG", "$PLAYER_N", " draws ", "$GAME.playerData.$PLAYER_N.handSize", " cards."]
+              ["DEFINE", "$PLAYER", "$PLAYER_N"],
+              ["ACTION_LIST", "drawHand"]
             ]
           ],
           ["COND",

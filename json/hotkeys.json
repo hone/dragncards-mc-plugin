@@ -17,7 +17,9 @@
       {"key": "B", "actionList": "drawBoost", "label": "id:dealBoostCard"},
       {"key": "Shift+M", "actionList": "mulligan", "label": "id:mulligan"},
       {"key": "Shift+R", "actionList": "readyAll", "label": "id:readyAll"},
-      {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"}
+      {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
+      {"key": "Shift+P", "actionList": "endPlayerPhase", "label": "id:endPlayerPhase"},
+      {"key": "Shift+V", "actionList": "endVillainPhase", "label": "id:endVillainPhase"}
     ],
     "card": [
       {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
