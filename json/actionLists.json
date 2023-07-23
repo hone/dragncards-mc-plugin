@@ -241,9 +241,13 @@
       ["LOG", "$PLAYER_N", " mulliganed."]
     ],
     "readyAll": [
+      ["DEFINE", "$PLAYER", "$PLAYER_N"],
+      ["ACTION_LIST", "readyAllPlayer"]
+    ],
+    "readyAllPlayer": [
       ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
-          ["EQUAL", "$CARD.controller", "$PLAYER_N"],
+          ["EQUAL", "$CARD.controller", "$PLAYER"],
           [
             ["SET", "/cardById/$CARD_ID/exhausted", false],
             ["SET", "/cardById/$CARD_ID/rotation", 0]
@@ -255,7 +259,10 @@
     "endPlayerPhase": [
       ["LOG", "Player Phase ends."],
       ["ACTION_LIST", "readyAll"],
-      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", ["ACTION_LIST", "drawHand"]],
+      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
+        ["ACTION_LIST", "readyAllPlayer"],
+        ["ACTION_LIST", "drawHand"]
+      ]],
       ["DEFINE", "$MAIN_SCHEME_CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
       ["DEFINE", "$MAIN_SCHEME_CARD", "$GAME.cardById.$MAIN_SCHEME_CARD_ID"],
       ["DEFINE", "$THREAT_INCREASE", ["ADD", "$MAIN_SCHEME_CARD.tokens.acceleration", "$GAME.numPlayers"]],
