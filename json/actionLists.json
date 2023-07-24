@@ -3,6 +3,14 @@
     "drawCard": [
       "DRAW_CARD"
     ],
+    "drawHand": [
+      ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER", "Hand"]],
+      ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER.handSize"],
+      ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
+      ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
+      ["DRAW_CARD", "$DRAW_SIZE"],
+      ["LOG", "$PLAYER", " draws ", "$DRAW_SIZE", " cards."]
+    ],
     "toggleExhaust": [
       ["COND",
         ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 90], "$ACTIVE_CARD.inPlay"],
@@ -20,7 +28,7 @@
       ]
     ],
     "setSchemeStartingThreat": [
-      ["DEFINE", "$STARTING_THREAT", -1],
+      ["DEFINE", "$STARTING_THREAT", 0],
       ["COND",
         ["EQUAL", "$SCHEME_CARD.sides.A.type", "Main Scheme"],
         ["DEFINE", "$SCHEME_FACE", "B"],
@@ -29,9 +37,11 @@
       ],
       ["COND",
         ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
-        ["DEFINE", "$STARTING_THREAT", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed"],
+        ["DEFINE", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
+      ],
+      ["COND",
         ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
-        ["DEFINE", "$STARTING_THREAT", ["MULTIPLY", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]
+        ["DEFINE", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
       ],
       [
         ["DEFINE", "$SCHEME_CARD_ID", "$SCHEME_CARD.id"],
@@ -161,15 +171,13 @@
           ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
         ]
       ],
-      ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
-      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-        ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-      ],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-        ["SET", "/cardById/$CARD_ID/rotation", -30]
-      ],
-      ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+      ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["SET", "/cardById/$CARD_ID/boost", true],
+      ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
+      ["SET", "/cardById/$CARD_ID/rotation", -30],
+      ["SET", "/cardById/$CARD_ID/currentSide", "B"],
+      ["SET", "/cardById/$CARD_ID/boost", false],
+      ["LOG", "$PLAYER_N", " drew a boost card."]
     ],
     "revealEncounter": [
       ["COND",
@@ -226,17 +234,18 @@
     ],
     "mulligan": [
       ["CONFIRM", "Mulligan?"],
-      ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
-      ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],
-      ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
-      ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
-      ["DRAW_CARD", "$DRAW_SIZE"],
+      ["DEFINE", "$PLAYER", "$PLAYER_N"],
+      ["ACTION_LIST", "drawHand"],
       ["LOG", "$PLAYER_N", " mulliganed."]
     ],
     "readyAll": [
+      ["DEFINE", "$PLAYER", "$PLAYER_N"],
+      ["ACTION_LIST", "readyAllPlayer"]
+    ],
+    "readyAllPlayer": [
       ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
-          ["EQUAL", "$CARD.controller", "$PLAYER_N"],
+          ["EQUAL", "$CARD.controller", "$PLAYER"],
           [
             ["SET", "/cardById/$CARD_ID/exhausted", false],
             ["SET", "/cardById/$CARD_ID/rotation", 0]
@@ -244,6 +253,23 @@
         ]
       ],
       ["LOG", "$PLAYER_N", " readied all their cards."]
+    ],
+    "endPlayerPhase": [
+      ["LOG", "Player Phase ends."],
+      ["ACTION_LIST", "readyAll"],
+      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
+        ["ACTION_LIST", "readyAllPlayer"],
+        ["ACTION_LIST", "drawHand"]
+      ]],
+      ["DEFINE", "$MAIN_SCHEME_CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
+      ["DEFINE", "$MAIN_SCHEME_CARD", "$GAME.cardById.$MAIN_SCHEME_CARD_ID"],
+      ["DEFINE", "$THREAT_INCREASE", ["ADD", "$MAIN_SCHEME_CARD.tokens.acceleration", "$GAME.numPlayers"]],
+      ["INCREASE_VAL", "/cardById/$MAIN_SCHEME_CARD_ID/tokens/threat", "$THREAT_INCREASE"],
+      ["LOG", "Acceleration: Place ", "$THREAT_INCREASE", " on " ,"$MAIN_SCHEME_CARD.sides.B.name", "."]
+    ],
+    "endVillainPhase": [
+      ["LOG", "Villain Phase ends."],
+      ["SET", "/firstPlayer", ["NEXT_PLAYER", "$GAME.firstPlayer"]]
     ],
     "setMode": [
       ["SET", "/mode", "$MODE"],

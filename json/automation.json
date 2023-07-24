@@ -76,8 +76,8 @@
           ["COND",
             ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0],
             [
-              ["DRAW_CARD", "$GAME.playerData.$PLAYER_N.handSize"],
-              ["LOG", "$PLAYER_N", " draws ", "$GAME.playerData.$PLAYER_N.handSize", " cards."]
+              ["DEFINE", "$PLAYER", "$PLAYER_N"],
+              ["ACTION_LIST", "drawHand"]
             ]
           ],
           ["COND",
@@ -106,6 +106,19 @@
           ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
           ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
           ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
+        ]
+      },
+      {
+        "_comment": "When a side scheme enters play set starting threat",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/inPlay"],
+        "condition": ["AND", "$TARGET.inPlay", ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"]],
+        "then": [
+          ["DEFINE", "$SCHEME_CARD", "$TARGET"],
+          ["COND",
+            ["EQUAL", "$TARGET.boost", false],
+            ["ACTION_LIST", "setSchemeStartingThreat"]
+          ]
         ]
       },
       {

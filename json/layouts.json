@@ -19,8 +19,7 @@
           {"groupId": "playerNIdentity",        "type": "row", "direction": "horizontal", "left":  "0%", "top": "80%", "width": "10%", "height": "20%"},
           {"groupId": "playerNHand",            "type": "fan", "direction": "horizontal", "left": "10%", "top": "80%", "width": "50%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
           {"groupId": "playerNDeck",            "type": "pile","direction": "horizontal", "left": "60%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNEliminated",      "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%"}
+          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}}
       ],
       "tableButtons": [
     
@@ -45,8 +44,7 @@
           {"groupId": "playerNIdentity",        "type": "row", "direction": "horizontal", "left":  "0%", "top": "80%", "width": "10%", "height": "20%"},
           {"groupId": "playerNHand",            "type": "fan", "direction": "horizontal", "left": "10%", "top": "80%", "width": "50%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
           {"groupId": "playerNDeck",            "type": "pile","direction": "horizontal", "left": "60%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNEliminated",      "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%"}
+          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}}
       ],
       "tableButtons": [
     
@@ -71,8 +69,7 @@
           {"groupId": "playerNIdentity",        "type": "row", "direction": "horizontal", "left":  "0%", "top": "80%", "width": "10%", "height": "20%"},
           {"groupId": "playerNHand",            "type": "fan", "direction": "horizontal", "left": "10%", "top": "80%", "width": "50%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
           {"groupId": "playerNDeck",            "type": "pile","direction": "horizontal", "left": "60%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNEliminated",      "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%"}
+          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}}
       ],
       "tableButtons": [
     
@@ -97,8 +94,7 @@
           {"groupId": "playerNIdentity",        "type": "row", "direction": "horizontal", "left":  "0%", "top": "80%", "width": "10%", "height": "20%"},
           {"groupId": "playerNHand",            "type": "fan", "direction": "horizontal", "left": "10%", "top": "80%", "width": "50%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
           {"groupId": "playerNDeck",            "type": "pile","direction": "horizontal", "left": "60%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}},
-          {"groupId": "playerNEliminated",      "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%"}
+          {"groupId": "playerNDiscard",         "type": "pile","direction": "horizontal", "left": "70%", "top": "80%", "width": "10%", "height": "20%", "style": {"background": "rgba(0, 0, 0, 0.3)"}}
       ],
       "tableButtons": [
     

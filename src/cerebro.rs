@@ -59,6 +59,21 @@ pub struct Card {
     pub starting_threat: Option<ScalingNumber>,
 }
 
+impl Card {
+    pub fn hinder(&self) -> Option<u32> {
+        if let Some(rules) = self.rules.as_ref() {
+            lazy_static! {
+                static ref HINDER_RE: Regex = Regex::new(r"Hinder (\d+)\{i\}").unwrap();
+            }
+            if let Some(captures) = HINDER_RE.captures(rules) {
+                return Some(captures[1].parse::<u32>().unwrap());
+            }
+        }
+
+        None
+    }
+}
+
 #[derive(Clone)]
 pub enum ScalingNumber {
     Fixed(u32),
