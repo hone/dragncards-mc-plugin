@@ -36,6 +36,12 @@
           ]
         ],
         ["COND",
+          ["AND",
+            "$CARD.sides.A.permanent",
+            ["EQUAL", "$CARD.sides.A.type", "Upgrade"]
+          ],
+          ["MOVE_CARD", "$CARD.id", ["JOIN_STRING", "$PLAYER_N", "Play1"], 0]],
+        ["COND",
           ["EQUAL", "$CARD.sides.A.type", "Villain"],
           [
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],

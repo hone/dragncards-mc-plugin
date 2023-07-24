@@ -25,6 +25,7 @@ pub struct Card {
     pub stage: Option<String>,
     pub starting_threat_fixed: Option<i64>,
     pub starting_threat_scaling: Option<i64>,
+    pub permanent: bool,
 }
 
 impl Card {
@@ -37,6 +38,11 @@ impl Card {
                 let database_id = uuid(&printing.artificial_id);
                 let pack = packs.get(&printing.pack_id).unwrap();
                 let image_url = image_url(&card, &printing);
+                let permanent = card
+                    .rules
+                    .as_ref()
+                    .map(|rules| rules.contains("Permanent."))
+                    .unwrap_or(false);
 
                 let mut new_card = Card {
                     database_id,
@@ -58,6 +64,7 @@ impl Card {
                     starting_threat_fixed: None,
                     starting_threat_scaling: None,
                     stage: card.stage.clone(),
+                    permanent,
                 };
 
                 if let Some(health) = card.health.as_ref() {

@@ -4,6 +4,7 @@
     "hitPointsFixed" : {"type": "integer", "default": null},
     "hitPointsScaling" : {"type": "integer", "default": null},
     "startingThreatFixed" : {"type": "integer", "default": null},
-    "startingThreatScaling" : {"type": "integer", "default": null}
+    "startingThreatScaling" : {"type": "integer", "default": null},
+    "permanent": {"type": "boolean", "default": false}
   }
 }
