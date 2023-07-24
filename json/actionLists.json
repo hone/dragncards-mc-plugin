@@ -265,11 +265,13 @@
       ["DEFINE", "$MAIN_SCHEME_CARD", "$GAME.cardById.$MAIN_SCHEME_CARD_ID"],
       ["DEFINE", "$THREAT_INCREASE", ["ADD", "$MAIN_SCHEME_CARD.tokens.acceleration", "$GAME.numPlayers"]],
       ["INCREASE_VAL", "/cardById/$MAIN_SCHEME_CARD_ID/tokens/threat", "$THREAT_INCREASE"],
-      ["LOG", "Acceleration: Place ", "$THREAT_INCREASE", " on " ,"$MAIN_SCHEME_CARD.sides.B.name", "."]
+      ["LOG", "Acceleration: Place ", "$THREAT_INCREASE", " on " ,"$MAIN_SCHEME_CARD.sides.B.name", "."],
+      ["SET", "/stepId", "2.1"]
     ],
     "endVillainPhase": [
       ["LOG", "Villain Phase ends."],
-      ["SET", "/firstPlayer", ["NEXT_PLAYER", "$GAME.firstPlayer"]]
+      ["SET", "/firstPlayer", ["NEXT_PLAYER", "$GAME.firstPlayer"]],
+      ["SET", "/stepId", "1.1"]
     ],
     "setMode": [
       ["SET", "/mode", "$MODE"],
