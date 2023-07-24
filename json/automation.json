@@ -115,7 +115,10 @@
         "condition": ["AND", "$TARGET.inPlay", ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"]],
         "then": [
           ["DEFINE", "$SCHEME_CARD", "$TARGET"],
-          ["ACTION_LIST", "setSchemeStartingThreat"]
+          ["COND",
+            ["EQUAL", "$TARGET.boost", false],
+            ["ACTION_LIST", "setSchemeStartingThreat"]
+          ]
         ]
       },
       {

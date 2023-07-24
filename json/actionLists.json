@@ -171,15 +171,13 @@
           ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
         ]
       ],
-      ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedEncounterDeck.stackIds.[0]"],
-      ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-        ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-      ],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-        ["SET", "/cardById/$CARD_ID/rotation", -30]
-      ],
-      ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+      ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["SET", "/cardById/$CARD_ID/boost", true],
+      ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
+      ["SET", "/cardById/$CARD_ID/rotation", -30],
+      ["SET", "/cardById/$CARD_ID/currentSide", "B"],
+      ["SET", "/cardById/$CARD_ID/boost", false],
+      ["LOG", "$PLAYER_N", " drew a boost card."]
     ],
     "revealEncounter": [
       ["COND",
