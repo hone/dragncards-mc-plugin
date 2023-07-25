@@ -39,7 +39,7 @@ pub enum PackType {
     Supplements,
 }
 
-#[derive(Clone, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Card {
     pub id: String,
@@ -74,7 +74,7 @@ impl Card {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum ScalingNumber {
     Fixed(u32),
     Scaling(u32),
@@ -128,7 +128,7 @@ impl<'de> Deserialize<'de> for ScalingNumber {
     }
 }
 
-#[derive(Clone, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum Classification {
     Aggression,
     Basic,
@@ -140,7 +140,7 @@ pub enum Classification {
     Protection,
 }
 
-#[derive(Clone, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum CardType {
     Ally,
     #[serde(rename = "Alter-Ego")]
@@ -166,7 +166,7 @@ pub enum CardType {
     Villain,
 }
 
-#[derive(Clone, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Printing {
     pub artificial_id: String,
@@ -177,7 +177,7 @@ pub struct Printing {
     pub unique_art: bool,
 }
 
-#[derive(Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PackNumber(pub String);
 
 struct PackNumberVisitor;
@@ -216,7 +216,7 @@ impl<'de> Deserialize<'de> for PackNumber {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct SetNumber(pub std::ops::RangeInclusive<u32>);
 
 impl SetNumber {

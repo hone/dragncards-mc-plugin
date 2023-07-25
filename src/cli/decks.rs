@@ -2,7 +2,11 @@ use crate::{
     cerebro::{
         self, Card, CardType, Pack, PackNumber, PackType, Printing, Set, SetNumber, SetType,
     },
-    dragncards, marvelcdb,
+    dragncards::{
+        self,
+        decks::{DeckList, DeckMenu, SubMenu},
+    },
+    marvelcdb,
 };
 use atoi::atoi;
 use indexmap::IndexMap;
@@ -69,31 +73,39 @@ pub async fn execute(args: DecksArgs) {
     // order sets by pack based on the first card number in the set
     for sets in pack_set_map.values_mut() {
         sets.sort_by(|a, b| {
-            set_card_map
-                .get(&a.id)
-                .unwrap()
-                .first()
-                .unwrap()
-                .set_number
-                .as_ref()
-                .map(|set_number| set_number.0.start())
-                .unwrap_or(&(0 as u32))
-                .cmp(
-                    &set_card_map
-                        .get(&b.id)
-                        .unwrap()
-                        .first()
-                        .unwrap()
-                        .set_number
-                        .as_ref()
-                        .map(|set_number| set_number.0.start())
-                        .unwrap_or(&(0 as u32)),
-                )
+            atoi::<usize>(
+                set_card_map
+                    .get(&a.id)
+                    .unwrap()
+                    .first()
+                    .unwrap()
+                    .pack_number
+                    .0
+                    .as_bytes(),
+            )
+            .cmp(&atoi::<usize>(
+                set_card_map
+                    .get(&b.id)
+                    .unwrap()
+                    .first()
+                    .unwrap()
+                    .pack_number
+                    .0
+                    .as_bytes(),
+            ))
         });
     }
 
     // build scenarios, modulars, campaign, nemesis set
+    let mut scenarios_sub_menus: Vec<SubMenu> = Vec::new();
     for pack in packs.iter() {
+        let mut pack_sub_menu: Option<SubMenu> = None;
+        if pack.r#type == PackType::CampaignExpansion {
+            pack_sub_menu = Some(SubMenu::DeckLists {
+                label: pack.name.clone(),
+                deck_lists: Vec::new(),
+            });
+        }
         let sets = pack_set_map.get(&pack.id).unwrap();
         let decks = sets.iter().map(|set| {
             let deck: Vec<dragncards::decks::Card> = set_card_map
@@ -144,6 +156,24 @@ pub async fn execute(args: DecksArgs) {
                     })
                 })
                 .collect();
+
+            if let Some(pack_sub_menu) = pack_sub_menu.as_mut() {
+                if set.r#type == SetType::Villain {
+                    match pack_sub_menu {
+                        SubMenu::DeckLists {
+                            label: _,
+                            deck_lists,
+                        } => {
+                            deck_lists.push(DeckList {
+                                label: set.name.clone(),
+                                deck_list_id: set.name.clone(),
+                            });
+                        }
+                        _ => (),
+                    }
+                }
+            }
+
             (
                 set.name.clone(),
                 dragncards::decks::PreBuiltDeck {
@@ -155,6 +185,10 @@ pub async fn execute(args: DecksArgs) {
 
         for (key, value) in decks.into_iter() {
             pre_built_decks.insert(key, value);
+        }
+
+        if let Some(pack_sub_menu) = pack_sub_menu {
+            scenarios_sub_menus.push(pack_sub_menu);
         }
     }
 
@@ -170,6 +204,7 @@ pub async fn execute(args: DecksArgs) {
         }
     }
 
+    // build hero pack decks
     for pack in packs
         .iter()
         .filter(|pack| !pack.incomplete && pack.r#type == PackType::HeroPack)
@@ -210,11 +245,24 @@ pub async fn execute(args: DecksArgs) {
         );
     }
 
-    let json = serde_json::to_string_pretty(&dragncards::decks::Doc { pre_built_decks }).unwrap();
+    let json =
+        serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
+            .unwrap();
     let mut file = File::create("json/preBuiltDecks.json").unwrap();
+    write!(file, "{json}").unwrap();
+
+    let mut sub_menus: Vec<SubMenu> = Vec::new();
+    sub_menus.push(SubMenu::SubMenu {
+        label: String::from("Scenarios"),
+        sub_menus: scenarios_sub_menus,
+    });
+    let deck_menu = DeckMenu { sub_menus };
+    let mut file = File::create("json/deckMenu.json").unwrap();
+    let json = serde_json::to_string_pretty(&dragncards::decks::DeckMenuDoc { deck_menu }).unwrap();
     write!(file, "{json}").unwrap();
 }
 
+#[derive(Debug)]
 struct OrderedCard<'a> {
     pub pack_number: PackNumber,
     pub set_number: Option<SetNumber>,
