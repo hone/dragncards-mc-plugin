@@ -28,6 +28,13 @@ enum SubMenuRootKey {
     Campaign,
 }
 
+#[derive(Debug)]
+struct OrderedCard<'a> {
+    pub pack_number: PackNumber,
+    pub set_number: Option<SetNumber>,
+    pub card: &'a Card,
+}
+
 impl fmt::Display for SubMenuRootKey {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
@@ -129,10 +136,7 @@ pub async fn execute(args: DecksArgs) {
     }
 
     // build scenarios, modulars, campaign, nemesis set
-    let mut root_sub_menus = HashMap::<SubMenuRootKey, Vec<SubMenu>>::new();
-    let mut root_deck_lists = HashMap::<DeckListRootKey, Vec<DeckList>>::new();
     for pack in packs.iter() {
-        let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
         let sets = pack_set_map.get(&pack.id).unwrap();
         let decks = sets.iter().map(|set| {
             let deck: Vec<dragncards::decks::Card> = set_card_map
@@ -184,15 +188,6 @@ pub async fn execute(args: DecksArgs) {
                 })
                 .collect();
 
-            let deck_list = DeckList {
-                label: set.name.clone(),
-                deck_list_id: set.name.clone(),
-            };
-            let deck_lists = pack_sub_menu
-                .entry(set.r#type.clone())
-                .or_insert_with(|| Vec::new());
-            deck_lists.push(deck_list);
-
             (
                 set.name.clone(),
                 dragncards::decks::PreBuiltDeck {
@@ -204,6 +199,98 @@ pub async fn execute(args: DecksArgs) {
 
         for (key, value) in decks.into_iter() {
             pre_built_decks.insert(key, value);
+        }
+    }
+
+    let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
+
+    for card in cards.iter() {
+        for printing in card.printings.iter() {
+            let entry = packs_card_map
+                .entry(&printing.pack_id)
+                .or_insert(Vec::new());
+
+            entry.push((card, printing));
+        }
+    }
+
+    // build hero decks in campaign boxes (need this for the nemesis sets to be built first)
+    for pack in packs
+        .iter()
+        .filter(|pack| !pack.incomplete && pack.r#type == PackType::CampaignExpansion)
+    {
+        let value = packs_card_map.get_mut(&pack.id).unwrap();
+        value.sort_by(|(_, printing_a), (_, printing_b)| {
+            atoi::<usize>(printing_a.pack_number.0.as_bytes())
+                .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
+        });
+
+        build_hero_deck(
+            &value.iter().collect(),
+            &pack,
+            &marvelcdb_cards,
+            &pack_set_map,
+            &mut pre_built_decks,
+        );
+
+        let second_hero = value
+            .iter()
+            // skip past the 1st hero
+            .skip(5)
+            .skip_while(|card| {
+                card.0.r#type != CardType::Hero && card.0.r#type != CardType::AlterEgo
+            })
+            .collect();
+        build_hero_deck(
+            &second_hero,
+            &pack,
+            &marvelcdb_cards,
+            &pack_set_map,
+            &mut pre_built_decks,
+        );
+    }
+
+    // build hero pack decks
+    for pack in packs
+        .iter()
+        .filter(|pack| !pack.incomplete && pack.r#type == PackType::HeroPack)
+    {
+        let value = packs_card_map.get_mut(&pack.id).unwrap();
+        value.sort_by(|(_, printing_a), (_, printing_b)| {
+            atoi::<usize>(printing_a.pack_number.0.as_bytes())
+                .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
+        });
+
+        build_hero_deck(
+            &value.iter().collect(),
+            &pack,
+            &marvelcdb_cards,
+            &pack_set_map,
+            &mut pre_built_decks,
+        );
+    }
+
+    let json =
+        serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
+            .unwrap();
+    let mut file = File::create("json/preBuiltDecks.json").unwrap();
+    write!(file, "{json}").unwrap();
+
+    // Build `deckMenu.json`
+    let mut root_sub_menus = HashMap::<SubMenuRootKey, Vec<SubMenu>>::new();
+    let mut root_deck_lists = HashMap::<DeckListRootKey, Vec<DeckList>>::new();
+    for pack in packs.iter() {
+        let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
+        let sets = pack_set_map.get(&pack.id).unwrap();
+        for set in sets.iter() {
+            let deck_list = DeckList {
+                label: set.name.clone(),
+                deck_list_id: set.name.clone(),
+            };
+            let deck_lists = pack_sub_menu
+                .entry(set.r#type.clone())
+                .or_insert_with(|| Vec::new());
+            deck_lists.push(deck_list);
         }
 
         for (set_type, mut deck_lists) in pack_sub_menu.into_iter() {
@@ -253,66 +340,6 @@ pub async fn execute(args: DecksArgs) {
             }
         }
     }
-
-    let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
-
-    for card in cards.iter() {
-        for printing in card.printings.iter() {
-            let entry = packs_card_map
-                .entry(&printing.pack_id)
-                .or_insert(Vec::new());
-
-            entry.push((card, printing));
-        }
-    }
-
-    // build hero pack decks
-    for pack in packs
-        .iter()
-        .filter(|pack| !pack.incomplete && pack.r#type == PackType::HeroPack)
-    {
-        let value = packs_card_map.get_mut(&pack.id).unwrap();
-        value.sort_by(|(_, printing_a), (_, printing_b)| {
-            atoi::<usize>(printing_a.pack_number.0.as_bytes())
-                .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
-        });
-
-        let mut player_cards: Vec<_> = value
-            .iter()
-            .take_while(|(card, _)| card.r#type != CardType::Obligation)
-            .collect();
-        let obligation_card = value
-            .iter()
-            .find(|(card, _)| card.r#type == CardType::Obligation)
-            .unwrap();
-        player_cards.push(obligation_card);
-
-        let mut deck = process_hero_deck(&player_cards, &pack, &&marvelcdb_cards);
-        let nemesis_set_name = &pack_set_map
-            .get(&pack.id)
-            .unwrap()
-            .iter()
-            .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&pack.name))
-            .next()
-            .unwrap()
-            .name;
-        deck.extend(pre_built_decks.get(nemesis_set_name).unwrap().cards.clone());
-
-        pre_built_decks.insert(
-            pack.name.clone(),
-            dragncards::decks::PreBuiltDeck {
-                label: pack.name.clone(),
-                cards: deck,
-            },
-        );
-    }
-
-    let json =
-        serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
-            .unwrap();
-    let mut file = File::create("json/preBuiltDecks.json").unwrap();
-    write!(file, "{json}").unwrap();
-
     let mut sub_menus = root_sub_menus
         .into_iter()
         .map(|(key, values)| SubMenu::SubMenu {
@@ -335,13 +362,6 @@ pub async fn execute(args: DecksArgs) {
     write!(file, "{json}").unwrap();
 }
 
-#[derive(Debug)]
-struct OrderedCard<'a> {
-    pub pack_number: PackNumber,
-    pub set_number: Option<SetNumber>,
-    pub card: &'a Card,
-}
-
 fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> OrderedCard<'a> {
     OrderedCard {
         set_number: printing.set_number.clone(),
@@ -350,8 +370,54 @@ fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> Ordere
     }
 }
 
-fn process_hero_deck(
+fn build_hero_deck<'a>(
     cards: &Vec<&(&Card, &Printing)>,
+    pack: &Pack,
+    marvelcdb_cards: &Vec<marvelcdb::Card>,
+    pack_set_map: &HashMap<&Uuid, Vec<&Set>>,
+    pre_built_decks: &mut IndexMap<String, dragncards::decks::PreBuiltDeck>,
+) {
+    let mut player_cards: Vec<_> = cards
+        .iter()
+        .take_while(|(card, _)| card.r#type != CardType::Obligation)
+        .collect();
+    let obligation_card = cards
+        .iter()
+        .find(|(card, _)| card.r#type == CardType::Obligation)
+        .unwrap();
+    player_cards.push(obligation_card);
+
+    let mut deck = process_hero_deck(&player_cards, &pack, &&marvelcdb_cards);
+    let hero_name = if pack.r#type == PackType::CampaignExpansion {
+        let hero_card = &player_cards
+            .iter()
+            .find(|card| card.0.r#type == CardType::Hero)
+            .unwrap();
+        hero_card.0.name.clone()
+    } else {
+        pack.name.clone()
+    };
+    let nemesis_set_name = &pack_set_map
+        .get(&pack.id)
+        .unwrap()
+        .iter()
+        .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&hero_name))
+        .next()
+        .unwrap()
+        .name;
+    deck.extend(pre_built_decks.get(nemesis_set_name).unwrap().cards.clone());
+
+    pre_built_decks.insert(
+        hero_name,
+        dragncards::decks::PreBuiltDeck {
+            label: pack.name.clone(),
+            cards: deck,
+        },
+    );
+}
+
+fn process_hero_deck(
+    cards: &Vec<&&(&Card, &Printing)>,
     pack: &Pack,
     marvelcdb_cards: &Vec<marvelcdb::Card>,
 ) -> Vec<dragncards::decks::Card> {
