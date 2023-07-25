@@ -10,7 +10,7 @@ use crate::{
 };
 use atoi::atoi;
 use indexmap::IndexMap;
-use std::{collections::HashMap, fs::File, io::Write};
+use std::{collections::HashMap, fmt, fs::File, io::Write};
 use uuid::Uuid;
 
 const TOUCHED_ID: &str = "38002";
@@ -19,6 +19,38 @@ const TOUCHED_ID: &str = "38002";
 pub struct DecksArgs {
     #[arg(long, default_value_t = false)]
     pub offline: bool,
+}
+
+#[derive(Eq, PartialEq, Hash)]
+enum SubMenuRootKey {
+    Scenarios,
+    ModularSets,
+    Campaign,
+}
+
+impl fmt::Display for SubMenuRootKey {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            SubMenuRootKey::Scenarios => write!(f, "Scenarios"),
+            SubMenuRootKey::ModularSets => write!(f, "Modular Sets"),
+            SubMenuRootKey::Campaign => write!(f, "Campaign"),
+        }
+    }
+}
+
+#[derive(Eq, PartialEq, Hash)]
+enum DeckListRootKey {
+    Heroes,
+    NemesisSets,
+}
+
+impl fmt::Display for DeckListRootKey {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            DeckListRootKey::NemesisSets => write!(f, "Nemesis Sets"),
+            DeckListRootKey::Heroes => write!(f, "Hero Precons"),
+        }
+    }
 }
 
 pub async fn execute(args: DecksArgs) {
@@ -97,15 +129,10 @@ pub async fn execute(args: DecksArgs) {
     }
 
     // build scenarios, modulars, campaign, nemesis set
-    let mut scenarios_sub_menus: Vec<SubMenu> = Vec::new();
+    let mut root_sub_menus = HashMap::<SubMenuRootKey, Vec<SubMenu>>::new();
+    let mut root_deck_lists = HashMap::<DeckListRootKey, Vec<DeckList>>::new();
     for pack in packs.iter() {
-        let mut pack_sub_menu: Option<SubMenu> = None;
-        if pack.r#type == PackType::CampaignExpansion {
-            pack_sub_menu = Some(SubMenu::DeckLists {
-                label: pack.name.clone(),
-                deck_lists: Vec::new(),
-            });
-        }
+        let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
         let sets = pack_set_map.get(&pack.id).unwrap();
         let decks = sets.iter().map(|set| {
             let deck: Vec<dragncards::decks::Card> = set_card_map
@@ -157,22 +184,14 @@ pub async fn execute(args: DecksArgs) {
                 })
                 .collect();
 
-            if let Some(pack_sub_menu) = pack_sub_menu.as_mut() {
-                if set.r#type == SetType::Villain {
-                    match pack_sub_menu {
-                        SubMenu::DeckLists {
-                            label: _,
-                            deck_lists,
-                        } => {
-                            deck_lists.push(DeckList {
-                                label: set.name.clone(),
-                                deck_list_id: set.name.clone(),
-                            });
-                        }
-                        _ => (),
-                    }
-                }
-            }
+            let deck_list = DeckList {
+                label: set.name.clone(),
+                deck_list_id: set.name.clone(),
+            };
+            let deck_lists = pack_sub_menu
+                .entry(set.r#type.clone())
+                .or_insert_with(|| Vec::new());
+            deck_lists.push(deck_list);
 
             (
                 set.name.clone(),
@@ -187,8 +206,51 @@ pub async fn execute(args: DecksArgs) {
             pre_built_decks.insert(key, value);
         }
 
-        if let Some(pack_sub_menu) = pack_sub_menu {
-            scenarios_sub_menus.push(pack_sub_menu);
+        for (set_type, mut deck_lists) in pack_sub_menu.into_iter() {
+            if deck_lists.len() > 0 {
+                match set_type {
+                    SetType::Villain => {
+                        let values = root_sub_menus
+                            .entry(SubMenuRootKey::Scenarios)
+                            .or_insert_with(|| Vec::new());
+                        values.push(SubMenu::DeckLists {
+                            label: pack.name.clone(),
+                            deck_lists,
+                        });
+                    }
+                    SetType::Campaign => {
+                        let values = root_sub_menus
+                            .entry(SubMenuRootKey::Campaign)
+                            .or_insert_with(|| Vec::new());
+                        values.push(SubMenu::DeckLists {
+                            label: pack.name.clone(),
+                            deck_lists,
+                        });
+                    }
+                    SetType::Modular => {
+                        let values = root_sub_menus
+                            .entry(SubMenuRootKey::ModularSets)
+                            .or_insert_with(|| Vec::new());
+                        values.push(SubMenu::DeckLists {
+                            label: pack.name.clone(),
+                            deck_lists,
+                        });
+                    }
+                    SetType::Hero => {
+                        let values = root_deck_lists
+                            .entry(DeckListRootKey::Heroes)
+                            .or_insert_with(|| Vec::new());
+                        values.append(&mut deck_lists);
+                    }
+                    SetType::Nemesis => {
+                        let values = root_deck_lists
+                            .entry(DeckListRootKey::NemesisSets)
+                            .or_insert_with(|| Vec::new());
+                        values.append(&mut deck_lists);
+                    }
+                    SetType::Supplementary => (),
+                };
+            }
         }
     }
 
@@ -251,11 +313,22 @@ pub async fn execute(args: DecksArgs) {
     let mut file = File::create("json/preBuiltDecks.json").unwrap();
     write!(file, "{json}").unwrap();
 
-    let mut sub_menus: Vec<SubMenu> = Vec::new();
-    sub_menus.push(SubMenu::SubMenu {
-        label: String::from("Scenarios"),
-        sub_menus: scenarios_sub_menus,
-    });
+    let mut sub_menus = root_sub_menus
+        .into_iter()
+        .map(|(key, values)| SubMenu::SubMenu {
+            label: key.to_string(),
+            sub_menus: values,
+        })
+        .collect::<Vec<_>>();
+    sub_menus.append(
+        &mut root_deck_lists
+            .into_iter()
+            .map(|(key, values)| SubMenu::DeckLists {
+                label: key.to_string(),
+                deck_lists: values,
+            })
+            .collect(),
+    );
     let deck_menu = DeckMenu { sub_menus };
     let mut file = File::create("json/deckMenu.json").unwrap();
     let json = serde_json::to_string_pretty(&dragncards::decks::DeckMenuDoc { deck_menu }).unwrap();

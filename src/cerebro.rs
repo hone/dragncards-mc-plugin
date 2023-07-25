@@ -270,7 +270,7 @@ impl<'de> Deserialize<'de> for SetNumber {
     }
 }
 
-#[derive(Clone, Deserialize)]
+#[derive(Clone, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "PascalCase")]
 pub struct Set {
     pub id: Uuid,
@@ -282,7 +282,7 @@ pub struct Set {
     pub requires: Option<Vec<Uuid>>,
 }
 
-#[derive(Clone, Deserialize, PartialEq)]
+#[derive(Clone, Deserialize, PartialEq, Eq, Hash)]
 pub enum SetType {
     #[serde(rename = "Campaign Set")]
     Campaign,

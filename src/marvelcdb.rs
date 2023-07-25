@@ -2,6 +2,7 @@ use atoi::atoi;
 use serde::{Deserialize, Serialize};
 
 const CARDS_API: &str = "https://marvelcdb.com/api/public/cards/?encounter=1";
+#[allow(dead_code)]
 const PACKS_API: &str = "https://marvelcdb.com/api/public/packs";
 
 #[derive(Deserialize)]
@@ -53,6 +54,7 @@ pub async fn get_cards(offline: Option<bool>) -> Result<Vec<Card>, reqwest::Erro
     }
 }
 
+#[allow(dead_code)]
 pub async fn get_packs() -> Result<Vec<Pack>, reqwest::Error> {
     reqwest::get(PACKS_API).await?.json().await
 }

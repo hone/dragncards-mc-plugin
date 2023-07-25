@@ -8,26 +8,26 @@ pub struct PreBuiltDeckDoc {
     pub pre_built_decks: IndexMap<String, PreBuiltDeck>,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DeckMenuDoc {
     pub deck_menu: DeckMenu,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PreBuiltDeck {
     pub label: String,
     pub cards: Vec<Card>,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DeckMenu {
     pub sub_menus: Vec<SubMenu>,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(untagged)]
 pub enum SubMenu {
     #[serde(rename_all = "camelCase")]
@@ -42,7 +42,50 @@ pub enum SubMenu {
     },
 }
 
-#[derive(Serialize)]
+#[allow(dead_code)]
+impl SubMenu {
+    pub fn deck_lists(&self) -> Option<&Vec<DeckList>> {
+        match self {
+            Self::DeckLists {
+                label: _,
+                deck_lists,
+            } => Some(deck_lists),
+            _ => None,
+        }
+    }
+
+    pub fn deck_lists_as_mut(&mut self) -> Option<&mut Vec<DeckList>> {
+        match self {
+            Self::DeckLists {
+                label: _,
+                deck_lists,
+            } => Some(deck_lists),
+            _ => None,
+        }
+    }
+
+    pub fn sub_menus(&self) -> Option<&Vec<SubMenu>> {
+        match self {
+            Self::SubMenu {
+                label: _,
+                sub_menus,
+            } => Some(sub_menus),
+            _ => None,
+        }
+    }
+
+    pub fn sub_menus_as_mut(&mut self) -> Option<&mut Vec<SubMenu>> {
+        match self {
+            Self::SubMenu {
+                label: _,
+                sub_menus,
+            } => Some(sub_menus),
+            _ => None,
+        }
+    }
+}
+
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DeckList {
     pub label: String,
