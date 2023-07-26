@@ -270,6 +270,37 @@ pub async fn execute(args: DecksArgs) {
         );
     }
 
+    // core set heroes
+    let doc = dragncards::core_set_hero::Doc::from_fixture();
+    for (name, cards) in doc.heroes.into_iter() {
+        let mut deck: Vec<dragncards::decks::Card> = cards
+            .into_iter()
+            .map(|card| dragncards::decks::Card {
+                load_group_id: card.load_group_id,
+                quantity: card.quantity,
+                database_id: card.uuid,
+                _name: card.name,
+            })
+            .collect();
+        let nemesis_set_name = &pack_set_map
+            .get(&uuid::uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267"))
+            .unwrap()
+            .iter()
+            .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
+            .next()
+            .unwrap()
+            .name;
+        deck.extend(pre_built_decks.get(nemesis_set_name).unwrap().cards.clone());
+
+        pre_built_decks.insert(
+            name.clone(),
+            dragncards::decks::PreBuiltDeck {
+                label: name,
+                cards: deck,
+            },
+        );
+    }
+
     let json =
         serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
             .unwrap();
