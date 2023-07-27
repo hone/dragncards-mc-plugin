@@ -282,6 +282,7 @@ pub async fn execute(args: DecksArgs) {
                 _name: card.name,
             })
             .collect();
+        let obligation_card = deck.last().unwrap().clone();
         let nemesis_set_name = &pack_set_map
             .get(&uuid::uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267"))
             .unwrap()
@@ -290,8 +291,19 @@ pub async fn execute(args: DecksArgs) {
             .next()
             .unwrap()
             .name;
-        deck.extend(pre_built_decks.get(nemesis_set_name).unwrap().cards.clone());
+        let nemesis_set = &pre_built_decks.get(nemesis_set_name).unwrap().cards;
+        deck.extend(nemesis_set.clone());
+        let mut obligation_nemesis_bundle = nemesis_set.clone();
+        obligation_nemesis_bundle.insert(0, obligation_card);
 
+        let label = format!("{name} (marvelcdb bundle)");
+        pre_built_decks.insert(
+            label.clone(),
+            dragncards::decks::PreBuiltDeck {
+                label,
+                cards: obligation_nemesis_bundle,
+            },
+        );
         pre_built_decks.insert(
             name.clone(),
             dragncards::decks::PreBuiltDeck {
@@ -419,6 +431,8 @@ fn build_hero_deck<'a>(
     player_cards.push(obligation_card);
 
     let mut deck = process_hero_deck(&player_cards, &pack, &&marvelcdb_cards);
+    let mut obligation_nemesis_bundle =
+        process_hero_deck(&vec![obligation_card], &pack, &&marvelcdb_cards);
     let hero_name = if pack.r#type == PackType::CampaignExpansion {
         let hero_card = &player_cards
             .iter()
@@ -436,8 +450,18 @@ fn build_hero_deck<'a>(
         .next()
         .unwrap()
         .name;
-    deck.extend(pre_built_decks.get(nemesis_set_name).unwrap().cards.clone());
+    let nemesis_set = &pre_built_decks.get(nemesis_set_name).unwrap().cards;
+    deck.extend(nemesis_set.clone());
+    obligation_nemesis_bundle.extend(nemesis_set.clone());
 
+    let label = format!("{hero_name} (marvelcdb bundle)");
+    pre_built_decks.insert(
+        label.clone(),
+        dragncards::decks::PreBuiltDeck {
+            label,
+            cards: obligation_nemesis_bundle,
+        },
+    );
     pre_built_decks.insert(
         hero_name,
         dragncards::decks::PreBuiltDeck {
