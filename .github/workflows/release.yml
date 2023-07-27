@@ -1,0 +1,36 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Build
+        run: cargo build --release
+      - name: Build Card Database
+        run: cargo run --release database
+      - name: Build Deck Database
+        run: cargo run --release decks
+      - name: Packaging
+        run: |
+          mkdir -p /tmp/release
+          cp -rf *.tsv json /tmp/release
+          cd /tmp/release/ && tar czf /tmp/dragncards-mc-plugin-${{ github.ref_name }}.tar.gz .
+      - name: Publish Artifact to GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          files: /tmp/dragncards-mc-plugin-${{ github.ref_name }}.tar.gz
+          token: ${{ secrets.GITHUB_TOKEN }}
