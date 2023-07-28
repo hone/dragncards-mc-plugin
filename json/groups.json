@@ -313,6 +313,18 @@
         "deckGroupId": "sharedEncounterDeck"
       }
     },
+    "player1OutOfPlay": {
+      "label": "id:player1OutOfPlay",
+      "tableLabel": "id:player1OutOfPlay",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "player1",
+        "inPlay": false,
+        "deckGroupId": "player1OutOfPlay"
+      }
+    },
     "player2Hand": {
       "label": "id:player2Hand",
       "tableLabel": "id:player2Hand",
@@ -437,6 +449,18 @@
         "controller": "player2",
         "inPlay": false,
         "deckGroupId": "sharedEncounterDeck"
+      }
+    },
+    "player2OutOfPlay": {
+      "label": "id:player2OutOfPlay",
+      "tableLabel": "id:player2OutOfPlay",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "player2",
+        "inPlay": false,
+        "deckGroupId": "player2OutOfPlay"
       }
     },
     "player3Hand": {
@@ -565,6 +589,18 @@
         "deckGroupId": "sharedEncounterDeck"
       }
     },
+    "player3OutOfPlay": {
+      "label": "id:player3OutOfPlay",
+      "tableLabel": "id:player3OutOfPlay",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "player3",
+        "inPlay": false,
+        "deckGroupId": "player3OutOfPlay"
+      }
+    },
     "player4Hand": {
       "label": "id:player4Hand",
       "tableLabel": "id:player4Hand",
@@ -689,6 +725,18 @@
         "controller": "player4",
         "inPlay": false,
         "deckGroupId": "sharedEncounterDeck"
+      }
+    },
+    "player4OutOfPlay": {
+      "label": "id:player4OutOfPlay",
+      "tableLabel": "id:player4OutOfPlay",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "player4",
+        "inPlay": false,
+        "deckGroupId": "player4OutOfPlay"
       }
     }
   }

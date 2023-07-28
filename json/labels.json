@@ -78,6 +78,9 @@
     "player1NemesisSet": {
       "English": "Player 1 Nemesis Set"
     },
+    "player1OutOfPlay": {
+      "English": "Player 1 Out Of Play"
+    },
     "player2Hand": {
       "English": "Player 2 Hand"
     },
@@ -110,6 +113,9 @@
     },
     "player2NemesisSet": {
       "English": "Player 2 Nemesis Set"
+    },
+    "player2OutOfPlay": {
+      "English": "Player 2 Out Of Play"
     },
     "player3Hand": {
       "English": "Player 3 Hand"
@@ -144,6 +150,9 @@
     "player3NemesisSet": {
       "English": "Player 3 Nemesis Set"
     },
+    "player3OutOfPlay": {
+      "English": "Player 3 Out Of Play"
+    },
     "player4Hand": {
       "English": "Player 4 Hand"
     },
@@ -176,6 +185,9 @@
     },
     "player4NemesisSet": {
       "English": "Player 4 Nemesis Set"
+    },
+    "player4OutOfPlay": {
+      "English": "Player 4 Out Of Play"
     },
     "step-0.0": {
       "English": "Beginning of Round"
