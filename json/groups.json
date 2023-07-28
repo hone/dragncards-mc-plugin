@@ -187,6 +187,17 @@
         "inPlay": true
       }
     },
+    "sharedOutOfPlay": {
+      "label": "id:outOfPlay",
+      "tableLabel": "id:outOfPlay",
+      "canHaveAttachments": false,
+      "shuffleOnLoad": false,
+      "onCardEnter": {
+        "currentSide": "A",
+        "controller": "shared",
+        "inPlay": false
+      }
+    },
     "player1Hand": {
       "label": "id:player1Hand",
       "tableLabel": "id:player1Hand",

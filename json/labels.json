@@ -45,6 +45,9 @@
     "sideSchemes": {
       "English": "Side Schemes"
     },
+    "outOfPlay": {
+      "English": "Out Of Play"
+    },
     "player1Hand": {
       "English": "Player 1 Hand"
     },
