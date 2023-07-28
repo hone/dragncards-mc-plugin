@@ -53,7 +53,8 @@
             ["COND",
               ["OR",
                 ["EQUAL", "$CARD.sides.A.stage", "$FIRST_STAGE"],
-                ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"]
+                ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"],
+                ["EQUAL", "$CARD.sides.A.stage", "A"]
               ],
               [
                 ["DEFINE", "$VILLAIN_CARD", "$CARD"],
@@ -110,6 +111,13 @@
       ],
       ["COND", "$LOADED_SCENARIO_DECK",
         [
+          ["COND",
+            ["AND",
+              ["EQUAL", "$VILLAIN_CARD.sides.A.stage", "A"],
+              ["EQUAL", "$GAME.mode", "expert"]
+            ],
+            ["SET", "/cardById/$VILLAIN_CARD.id/currentSide", "B"]
+          ],
           ["ACTION_LIST", "setVillainHealth"],
           ["ACTION_LIST", "setSchemeStartingThreat"]
         ]
