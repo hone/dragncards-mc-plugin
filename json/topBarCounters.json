@@ -4,7 +4,7 @@
       {
         "label": "id:round",
         "imageUrl": "https://dragncards-lotrlcg.s3.amazonaws.com/tokens/time.png",
-        "gameProperty": "round"
+        "gameProperty": "roundNumber"
       },
       {
         "label": "id:villainHitPoints",
