@@ -15,6 +15,7 @@
       {"key": "K", "actionList": "revealSecondaryFacedown", "label": "id:revealSecondaryFacedown"},
       {"key": "Shift+K", "actionList": "revealSecondaryFaceup", "label": "id:revealSecondaryFaceup"},
       {"key": "B", "actionList": "drawBoost", "label": "id:dealBoostCard"},
+      {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
       {"key": "Shift+M", "actionList": "mulligan", "label": "id:mulligan"},
       {"key": "Shift+R", "actionList": "readyAll", "label": "id:readyAll"},
       {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
@@ -22,7 +23,6 @@
       {"key": "Shift+V", "actionList": "endVillainPhase", "label": "id:endVillainPhase"}
     ],
     "card": [
-      {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
       {"key": "Alt+1", "actionList": "setSideA", "label": "id:setSideA"},

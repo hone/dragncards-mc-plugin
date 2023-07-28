@@ -4,12 +4,12 @@
       "DRAW_CARD"
     ],
     "drawHand": [
-      ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER", "Hand"]],
-      ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER.handSize"],
+      ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
+      ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],
       ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
-      ["DRAW_CARD", "$DRAW_SIZE"],
-      ["LOG", "$PLAYER", " draws ", "$DRAW_SIZE", " cards."]
+      ["LOG", "$PLAYER_N", " draws ", "$DRAW_SIZE", " cards."],
+      ["DRAW_CARD", "$DRAW_SIZE"]
     ],
     "toggleExhaust": [
       ["COND",
@@ -239,26 +239,21 @@
       ["LOG", "$PLAYER_N", " mulliganed."]
     ],
     "readyAll": [
-      ["DEFINE", "$PLAYER", "$PLAYER_N"],
-      ["ACTION_LIST", "readyAllPlayer"]
-    ],
-    "readyAllPlayer": [
+      ["LOG", "$PLAYER_N", " readied all their cards."],
       ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
-          ["EQUAL", "$CARD.controller", "$PLAYER"],
+          ["EQUAL", "$CARD.controller", "$PLAYER_N"],
           [
             ["SET", "/cardById/$CARD_ID/exhausted", false],
             ["SET", "/cardById/$CARD_ID/rotation", 0]
           ]
         ]
-      ],
-      ["LOG", "$PLAYER_N", " readied all their cards."]
+      ]
     ],
     "endPlayerPhase": [
       ["LOG", "Player Phase ends."],
-      ["ACTION_LIST", "readyAll"],
-      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
-        ["ACTION_LIST", "readyAllPlayer"],
+      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+        ["ACTION_LIST", "readyAll"],
         ["ACTION_LIST", "drawHand"]
       ]],
       ["DEFINE", "$MAIN_SCHEME_CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
