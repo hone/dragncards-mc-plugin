@@ -25,6 +25,7 @@
     "card": [
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
+      {"key": "Shift+B", "actionList": "straighten", "label": "id:straighten"},
       {"key": "Alt+1", "actionList": "setSideA", "label": "id:setSideA"},
       {"key": "Alt+2", "actionList": "setSideB", "label": "id:setSideB"},
       {"key": "Alt+3", "actionList": "setSideC", "label": "id:setSideC"},
