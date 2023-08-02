@@ -357,11 +357,14 @@
     "setExpertMode": {
       "English": "Set Expert Mode"
     },
-    "endPlayerPhase": {
-      "English": "End Player Phase"
+    "playerEndPhase": {
+      "English": "Player End Phase"
     },
-    "endVillainPhase": {
-      "English": "End Villain Phase"
+    "villainEndPhase": {
+      "English": "Villain End Phase"
+    },
+    "villainEncounterPhase": {
+      "English": "Villain Encounter Phase"
     }
   }
 }

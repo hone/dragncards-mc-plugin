@@ -19,8 +19,9 @@
       {"key": "Shift+M", "actionList": "mulligan", "label": "id:mulligan"},
       {"key": "Shift+R", "actionList": "readyAll", "label": "id:readyAll"},
       {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
-      {"key": "Shift+P", "actionList": "endPlayerPhase", "label": "id:endPlayerPhase"},
-      {"key": "Shift+V", "actionList": "endVillainPhase", "label": "id:endVillainPhase"}
+      {"key": "Shift+P", "actionList": "playerEndPhase", "label": "id:playerEndPhase"},
+      {"key": "K", "actionList": "villainEncounterPhase", "label": "id:villainEncounterPhase"},
+      {"key": "Shift+V", "actionList": "villainEndPhase", "label": "id:villainEndPhase"}
     ],
     "card": [
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},

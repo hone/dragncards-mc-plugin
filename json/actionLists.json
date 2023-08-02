@@ -239,7 +239,7 @@
         ]
       ]
     ],
-    "endPlayerPhase": [
+    "playerEndPhase": [
       ["LOG", "Player Phase - Ends"],
       ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
         ["ACTION_LIST", "readyAll"],
@@ -253,7 +253,12 @@
       ["LOG", "Villain Phase - Acceleration: Place ", "$THREAT_INCREASE", " on " ,"$MAIN_SCHEME_CARD.sides.B.name", "."],
       ["SET", "/stepId", "2.1"]
     ],
-    "endVillainPhase": [
+    "villainEncounterPhase": [
+      ["LOG", "Villain Phase - Encounter"],
+      ["SET", "/stepId", "2.3"],
+      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", ["ACTION_LIST", "revealEncounterFacedown"]]
+    ],
+    "villainEndPhase": [
       ["LOG", "Villain Phase - Ends"],
       ["SET", "/firstPlayer", ["NEXT_PLAYER", "$GAME.firstPlayer"]],
       ["SET", "/stepId", "1.1"],
