@@ -9,7 +9,12 @@
       ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
       ["LOG", "$PLAYER_N", " draws ", "$DRAW_SIZE", " cards."],
-      ["DRAW_CARD", "$DRAW_SIZE"]
+      ["DRAW_CARD", "$DRAW_SIZE"],
+      ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]]],
+      ["COND",
+        ["GREATER_THAN", "$DRAW_SIZE", 0],
+        ["DRAW_CARD", "$DRAW_SIZE"]
+      ]
     ],
     "toggleExhaust": [
       ["COND",
