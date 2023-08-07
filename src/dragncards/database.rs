@@ -26,6 +26,7 @@ pub struct Card {
     pub starting_threat_fixed: Option<i64>,
     pub starting_threat_scaling: Option<i64>,
     pub permanent: bool,
+    pub nemesis_minion: bool,
 }
 
 impl Card {
@@ -43,6 +44,20 @@ impl Card {
                     .as_ref()
                     .map(|rules| rules.contains("Permanent."))
                     .unwrap_or(false);
+                let nemesis_minion = card.r#type == CardType::Minion
+                    && (card
+                        .rules
+                        .as_ref()
+                        .map(|rules| rules.contains("nemesis minion"))
+                        .unwrap_or(false)
+                        || printing
+                            .set_number
+                            .as_ref()
+                            .map(|set_number| {
+                                let range = &set_number.0;
+                                range.contains(&1) || range.contains(&2)
+                            })
+                            .unwrap_or(false));
 
                 let mut new_card = Card {
                     database_id,
@@ -64,6 +79,7 @@ impl Card {
                     starting_threat_fixed: None,
                     starting_threat_scaling: None,
                     stage: card.stage.clone(),
+                    nemesis_minion,
                     permanent,
                 };
 

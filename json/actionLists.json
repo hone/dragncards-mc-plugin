@@ -239,6 +239,20 @@
         ]
       ]
     ],
+    "shadowsOfThePast": [
+      ["DEFINE", "$GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "NemesisSet"]],
+      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.$GROUP_ID.parentCardIds", [
+        ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["COND",
+          "$CARD.sides.A.nemesisMinion",
+          ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], 0],
+          ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
+          ["MOVE_CARD", "$CARD_ID", "sharedSideSchemes", 0],
+          true,
+          ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", 0]
+        ]
+      ]]
+    ],
     "playerEndPhase": [
       ["LOG", "Player Phase - Ends"],
       ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [

@@ -188,12 +188,18 @@ pub async fn execute(args: DecksArgs) {
                 })
                 .collect();
 
+            let label = if set.name == "Venom" {
+                if set.r#type == SetType::Hero {
+                    String::from("Venom (Hero)")
+                } else {
+                    String::from("Venom (Scenario)")
+                }
+            } else {
+                set.name.clone()
+            };
             (
-                set.name.clone(),
-                dragncards::decks::PreBuiltDeck {
-                    label: set.name.clone(),
-                    cards: deck,
-                },
+                label.clone(),
+                dragncards::decks::PreBuiltDeck { label, cards: deck },
             )
         });
 
@@ -462,10 +468,15 @@ fn build_hero_deck<'a>(
             cards: obligation_nemesis_bundle,
         },
     );
+    let pre_built_label = if pack.name == "Venom" {
+        String::from("Venom (Hero)")
+    } else {
+        hero_name
+    };
     pre_built_decks.insert(
-        hero_name,
+        pre_built_label.clone(),
         dragncards::decks::PreBuiltDeck {
-            label: pack.name.clone(),
+            label: pre_built_label,
             cards: deck,
         },
     );
