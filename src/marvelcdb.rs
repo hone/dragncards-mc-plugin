@@ -38,6 +38,7 @@ pub enum TypeCode {
     MainScheme,
     Minion,
     Obligation,
+    PlayerSideScheme,
     Resource,
     SideScheme,
     Support,

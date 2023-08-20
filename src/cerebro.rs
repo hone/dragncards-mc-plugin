@@ -137,6 +137,8 @@ pub enum Classification {
     Hero,
     Justice,
     Leadership,
+    #[serde(rename = "'Pool")]
+    Pool,
     Protection,
 }
 
