@@ -106,6 +106,10 @@
               ["DEFINE", "$BUNDLE", ["JOIN_STRING", "$IDENTITY_CARD.sides.$HERO_SIDE.name", " (marvelcdb bundle)"]],
               ["LOAD_CARDS", "$BUNDLE"]
             ]
+          ],
+          ["COND",
+            ["EQUAL", "$IDENTITY_CARD.databaseId", "1a09dcb7-083f-5781-87c0-7b0d723cd232"],
+            ["LOAD_CARDS", "Invocation"]
           ]
         ]
       ],

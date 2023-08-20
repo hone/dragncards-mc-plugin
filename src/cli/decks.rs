@@ -172,6 +172,15 @@ pub async fn execute(args: DecksArgs) {
                         }
                         SetType::Nemesis => Some("playerNNemesisSet"),
                         SetType::Campaign => Some("sharedCampaignDeck"),
+                        SetType::Supplementary => {
+                            if set.name == "Weather Deck" {
+                                Some("playerNPlay1")
+                            } else if set.name == "Invocation" {
+                                Some("playerNDeck2")
+                            } else {
+                                None
+                            }
+                        }
                         _ => None,
                     };
 
