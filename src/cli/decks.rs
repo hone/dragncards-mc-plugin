@@ -342,14 +342,21 @@ pub async fn execute(args: DecksArgs) {
         let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
         let sets = pack_set_map.get(&pack.id).unwrap();
         for set in sets.iter() {
-            let deck_list = DeckList {
-                label: set.name.clone(),
-                deck_list_id: set.name.clone(),
+            let deck_list_id = if set.id == uuid::uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d") {
+                String::from("Venom (Hero)")
+            } else if set.id == uuid::uuid!("1bb3c0d6-add0-4313-809a-5e337666069c") {
+                String::from("Venom (Scenario)")
+            } else {
+                set.name.clone()
             };
+
             let deck_lists = pack_sub_menu
                 .entry(set.r#type.clone())
                 .or_insert_with(|| Vec::new());
-            deck_lists.push(deck_list);
+            deck_lists.push(DeckList {
+                label: set.name.clone(),
+                deck_list_id,
+            })
         }
 
         for (set_type, mut deck_lists) in pack_sub_menu.into_iter() {
