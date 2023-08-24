@@ -57,6 +57,12 @@
     "player1Discard": {
       "English": "Player 1 Discard"
     },
+    "player1Deck2": {
+      "English": "Player 1 Secondary Deck"
+    },
+    "player1Discard2": {
+      "English": "Player 1 Secondary Discard"
+    },
     "player1Identity": {
       "English": "Player 1 Identity"
     },
@@ -92,6 +98,12 @@
     },
     "player2Discard": {
       "English": "Player 2 Discard"
+    },
+    "player2Deck2": {
+      "English": "Player 2 Secondary Deck"
+    },
+    "player2Discard2": {
+      "English": "Player 2 Secondary Discard"
     },
     "player2Identity": {
       "English": "Player 2 Identity"
@@ -129,6 +141,12 @@
     "player3Discard": {
       "English": "Player 3 Discard"
     },
+    "player3Deck2": {
+      "English": "Player 3 Secondary Deck"
+    },
+    "player3Discard2": {
+      "English": "Player 3 Secondary Discard"
+    },
     "player3Identity": {
       "English": "Player 3 Identity"
     },
@@ -164,6 +182,12 @@
     },
     "player4Discard": {
       "English": "Player 4 Discard"
+    },
+    "player4Deck2": {
+      "English": "Player 4 Secondary Deck"
+    },
+    "player4Discard2": {
+      "English": "Player 4 Secondary Discard"
     },
     "player4Identity": {
       "English": "Player 4 Identity"

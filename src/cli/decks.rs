@@ -299,6 +299,7 @@ pub async fn execute(args: DecksArgs) {
             .collect();
         let obligation_card = deck.last().unwrap().clone();
         let nemesis_set_name = &pack_set_map
+            // Core Set Pack Id
             .get(&uuid::uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267"))
             .unwrap()
             .iter()
