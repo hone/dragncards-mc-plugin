@@ -97,7 +97,7 @@
             ["EQUAL", "$GAME.playerData.$PLAYER_N.hitPoints", 0],
             [
               ["SET", "/playerData/$PLAYER_N/hitPoints", "$IDENTITY_CARD.currentFace.hitPointsFixed"],
-              ["LOG", "$PLAYER_N", " sets their hit points to ", "$GAME.playerData.$PLAYER_N.hitPoints", "."]
+              ["LOG", "$ALIAS_N", " sets their hit points to ", "$GAME.playerData.$PLAYER_N.hitPoints", "."]
             ]
           ],
           ["COND",
@@ -136,7 +136,7 @@
         "then": [
           ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
           ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
-          ["LOG", "$PLAYER_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
+          ["LOG", "$ALIAS_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
         ]
       },
       {
@@ -166,7 +166,7 @@
           ["ACTION_LIST", "revealEncounter"],
           ["MOVE_STACKS", ["JOIN_STRING", "$PLAYER_N", "Discard"], "$DECK_GROUP_ID"],
           ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],
-          ["LOG", "$PLAYER_N", " emptied their deck."]
+          ["LOG", "$ALIAS_N", " emptied their deck."]
         ]
       },
       {

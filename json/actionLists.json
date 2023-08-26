@@ -8,7 +8,7 @@
       ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],
       ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
-      ["LOG", "$PLAYER_N", " draws ", "$DRAW_SIZE", " cards."],
+      ["LOG", "$ALIAS_N", " draws ", "$DRAW_SIZE", " cards."],
       ["DRAW_CARD", "$DRAW_SIZE"],
       ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]]],
       ["COND",
@@ -22,13 +22,13 @@
         [
           ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
           ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", false],
-          ["LOG", "$PLAYER_N", " readied ", "$ACTIVE_FACE.name", "."]
+          ["LOG", "$ALIAS_N", " readied ", "$ACTIVE_FACE.name", "."]
         ],
         ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 0], "$ACTIVE_CARD.inPlay"],
         [
           ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 90],
           ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", true],
-          ["LOG", "$PLAYER_N", " exhausted ", "$ACTIVE_FACE.name", "."]
+          ["LOG", "$ALIAS_N", " exhausted ", "$ACTIVE_FACE.name", "."]
         ]
       ]
     ],
@@ -68,10 +68,10 @@
     "discardCard": [
       ["COND",
         ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],
-        ["LOG", "$PLAYER_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
+        ["LOG", "$ALIAS_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
         true,
         [
-          ["LOG", "$PLAYER_N", " discarded ", "$ACTIVE_FACE.name", "."],
+          ["LOG", "$ALIAS_N", " discarded ", "$ACTIVE_FACE.name", "."],
           ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
           ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],
           ["COND",
@@ -116,18 +116,18 @@
       ["COND",
         ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
         [
-          ["LOG", "$PLAYER_N", " flipped ", "$ACTIVE_FACE.name", " facedown."],
+          ["LOG", "$ALIAS_N", " flipped ", "$ACTIVE_FACE.name", " facedown."],
           ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
         ],
         true,
         [
           ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
-          ["LOG", "$PLAYER_N", " flipped ", "$ACTIVE_FACE.name", " faceup."]
+          ["LOG", "$ALIAS_N", " flipped ", "$ACTIVE_FACE.name", " faceup."]
         ]
       ]
     ],
     "setSide": [
-      ["LOG", "$PLAYER_N", " set ", "$ACTIVE_FACE.name", "to side ", "$SIDE", "."],
+      ["LOG", "$ALIAS_N", " set ", "$ACTIVE_FACE.name", "to side ", "$SIDE", "."],
       ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "$SIDE"]
     ],
     "setSideA": [
@@ -146,11 +146,11 @@
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
       ["DEFINE", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
       ["SHUFFLE_GROUP", "$GROUP_ID"],
-      ["LOG", "$PLAYER_N", " shuffled ", "$ACTIVE_FACE.name", " into ", "$GAME.groupById.$GROUP_ID.label", "."]
+      ["LOG", "$ALIAS_N", " shuffled ", "$ACTIVE_FACE.name", " into ", "$GAME.groupById.$GROUP_ID.label", "."]
     ],
     "zeroTokens": [
       ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
-      ["LOG", "$PLAYER_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
+      ["LOG", "$ALIAS_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
     ],
     "revealEncounterFaceup": [
       ["DEFINE", "$REVEAL_FACEDOWN", false],
@@ -173,7 +173,7 @@
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
         [
           ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
-          ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
+          ["LOG", "$ALIAS_N"," shuffled the encounter discard pile into the encounter deck."]
         ]
       ],
       ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
@@ -182,7 +182,7 @@
       ["SET", "/cardById/$CARD_ID/rotation", -30],
       ["SET", "/cardById/$CARD_ID/currentSide", "B"],
       ["SET", "/cardById/$CARD_ID/boost", false],
-      ["LOG", "$PLAYER_N", " drew a boost card."]
+      ["LOG", "$ALIAS_N", " drew a boost card."]
     ],
     "straighten": [
       ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0]
@@ -192,7 +192,7 @@
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
         [
           ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
-          ["LOG", "$PLAYER_N"," shuffled the encounter discard pile into the encounter deck."]
+          ["LOG", "$ALIAS_N"," shuffled the encounter discard pile into the encounter deck."]
         ]
       ],
       ["DEFINE", "$CARD_ID", ["GET_CARD_ID", "sharedEncounterDeck", 0, 0]],
@@ -201,12 +201,12 @@
         "$REVEAL_FACEDOWN",
         ["SET", "/cardById/$CARD_ID/currentSide", "B"]
       ],
-      ["LOG", "$PLAYER_N", " dealt an encounter card."]
+      ["LOG", "$ALIAS_N", " dealt an encounter card."]
     ],
     "revealSecondary": [
       ["COND",
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck2.stackIds"], 0],
-        ["LOG", "$PLAYER_N", " tried to reveal a card from the second encounter deck, but it's empty."],
+        ["LOG", "$ALIAS_N", " tried to reveal a card from the second encounter deck, but it's empty."],
         true,
         [
           ["DEFINE", "$STACK_ID", ["AT_INDEX", "$GAME.groupById.sharedEncounter1Deck.stackIds", 0]],
@@ -217,7 +217,7 @@
               ["SET", "/cardById/$CARD_ID/currentSide", "B"]
             ]
           ],
-          ["LOG", "$PLAYER_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+          ["LOG", "$ALIAS_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
         ]
       ]
     ],
@@ -225,10 +225,10 @@
       ["CONFIRM", "Mulligan?"],
       ["DEFINE", "$PLAYER", "$PLAYER_N"],
       ["ACTION_LIST", "drawHand"],
-      ["LOG", "$PLAYER_N", " mulliganed."]
+      ["LOG", "$ALIAS_N", " mulliganed."]
     ],
     "readyAll": [
-      ["LOG", "$PLAYER_N", " readied all their cards."],
+      ["LOG", "$ALIAS_N", " readied all their cards."],
       ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
           ["EQUAL", "$CARD.controller", "$PLAYER_N"],
