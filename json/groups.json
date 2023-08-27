@@ -261,17 +261,6 @@
         "discardGroupId": "player1Discard2"
       }
     },
-    "player1Identity": {
-      "label": "id:player1Identity",
-      "tableLabel": "id:player1Identity",
-      "canHaveAttachments": true,
-      "shuffleOnLoad": false,
-      "onCardEnter": {
-        "currentSide": "B",
-        "controller": "player1",
-        "inPlay": true
-      }
-    },
     "player1Play1": {
       "label": "id:player1Play1",
       "tableLabel": "id:player1Play1",
@@ -423,17 +412,6 @@
         "inPlay": false,
         "deckGroupId": "player2Deck2",
         "discardGroupId": "player2Discard2"
-      }
-    },
-    "player2Identity": {
-      "label": "id:player2Identity",
-      "tableLabel": "id:player2Identity",
-      "canHaveAttachments": true,
-      "shuffleOnLoad": false,
-      "onCardEnter": {
-        "currentSide": "B",
-        "controller": "player2",
-        "inPlay": true
       }
     },
     "player2Play1": {
@@ -589,17 +567,6 @@
         "discardGroupId": "player3Discard2"
       }
     },
-    "player3Identity": {
-      "label": "id:player3Identity",
-      "tableLabel": "id:player3Identity",
-      "canHaveAttachments": true,
-      "shuffleOnLoad": false,
-      "onCardEnter": {
-        "currentSide": "B",
-        "controller": "player3",
-        "inPlay": true
-      }
-    },
     "player3Play1": {
       "label": "id:player3Play1",
       "tableLabel": "id:player3Play1",
@@ -751,17 +718,6 @@
         "inPlay": false,
         "deckGroupId": "player4Deck2",
         "discardGroupId": "player4Discard2"
-      }
-    },
-    "player4Identity": {
-      "label": "id:player4Identity",
-      "tableLabel": "id:player4Identity",
-      "canHaveAttachments": true,
-      "shuffleOnLoad": false,
-      "onCardEnter": {
-        "currentSide": "B",
-        "controller": "player4",
-        "inPlay": true
       }
     },
     "player4Play1": {

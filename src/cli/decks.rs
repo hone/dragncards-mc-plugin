@@ -517,7 +517,7 @@ fn process_hero_deck(
                     "playerNNemesisSet"
                 }
                 // Hero/AlterEgo are consistently
-                CardType::Hero | CardType::AlterEgo => "playerNIdentity",
+                CardType::Hero | CardType::AlterEgo => "playerNPlay1",
                 _ => "playerNDeck",
             };
             // Put Permanent Cards into play
