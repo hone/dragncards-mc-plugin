@@ -125,6 +125,12 @@
           ["ACTION_LIST", "setVillainHealth"],
           ["ACTION_LIST", "setSchemeStartingThreat"]
         ]
+      ],
+      ["COND", 
+        ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillain.stackIds"], 1],
+        ["SET", "/layoutVariants/villainRegion", "expanded"],
+        true,
+        ["SET", "/layoutVariants/villainRegion", "standard"]
       ]
     ],
     "gameRules": [
