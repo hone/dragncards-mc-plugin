@@ -11,7 +11,7 @@ use crate::{
 use atoi::atoi;
 use indexmap::IndexMap;
 use std::{collections::HashMap, fmt, fs::File, io::Write};
-use uuid::Uuid;
+use uuid::{uuid, Uuid};
 
 const TOUCHED_ID: &str = "38002";
 
@@ -300,7 +300,7 @@ pub async fn execute(args: DecksArgs) {
         let obligation_card = deck.last().unwrap().clone();
         let nemesis_set_name = &pack_set_map
             // Core Set Pack Id
-            .get(&uuid::uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267"))
+            .get(&uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267"))
             .unwrap()
             .iter()
             .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
@@ -342,9 +342,9 @@ pub async fn execute(args: DecksArgs) {
         let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
         let sets = pack_set_map.get(&pack.id).unwrap();
         for set in sets.iter() {
-            let deck_list_id = if set.id == uuid::uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d") {
+            let deck_list_id = if set.id == uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d") {
                 String::from("Venom (Hero)")
-            } else if set.id == uuid::uuid!("1bb3c0d6-add0-4313-809a-5e337666069c") {
+            } else if set.id == uuid!("1bb3c0d6-add0-4313-809a-5e337666069c") {
                 String::from("Venom (Scenario)")
             } else {
                 set.name.clone()
@@ -485,6 +485,33 @@ fn build_hero_deck<'a>(
             cards: obligation_nemesis_bundle,
         },
     );
+    // Make an Ironheart Bundle
+    if pack.id == uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d") {
+        let ironheart_upgrades_deck = deck
+            .iter()
+            .filter_map(|card| {
+                if [
+                    uuid!("0006bfd8-06a5-5928-8d17-1b4971407dbc"),
+                    uuid!("23858611-0f2c-5e28-8aae-cc9258600557"),
+                ]
+                .contains(&card.database_id)
+                {
+                    Some(card.clone())
+                } else {
+                    None
+                }
+            })
+            .collect::<Vec<dragncards::decks::Card>>();
+
+        let label = String::from("Ironheart (Version Upgrades)");
+        pre_built_decks.insert(
+            label.clone(),
+            dragncards::decks::PreBuiltDeck {
+                label,
+                cards: ironheart_upgrades_deck,
+            },
+        );
+    }
     let pre_built_label = if pack.name == "Venom" {
         String::from("Venom (Hero)")
     } else {
@@ -525,6 +552,10 @@ fn process_hero_deck(
                 if rules.contains("Permanent") || card.id == TOUCHED_ID {
                     load_group_id = "playerNPlay1";
                 }
+            }
+            // Set Ironheart Version 2/3 Hero Cards out of play
+            if ["29002A", "29003A"].contains(&card.id.as_str()) {
+                load_group_id = "playerNOutOfPlay";
             }
             let quantity = marvelcdb_cards
                 .iter()

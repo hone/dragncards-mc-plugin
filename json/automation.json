@@ -79,6 +79,17 @@
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],
             ["DEFINE", "$SCHEME_CARD", "$CARD"]
           ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "602e603f-7e92-57f6-9b9f-7b7f8a18de9b"],
+          ["DEFINE", "$IRONHEART", true]
+        ],
+        ["COND",
+          ["OR",
+            ["EQUAL", "$CARD.databaseId", "0006bfd8-06a5-5928-8d17-1b4971407dbc"],
+            ["EQUAL", "$CARD.databaseId", "23858611-0f2c-5e28-8aae-cc9258600557"]
+          ],
+          ["DEFINE", "$IRONHEART_UPGRADES", true]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
@@ -110,6 +121,13 @@
           ["COND",
             ["EQUAL", "$IDENTITY_CARD.databaseId", "1a09dcb7-083f-5781-87c0-7b0d723cd232"],
             ["LOAD_CARDS", "Invocation"]
+          ],
+          ["COND",
+            ["AND",
+              ["DEFINED", "$IRONHEART"],
+              ["NOT", ["DEFINED", "$IRONHEART_UPGRADES"]]
+            ],
+            ["LOAD_CARDS", "Ironheart (Version Upgrades)"]
           ]
         ]
       ],
