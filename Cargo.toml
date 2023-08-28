@@ -9,7 +9,7 @@ edition = "2021"
 atoi = "2.0.0"
 clap = { version = "4.3.19", features = ["derive"] }
 csv = "1.2.2"
-indexmap = { version = "1.9.3", features = ["serde"] }
+indexmap = { version = "2.0.0", features = ["serde"] }
 lazy_static = "1.4.0"
 regex = "1.9.1"
 reqwest = { version = "0.11.18", features = ["json"] }
