@@ -569,5 +569,18 @@
     "Incomplete": true,
     "Number": "43",
     "ReleaseStatus": null
+  },
+  {
+    "Deleted": false,
+    "Id": "274d7af9-55a1-432c-afd4-adafd64f9d8c",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Deadpool",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": true,
+    "Number": "44",
+    "ReleaseStatus": null
   }
 ]
