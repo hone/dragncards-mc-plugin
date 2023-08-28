@@ -20,4 +20,4 @@ uuid = { version = "1.4.1", features = ["serde", "v5"] }
 
 [dev-dependencies]
 serde_json = "1.0.104"
-tokio-test = "0.4.2"
+tokio-test = "0.4.3"
