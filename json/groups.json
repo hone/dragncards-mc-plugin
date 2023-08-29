@@ -274,7 +274,7 @@
     },
     "player1Play1": {
       "label": "id:player1Play1",
-      "tableLabel": "id:player1Play1",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -438,7 +438,7 @@
     },
     "player2Play1": {
       "label": "id:player2Play1",
-      "tableLabel": "id:player2Play1",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -602,7 +602,7 @@
     },
     "player3Play1": {
       "label": "id:player3Play1",
-      "tableLabel": "id:player3Play1",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -766,7 +766,7 @@
     },
     "player4Play1": {
       "label": "id:player4Play1",
-      "tableLabel": "id:player4Play1",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {

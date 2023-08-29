@@ -4,5 +4,6 @@
   "minPlayers": 1,
   "maxPlayers": 4,
   "firstPlayerImageUrl": "https://raw.githubusercontent.com/hone/dragncards-mc-plugin/main/tokens/first_player_token.svg",
-  "backgroundUrl": "https://i.imgur.com/nSIzxrk.jpg"
+  "backgroundUrl": "https://i.imgur.com/nSIzxrk.jpg",
+  "defaultAttachmentDirection": "left"
 }
