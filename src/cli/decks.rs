@@ -487,7 +487,7 @@ fn build_hero_deck<'a>(
     );
     // Make an Ironheart Bundle
     if pack.id == uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d") {
-        let ironheart_upgrades_deck = deck
+        let bundle_deck = deck
             .iter()
             .filter_map(|card| {
                 if [
@@ -508,7 +508,28 @@ fn build_hero_deck<'a>(
             label.clone(),
             dragncards::decks::PreBuiltDeck {
                 label,
-                cards: ironheart_upgrades_deck,
+                cards: bundle_deck,
+            },
+        );
+    // Make SP//dr bundle
+    } else if pack.id == uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f") {
+        let bundle_deck = deck
+            .iter()
+            .filter_map(|card| {
+                if [uuid!("36943f94-3731-5bed-9b56-59fbdd69f968")].contains(&card.database_id) {
+                    Some(card.clone())
+                } else {
+                    None
+                }
+            })
+            .collect::<Vec<dragncards::decks::Card>>();
+
+        let label = String::from("SP//dr (Peni Parker)");
+        pre_built_decks.insert(
+            label.clone(),
+            dragncards::decks::PreBuiltDeck {
+                label,
+                cards: bundle_deck,
             },
         );
     }

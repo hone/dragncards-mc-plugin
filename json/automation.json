@@ -90,10 +90,35 @@
             ["EQUAL", "$CARD.databaseId", "23858611-0f2c-5e28-8aae-cc9258600557"]
           ],
           ["DEFINE", "$IRONHEART_UPGRADES", true]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "94028a84-59b8-52ca-bdb0-5228cbd23318"],
+          [
+            ["LOG", "SPDR Detected"],
+            ["DEFINE", "$SPDR", true],
+            ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+          ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "36943f94-3731-5bed-9b56-59fbdd69f968"],
+          [
+            ["LOG", "Peni Detected"],
+            ["DEFINE", "$SPDR_PENI", true]
+          ]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
       ["DEFINE", "$PLAYER_N_NEMESIS_SET_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "NemesisSet"]],
+      ["COND",
+        ["AND",
+          ["DEFINED", "$SPDR"],
+          ["NOT", ["DEFINED", "$SPDR_PENI"]]
+        ],
+        [
+          ["LOG", "LOADING Peni Parker"],
+          ["LOAD_CARDS", "SP//dr (Peni Parker)"]
+        ]
+      ],
       ["COND",
         ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0]],
         [
