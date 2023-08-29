@@ -111,9 +111,6 @@
     "player2Discard2": {
       "English": "Player 2 Secondary Discard"
     },
-    "player2Identity": {
-      "English": "Player 2 Identity"
-    },
     "player2Play1": {
       "English": "Player 2 Play Area 1"
     },
@@ -153,9 +150,6 @@
     "player3Discard2": {
       "English": "Player 3 Secondary Discard"
     },
-    "player3Identity": {
-      "English": "Player 3 Identity"
-    },
     "player3Play1": {
       "English": "Player 3 Play Area 1"
     },
@@ -194,9 +188,6 @@
     },
     "player4Discard2": {
       "English": "Player 4 Secondary Discard"
-    },
-    "player4Identity": {
-      "English": "Player 4 Identity"
     },
     "player4Play1": {
       "English": "Player 4 Play Area 1"

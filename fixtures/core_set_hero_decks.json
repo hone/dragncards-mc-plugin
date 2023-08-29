@@ -1,7 +1,7 @@
 {
   "heroes": {
     "Black Panther": [
-      { "uuid": "d3952869-1bf8-57c4-b9fb-b6834a2dc365", "quantity": 1, "loadGroupId": "playerNIdentity", "name": "Black Panther" },
+      { "uuid": "d3952869-1bf8-57c4-b9fb-b6834a2dc365", "quantity": 1, "loadGroupId": "playerNPlay1", "name": "Black Panther" },
       { "uuid": "eddf8866-e463-5380-8975-eff7dbf14c83", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Shuri" },
       { "uuid": "8a8133a1-5234-5e26-a4f1-cf8a401e2c5c", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Ancestral Knowledge" },
       { "uuid": "9e8d8474-3721-5ad9-b830-0b722a70193c", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Wakanda Forever!" },
@@ -36,7 +36,7 @@
       { "uuid": "6f4fc111-1227-5b50-afd7-d34bbece6c4e", "quantity": 1, "loadGroupId": "sharedEncounterDeck", "name": "Affairs of State" }
     ],
     "Captain Marvel": [
-      { "uuid": "453a3be5-1741-5491-a2b1-c93debc1c0ca", "quantity": 1, "loadGroupId": "playerNIdentity", "name": "Captain Marvel" },
+      { "uuid": "453a3be5-1741-5491-a2b1-c93debc1c0ca", "quantity": 1, "loadGroupId": "playerNPlay1", "name": "Captain Marvel" },
       { "uuid": "aff2ecd0-fc0e-55cf-8fe1-382be90b135c", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Spider-Woman" },
       { "uuid": "663499a0-8378-557b-b068-fb4656f4e374", "quantity": 3, "loadGroupId": "playerNDeck", "name": "Crisis Interdiction" },
       { "uuid": "101706a2-7839-5333-87da-2fcafadf5bd3", "quantity": 3, "loadGroupId": "playerNDeck", "name": "Photonic Blast" },
@@ -68,7 +68,7 @@
       { "uuid": "038d9eb4-dcaf-59ad-98d5-2b56dd54909f", "quantity": 1, "loadGroupId": "sharedEncounterDeck", "name": "Family Emergency" }
     ],
     "Iron Man": [
-      { "uuid": "7050bee0-051f-5b81-9b35-80a294d032df", "quantity": 1, "loadGroupId": "playerNIdentity", "name": "Iron Man" },
+      { "uuid": "7050bee0-051f-5b81-9b35-80a294d032df", "quantity": 1, "loadGroupId": "playerNPlay1", "name": "Iron Man" },
       { "uuid": "4a95d076-1446-5fef-881b-424be216878a", "quantity": 1, "loadGroupId": "playerNDeck", "name": "War Machine" },
       { "uuid": "17e02573-8678-51c6-a4c3-ee302832962d", "quantity": 3, "loadGroupId": "playerNDeck", "name": "Repulsor Blast" },
       { "uuid": "2f01208e-4586-5117-ac10-4449a8f5eb99", "quantity": 2, "loadGroupId": "playerNDeck", "name": "Supersonic Punch" },
@@ -101,7 +101,7 @@
       { "uuid": "99f7c301-230d-502c-b70f-a3f5639e0fc3", "quantity": 1, "loadGroupId": "sharedEncounterDeck", "name": "Business Problems" }
     ],
     "She-Hulk": [
-      { "uuid": "b90a942c-221e-515d-8f6a-1b927049298f", "quantity": 1, "loadGroupId": "playerNIdentity", "name": "She-Hulk" },
+      { "uuid": "b90a942c-221e-515d-8f6a-1b927049298f", "quantity": 1, "loadGroupId": "playerNPlay1", "name": "She-Hulk" },
       { "uuid": "e804778b-d55a-504f-8afa-50d5052c92e1", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Hellcat" },
       { "uuid": "6fe4edae-253b-57b2-9189-3aa4522a4abc", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Gamma Slam" },
       { "uuid": "a9f9047a-6651-52be-ad06-b41dda09753a", "quantity": 2, "loadGroupId": "playerNDeck", "name": "Ground Stomp" },
@@ -133,7 +133,7 @@
       { "uuid": "0b283953-807a-5dee-bc9d-04d95bf89fd3", "quantity": 1, "loadGroupId": "sharedEncounterDeck", "name": "Legal Work" }
     ],
     "Spider-Man": [
-      { "uuid": "c92a3f54-6113-5ef4-8a82-f8a366cf499c", "quantity": 1, "loadGroupId": "playerNIdentity", "name": "Spider-Man" },
+      { "uuid": "c92a3f54-6113-5ef4-8a82-f8a366cf499c", "quantity": 1, "loadGroupId": "playerNPlay1", "name": "Spider-Man" },
       { "uuid": "5a597d72-8f94-5cf0-b84b-5253bc374302", "quantity": 1, "loadGroupId": "playerNDeck", "name": "Black Cat" },
       { "uuid": "d4f6535b-a0f4-5ef1-b778-509329bc5b69", "quantity": 2, "loadGroupId": "playerNDeck", "name": "Backflip" },
       { "uuid": "c52b7e43-bd94-55ae-889e-ea8205dfd3f2", "quantity": 2, "loadGroupId": "playerNDeck", "name": "Enhanced Spider-Sense" },

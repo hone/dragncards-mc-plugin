@@ -108,7 +108,7 @@ impl<'de> Visitor<'de> for ScalingNumberVisitor {
                 Ok(ScalingNumber::Fixed(number))
             }
         } else {
-            if value == "∞" || value == "—" || value == "–" {
+            if ["∞", "—", "–", "-"].contains(&value) {
                 Ok(ScalingNumber::Infinity)
             } else {
                 Err(E::custom(format!(

@@ -79,10 +79,46 @@
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],
             ["DEFINE", "$SCHEME_CARD", "$CARD"]
           ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "602e603f-7e92-57f6-9b9f-7b7f8a18de9b"],
+          ["DEFINE", "$IRONHEART", true]
+        ],
+        ["COND",
+          ["OR",
+            ["EQUAL", "$CARD.databaseId", "0006bfd8-06a5-5928-8d17-1b4971407dbc"],
+            ["EQUAL", "$CARD.databaseId", "23858611-0f2c-5e28-8aae-cc9258600557"]
+          ],
+          ["DEFINE", "$IRONHEART_UPGRADES", true]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "94028a84-59b8-52ca-bdb0-5228cbd23318"],
+          [
+            ["LOG", "SPDR Detected"],
+            ["DEFINE", "$SPDR", true],
+            ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+          ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "36943f94-3731-5bed-9b56-59fbdd69f968"],
+          [
+            ["LOG", "Peni Detected"],
+            ["DEFINE", "$SPDR_PENI", true]
+          ]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
       ["DEFINE", "$PLAYER_N_NEMESIS_SET_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "NemesisSet"]],
+      ["COND",
+        ["AND",
+          ["DEFINED", "$SPDR"],
+          ["NOT", ["DEFINED", "$SPDR_PENI"]]
+        ],
+        [
+          ["LOG", "LOADING Peni Parker"],
+          ["LOAD_CARDS", "SP//dr (Peni Parker)"]
+        ]
+      ],
       ["COND",
         ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0]],
         [
@@ -110,6 +146,13 @@
           ["COND",
             ["EQUAL", "$IDENTITY_CARD.databaseId", "1a09dcb7-083f-5781-87c0-7b0d723cd232"],
             ["LOAD_CARDS", "Invocation"]
+          ],
+          ["COND",
+            ["AND",
+              ["DEFINED", "$IRONHEART"],
+              ["NOT", ["DEFINED", "$IRONHEART_UPGRADES"]]
+            ],
+            ["LOAD_CARDS", "Ironheart (Version Upgrades)"]
           ]
         ]
       ],
@@ -149,7 +192,14 @@
         "_comment": "When a side scheme enters play set starting threat",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay"],
-        "condition": ["AND", "$TARGET.inPlay", ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"], ["EQUAL", "$TARGET.currentSide", "A"]],
+        "condition": ["AND",
+          "$TARGET.inPlay",
+          ["OR",
+            ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
+            ["EQUAL", "$TARGET.sides.A.type", "Player Side Scheme"]
+          ],
+          ["EQUAL", "$TARGET.currentSide", "A"]
+        ],
         "then": [
           ["DEFINE", "$SCHEME_CARD", "$TARGET"],
           ["COND",
