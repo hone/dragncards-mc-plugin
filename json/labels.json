@@ -66,6 +66,9 @@
     "player1Identity": {
       "English": "Player 1 Identity"
     },
+    "engaged": {
+      "English": "Engaged"
+    },
     "playArea": {
       "English": "Play Area"
     },
