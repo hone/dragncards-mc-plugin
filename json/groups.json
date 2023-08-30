@@ -115,9 +115,9 @@
         "inPlay": false
       }
     },
-    "sharedVictory": {
-      "label": "id:victory",
-      "tableLabel": "id:victory",
+    "sharedVictoryDisplay": {
+      "label": "id:victoryDisplay",
+      "tableLabel": "id:victoryDisplay",
       "canHaveAttachments": false,
       "shuffleOnLoad": false,
       "onCardEnter": {

@@ -3,7 +3,7 @@
     "moveToGroupIds": [
       "sharedEncounterDeck",
       "sharedEncounterDiscard",
-      "sharedVictory",
+      "sharedVictoryDisplay",
       "sharedOutOfPlay",
       "player1Deck",
       "player1Discard",
