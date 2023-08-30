@@ -274,7 +274,7 @@
     },
     "player1Play2": {
       "label": "id:player1Play2",
-      "tableLabel": "id:player1Play2",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -285,7 +285,7 @@
     },
     "player1Play3": {
       "label": "id:player1Play3",
-      "tableLabel": "id:player1Play3",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -296,7 +296,7 @@
     },
     "player1Play4": {
       "label": "id:player1Play4",
-      "tableLabel": "id:player1Play4",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -307,7 +307,7 @@
     },
     "player1Engaged": {
       "label": "id:player1Engaged",
-      "tableLabel": "id:player1Engaged",
+      "tableLabel": "id:engagedArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -427,7 +427,7 @@
     },
     "player2Play2": {
       "label": "id:player2Play2",
-      "tableLabel": "id:player2Play2",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -438,7 +438,7 @@
     },
     "player2Play3": {
       "label": "id:player2Play3",
-      "tableLabel": "id:player2Play3",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -449,7 +449,7 @@
     },
     "player2Play4": {
       "label": "id:player2Play4",
-      "tableLabel": "id:player2Play4",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -460,7 +460,7 @@
     },
     "player2Engaged": {
       "label": "id:player2Engaged",
-      "tableLabel": "id:player2Engaged",
+      "tableLabel": "id:engagedArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -580,7 +580,7 @@
     },
     "player3Play2": {
       "label": "id:player3Play2",
-      "tableLabel": "id:player3Play2",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -591,7 +591,7 @@
     },
     "player3Play3": {
       "label": "id:player3Play3",
-      "tableLabel": "id:player3Play3",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -602,7 +602,7 @@
     },
     "player3Play4": {
       "label": "id:player3Play4",
-      "tableLabel": "id:player3Play4",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -613,7 +613,7 @@
     },
     "player3Engaged": {
       "label": "id:player3Engaged",
-      "tableLabel": "id:player3Engaged",
+      "tableLabel": "id:engagedArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -733,7 +733,7 @@
     },
     "player4Play2": {
       "label": "id:player4Play2",
-      "tableLabel": "id:player4Play2",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -744,7 +744,7 @@
     },
     "player4Play3": {
       "label": "id:player4Play3",
-      "tableLabel": "id:player4Play3",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -755,7 +755,7 @@
     },
     "player4Play4": {
       "label": "id:player4Play4",
-      "tableLabel": "id:player4Play4",
+      "tableLabel": "id:playArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
@@ -766,7 +766,7 @@
     },
     "player4Engaged": {
       "label": "id:player4Engaged",
-      "tableLabel": "id:player4Engaged",
+      "tableLabel": "id:engagedArea",
       "canHaveAttachments": true,
       "shuffleOnLoad": false,
       "onCardEnter": {
