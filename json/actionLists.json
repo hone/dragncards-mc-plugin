@@ -290,6 +290,23 @@
     "setExpertMode": [
       ["DEFINE", "$MODE", "expert"],
       ["ACTION_LIST", "setMode"]
+    ],
+    "toggleTableButton": [
+      ["COND",
+        ["AND",
+          ["EQUAL", "$GAME.layoutVariants.sideGroupVisible", true],
+          ["EQUAL", "$GAME.layoutVariants.sideGroupId", "$SIDE_GROUP_ID"]
+        ],
+        [
+          ["SET", "/layoutVariants/sideGroupVisible", false],
+          ["SET", "/layoutVariants/sideGroupId", ""]
+        ],
+        true,
+        [
+          ["SET", "/layoutVariants/sideGroupVisible", true],
+          ["SET", "/layoutVariants/sideGroupId", "$SIDE_GROUP_ID"]
+        ]
+      ]
     ]
   }
 }
