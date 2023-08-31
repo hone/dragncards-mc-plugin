@@ -107,7 +107,11 @@ pub async fn execute(args: DecksArgs) {
     let mut pack_set_map: HashMap<&Uuid, Vec<&Set>> = HashMap::new();
     for set in sets.iter() {
         let entry = pack_set_map.entry(&set.pack_id).or_insert(Vec::new());
-        entry.push(set);
+        if set_card_map.get(&set.id).is_some() {
+            entry.push(set);
+        } else {
+            println!("{:?}", set);
+        }
     }
     // order sets by pack based on the first card number in the set
     for sets in pack_set_map.values_mut() {
