@@ -574,7 +574,11 @@ fn process_hero_deck(
             };
             // Put Permanent Cards into play
             if let Some(rules) = card.rules.as_ref() {
-                if rules.contains("Permanent") || card.id == TOUCHED_ID {
+                if (rules.contains("Permanent")
+                    // Keep Campaign S.H.I.E.L.D. cards in the campaign area
+                    && printing.set_id != Some(uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9")))
+                    || card.id == TOUCHED_ID
+                {
                     load_group_id = "playerNPlay1";
                 }
             }
