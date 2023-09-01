@@ -316,7 +316,7 @@
           ["SET", "/cardById/$CARD_ID/currentSide", "B"]
         ]]
       ],
-      ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds[0]", "sharedVillain", 0]
+      ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", 0]
     ]
   }
 }

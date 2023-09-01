@@ -56,12 +56,9 @@
                 ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"],
                 ["EQUAL", "$CARD.sides.A.stage", "A"]
               ],
-              [
-                ["DEFINE", "$VILLAIN_CARD", "$CARD"],
-                ["COND",
-                  ["EQUAL", ["LENGTH", "$GAME.groupById.sharedVillain.stackIds"], 0],
-                  ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
-                ]
+              ["COND",
+                ["EQUAL", ["LENGTH", "$GAME.groupById.sharedVillain.stackIds"], 0],
+                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
               ]
             ],
             ["COND",
@@ -161,6 +158,8 @@
       ],
       ["COND", "$LOADED_SCENARIO_DECK",
         [
+          ["DEFINE", "$VILLAIN_CARD_ID", "$GAME.groupById.sharedVillain.parentCardIds.[0]"],
+          ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$VILLAIN_CARD_ID"],
           ["COND",
             ["AND",
               ["EQUAL", "$VILLAIN_CARD.sides.A.stage", "A"],
