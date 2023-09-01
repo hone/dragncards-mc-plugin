@@ -307,6 +307,16 @@
           ["SET", "/layoutVariants/sideGroupId", "$SIDE_GROUP_ID"]
         ]
       ]
+    ],
+    "multipleDoubleSidedVillains": [
+      ["SHUFFLE_GROUP", "sharedVillainDeck"],
+      ["COND",
+        ["EQUAL", "$GAME.mode", "expert"],
+        ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds", [
+          ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+        ]]
+      ],
+      ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds[0]", "sharedVillain", 0]
     ]
   }
 }

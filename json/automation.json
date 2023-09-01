@@ -58,7 +58,10 @@
               ],
               [
                 ["DEFINE", "$VILLAIN_CARD", "$CARD"],
-                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
+                ["COND",
+                  ["EQUAL", ["LENGTH", "$GAME.groupById.sharedVillain.stackIds"], 0],
+                  ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
+                ]
               ]
             ],
             ["COND",

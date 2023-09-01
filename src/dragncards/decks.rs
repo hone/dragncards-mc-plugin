@@ -19,6 +19,8 @@ pub struct DeckMenuDoc {
 pub struct PreBuiltDeck {
     pub label: String,
     pub cards: Vec<Card>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub post_load_action_list: Option<String>,
 }
 
 #[derive(Clone, Serialize)]

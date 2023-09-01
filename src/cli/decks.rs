@@ -4,7 +4,7 @@ use crate::{
     },
     dragncards::{
         self,
-        decks::{DeckList, DeckMenu, SubMenu},
+        decks::{DeckList, DeckMenu, PreBuiltDeck, SubMenu},
     },
     marvelcdb,
 };
@@ -212,13 +212,25 @@ pub async fn execute(args: DecksArgs) {
             };
             (
                 label.clone(),
-                dragncards::decks::PreBuiltDeck { label, cards: deck },
+                PreBuiltDeck {
+                    label,
+                    cards: deck,
+                    post_load_action_list: None,
+                },
             )
         });
 
-        for (key, value) in decks.into_iter() {
-            pre_built_decks.insert(key, value);
+        for (label, deck) in decks.into_iter() {
+            pre_built_decks.insert(label, deck);
         }
+    }
+
+    // Next Evolution handle villain shared across two scenarios
+    let marauders = pre_built_decks.remove("Marauders").unwrap();
+    for deck_name in ["Morlock Siege", "On the Run"] {
+        let deck = pre_built_decks.get_mut(deck_name).unwrap();
+        deck.post_load_action_list = Some(String::from("multipleDoubleSidedVillains"));
+        deck.cards.append(&mut marauders.cards.clone());
     }
 
     let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
@@ -319,16 +331,18 @@ pub async fn execute(args: DecksArgs) {
         let label = format!("{name} (marvelcdb bundle)");
         pre_built_decks.insert(
             label.clone(),
-            dragncards::decks::PreBuiltDeck {
+            PreBuiltDeck {
                 label,
                 cards: obligation_nemesis_bundle,
+                post_load_action_list: None,
             },
         );
         pre_built_decks.insert(
             name.clone(),
-            dragncards::decks::PreBuiltDeck {
+            PreBuiltDeck {
                 label: name,
                 cards: deck,
+                post_load_action_list: None,
             },
         );
     }
@@ -346,6 +360,10 @@ pub async fn execute(args: DecksArgs) {
         let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
         let sets = pack_set_map.get(&pack.id).unwrap();
         for set in sets.iter() {
+            // Maurauders isn't a villain scenario
+            if set.id == uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3") {
+                continue;
+            }
             let deck_list_id = if set.id == uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d") {
                 String::from("Venom (Hero)")
             } else if set.id == uuid!("1bb3c0d6-add0-4313-809a-5e337666069c") {
@@ -484,9 +502,10 @@ fn build_hero_deck<'a>(
     let label = format!("{hero_name} (marvelcdb bundle)");
     pre_built_decks.insert(
         label.clone(),
-        dragncards::decks::PreBuiltDeck {
+        PreBuiltDeck {
             label,
             cards: obligation_nemesis_bundle,
+            post_load_action_list: None,
         },
     );
     // Make an Ironheart Bundle
@@ -510,9 +529,10 @@ fn build_hero_deck<'a>(
         let label = String::from("Ironheart (Version Upgrades)");
         pre_built_decks.insert(
             label.clone(),
-            dragncards::decks::PreBuiltDeck {
+            PreBuiltDeck {
                 label,
                 cards: bundle_deck,
+                post_load_action_list: None,
             },
         );
     // Make SP//dr bundle
@@ -531,9 +551,10 @@ fn build_hero_deck<'a>(
         let label = String::from("SP//dr (Peni Parker)");
         pre_built_decks.insert(
             label.clone(),
-            dragncards::decks::PreBuiltDeck {
+            PreBuiltDeck {
                 label,
                 cards: bundle_deck,
+                post_load_action_list: None,
             },
         );
     }
@@ -547,6 +568,7 @@ fn build_hero_deck<'a>(
         dragncards::decks::PreBuiltDeck {
             label: pre_built_label,
             cards: deck,
+            post_load_action_list: None,
         },
     );
 }
