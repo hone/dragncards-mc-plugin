@@ -153,7 +153,7 @@ pub async fn execute(args: DecksArgs) {
                         return None;
                     }
 
-                    let load_group_id = match set.r#type {
+                    let mut load_group_id = match set.r#type {
                         SetType::Modular | SetType::Villain => {
                             let load_group_id = match card.r#type {
                                 CardType::MainScheme => {
@@ -187,6 +187,10 @@ pub async fn execute(args: DecksArgs) {
                         }
                         _ => None,
                     };
+
+                    if set.id == uuid!("b6628b5a-835d-498a-8405-d49f384190a4") {
+                        load_group_id = Some("sharedInfinityGauntletDeck");
+                    }
 
                     load_group_id.map(|load_group_id| dragncards::decks::Card {
                         load_group_id: load_group_id.to_string(),
