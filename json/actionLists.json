@@ -291,6 +291,16 @@
       ["DEFINE", "$MODE", "expert"],
       ["ACTION_LIST", "setMode"]
     ],
+    "toggleLoadRequired": [
+      ["COND",
+        ["EQUAL", "$GAME.loadRequired", true],
+        ["DEFINE", "$LOAD_REQUIRED", false],
+        true,
+        ["DEFINE", "$LOAD_REQUIRED", true]
+      ],
+      ["LOG", "Loading Required Modular Sets is set to ", "$LOAD_REQUIRED"],
+      ["SET", "/loadRequired", "$LOAD_REQUIRED"]
+    ],
     "toggleTableButton": [
       ["COND",
         ["AND",
@@ -306,6 +316,12 @@
           ["SET", "/layoutVariants/sideGroupVisible", true],
           ["SET", "/layoutVariants/sideGroupId", "$SIDE_GROUP_ID"]
         ]
+      ]
+    ],
+    "loadRequired": [
+      ["COND",
+        ["EQUAL", "$GAME.loadRequired", true],
+        ["LOAD_CARDS", "{{$SCENARIO_NAME}} (required)"]
       ]
     ],
     "multipleDoubleSidedVillains": [

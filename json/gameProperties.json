@@ -1,6 +1,7 @@
 {
   "gameProperties": {
     "mode": {"type": "string", "default": "standard"},
+    "loadRequired": {"type": "boolean", "default": true},
     "villainHitPoints": {"type": "integer", "default": 0}
   }
 }

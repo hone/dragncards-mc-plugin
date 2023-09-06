@@ -387,6 +387,9 @@
     "setExpertMode": {
       "English": "Set Expert Mode"
     },
+    "toggleLoadRequired": {
+      "English": "Toggle Loading Required Modular Sets"
+    },
     "playerEndPhase": {
       "English": "Player End Phase"
     },

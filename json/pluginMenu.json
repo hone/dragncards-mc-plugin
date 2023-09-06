@@ -8,6 +8,10 @@
       {
         "label": "id:setExpertMode",
         "actionList": "setExpertMode"
+      },
+      {
+        "label": "id:toggleLoadRequired",
+        "actionList": "toggleLoadRequired"
       }
     ]
   }

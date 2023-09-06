@@ -4,12 +4,13 @@ use crate::{
     },
     dragncards::{
         self,
-        decks::{DeckList, DeckMenu, PreBuiltDeck, SubMenu},
+        decks::{ActionList, DeckList, DeckMenu, PreBuiltDeck, SubMenu},
     },
     marvelcdb,
 };
 use atoi::atoi;
 use indexmap::IndexMap;
+use serde_json::json;
 use std::{collections::HashMap, fmt, fs::File, io::Write};
 use uuid::{uuid, Uuid};
 
@@ -214,12 +215,22 @@ pub async fn execute(args: DecksArgs) {
             } else {
                 set.name.clone()
             };
+
+            let post_load_action_list = if set.r#type == SetType::Villain && set.requires.is_some()
+            {
+                Some(ActionList::List(vec![
+                    json!(["DEFINE", "$SCENARIO_NAME", label.clone()]),
+                    json!(["ACTION_LIST", "loadRequired"]),
+                ]))
+            } else {
+                None
+            };
             (
                 label.clone(),
                 PreBuiltDeck {
                     label,
                     cards: deck,
-                    post_load_action_list: None,
+                    post_load_action_list,
                 },
             )
         });
@@ -233,8 +244,35 @@ pub async fn execute(args: DecksArgs) {
     let marauders = pre_built_decks.remove("Marauders").unwrap();
     for deck_name in ["Morlock Siege", "On the Run"] {
         let deck = pre_built_decks.get_mut(deck_name).unwrap();
-        deck.post_load_action_list = Some(String::from("multipleDoubleSidedVillains"));
+        deck.post_load_action_list =
+            Some(ActionList::Id(String::from("multipleDoubleSidedVillains")));
         deck.cards.append(&mut marauders.cards.clone());
+    }
+
+    let villain_scenarios_requires = sets
+        .iter()
+        .filter(|set| set.r#type == SetType::Villain && set.requires.is_some());
+    for scenario in villain_scenarios_requires {
+        if let Some(requires) = scenario.requires.as_ref() {
+            let label = format!("{} (required)", scenario.name);
+            let cards: Vec<crate::dragncards::decks::Card> = requires
+                .iter()
+                .map(|require| {
+                    let set = sets.iter().find(|set| &set.id == require).unwrap();
+                    pre_built_decks.get(&set.name).unwrap().cards.clone()
+                })
+                .flatten()
+                .collect();
+
+            pre_built_decks.insert(
+                label.clone(),
+                PreBuiltDeck {
+                    label,
+                    cards,
+                    post_load_action_list: None,
+                },
+            );
+        }
     }
 
     let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();

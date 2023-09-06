@@ -1,5 +1,6 @@
 use indexmap::IndexMap;
 use serde::Serialize;
+use serde_json::Value;
 use uuid::Uuid;
 
 #[derive(Serialize)]
@@ -20,7 +21,14 @@ pub struct PreBuiltDeck {
     pub label: String,
     pub cards: Vec<Card>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub post_load_action_list: Option<String>,
+    pub post_load_action_list: Option<ActionList>,
+}
+
+#[derive(Clone, Serialize)]
+#[serde(untagged)]
+pub enum ActionList {
+    List(Vec<Value>),
+    Id(String),
 }
 
 #[derive(Clone, Serialize)]
