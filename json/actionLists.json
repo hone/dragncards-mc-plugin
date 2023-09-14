@@ -247,7 +247,7 @@
           "$CARD.sides.A.nemesisMinion",
           ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], 0],
           ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
-          ["MOVE_CARD", "$CARD_ID", "sharedSideSchemes", 0],
+          ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
           true,
           ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", 0]
         ]

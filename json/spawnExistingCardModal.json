@@ -1,6 +1,6 @@
 {
   "spawnExistingCardModal": {
     "columnProperties": ["name", "subname", "type", "classification"],
-    "loadGroupIds": ["sharedSideSchemes", "player1Play1"]
+    "loadGroupIds": ["sharedVillain", "player1Play1"]
   }
 }

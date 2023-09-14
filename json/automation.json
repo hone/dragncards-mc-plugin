@@ -57,7 +57,18 @@
                 ["EQUAL", "$CARD.sides.A.stage", "A"]
               ],
               ["COND",
-                ["EQUAL", ["LENGTH", "$GAME.groupById.sharedVillain.stackIds"], 0],
+                ["EQUAL",
+                  ["LENGTH",
+                    ["FILTER_CARDS",
+                      "$CARD",
+                      ["AND",
+                        ["EQUAL", "$CARD.sides.A.type", "Villain"],
+                        ["EQUAL", "$CARD.groupId", "sharedVillain"]
+                      ]
+                    ]
+                  ],
+                  0
+                ],
                 ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
               ]
             ],
@@ -158,24 +169,31 @@
       ],
       ["COND", "$LOADED_SCENARIO_DECK",
         [
-          ["DEFINE", "$VILLAIN_CARD_ID", "$GAME.groupById.sharedVillain.parentCardIds.[0]"],
-          ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$VILLAIN_CARD_ID"],
+          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedVillain.parentCardIds", [
+            ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
+            ["COND",
+              ["EQUAL", "$CARD.sides.A.type", "Villain"],
+              [
+                ["DEFINE", "$VILLAIN_CARD_ID", "$CARD_ID"],
+                ["DEFINE", "$VILLAIN_CARD", "$CARD"]
+              ]
+            ]
+          ]],
           ["COND",
-            ["AND",
-              ["EQUAL", "$VILLAIN_CARD.sides.A.stage", "A"],
-              ["EQUAL", "$GAME.mode", "expert"]
-            ],
-            ["SET", "/cardById/$VILLAIN_CARD.id/currentSide", "B"]
+            ["DEFINED", "$VILLAIN_CARD"],
+            [
+              ["COND",
+                ["AND",
+                  ["EQUAL", "$VILLAIN_CARD.sides.A.stage", "A"],
+                  ["EQUAL", "$GAME.mode", "expert"]
+                ],
+                ["SET", "/cardById/$VILLAIN_CARD.id/currentSide", "B"]
+              ],
+              ["ACTION_LIST", "setVillainHealth"]
+            ]
           ],
-          ["ACTION_LIST", "setVillainHealth"],
           ["ACTION_LIST", "setSchemeStartingThreat"]
         ]
-      ],
-      ["COND", 
-        ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillain.stackIds"], 1],
-        ["SET", "/layoutVariants/villainRegion", "expanded"],
-        true,
-        ["SET", "/layoutVariants/villainRegion", "standard"]
       ]
     ],
     "gameRules": [

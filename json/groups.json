@@ -202,17 +202,6 @@
         "discardGroupId": "sharedMainSchemeDiscard"
       }
     },
-    "sharedSideSchemes": {
-      "label": "id:sideSchemes",
-      "tableLabel": "id:sideSchemes",
-      "canHaveAttachments": true,
-      "shuffleOnLoad": false,
-      "onCardEnter": {
-        "currentSide": "A",
-        "controller": "shared",
-        "inPlay": true
-      }
-    },
     "sharedOutOfPlay": {
       "label": "id:outOfPlay",
       "tableLabel": "id:outOfPlay",
