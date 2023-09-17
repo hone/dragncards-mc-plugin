@@ -104,13 +104,11 @@
       ]
     ],
     "discardRandomCard": [
-      ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
+      ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
       ["DEFINE", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$INDEX", ["RANDOM_INT", 0, ["SUBTRACT", "$CURRENT_HAND_SIZE", 1]]],
-      ["DEFINE", "$STACK_ID", "$GAME.groupById.$HAND_GROUP_ID.stackIds.[$INDEX]"],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-        ["ACTION_LIST", "discardCard", "$CARD_ID"]
-      ]
+      ["DEFINE", "$ACTIVE_CARD_ID", "$GAME.groupById.$HAND_GROUP_ID.parentCardIds.[$INDEX]"],
+      ["ACTION_LIST", "discardCard", "$CARD_ID"]
     ],
     "flipCard": [
       ["COND",
