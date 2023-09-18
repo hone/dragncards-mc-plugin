@@ -13,16 +13,13 @@
       "English": "Main Scheme Discard"
     },
     "encounter2Deck": {
-      "English": "Secondary Encounter Deck"
+      "English": "Second Encounter Deck"
     },
     "encounter2Discard": {
-      "English": "Secondary Encounter Discard"
+      "English": "Second Encounter Discard"
     },
     "encounter3Deck": {
       "English": "Third Encounter Deck"
-    },
-    "encounter3Discard": {
-      "English": "Third Encounter Discard"
     },
     "infinityGauntletDeck": {
       "English": "Infinity Gauntlet Deck"
@@ -61,10 +58,10 @@
       "English": "Player 1 Discard"
     },
     "player1Deck2": {
-      "English": "Player 1 Secondary Deck"
+      "English": "Player 1 Second Deck"
     },
     "player1Discard2": {
-      "English": "Player 1 Secondary Discard"
+      "English": "Player 1 Second Discard"
     },
     "player1Identity": {
       "English": "Player 1 Identity"
@@ -112,10 +109,10 @@
       "English": "Player 2 Discard"
     },
     "player2Deck2": {
-      "English": "Player 2 Secondary Deck"
+      "English": "Player 2 Second Deck"
     },
     "player2Discard2": {
-      "English": "Player 2 Secondary Discard"
+      "English": "Player 2 Second Discard"
     },
     "player2Play1": {
       "English": "Player 2 Play Area 1"
@@ -151,10 +148,10 @@
       "English": "Player 3 Discard"
     },
     "player3Deck2": {
-      "English": "Player 3 Secondary Deck"
+      "English": "Player 3 Second Deck"
     },
     "player3Discard2": {
-      "English": "Player 3 Secondary Discard"
+      "English": "Player 3 Second Discard"
     },
     "player3Play1": {
       "English": "Player 3 Play Area 1"
@@ -190,10 +187,10 @@
       "English": "Player 4 Discard"
     },
     "player4Deck2": {
-      "English": "Player 4 Secondary Deck"
+      "English": "Player 4 Second Deck"
     },
     "player4Discard2": {
-      "English": "Player 4 Secondary Discard"
+      "English": "Player 4 Second Discard"
     },
     "player4Play1": {
       "English": "Player 4 Play Area 1"
@@ -354,17 +351,23 @@
     "readyAll": {
       "English": "Ready All"
     },
-    "revealEncounterFacedown": {
-      "English": "Reveal Encounter Card"
+    "dealEncounterFacedown": {
+      "English": "Deal Encounter Card"
     },
-    "revealEncounterFaceup": {
-      "English": "Reveal Encounter Card Faceup"
+    "dealEncounterFaceup": {
+      "English": "Deal Encounter Card Faceup"
     },
-    "revealSecondaryFacedown": {
-      "English": "Reveal Secondary Encounter Card"
+    "dealSecondFacedown": {
+      "English": "Deal Second Encounter Card"
     },
-    "revealSecondaryFaceup": {
-      "English": "Reveal Secondary Encounter Card Faceup"
+    "dealSecondFaceup": {
+      "English": "Deal Second Encounter Card Faceup"
+    },
+    "dealThirdFacedown": {
+      "English": "Deal Third Encounter Card"
+    },
+    "dealThirdFaceup": {
+      "English": "Deal Third Encounter Card Faceup"
     },
     "mulligan": {
       "English": "Mulligan"

@@ -236,15 +236,14 @@
         ],
         "then": [
           ["DEFINE", "$DECK_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Deck"]],
-          ["DEFINE", "$REVEAL_FACEUP", false],
-          ["ACTION_LIST", "revealEncounter"],
+          ["ACTION_LIST", "dealEncounterFacedown"],
           ["MOVE_STACKS", ["JOIN_STRING", "$PLAYER_N", "Discard"], "$DECK_GROUP_ID"],
           ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],
           ["LOG", "$ALIAS_N", " emptied their deck."]
         ]
       },
       {
-        "_comment": "When the encounter deck empties, give add an acceleration token and shuffle the deck.",
+        "_comment": "When the encounter deck empties, add an acceleration token and shuffle the deck.",
         "type": "trigger",
         "listenTo": ["/groupById/*/stackIds"],
         "condition": ["AND",
@@ -257,6 +256,20 @@
           ["LOG", "Encounter Deck has been reshuffled."],
           ["DEFINE", "$SCHEME_CARD_ID", ["GET_CARD_ID", "sharedMainScheme", 0, 0]],
           ["INCREASE_VAL", "/cardById/$SCHEME_CARD_ID/tokens/acceleration", 1]
+        ]
+      },
+      {
+        "_comment": "When the second encounter deck empties, shuffle the deck.",
+        "type": "trigger",
+        "listenTo": ["/groupById/*/stackIds"],
+        "condition": ["AND",
+          ["EQUAL", "$TARGET_ID", "sharedEncounter2Deck"],
+          ["EQUAL", ["LENGTH", "$TARGET.stackIds"], 0]
+        ],
+        "then": [
+          ["LOG", "Second Encounter Deck has been emptied."],
+          ["MOVE_STACKS", "sharedEncounter2Discard", "sharedEncounter2Deck"],
+          ["LOG", "Second Encounter Deck has been reshuffled."]
         ]
       },
       {

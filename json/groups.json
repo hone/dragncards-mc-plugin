@@ -88,20 +88,7 @@
         "controller": "shared",
         "inPlay": false,
         "deckGroupId": "sharedEncounter3Deck",
-        "discardGroupId": "sharedEncounter3Discard"
-      }
-    },
-    "sharedEncounter3Discard": {
-      "label": "id:encounter3Discard",
-      "tableLabel": "id:encounter3Discard",
-      "canHaveAttachments": false,
-      "shuffleOnLoad": false,
-      "onCardEnter": {
-        "currentSide": "A",
-        "controller": "shared",
-        "inPlay": false,
-        "deckGroupId": "sharedEncounter3Deck",
-        "discardGroupId": "sharedEncounter3Discard"
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "sharedInfinityGauntletDeck": {

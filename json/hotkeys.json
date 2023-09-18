@@ -10,10 +10,12 @@
       {"key": "7", "tokenType": "tough",        "label": "id:toughToken"}
     ],
     "game": [
-      {"key": "E", "actionList": "revealEncounterFacedown", "label": "id:revealEncounterFacedown"},
-      {"key": "Shift+E", "actionList": "revealEncounterFaceup", "label": "id:revealEncounterFaceup"},
-      {"key": "K", "actionList": "revealSecondaryFacedown", "label": "id:revealSecondaryFacedown"},
-      {"key": "Shift+K", "actionList": "revealSecondaryFaceup", "label": "id:revealSecondaryFaceup"},
+      {"key": "E", "actionList": "dealEncounterFacedown", "label": "id:dealEncounterFacedown"},
+      {"key": "Shift+E", "actionList": "dealEncounterFaceup", "label": "id:dealEncounterFaceup"},
+      {"key": "K", "actionList": "dealSecondFacedown", "label": "id:dealSecondFacedown"},
+      {"key": "Shift+K", "actionList": "dealSecondFaceup", "label": "id:dealSecondFaceup"},
+      {"key": "T", "actionList": "dealThirdFacedown", "label": "id:dealThirdFacedown"},
+      {"key": "Shift+T", "actionList": "dealThirdFaceup", "label": "id:dealThirdFaceup"},
       {"key": "B", "actionList": "drawBoost", "label": "id:dealBoostCard"},
       {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
       {"key": "Shift+M", "actionList": "mulligan", "label": "id:mulligan"},

@@ -269,7 +269,18 @@ pub async fn execute(args: DecksArgs) {
                 .iter()
                 .map(|require| {
                     let set = sets.iter().find(|set| &set.id == require).unwrap();
-                    pre_built_decks.get(&set.name).unwrap().cards.clone()
+                    let mut cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
+
+                    // Create Crossbones Experimental Weapon Deck
+                    if set.id == uuid!("5910b253-5fec-41d5-9433-ff7a59b028da")
+                        && scenario.id == uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f")
+                    {
+                        for card in cards.iter_mut() {
+                            card.load_group_id = String::from("sharedEncounter3Deck");
+                        }
+                    }
+
+                    cards
                 })
                 .flatten()
                 .collect();
