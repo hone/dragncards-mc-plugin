@@ -258,6 +258,15 @@
           ["DEFINE", "$SCHEME_CARD_ID", ["GET_CARD_ID", "sharedMainScheme", 0, 0]],
           ["INCREASE_VAL", "/cardById/$SCHEME_CARD_ID/tokens/acceleration", 1]
         ]
+      },
+      {
+        "_comment": "Remove all tokens when a card leaves play",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/inPlay"],
+        "condition": ["NOT", "$TARGET.inPlay"],
+        "then": [
+          ["SET", "/cardById/$TARGET_ID/tokens", {}]
+        ]
       }
     ],
     "cards": {
