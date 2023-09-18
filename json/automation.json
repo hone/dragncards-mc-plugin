@@ -218,14 +218,12 @@
             ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
             ["EQUAL", "$TARGET.sides.A.type", "Player Side Scheme"]
           ],
-          ["EQUAL", "$TARGET.currentSide", "A"]
+          ["EQUAL", "$TARGET.currentSide", "A"],
+          ["EQUAL", "$TARGET.boost", false]
         ],
         "then": [
           ["DEFINE", "$SCHEME_CARD", "$TARGET"],
-          ["COND",
-            ["EQUAL", "$TARGET.boost", false],
-            ["ACTION_LIST", "setSchemeStartingThreat"]
-          ]
+          ["ACTION_LIST", "setSchemeStartingThreat"]
         ]
       },
       {
@@ -238,7 +236,7 @@
         ],
         "then": [
           ["DEFINE", "$DECK_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Deck"]],
-          ["DEFINE", "$REVEAL_FACEDOWN", true],
+          ["DEFINE", "$REVEAL_FACEUP", false],
           ["ACTION_LIST", "revealEncounter"],
           ["MOVE_STACKS", ["JOIN_STRING", "$PLAYER_N", "Discard"], "$DECK_GROUP_ID"],
           ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],

@@ -151,19 +151,19 @@
       ["LOG", "$ALIAS_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
     ],
     "revealEncounterFaceup": [
-      ["DEFINE", "$REVEAL_FACEDOWN", false],
+      ["DEFINE", "$REVEAL_FACEUP", true],
       ["ACTION_LIST", "revealEncounter"]
     ],
     "revealEncounterFacedown": [
-      ["DEFINE", "$REVEAL_FACEDOWN", true],
+      ["DEFINE", "$REVEAL_FACEUP", false],
       ["ACTION_LIST", "revealEncounter"]
     ],
     "revealSecondaryFaceup": [
-      ["DEFINE", "$REVEAL_FACEDOWN", false],
+      ["DEFINE", "$REVEAL_FACEUP", true],
       ["ACTION_LIST", "revealSecondary"]
     ],
     "revealSecondaryFacedown": [
-      ["DEFINE", "$REVEAL_FACEDOWN", true],
+      ["DEFINE", "$REVEAL_FACEUP", false],
       ["ACTION_LIST", "revealSecondary"]
     ],
     "drawBoost": [
@@ -194,28 +194,25 @@
         ]
       ],
       ["DEFINE", "$CARD_ID", ["GET_CARD_ID", "sharedEncounterDeck", 0, 0]],
-      ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1, 0],
-      ["COND",
-        "$REVEAL_FACEDOWN",
-        ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-      ],
-      ["LOG", "$ALIAS_N", " dealt an encounter card."]
+      ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, ["PROCESS_MAP", {"allowFlip": "$REVEAL_FACEUP"}]],
+      ["LOG", "{{$ALIAS_N}} dealt an encounter card."]
     ],
     "revealSecondary": [
       ["COND",
-        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck2.stackIds"], 0],
+        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounter2Deck.stackIds"], 0],
         ["LOG", "$ALIAS_N", " tried to reveal a card from the second encounter deck, but it's empty."],
         true,
         [
-          ["DEFINE", "$STACK_ID", ["AT_INDEX", "$GAME.groupById.sharedEncounter1Deck.stackIds", 0]],
-          ["MOVE_STACK", "$STACK_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
           ["COND",
-            "$REVEAL_FACEDOWN",
-            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds",
-              ["SET", "/cardById/$CARD_ID/currentSide", "B"]
+            ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounter2Deck.stackIds"], 0],
+            [
+              ["MOVE_STACKS", "sharedEncounter2Discard", "sharedEncounter2Deck", ["LENGTH", "$GAME.groupById.sharedEncounter2Discard.stackIds"], "shuffle"],
+              ["LOG", "$ALIAS_N"," shuffled the secondary encounter discard pile into the secondary encounter deck."]
             ]
           ],
-          ["LOG", "$ALIAS_N", " revealed ", ["FACEUP_NAME_FROM_STACK_ID", "$STACK_ID"], "."]
+          ["DEFINE", "$CARD_ID", ["GET_CARD_ID", "sharedEncounter2Deck", 0, 0]],
+          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, ["PROCESS_MAP", {"allowFlip": "$REVEAL_FACEUP"}]],
+          ["LOG", "{{$ALIAS_N}} dealt an encounter card from secondary encounter deck."]
         ]
       ]
     ],
@@ -291,7 +288,7 @@
     ],
     "toggleLoadRequired": [
       ["COND",
-        ["EQUAL", "$GAME.loadRequired", true],
+        "$GAME.loadRequired",
         ["DEFINE", "$LOAD_REQUIRED", false],
         true,
         ["DEFINE", "$LOAD_REQUIRED", true]

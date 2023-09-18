@@ -4,15 +4,7 @@
       "sharedEncounterDeck",
       "sharedEncounterDiscard",
       "sharedVictoryDisplay",
-      "sharedOutOfPlay",
-      "player1Deck",
-      "player1Discard",
-      "player2Deck",
-      "player2Discard",
-      "player3Deck",
-      "player3Discard",
-      "player4Deck",
-      "player4Discard"
+      "sharedOutOfPlay"
     ],
     "options": [
       {"label": "id:exhaustReady", "actionList": "toggleExhaust"},
