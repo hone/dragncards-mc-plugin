@@ -188,7 +188,7 @@ impl<'de> Visitor<'de> for PackNumberVisitor {
     type Value = PackNumber;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("an integer or an integer followed by A, B, or C")
+        formatter.write_str("an integer or an integer followed by A, B, C, or D")
     }
 
     fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
@@ -196,14 +196,14 @@ impl<'de> Visitor<'de> for PackNumberVisitor {
         E: de::Error,
     {
         lazy_static! {
-            static ref PACK_NUMBER_RE: Regex = Regex::new(r"(\d+[A-C]?)").unwrap();
+            static ref PACK_NUMBER_RE: Regex = Regex::new(r"(\d+[A-D]?)").unwrap();
         }
 
         if let Some(captures) = PACK_NUMBER_RE.captures(value) {
             Ok(PackNumber(format!("{:0>2}", &captures[0])))
         } else {
             Err(E::custom(format!(
-                "not an integer or integer followed by A, B, or C: {value}"
+                "not an integer or integer followed by A, B, C, or D: {value}"
             )))
         }
     }

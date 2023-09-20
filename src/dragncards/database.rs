@@ -6,6 +6,8 @@ use serde::Serialize;
 use std::collections::HashMap;
 use uuid::Uuid;
 
+const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
+
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Card {
@@ -124,6 +126,8 @@ pub enum CardBack {
 pub fn uuid(code: &str) -> Uuid {
     let id = if let Ok(_) = code.parse::<u32>() {
         code
+    } else if code.contains(WAKANDA_FOREVER_ID_BASE) {
+        code
     } else {
         let mut chars = code.chars();
         chars.next_back();
@@ -149,7 +153,8 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
-    if card.id.parse::<u32>().is_err() {
+    // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
+    if !card.id.contains(WAKANDA_FOREVER_ID_BASE) && card.id.parse::<u32>().is_err() {
         return CardBack::MultiSided;
     }
 
