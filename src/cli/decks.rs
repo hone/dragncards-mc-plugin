@@ -16,6 +16,22 @@ use uuid::{uuid, Uuid};
 
 const TOUCHED_ID: &str = "38002";
 
+const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9");
+const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
+const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
+const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
+const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
+const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
+const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
+
+const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
+const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
+const SPDR_HERO_PACK_ID: Uuid = uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f");
+
+const IRONHEART_A_DATABASE_ID: Uuid = uuid!("0006bfd8-06a5-5928-8d17-1b4971407dbc");
+const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc9258600557");
+const PENI_PARKER_A_DATABASE_ID: Uuid = uuid!("36943f94-3731-5bed-9b56-59fbdd69f968");
+
 #[derive(clap::Args)]
 pub struct DecksArgs {
     #[arg(long, default_value_t = false)]
@@ -189,7 +205,7 @@ pub async fn execute(args: DecksArgs) {
                         _ => None,
                     };
 
-                    if set.id == uuid!("b6628b5a-835d-498a-8405-d49f384190a4") {
+                    if set.id == INFINITY_GAUNTLET_SET_ID {
                         load_group_id = Some("sharedInfinityGauntletDeck");
                     }
 
@@ -271,10 +287,7 @@ pub async fn execute(args: DecksArgs) {
                     let set = sets.iter().find(|set| &set.id == require).unwrap();
                     let mut cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
 
-                    // Create Crossbones Experimental Weapon Deck
-                    if set.id == uuid!("5910b253-5fec-41d5-9433-ff7a59b028da")
-                        && scenario.id == uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f")
-                    {
+                    if set.id == EXPERIMENTAL_WEAPONS_SET_ID && scenario.id == CROSSBONES_SET_ID {
                         for card in cards.iter_mut() {
                             card.load_group_id = String::from("sharedEncounter3Deck");
                         }
@@ -378,8 +391,7 @@ pub async fn execute(args: DecksArgs) {
             .collect();
         let obligation_card = deck.last().unwrap().clone();
         let nemesis_set_name = &pack_set_map
-            // Core Set Pack Id
-            .get(&uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267"))
+            .get(&CORE_SET_PACK_ID)
             .unwrap()
             .iter()
             .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
@@ -424,12 +436,12 @@ pub async fn execute(args: DecksArgs) {
         let sets = pack_set_map.get(&pack.id).unwrap();
         for set in sets.iter() {
             // Maurauders isn't a villain scenario
-            if set.id == uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3") {
+            if set.id == MARAUDERS_SET_ID {
                 continue;
             }
-            let deck_list_id = if set.id == uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d") {
+            let deck_list_id = if set.id == VENOM_HERO_SET_ID {
                 String::from("Venom (Hero)")
-            } else if set.id == uuid!("1bb3c0d6-add0-4313-809a-5e337666069c") {
+            } else if set.id == VENOM_SCENARIO_SET_ID {
                 String::from("Venom (Scenario)")
             } else {
                 set.name.clone()
@@ -572,16 +584,11 @@ fn build_hero_deck<'a>(
         },
     );
     // Make an Ironheart Bundle
-    if pack.id == uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d") {
+    if pack.id == IRONHEART_HERO_PACK_ID {
         let bundle_deck = deck
             .iter()
             .filter_map(|card| {
-                if [
-                    uuid!("0006bfd8-06a5-5928-8d17-1b4971407dbc"),
-                    uuid!("23858611-0f2c-5e28-8aae-cc9258600557"),
-                ]
-                .contains(&card.database_id)
-                {
+                if [IRONHEART_A_DATABASE_ID, IRONHEART_B_DATABASE_ID].contains(&card.database_id) {
                     Some(card.clone())
                 } else {
                     None
@@ -599,11 +606,11 @@ fn build_hero_deck<'a>(
             },
         );
     // Make SP//dr bundle
-    } else if pack.id == uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f") {
+    } else if pack.id == SPDR_HERO_PACK_ID {
         let bundle_deck = deck
             .iter()
             .filter_map(|card| {
-                if [uuid!("36943f94-3731-5bed-9b56-59fbdd69f968")].contains(&card.database_id) {
+                if [PENI_PARKER_A_DATABASE_ID].contains(&card.database_id) {
                     Some(card.clone())
                 } else {
                     None
@@ -661,7 +668,7 @@ fn process_hero_deck(
             if let Some(rules) = card.rules.as_ref() {
                 if (rules.contains("Permanent")
                     // Keep Campaign S.H.I.E.L.D. cards in the campaign area
-                    && printing.set_id != Some(uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9")))
+                    && printing.set_id != Some(CAMPAIGN_SHIELD_TECH_SET_ID))
                     || card.id == TOUCHED_ID
                 {
                     load_group_id = "playerNPlay1";
