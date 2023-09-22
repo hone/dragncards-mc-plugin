@@ -10,7 +10,8 @@
     "Emoji": "<:mc_venom:984579461523591268>",
     "Incomplete": false,
     "Number": "20",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -23,7 +24,8 @@
     "Emoji": "<:mc_ant_man:984580150861631558>",
     "Incomplete": false,
     "Number": "12",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -36,7 +38,8 @@
     "Emoji": "<:mc_black_widow:984580576080195665>",
     "Incomplete": false,
     "Number": "08",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -49,7 +52,8 @@
     "Emoji": "<:mc_captain_america:984581064225882112>",
     "Incomplete": false,
     "Number": "03",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -62,7 +66,8 @@
     "Emoji": "<:mc_core_set:984581589021380669>",
     "Incomplete": false,
     "Number": "01",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -75,7 +80,8 @@
     "Emoji": "<:mc_doctor_strange:984583091609829456>",
     "Incomplete": false,
     "Number": "09",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -88,7 +94,8 @@
     "Emoji": "<:mc_drax:984583724547063908>",
     "Incomplete": false,
     "Number": "19",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -101,7 +108,8 @@
     "Emoji": "<:mc_galaxys_most_wanted:984584052944273438>",
     "Incomplete": false,
     "Number": "16",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -114,7 +122,8 @@
     "Emoji": "<:mc_gamora:984584685923491840>",
     "Incomplete": false,
     "Number": "18",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -127,7 +136,8 @@
     "Emoji": "<:mc_hulk:984585320030957619>",
     "Incomplete": false,
     "Number": "10",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -140,7 +150,8 @@
     "Emoji": "<:mc_ironheart:984585668653121546>",
     "Incomplete": false,
     "Number": "29",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -153,7 +164,8 @@
     "Emoji": "<:mc_ms_marvel:984586244140961822>",
     "Incomplete": false,
     "Number": "05",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -166,7 +178,8 @@
     "Emoji": "<:mc_nebula:984587324094570566>",
     "Incomplete": false,
     "Number": "22",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -179,7 +192,8 @@
     "Emoji": "<:mc_nova:984587657864679446>",
     "Incomplete": false,
     "Number": "28",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -192,7 +206,8 @@
     "Emoji": "<:mc_quicksilver:984587971669950465>",
     "Incomplete": false,
     "Number": "14",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -205,7 +220,8 @@
     "Emoji": "<:mc_scarlet_witch:984588565444984903>",
     "Incomplete": false,
     "Number": "15",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -218,7 +234,8 @@
     "Emoji": "<:mc_star_lord:984590207091355708>",
     "Incomplete": false,
     "Number": "17",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -231,7 +248,8 @@
     "Emoji": "<:mc_the_green_goblin:984590626219769866>",
     "Incomplete": false,
     "Number": "02",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -244,7 +262,8 @@
     "Emoji": "<:mc_the_hood:984590863818707004>",
     "Incomplete": false,
     "Number": "24",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -257,7 +276,8 @@
     "Emoji": "<:mc_the_mad_titans_shadow:984591136171634729>",
     "Incomplete": false,
     "Number": "21",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -270,7 +290,8 @@
     "Emoji": "<:mc_the_once_and_future_kang:984591550715666492>",
     "Incomplete": false,
     "Number": "11",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -283,7 +304,8 @@
     "Emoji": "<:mc_the_rise_of_red_skull:984592277408202832>",
     "Incomplete": false,
     "Number": "04",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -296,7 +318,8 @@
     "Emoji": "<:mc_the_wrecking_crew:984593175266074694>",
     "Incomplete": false,
     "Number": "07",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -309,7 +332,8 @@
     "Emoji": "<:mc_thor:984593530997592064>",
     "Incomplete": false,
     "Number": "06",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -322,7 +346,8 @@
     "Emoji": "<:mc_valkyrie:984593737227321344>",
     "Incomplete": false,
     "Number": "25",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -335,7 +360,8 @@
     "Emoji": "<:mc_vision:984594135669436426>",
     "Incomplete": false,
     "Number": "26",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -348,7 +374,8 @@
     "Emoji": "<:mc_war_machine:984594350849794088>",
     "Incomplete": false,
     "Number": "23",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -361,19 +388,8 @@
     "Emoji": "<:mc_wasp:984594659596709888>",
     "Incomplete": false,
     "Number": "13",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "95f1edcf-728c-4a82-a730-aa7a46645c14",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Kree Fanatic",
-    "Type": "Supplements",
-    "CouncilNumber": null,
-    "Incomplete": false,
-    "Number": "00",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -386,7 +402,8 @@
     "Emoji": "<:mc_spider_ham:984589775111598140>",
     "Incomplete": false,
     "Number": "30",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -399,7 +416,8 @@
     "Emoji": "<:mc_sp__dr:984589458756214805>",
     "Incomplete": false,
     "Number": "31",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -412,7 +430,8 @@
     "Emoji": "<:mc_cyclops:1007699955114332182>",
     "Incomplete": false,
     "Number": "33",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -425,7 +444,8 @@
     "Emoji": "<:mc_phoenix:1007699954099298385>",
     "Incomplete": false,
     "Number": "34",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -438,7 +458,8 @@
     "Emoji": "<:mc_sinister_motives:984589094405414922>",
     "Incomplete": false,
     "Number": "27",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -451,7 +472,8 @@
     "Emoji": "<:mc_mutant_genesis:984586842475221062>",
     "Incomplete": false,
     "Number": "32",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -464,7 +486,8 @@
     "Emoji": "<:mc_wolverine:1025283415366447104>",
     "Incomplete": false,
     "Number": "35",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -477,98 +500,8 @@
     "Emoji": "<:mc_storm:1025283414162669569>",
     "Incomplete": false,
     "Number": "36",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "f8774d23-af2d-4e4f-aed6-7d19699325b5",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Rogue",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": false,
-    "Number": "38",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "c6a1049e-388b-4376-9cd5-37ef521fd1a4",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Gambit",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": false,
-    "Number": "37",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "4e0e9457-dea2-4d1c-bc3e-ca9b230a03d0",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "MojoMania",
-    "Type": "Scenario Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": false,
-    "Number": "39",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "3c2be1ca-a703-46d2-9fbe-4c0db34f84e7",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "NeXt Evolution",
-    "Type": "Campaign Expansion",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": true,
-    "Number": "40",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "22addcd8-a5b5-4b6f-bb72-fd0002b5edec",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Psylocke",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": true,
-    "Number": "41",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "57b59d55-e796-4da9-af76-cec1396f60d1",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Angel",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": true,
-    "Number": "42",
-    "ReleaseStatus": null
-  },
-  {
-    "Deleted": false,
-    "Id": "ae22b08d-5557-46f4-96c2-5ee809460c45",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "X-23",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": true,
-    "Number": "43",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -581,6 +514,119 @@
     "Emoji": null,
     "Incomplete": true,
     "Number": "44",
-    "ReleaseStatus": null
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "f8774d23-af2d-4e4f-aed6-7d19699325b5",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Rogue",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_rogue:1146551318551461988>",
+    "Incomplete": false,
+    "Number": "38",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "c6a1049e-388b-4376-9cd5-37ef521fd1a4",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Gambit",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_gambit:1146551316366233710>",
+    "Incomplete": false,
+    "Number": "37",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "3c2be1ca-a703-46d2-9fbe-4c0db34f84e7",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "NeXt Evolution",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_next_evolution:1146549748891930766>",
+    "Incomplete": false,
+    "Number": "40",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "4e0e9457-dea2-4d1c-bc3e-ca9b230a03d0",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "MojoMania",
+    "Type": "Scenario Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_mojomania:1146551845137948792>",
+    "Incomplete": false,
+    "Number": "39",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "22addcd8-a5b5-4b6f-bb72-fd0002b5edec",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Psylocke",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_psylocke:1146549747046416384>",
+    "Incomplete": true,
+    "Number": "41",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "57b59d55-e796-4da9-af76-cec1396f60d1",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Angel",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_angel:1146549743774871653>",
+    "Incomplete": true,
+    "Number": "42",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "ae22b08d-5557-46f4-96c2-5ee809460c45",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "X-23",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_x23:1146549745762975845>",
+    "Incomplete": true,
+    "Number": "43",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "95f1edcf-728c-4a82-a730-aa7a46645c14",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Kree Fanatic",
+    "Type": "Supplements",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "00",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]
