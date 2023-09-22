@@ -32,6 +32,8 @@ const IRONHEART_A_DATABASE_ID: Uuid = uuid!("0006bfd8-06a5-5928-8d17-1b4971407db
 const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc9258600557");
 const PENI_PARKER_A_DATABASE_ID: Uuid = uuid!("36943f94-3731-5bed-9b56-59fbdd69f968");
 
+type PreBuiltDeckMap = IndexMap<String, dragncards::decks::PreBuiltDeck>;
+
 #[derive(clap::Args)]
 pub struct DecksArgs {
     #[arg(long, default_value_t = false)]
@@ -78,7 +80,6 @@ impl fmt::Display for DeckListRootKey {
 }
 
 pub async fn execute(args: DecksArgs) {
-    let mut pre_built_decks: IndexMap<String, dragncards::decks::PreBuiltDeck> = IndexMap::new();
     let packs: Vec<Pack> = cerebro::get_packs(Some(args.offline))
         .await
         .unwrap()
@@ -108,11 +109,11 @@ pub async fn execute(args: DecksArgs) {
         })
         .collect();
 
-    let mut set_card_map: HashMap<Uuid, Vec<OrderedCard>> = HashMap::new();
+    let mut set_card_map: HashMap<&Uuid, Vec<OrderedCard>> = HashMap::new();
     for card in cards.iter() {
         for printing in card.printings.iter() {
-            if let Some(set_id) = printing.set_id {
-                let entry = set_card_map.entry(set_id.clone()).or_insert(Vec::new());
+            if let Some(set_id) = printing.set_id.as_ref() {
+                let entry = set_card_map.entry(&set_id).or_insert(Vec::new());
                 entry.push(ordered_card_from_printing(card, printing));
             }
         }
@@ -130,6 +131,7 @@ pub async fn execute(args: DecksArgs) {
             println!("{:?}", set);
         }
     }
+
     // order sets by pack based on the first card number in the set
     for sets in pack_set_map.values_mut() {
         sets.sort_by(|a, b| {
@@ -157,104 +159,7 @@ pub async fn execute(args: DecksArgs) {
     }
 
     // build scenarios, modulars, campaign, nemesis set
-    for pack in packs.iter() {
-        let sets = pack_set_map.get(&pack.id).unwrap();
-        let decks = sets.iter().map(|set| {
-            let deck: Vec<dragncards::decks::Card> = set_card_map
-                .get(&set.id)
-                .unwrap()
-                .iter()
-                .filter_map(|ordered_card| {
-                    let card = ordered_card.card;
-                    if card.id.ends_with("B") {
-                        return None;
-                    }
-
-                    let mut load_group_id = match set.r#type {
-                        SetType::Modular | SetType::Villain => {
-                            let load_group_id = match card.r#type {
-                                CardType::MainScheme => {
-                                    if card
-                                        .stage
-                                        .as_ref()
-                                        .map(|stage| stage == "1A")
-                                        .unwrap_or(false)
-                                    {
-                                        "sharedMainScheme"
-                                    } else {
-                                        "sharedMainSchemeDeck"
-                                    }
-                                }
-                                CardType::Villain => "sharedVillainDeck",
-                                _ => "sharedEncounterDeck",
-                            };
-
-                            Some(load_group_id)
-                        }
-                        SetType::Nemesis => Some("playerNNemesisSet"),
-                        SetType::Campaign => Some("sharedCampaignDeck"),
-                        SetType::Supplementary => {
-                            if set.name == "Weather Deck" {
-                                Some("playerNPlay1")
-                            } else if set.name == "Invocation" {
-                                Some("playerNDeck2")
-                            } else {
-                                None
-                            }
-                        }
-                        _ => None,
-                    };
-
-                    if set.id == INFINITY_GAUNTLET_SET_ID {
-                        load_group_id = Some("sharedInfinityGauntletDeck");
-                    }
-
-                    load_group_id.map(|load_group_id| dragncards::decks::Card {
-                        load_group_id: load_group_id.to_string(),
-                        quantity: ordered_card
-                            .set_number
-                            .as_ref()
-                            .map(|i| i.length())
-                            .unwrap_or(1),
-                        database_id: dragncards::database::uuid(&card.id),
-                        _name: card.name.clone(),
-                    })
-                })
-                .collect();
-
-            let label = if set.name == "Venom" {
-                if set.r#type == SetType::Hero {
-                    String::from("Venom (Hero)")
-                } else {
-                    String::from("Venom (Scenario)")
-                }
-            } else {
-                set.name.clone()
-            };
-
-            let post_load_action_list = if set.r#type == SetType::Villain && set.requires.is_some()
-            {
-                Some(ActionList::List(vec![
-                    json!(["DEFINE", "$SCENARIO_NAME", label.clone()]),
-                    json!(["ACTION_LIST", "loadRequired"]),
-                ]))
-            } else {
-                None
-            };
-            (
-                label.clone(),
-                PreBuiltDeck {
-                    label,
-                    cards: deck,
-                    post_load_action_list,
-                },
-            )
-        });
-
-        for (label, deck) in decks.into_iter() {
-            pre_built_decks.insert(label, deck);
-        }
-    }
+    let mut pre_built_decks = process_sets_by_packs(&packs, &pack_set_map, &set_card_map);
 
     // Next Evolution handle villain shared across two scenarios
     let marauders = pre_built_decks.remove("Marauders").unwrap();
@@ -275,39 +180,8 @@ pub async fn execute(args: DecksArgs) {
         deck.cards.append(&mut marauders.cards.clone());
     }
 
-    let villain_scenarios_requires = sets
-        .iter()
-        .filter(|set| set.r#type == SetType::Villain && set.requires.is_some());
-    for scenario in villain_scenarios_requires {
-        if let Some(requires) = scenario.requires.as_ref() {
-            let label = format!("{} (required)", scenario.name);
-            let cards: Vec<crate::dragncards::decks::Card> = requires
-                .iter()
-                .map(|require| {
-                    let set = sets.iter().find(|set| &set.id == require).unwrap();
-                    let mut cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
-
-                    if set.id == EXPERIMENTAL_WEAPONS_SET_ID && scenario.id == CROSSBONES_SET_ID {
-                        for card in cards.iter_mut() {
-                            card.load_group_id = String::from("sharedEncounter3Deck");
-                        }
-                    }
-
-                    cards
-                })
-                .flatten()
-                .collect();
-
-            pre_built_decks.insert(
-                label.clone(),
-                PreBuiltDeck {
-                    label,
-                    cards,
-                    post_load_action_list: None,
-                },
-            );
-        }
-    }
+    // add required modulars to villain scenarios
+    process_required_modular_sets(&mut pre_built_decks, &sets);
 
     let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
 
@@ -691,4 +565,151 @@ fn process_hero_deck(
             })
         })
         .collect()
+}
+
+fn process_sets_by_packs(
+    packs: &Vec<Pack>,
+    pack_set_map: &HashMap<&Uuid, Vec<&Set>>,
+    set_card_map: &HashMap<&Uuid, Vec<OrderedCard>>,
+) -> PreBuiltDeckMap {
+    let mut pre_built_decks: PreBuiltDeckMap = IndexMap::new();
+
+    // build scenarios, modulars, campaign, nemesis set
+    for pack in packs.iter() {
+        let sets = pack_set_map.get(&pack.id).unwrap();
+        let decks = sets.iter().map(|set| {
+            let deck: Vec<dragncards::decks::Card> = set_card_map
+                .get(&set.id)
+                .unwrap()
+                .iter()
+                .filter_map(|ordered_card| {
+                    let card = ordered_card.card;
+                    if card.id.ends_with("B") {
+                        return None;
+                    }
+
+                    let mut load_group_id = match set.r#type {
+                        SetType::Modular | SetType::Villain => {
+                            let load_group_id = match card.r#type {
+                                CardType::MainScheme => {
+                                    if card
+                                        .stage
+                                        .as_ref()
+                                        .map(|stage| stage == "1A")
+                                        .unwrap_or(false)
+                                    {
+                                        "sharedMainScheme"
+                                    } else {
+                                        "sharedMainSchemeDeck"
+                                    }
+                                }
+                                CardType::Villain => "sharedVillainDeck",
+                                _ => "sharedEncounterDeck",
+                            };
+
+                            Some(load_group_id)
+                        }
+                        SetType::Nemesis => Some("playerNNemesisSet"),
+                        SetType::Campaign => Some("sharedCampaignDeck"),
+                        SetType::Supplementary => {
+                            if set.name == "Weather Deck" {
+                                Some("playerNPlay1")
+                            } else if set.name == "Invocation" {
+                                Some("playerNDeck2")
+                            } else {
+                                None
+                            }
+                        }
+                        _ => None,
+                    };
+
+                    if set.id == INFINITY_GAUNTLET_SET_ID {
+                        load_group_id = Some("sharedInfinityGauntletDeck");
+                    }
+
+                    load_group_id.map(|load_group_id| dragncards::decks::Card {
+                        load_group_id: load_group_id.to_string(),
+                        quantity: ordered_card
+                            .set_number
+                            .as_ref()
+                            .map(|i| i.length())
+                            .unwrap_or(1),
+                        database_id: dragncards::database::uuid(&card.id),
+                        _name: card.name.clone(),
+                    })
+                })
+                .collect();
+
+            // Venom is the set name for both the Hero/Scenario
+            let label = if set.name == "Venom" {
+                if set.r#type == SetType::Hero {
+                    String::from("Venom (Hero)")
+                } else {
+                    String::from("Venom (Scenario)")
+                }
+            } else {
+                set.name.clone()
+            };
+
+            let post_load_action_list = if set.r#type == SetType::Villain && set.requires.is_some()
+            {
+                Some(ActionList::List(vec![
+                    json!(["DEFINE", "$SCENARIO_NAME", label.clone()]),
+                    json!(["ACTION_LIST", "loadRequired"]),
+                ]))
+            } else {
+                None
+            };
+            (
+                label.clone(),
+                PreBuiltDeck {
+                    label,
+                    cards: deck,
+                    post_load_action_list,
+                },
+            )
+        });
+
+        for (label, deck) in decks.into_iter() {
+            pre_built_decks.insert(label, deck);
+        }
+    }
+
+    pre_built_decks
+}
+
+fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &Vec<Set>) {
+    let villain_scenarios_requires = sets
+        .iter()
+        .filter(|set| set.r#type == SetType::Villain && set.requires.is_some());
+    for scenario in villain_scenarios_requires {
+        if let Some(requires) = scenario.requires.as_ref() {
+            let label = format!("{} (required)", scenario.name);
+            let cards: Vec<crate::dragncards::decks::Card> = requires
+                .iter()
+                .map(|require| {
+                    let set = sets.iter().find(|set| &set.id == require).unwrap();
+                    let mut cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
+
+                    if set.id == EXPERIMENTAL_WEAPONS_SET_ID && scenario.id == CROSSBONES_SET_ID {
+                        for card in cards.iter_mut() {
+                            card.load_group_id = String::from("sharedEncounter3Deck");
+                        }
+                    }
+
+                    cards
+                })
+                .flatten()
+                .collect();
+
+            pre_built_decks.insert(
+                label.clone(),
+                PreBuiltDeck {
+                    label,
+                    cards,
+                    post_load_action_list: None,
+                },
+            );
+        }
+    }
 }
