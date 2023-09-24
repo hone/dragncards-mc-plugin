@@ -651,15 +651,40 @@ fn process_sets_by_packs(
                 set.name.clone()
             };
 
-            let post_load_action_list = if set.r#type == SetType::Villain && set.requires.is_some()
-            {
-                Some(ActionList::List(vec![
-                    json!(["DEFINE", "$SCENARIO_NAME", label.clone()]),
-                    json!(["ACTION_LIST", "loadRequired"]),
-                ]))
-            } else {
-                None
-            };
+            let mut post_load_action_list =
+                if set.r#type == SetType::Villain && set.requires.is_some() {
+                    Some(ActionList::List(vec![
+                        json!(["DEFINE", "$SCENARIO_NAME", label.clone()]),
+                        json!(["ACTION_LIST", "loadRequired"]),
+                    ]))
+                } else {
+                    None
+                };
+            let mut fixtures_path =
+                std::path::Path::new("fixtures/post_load_action_list").join(set.id.to_string());
+            fixtures_path.set_extension("json");
+            if fixtures_path.exists() {
+                let contents = std::fs::read_to_string(fixtures_path).unwrap();
+                let mut action_list: Vec<serde_json::Value> =
+                    serde_json::from_str(&contents).unwrap();
+
+                post_load_action_list =
+                    if let Some(initial_post_load_action_list) = post_load_action_list {
+                        match initial_post_load_action_list {
+                            ActionList::List(mut list) => {
+                                list.append(&mut action_list);
+                                Some(ActionList::List(list))
+                            }
+                            ActionList::Id(id) => {
+                                action_list.insert(0, json!(["ACTION_LIST", id]));
+                                Some(ActionList::List(action_list))
+                            }
+                        }
+                    } else {
+                        Some(ActionList::List(action_list))
+                    };
+            }
+
             (
                 label.clone(),
                 PreBuiltDeck {

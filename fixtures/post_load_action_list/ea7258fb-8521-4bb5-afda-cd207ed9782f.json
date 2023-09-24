@@ -1,0 +1,11 @@
+["COND",
+  ["EQUAL", "$GAME.mode", "expert"],
+  [
+    ["DEFINE",
+      "$CARD",
+      ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "89399b59-bb97-5eef-81f5-7bf8c8194b15"]]
+    ],
+    ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
+    ["INCREASE_VAL", "/cardById/$CARD.id/tokens/threat", "$GAME.numPlayers"]
+  ]
+]
