@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 atoi = "2.0.0"
-clap = { version = "4.4.0", features = ["derive"] }
+clap = { version = "4.4.6", features = ["derive"] }
 csv = "1.2.2"
 indexmap = { version = "2.0.0", features = ["serde"] }
 lazy_static = "1.4.0"
