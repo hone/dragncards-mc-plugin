@@ -341,7 +341,7 @@
       ["WHILE",
         ["AND",
           ["NOT_EQUAL", "$GAME.cardById.$CARD_ID.sides.A.type", "Minion"],
-          ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEnocunterDeck.stackIds"], 0]
+          ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 1]
         ],
         [
           ["DEFINE", "$DISCARD_CARD_ID", "$CARD_ID"],
