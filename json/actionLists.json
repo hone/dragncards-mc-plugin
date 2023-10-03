@@ -67,16 +67,23 @@
     ],
     "discardCard": [
       ["COND",
-        ["EQUAL", "$ACTIVE_CARD.discardGroupId", null],
-        ["LOG", "$ALIAS_N", " failed to discard ", "$ACTIVE_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
+        ["NOT", ["DEFINED", "$DISCARD_CARD_ID"]],
+        ["DEFINE", "$DISCARD_CARD_ID", "$ACTIVE_CARD_ID"]
+      ],
+      ["DEFINE", "$DISCARD_CARD", "$GAME.cardById.$DISCARD_CARD_ID"],
+      ["DEFINE", "$CURRENT_SIDE", "$DISCARD_CARD.currentSide"],
+      ["DEFINE", "$DISCARD_FACE", "$DISCARD_CARD.$CURRENT_SIDE"],
+      ["COND",
+        ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
+        ["LOG", "$ALIAS_N", " failed to discard ", "$DISCARD_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
         true,
         [
-          ["LOG", "$ALIAS_N", " discarded ", "$ACTIVE_FACE.name", "."],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
-          ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.discardGroupId", 0],
+          ["LOG", "$ALIAS_N", " discarded ", "$DISCARD_FACE.name", "."],
+          ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
+          ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
           ["COND",
             ["AND",
-              ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Villain"],
+              ["EQUAL", "$DISCARD_CARD.sides.A.type", "Villain"],
               ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]
             ],
             [
@@ -89,7 +96,7 @@
           ],
           ["COND",
             ["AND",
-              ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Main Scheme"],
+              ["EQUAL", "$DISCARD_CARD.sides.A.type", "Main Scheme"],
               ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedMainSchemeDeck.stackIds"], 0]
             ],
             [
@@ -107,8 +114,8 @@
       ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
       ["DEFINE", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$INDEX", ["RANDOM_INT", 0, ["SUBTRACT", "$CURRENT_HAND_SIZE", 1]]],
-      ["DEFINE", "$ACTIVE_CARD_ID", "$GAME.groupById.$HAND_GROUP_ID.parentCardIds.[$INDEX]"],
-      ["ACTION_LIST", "discardCard", "$CARD_ID"]
+      ["DEFINE", "$DISCARD_CARD_ID", "$GAME.groupById.$HAND_GROUP_ID.parentCardIds.[$INDEX]"],
+      ["ACTION_LIST", "discardCard"]
     ],
     "flipCard": [
       ["COND",
