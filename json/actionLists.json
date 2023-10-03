@@ -335,6 +335,27 @@
         ]]
       ],
       ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", 0]
+    ],
+    "discardMinion": [
+      ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["WHILE",
+        ["AND",
+          ["NOT_EQUAL", "$GAME.cardById.$CARD_ID.sides.A.type", "Minion"],
+          ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEnocunterDeck.stackIds"], 0]
+        ],
+        [
+          ["DEFINE", "$DISCARD_CARD_ID", "$CARD_ID"],
+          ["ACTION_LIST", "discardCard"],
+          ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"]
+        ]
+      ],
+      ["DEFINE", "$DISCARD_CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["COND",
+        ["EQUAL", "$GAME.cardById.$DISCARD_CARD_ID.sides.A.type", "Minion"],
+        ["MOVE_CARD", "$DISCARD_CARD_ID", "$GROUP_ID", 0],
+        true,
+        ["ACTION_LIST", "discardCard"]
+      ]
     ]
   }
 }
