@@ -62,6 +62,10 @@
         ["NOT_EQUAL", "$VILLAIN_CARD.sides.A.hitPointsScaling", null],
         ["DEFINE", "$VILLAIN_HIT_POINTS", ["MULTIPLY", "$VILLAIN_CARD.sides.A.hitPointsScaling", "$GAME.numPlayers"]]
       ],
+      ["COND",
+        ["DEFINED", "$INCREASE_VILLAIN_HIT_POINTS"],
+        ["DEFINE", "$VILLAIN_HIT_POINTS", ["ADD", "$VILLAIN_HIT_POINTS", "$INCREASE_VILLAIN_HIT_POINTS"]]
+      ],
       ["SET", "/villainHitPoints", "$VILLAIN_HIT_POINTS"],
       ["LOG", "Set villain hit points to ", "$VILLAIN_HIT_POINTS", "."]
     ],

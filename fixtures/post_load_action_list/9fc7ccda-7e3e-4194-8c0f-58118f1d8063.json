@@ -1,0 +1,22 @@
+[
+  ["DEFINE",
+    "$CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "c69766b1-a6a4-5338-a96e-5dfe1e787e70"]]
+  ],
+  ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
+  ["INCREASE_VAL", "/cardById/$CARD.id/tokens/threat", "$GAME.numPlayers"],
+  ["DEFINE", "$GROUP_ID", "player1Engaged"],
+  ["ACTION_LIST", "discardMinion"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["DEFINE",
+        "$CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "72f3607e-5488-5c3a-be65-24d8ce749d90"]]
+      ],
+      ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
+      ["LOG", "{{$CARD.sides.A.name}} increases villain health by 10."],
+      ["DEFINE", "$INCREASE_VILLAIN_HIT_POINTS", 10]
+    ]
+  ]
+]
