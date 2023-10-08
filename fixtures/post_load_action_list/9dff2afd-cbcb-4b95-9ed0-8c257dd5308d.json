@@ -1,0 +1,19 @@
+[
+  ["LOG", "Setup: Discard cards until environment is discarded"],
+  ["DEFINE", "$DISCARD_TYPE", "Environment"],
+  ["DEFINE", "$DEST_GROUP_ID", "sharedVillain"],
+  ["ACTION_LIST", "discardUntil"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Reveal Super Absorbing Power"],
+      ["DEFINE",
+        "$ENV_CARD",
+        ["ONE_CARD", "$CARD",
+          ["EQUAL", "$CARD.databaseId", "fa891b35-2416-5449-862d-ab55681dd786"]
+        ]
+      ],
+      ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", 0]
+    ]
+  ]
+]

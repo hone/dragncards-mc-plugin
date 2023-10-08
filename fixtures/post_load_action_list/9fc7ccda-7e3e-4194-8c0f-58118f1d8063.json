@@ -5,7 +5,7 @@
   ],
   ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
   ["INCREASE_VAL", "/cardById/$CARD.id/tokens/threat", "$GAME.numPlayers"],
-  ["DEFINE", "$GROUP_ID", "player1Engaged"],
+  ["DEFINE", "$DEST_GROUP_ID", "player1Engaged"],
   ["ACTION_LIST", "discardMinion"],
   ["COND",
     ["EQUAL", "$GAME.mode", "expert"],
