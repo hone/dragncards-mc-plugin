@@ -1,0 +1,34 @@
+[
+  ["LOG", "Setup: Reveal \"Hydra Prison\""],
+  ["DEFINE",
+    "$CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "31df8878-df81-50b3-a7c3-d18955a6b2ca"]]
+  ],
+  ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
+  ["LOG", "Setup: Every play puts \"Ultimate Bio-Servant\" into play engaged"],
+  ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER",
+    [
+      ["DEFINE",
+        "$CARD",
+        ["ONE_CARD", "$CARD",
+          ["AND",
+            ["EQUAL", "$CARD.databaseId", "28ffca31-8ff0-5538-807c-7354e3ce890a"],
+            ["EQUAL", "$CARD.groupId", "sharedEncounterDeck"]
+          ]
+        ]
+      ],
+      ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Engaged", 0]
+    ]
+  ],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Reveal \"Test Subjects\""],
+      ["DEFINE",
+        "$CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "7017de0e-2e3c-597d-8439-9211640c8c0f"]]
+      ],
+      ["MOVE_CARD", "$CARD.id", "sharedVillain", 0]
+    ]
+  ]
+]
