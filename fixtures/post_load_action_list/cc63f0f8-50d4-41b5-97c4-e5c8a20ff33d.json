@@ -1,0 +1,25 @@
+[
+  ["DEFINE", "$ENV_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "e2c90c2d-1cb8-5b51-aac7-b58b24b4737f"]]
+  ],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["DEFINE", "$ENV_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ad8439f9-b46e-5aa6-9f79-4184c8c033f3"]]
+      ],
+      ["MOVE_CARD", "$ENV_CARD.id", "player1Play1", -1]
+    ]
+  ],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Reveal \"Drang's Spear\""],
+      ["DEFINE", "$ENV_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "0802bd86-42da-56af-8d4d-b8736aa7b1c7"]]
+      ],
+      ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1]
+    ]
+  ]
+]
