@@ -168,6 +168,13 @@
           ["COND",
             ["GREATER_THAN", ["LENGTH", "$GAME.groupById.{{$PLAYER_N}}Deck2.stackIds"], 0],
             ["SET", "/layoutVariants/playerDeck2", true]
+          ],
+          ["COND",
+            ["EQUAL", "$IDENTITY_CARD.databaseId", "c3a410de-2939-5255-9ea1-cdb9e71f07d7"],
+            [
+              ["SET", "/cardById/$IDENTITY_CARD.id/sides/C/height", 1],
+              ["SET", "/cardById/$IDENTITY_CARD.id/sides/C/width", 1.39]
+            ]
           ]
         ]
       ],
