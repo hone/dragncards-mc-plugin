@@ -3,6 +3,6 @@
     "$ENV_CARD",
     ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "011608d6-475c-5b13-baa2-9572a44cd4d5"]]
   ],
-  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", 0],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
   ["SET", "/cardById/$ENV_CARD.id/tokens/generic", ["MULTIPLY", 2, "$GAME.numPlayers"]]
 ]

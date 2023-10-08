@@ -10,7 +10,7 @@
         ]
       ]
     ],
-    ["MOVE_CARD", "$MINION_CARD.id", "{{$PLAYER_N}}Engaged", 0]
+    ["MOVE_CARD", "$MINION_CARD.id", "{{$PLAYER_N}}Engaged", -1]
   ]],
   ["COND",
     ["EQUAL", "$GAME.mode", "expert"],

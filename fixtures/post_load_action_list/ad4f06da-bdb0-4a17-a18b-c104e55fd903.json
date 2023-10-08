@@ -3,7 +3,7 @@
   ["FOR_EACH_VAL", "$CARD", "$GAME.groupById.sharedEncounterDeck.parentCards",
     ["COND",
       ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
-      ["MOVE_CARD", "$CARD.id", "sharedEncounter2Deck", 0]
+      ["MOVE_CARD", "$CARD.id", "sharedEncounter2Deck", -1]
     ]
   ],
   ["COND",

@@ -13,7 +13,7 @@
           ["EQUAL", "$CARD.databaseId", "fa891b35-2416-5449-862d-ab55681dd786"]
         ]
       ],
-      ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", 0]
+      ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1]
     ]
   ]
 ]

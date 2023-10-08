@@ -4,7 +4,7 @@
     "$CARD",
     ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "31df8878-df81-50b3-a7c3-d18955a6b2ca"]]
   ],
-  ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
+  ["MOVE_CARD", "$CARD.id", "sharedVillain", -1],
   ["LOG", "Setup: Every play puts \"Ultimate Bio-Servant\" into play engaged"],
   ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER",
     [
@@ -17,7 +17,7 @@
           ]
         ]
       ],
-      ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Engaged", 0]
+      ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Engaged", -1]
     ]
   ],
   ["COND",
@@ -28,7 +28,7 @@
         "$CARD",
         ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "7017de0e-2e3c-597d-8439-9211640c8c0f"]]
       ],
-      ["MOVE_CARD", "$CARD.id", "sharedVillain", 0]
+      ["MOVE_CARD", "$CARD.id", "sharedVillain", -1]
     ]
   ]
 ]

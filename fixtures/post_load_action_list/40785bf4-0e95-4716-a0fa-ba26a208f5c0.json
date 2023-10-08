@@ -3,11 +3,11 @@
     "$ENV_CARD",
     ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "8dc89688-080f-55ec-a557-c469bc9b4705"]]
   ],
-  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", 0],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
   ["LOG", "Setup: Deal each player a drone minion"],
   ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
     ["DEFINE", "$CARD", "$GAME.groupById.{{$PLAYER_N}}Deck.parentCards.[0]"],
-    ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Engaged", 0],
+    ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Engaged", -1],
     ["SET", "/cardById/$CARD.id/currentSide", "B"]
   ]]
 ]
