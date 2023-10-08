@@ -10,6 +10,7 @@
   ["COND",
     ["EQUAL", "$GAME.mode", "expert"],
     [
+      ["LOG", "Setup: Reveal \"Crossbones' Machine Gun\""],
       ["DEFINE",
         "$ATTACHMENT_CARD",
         ["ONE_CARD", "$CARD",
