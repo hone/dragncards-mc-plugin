@@ -18,11 +18,13 @@ const TOUCHED_ID: &str = "38002";
 
 const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9");
 const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
+const ESCAPE_THE_MUSEUM_SET_ID: Uuid = uuid!("76c1a33e-7eed-4980-9561-7e3d9f815c32");
 const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
 const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
+const SHIP_COMMAND_SET_ID: Uuid = uuid!("a789f0f5-d822-40f6-8e83-d8e5e27d40d2");
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
 const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
 const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
@@ -733,6 +735,12 @@ fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &V
                     if set.id == EXPERIMENTAL_WEAPONS_SET_ID && scenario.id == CROSSBONES_SET_ID {
                         for card in cards.iter_mut() {
                             card.load_group_id = String::from("sharedEncounter3Deck");
+                        }
+                    } else if scenario.id == ESCAPE_THE_MUSEUM_SET_ID
+                        && set.id == SHIP_COMMAND_SET_ID
+                    {
+                        for card in cards.iter_mut() {
+                            card.load_group_id = String::from("sharedOutOfPlay");
                         }
                     }
 
