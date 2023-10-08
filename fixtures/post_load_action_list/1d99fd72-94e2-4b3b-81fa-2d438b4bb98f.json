@@ -1,0 +1,23 @@
+[
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["LOG", "Setup: Reveal top card of the experimental Weapons Deck"],
+      ["SHUFFLE_GROUP", "sharedEncounter3Deck"],
+      ["MOVE_CARD", "$GAME.groupById.sharedEncounter3Deck.parentCardIds.[0]", "sharedVillain", 0]
+    ]
+  ],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["DEFINE",
+        "$ATTACHMENT_CARD",
+        ["ONE_CARD", "$CARD",
+          ["EQUAL", "$CARD.databaseId", "fe1e73a2-b909-553d-9444-81ece938fa04"]
+        ]
+      ],
+      ["MOVE_CARD", "$ATTACHMENT_CARD.id", "sharedVillain", 0],
+      ["SET", "/cardById/$ATTACHMENT_CARD.id/tokens/generic", ["MULTIPLY", 2, "$GAME.numPlayers"]]
+    ]
+  ]
+]
