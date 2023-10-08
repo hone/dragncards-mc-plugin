@@ -21,8 +21,10 @@ const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
+const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
 const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
 const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
+const WEATHER_SET_ID: Uuid = uuid!("a89bb587-77f5-414a-a24b-c6871dfc446c");
 
 const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
 const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
@@ -612,7 +614,7 @@ fn process_sets_by_packs(
                         SetType::Nemesis => Some("playerNNemesisSet"),
                         SetType::Campaign => Some("sharedCampaignDeck"),
                         SetType::Supplementary => {
-                            if set.name == "Weather Deck" {
+                            if set.id == WEATHER_SET_ID {
                                 Some("playerNPlay1")
                             } else if set.name == "Invocation" {
                                 Some("playerNDeck2")
@@ -625,6 +627,10 @@ fn process_sets_by_packs(
 
                     if set.id == INFINITY_GAUNTLET_SET_ID {
                         load_group_id = Some("sharedInfinityGauntletDeck");
+                    } else if set.id == TASKMASTER_SET_ID
+                        && ordered_card.card.r#type == CardType::Ally
+                    {
+                        load_group_id = Some("sharedOutOfPlay");
                     }
 
                     load_group_id.map(|load_group_id| dragncards::decks::Card {

@@ -1,0 +1,20 @@
+[
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["LOG", "Setup: Put Hydra Patrol into play"],
+      ["DEFINE",
+        "$CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "8b80afb9-e793-5d19-9d96-4a181c220723"]]
+      ],
+      ["MOVE_CARD", "$CARD.id", "sharedVillain", 0]
+    ]
+  ],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Deal each player an encounter card"],
+      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", ["ACTION_LIST", "dealEncounterFacedown"]]
+    ]
+  ]
+]
