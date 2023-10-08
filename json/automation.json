@@ -4,19 +4,23 @@
       ["DEFINE", "$LOADED_PLAYER_DECK", false],
       ["DEFINE", "$LOADED_SCENARIO_DECK", false],
       ["COND",
-        ["EQUAL", "$GAME.mode", "standard"],
-        [
-          ["DEFINE", "$FIRST_STAGE", "I"],
-          ["DEFINE", "$DISCARDED_STAGE", "III"],
-          ["DEFINE", "$DOUBLE_SIDED_STAGE", "A1"],
-          ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "B1"]
-        ],
-        ["EQUAL", "$GAME.mode", "expert"],
-        [
-          ["DEFINE", "$FIRST_STAGE", "II"],
-          ["DEFINE", "$DISCARDED_STAGE", "I"],
-          ["DEFINE", "$DOUBLE_SIDED_STAGE", "B1"],
-          ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "A1"]
+        ["NOT", ["DEFINED", "$FIRST_STAGE"],
+          ["COND",
+            ["EQUAL", "$GAME.mode", "standard"],
+            [
+              ["DEFINE", "$FIRST_STAGE", "I"],
+              ["DEFINE", "$DISCARDED_STAGE", "III"],
+              ["DEFINE", "$DOUBLE_SIDED_STAGE", "A1"],
+              ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "B1"]
+            ],
+            ["EQUAL", "$GAME.mode", "expert"],
+            [
+              ["DEFINE", "$FIRST_STAGE", "II"],
+              ["DEFINE", "$DISCARDED_STAGE", "I"],
+              ["DEFINE", "$DOUBLE_SIDED_STAGE", "B1"],
+              ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "A1"]
+            ]
+          ]
         ]
       ],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.loadedCardIds", [
@@ -203,7 +207,10 @@
               ["ACTION_LIST", "setVillainHealth"]
             ]
           ],
-          ["ACTION_LIST", "setSchemeStartingThreat"]
+          ["COND",
+            ["DEFINED", "$SCHEME_CARD"],
+            ["ACTION_LIST", "setSchemeStartingThreat"]
+          ]
         ]
       ]
     ],

@@ -20,6 +20,7 @@ const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819
 const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
+const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
@@ -36,6 +37,7 @@ const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc925860055
 const PENI_PARKER_A_DATABASE_ID: Uuid = uuid!("36943f94-3731-5bed-9b56-59fbdd69f968");
 
 const THE_SLEEPER_CARD_ID: &str = "04130";
+const KANGS_DOMINION_CARD_ID: &str = "11023";
 
 type PreBuiltDeckMap = IndexMap<String, dragncards::decks::PreBuiltDeck>;
 
@@ -630,12 +632,11 @@ fn process_sets_by_packs(
 
                     if set.id == INFINITY_GAUNTLET_SET_ID {
                         load_group_id = Some("sharedInfinityGauntletDeck");
-                    } else if set.id == TASKMASTER_SET_ID
-                        && ordered_card.card.r#type == CardType::Ally
-                    {
-                        load_group_id = Some("sharedOutOfPlay");
-                    } else if set.id == RED_SKULL_SET_ID
-                        && ordered_card.card.id == THE_SLEEPER_CARD_ID
+                    } else if (set.id == TASKMASTER_SET_ID
+                        && ordered_card.card.r#type == CardType::Ally)
+                        || (set.id == RED_SKULL_SET_ID
+                            && ordered_card.card.id == THE_SLEEPER_CARD_ID)
+                        || (set.id == KANG_SET_ID && ordered_card.card.id == KANGS_DOMINION_CARD_ID)
                     {
                         load_group_id = Some("sharedOutOfPlay");
                     }

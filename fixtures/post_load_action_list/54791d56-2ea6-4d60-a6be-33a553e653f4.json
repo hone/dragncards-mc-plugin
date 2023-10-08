@@ -1,0 +1,23 @@
+[
+  ["LOG", "Setup: Deal each player an encounter card"],
+  ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", ["ACTION_LIST", "dealEncounterFacedown"]],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["DEFINE", "$VILLAIN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "2531c227-fb70-588e-92a4-e242e60f41e7"]]],
+      ["DELETE_CARD", "$VILLAIN_CARD.id"],
+      ["DEFINE", "$VILLAIN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "3ec35abb-ad36-5a9a-88b7-33436c3478fc"]]],
+      ["DELETE_CARD", "$VILLAIN_CARD.id"],
+      ["DEFINE", "$VILLAIN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "922092fa-fcdd-50ee-8a4f-37bc68843ee6"]]],
+      ["DELETE_CARD", "$VILLAIN_CARD.id"],
+      ["DEFINE", "$VILLAIN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "20d73026-d831-5b50-8d3b-2d2be4bdf0ab"]]],
+      ["DELETE_CARD", "$VILLAIN_CARD.id"],
+      ["DEFINE", "$VILLAIN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "8da7c346-63f0-590c-8960-92bd0337787f"]]],
+      ["DELETE_CARD", "$VILLAIN_CARD.id"],
+      ["DEFINE", "$VILLAIN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ebb16bce-3d0e-5a08-a320-14695f3de32f"]]],
+      ["DELETE_CARD", "$VILLAIN_CARD.id"],
+      ["DEFINE", "$FIRST_STAGE", "I"],
+      ["LOAD_CARDS", "Expert Kang"]
+    ]
+  ]
+]
