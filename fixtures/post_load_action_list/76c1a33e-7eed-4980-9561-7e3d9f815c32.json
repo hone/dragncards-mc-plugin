@@ -1,4 +1,5 @@
 [
+  ["LOG", "Setup: Reveal \"Library Labyrinth\""],
   ["DEFINE", "$ENV_CARD",
     ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "0ea8662a-1c1f-5306-8633-09a4cdfb7ad1"]]
   ],
