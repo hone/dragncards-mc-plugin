@@ -1,0 +1,25 @@
+[
+  ["LOG", "Setup: Every player gets a Goblin Thrall"],
+  ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+    ["DEFINE",
+      "$MINION_CARD",
+      ["ONE_CARD", "$CARD",
+        ["AND",
+          ["EQUAL", "$CARD.databaseId", "dee50ad3-51e8-5e8e-bc4c-2ff8dfe60af9"],
+          ["EQUAL", "$CARD.groupId", "sharedEncounterDeck"]
+        ]
+      ]
+    ],
+    ["MOVE_CARD", "$MINION_CARD.id", "{{$PLAYER_N}}Engaged", 0]
+  ]],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Every player gets 2 encounter cards."],
+      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+        ["ACTION_LIST", "dealEncounterFacedown"],
+        ["ACTION_LIST", "dealEncounterFacedown"]
+      ]]
+    ]
+  ]
+]
