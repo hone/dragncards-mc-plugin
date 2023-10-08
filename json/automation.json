@@ -4,22 +4,21 @@
       ["DEFINE", "$LOADED_PLAYER_DECK", false],
       ["DEFINE", "$LOADED_SCENARIO_DECK", false],
       ["COND",
-        ["NOT", ["DEFINED", "$FIRST_STAGE"],
-          ["COND",
-            ["EQUAL", "$GAME.mode", "standard"],
-            [
-              ["DEFINE", "$FIRST_STAGE", "I"],
-              ["DEFINE", "$DISCARDED_STAGE", "III"],
-              ["DEFINE", "$DOUBLE_SIDED_STAGE", "A1"],
-              ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "B1"]
-            ],
-            ["EQUAL", "$GAME.mode", "expert"],
-            [
-              ["DEFINE", "$FIRST_STAGE", "II"],
-              ["DEFINE", "$DISCARDED_STAGE", "I"],
-              ["DEFINE", "$DOUBLE_SIDED_STAGE", "B1"],
-              ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "A1"]
-            ]
+        ["NOT", ["DEFINED", "$FIRST_STAGE"]],
+        ["COND",
+          ["EQUAL", "$GAME.mode", "standard"],
+          [
+            ["DEFINE", "$FIRST_STAGE", "I"],
+            ["DEFINE", "$DISCARDED_STAGE", "III"],
+            ["DEFINE", "$DOUBLE_SIDED_STAGE", "A1"],
+            ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "B1"]
+          ],
+          ["EQUAL", "$GAME.mode", "expert"],
+          [
+            ["DEFINE", "$FIRST_STAGE", "II"],
+            ["DEFINE", "$DISCARDED_STAGE", "I"],
+            ["DEFINE", "$DOUBLE_SIDED_STAGE", "B1"],
+            ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "A1"]
           ]
         ]
       ],
