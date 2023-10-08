@@ -1,0 +1,16 @@
+[
+  ["LOG", "Setup: Create Side-Scheme deck"],
+  ["FOR_EACH_VAL", "$CARD", "$GAME.groupById.sharedEncounterDeck.parentCards",
+    ["COND",
+      ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
+      ["MOVE_CARD", "$CARD.id", "sharedEncounter2Deck", 0]
+    ]
+  ],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Deal each player an encounter card"],
+      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", ["ACTION_LIST", "dealEncounterFacedown"]]
+    ]
+  ]
+]

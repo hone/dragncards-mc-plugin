@@ -21,6 +21,7 @@ const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
+const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
 const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
 const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
@@ -33,6 +34,8 @@ const SPDR_HERO_PACK_ID: Uuid = uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f");
 const IRONHEART_A_DATABASE_ID: Uuid = uuid!("0006bfd8-06a5-5928-8d17-1b4971407dbc");
 const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc9258600557");
 const PENI_PARKER_A_DATABASE_ID: Uuid = uuid!("36943f94-3731-5bed-9b56-59fbdd69f968");
+
+const THE_SLEEPER_CARD_ID: &str = "04130";
 
 type PreBuiltDeckMap = IndexMap<String, dragncards::decks::PreBuiltDeck>;
 
@@ -629,6 +632,10 @@ fn process_sets_by_packs(
                         load_group_id = Some("sharedInfinityGauntletDeck");
                     } else if set.id == TASKMASTER_SET_ID
                         && ordered_card.card.r#type == CardType::Ally
+                    {
+                        load_group_id = Some("sharedOutOfPlay");
+                    } else if set.id == RED_SKULL_SET_ID
+                        && ordered_card.card.id == THE_SLEEPER_CARD_ID
                     {
                         load_group_id = Some("sharedOutOfPlay");
                     }
