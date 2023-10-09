@@ -1,0 +1,34 @@
+[
+  ["LOG", "Setup: Put \"Nebula's Ship\" into play"],
+  ["DEFINE", "$ENV_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "c9815d46-386b-546f-be50-f29ae87719e3"]]
+  ],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["LOG", "Setup: Put \"Milano\" into play"],
+      ["DEFINE", "$ENV_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ad8439f9-b46e-5aa6-9f79-4184c8c033f3"]]
+      ],
+      ["MOVE_CARD", "$ENV_CARD.id", "player1Play1", -1],
+      ["LOG", "Setup: Attach \"Power Stone\" to Nebula"],
+      ["DEFINE", "$ENV_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "77738a60-281e-5bf9-bc1a-456d2dd4cb69"]]
+      ],
+      ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1]
+    ]
+  ],
+  ["LOG", "Setup: Discard 2 per player cards and attach each TECHNIQUE"],
+  ["FOR_EACH_START_STOP_STEP", "$i", 0, ["MULTIPLY", 2, "$GAME.numPlayers"], 1,
+    [
+      ["DEFINE", "$CARD", "$GAME.groupById.sharedEncounterDeck.parentCards.[0]"],
+      ["COND",
+        ["IN_STRING", "$CARD.sides.A.traits", "Technique"],
+        ["MOVE_CARD", "$CARD.id", "sharedVillain", -1],
+        true,
+        ["MOVE_CARD", "$CARD.id", "sharedEncounterDiscard", 0]
+      ]
+    ]
+  ]
+]

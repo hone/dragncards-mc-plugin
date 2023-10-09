@@ -23,6 +23,8 @@ const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
 const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
+const NEBULA_HERO_SET_ID: Uuid = uuid!("470b185d-42e4-413b-b516-854b4b2f0231");
+const NEBULA_SCENARIO_SET_ID: Uuid = uuid!("835990d9-d2ff-4c5c-aa8d-b8550e179847");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
 const SHIP_COMMAND_SET_ID: Uuid = uuid!("a789f0f5-d822-40f6-8e83-d8e5e27d40d2");
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
@@ -32,7 +34,9 @@ const WEATHER_SET_ID: Uuid = uuid!("a89bb587-77f5-414a-a24b-c6871dfc446c");
 
 const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
 const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
+const NEBULA_HERO_PACK_ID: Uuid = uuid!("c2a6c65a-032b-4339-b3d2-9d913528573f");
 const SPDR_HERO_PACK_ID: Uuid = uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f");
+const VENOM_HERO_PACK_ID: Uuid = uuid!("09ae1f69-a66f-4283-8cc9-ca6e3c169018");
 
 const IRONHEART_A_DATABASE_ID: Uuid = uuid!("0006bfd8-06a5-5928-8d17-1b4971407dbc");
 const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc9258600557");
@@ -326,6 +330,10 @@ pub async fn execute(args: DecksArgs) {
                 String::from("Venom (Hero)")
             } else if set.id == VENOM_SCENARIO_SET_ID {
                 String::from("Venom (Scenario)")
+            } else if set.id == NEBULA_HERO_SET_ID {
+                String::from("Nebula (Hero)")
+            } else if set.id == NEBULA_SCENARIO_SET_ID {
+                String::from("Nebula (Scenario)")
             } else {
                 set.name.clone()
             };
@@ -511,8 +519,10 @@ fn build_hero_deck<'a>(
             },
         );
     }
-    let pre_built_label = if pack.name == "Venom" {
+    let pre_built_label = if pack.id == VENOM_HERO_PACK_ID {
         String::from("Venom (Hero)")
+    } else if pack.id == NEBULA_HERO_PACK_ID {
+        String::from("Nebula (Hero)")
     } else {
         hero_name
     };
@@ -657,12 +667,14 @@ fn process_sets_by_packs(
                 .collect();
 
             // Venom is the set name for both the Hero/Scenario
-            let label = if set.name == "Venom" {
-                if set.r#type == SetType::Hero {
-                    String::from("Venom (Hero)")
-                } else {
-                    String::from("Venom (Scenario)")
-                }
+            let label = if set.id == VENOM_HERO_SET_ID {
+                String::from("Venom (Hero)")
+            } else if set.id == VENOM_SCENARIO_SET_ID {
+                String::from("Venom (Scenario)")
+            } else if set.id == NEBULA_HERO_SET_ID {
+                String::from("Nebula (Hero)")
+            } else if set.id == NEBULA_SCENARIO_SET_ID {
+                String::from("Nebula (Scenario)")
             } else {
                 set.name.clone()
             };
@@ -670,7 +682,7 @@ fn process_sets_by_packs(
             let mut post_load_action_list =
                 if set.r#type == SetType::Villain && set.requires.is_some() {
                     Some(ActionList::List(vec![
-                        json!(["DEFINE", "$SCENARIO_NAME", label.clone()]),
+                        json!(["DEFINE", "$SCENARIO_NAME", set.name.clone()]),
                         json!(["ACTION_LIST", "loadRequired"]),
                     ]))
                 } else {
