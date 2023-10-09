@@ -1,0 +1,37 @@
+[
+  ["LOG", "Setup: Put \"Kree Command Ship\" into play"],
+  ["DEFINE", "$ENV_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "e8c2bd87-310b-5573-a67d-a5617120ee60"]]
+  ],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
+  ["LOG", "Setup: Attach \"Universal Weapon\" to Ronan"],
+  ["DEFINE", "$ATTACHMENT_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "a00d6e1b-ebd0-5c8d-9f0f-5bf61e2b4953"]]
+  ],
+  ["MOVE_CARD", "$ATTACHMENT_CARD.id", "sharedVillain", -1],
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["LOG", "Setup: Put \"Milano\" into play"],
+      ["DEFINE", "$MILANO_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ad8439f9-b46e-5aa6-9f79-4184c8c033f3"]]
+      ],
+      ["MOVE_CARD", "$MILANO_CARD.id", "player1Engaged", -1],
+      ["LOG", "Setup: Attach \"Power Stone\" to 1st player"],
+      ["DEFINE", "$POWER_STONE_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ad8439f9-b46e-5aa6-9f79-4184c8c033f3"]]
+      ],
+      ["MOVE_CARD", "$POWER_STONE_CARD.id", "player1Engaged", -1]
+    ]
+  ],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Reveal \"Cut the Power\""],
+      ["DEFINE", "$SIDE_SCHEME_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "5e7cfaa7-a4a6-5d1d-9794-40868aa86ffd"]]
+      ],
+      ["MOVE_CARD", "$SIDE_SCHEME_CARD.id", "sharedVillain", -1]
+    ]
+  ]
+]
