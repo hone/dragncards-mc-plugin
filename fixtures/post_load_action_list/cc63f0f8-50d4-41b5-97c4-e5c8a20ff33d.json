@@ -1,4 +1,5 @@
 [
+  ["LOG", "Setup: Put \"Badoon Ship\" into play"],
   ["DEFINE", "$ENV_CARD",
     ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "e2c90c2d-1cb8-5b51-aac7-b58b24b4737f"]]
   ],
@@ -6,6 +7,7 @@
   ["COND",
     "$GAME.loadRequired",
     [
+      ["LOG", "Setup: Put \"Milano\" into play"],
       ["DEFINE", "$ENV_CARD",
         ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ad8439f9-b46e-5aa6-9f79-4184c8c033f3"]]
       ],
