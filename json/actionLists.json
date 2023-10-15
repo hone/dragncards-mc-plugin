@@ -79,10 +79,10 @@
       ["DEFINE", "$DISCARD_FACE", "$DISCARD_CARD.$CURRENT_SIDE"],
       ["COND",
         ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
-        ["LOG", "$ALIAS_N", " failed to discard ", "$DISCARD_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
+        ["LOG", "$ALIAS_N", " failed to discard ", "$DISCARD_CARD.sides.$DISCARD_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
         true,
         [
-          ["LOG", "$ALIAS_N", " discarded ", "$DISCARD_FACE.name", "."],
+          ["LOG", "$ALIAS_N", " discarded ", "$DISCARD_CARD.sides.$DISCARD_FACE.name", "."],
           ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
           ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
           ["COND",
