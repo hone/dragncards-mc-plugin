@@ -342,9 +342,9 @@
     ],
     "discardMinion": [
       ["DEFINE", "$DISCARD_TYPE", "Minion"],
-      ["ACTION_LIST", "discardUntil"]
+      ["ACTION_LIST", "discardUntilType"]
     ],
-    "discardUntil": [
+    "discardUntilType": [
       ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
       ["WHILE",
         ["AND",
@@ -360,6 +360,33 @@
       ["DEFINE", "$DISCARD_CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
       ["COND",
         ["EQUAL", "$GAME.cardById.$DISCARD_CARD_ID.sides.A.type", "$DISCARD_TYPE"],
+        ["MOVE_CARD", "$DISCARD_CARD_ID", "$DEST_GROUP_ID", 0],
+        true,
+        ["ACTION_LIST", "discardCard"]
+      ]
+    ],
+    "discardUntilTraitType": [
+      ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["WHILE",
+        ["AND",
+          ["OR",
+            ["NOT_EQUAL", "$GAME.cardById.$CARD_ID.sides.A.type", "$DISCARD_TYPE"],
+            ["NOT", ["IN_STRING", "$GAME.cardById.$CARD_ID.sides.A.traits", "$DISCARD_TRAIT"]]
+          ],
+          ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 1]
+        ],
+        [
+          ["DEFINE", "$DISCARD_CARD_ID", "$CARD_ID"],
+          ["ACTION_LIST", "discardCard"],
+          ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"]
+        ]
+      ],
+      ["DEFINE", "$DISCARD_CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["COND",
+        ["AND",
+          ["EQUAL", "$GAME.cardById.$DISCARD_CARD_ID.sides.A.type", "$DISCARD_TYPE"],
+          ["IN_LIST", "$GAME.cardById.$DISCARD_CARD_ID.sides.A.traits", $DISCARD_TRAIT"]
+        ],
         ["MOVE_CARD", "$DISCARD_CARD_ID", "$DEST_GROUP_ID", 0],
         true,
         ["ACTION_LIST", "discardCard"]
