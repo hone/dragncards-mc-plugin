@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "SET_SIDE": {
+      "args": ["$PLAYER", "$CARD_ID", "$SIDE"],
+      "code": [
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["LOG", "{{$PLAYER}} changed {{$CARD.currentFace.name}} ({{$CARD.currentSide}}) to {{$CARD.sides.$SIDE.name}} ({{$SIDE}})."],
+        ["SET", "/cardById/$CARD_ID/currentSide", "$SIDE"]
+      ]
+    }
+  }
+}

@@ -135,22 +135,6 @@
         ]
       ]
     ],
-    "setSide": [
-      ["LOG", "$ALIAS_N", " set ", "$ACTIVE_FACE.name", "to side ", "$SIDE", "."],
-      ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "$SIDE"]
-    ],
-    "setSideA": [
-      ["DEFINE", "$SIDE", "A"],
-      ["ACTION_LIST", "setSide"]
-    ],
-    "setSideB": [
-      ["DEFINE", "$SIDE", "B"],
-      ["ACTION_LIST", "setSide"]
-    ],
-    "setSideC": [
-      ["DEFINE", "$SIDE", "C"],
-      ["ACTION_LIST", "setSide"]
-    ],
     "shuffleIntoDeck": [
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
       ["DEFINE", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
