@@ -1,5 +1,30 @@
 {
   "functions": {
+    "DEAL_ENCOUNTER_CARD": {
+      "args": [
+        {"$FACE_UP": false},
+        {"$GROUP_ID": "sharedEncounterDeck"},
+        {"$PLAYER": "$PLAYER_N"}
+      ],
+      "code": [
+        ["VAR", "$GROUP", "$GAME.groupById.$GROUP_ID"],
+        ["COND",
+          ["EQUAL", ["LENGTH", "$GROUP.stackIds"], 0],
+          ["LOG", "{{$GROUP.label}} is empty."],
+          true,
+          [
+            ["VAR", "$CARD_ID", ["GET_CARD_ID", "$GROUP_ID", 0, 0]],
+            ["MOVE_CARD", "$CARD_ID", "{{$PLAYER}}Engaged", -1, 0, ["PROCESS_MAP", {"allowFlip": "$FACE_UP"}]],
+            ["COND",
+              ["DEFINED", "$ALIAS_N"],
+              ["LOG", "{{$ALIAS_N}} dealt an encounter card."],
+              true,
+              ["LOG", "An ecounter card was dealt."]
+            ]
+          ]
+        ]
+      ]
+    },
     "SET_SIDE": {
       "args": ["$PLAYER", "$CARD_ID", "$SIDE"],
       "code": [

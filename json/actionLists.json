@@ -145,36 +145,12 @@
       ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
       ["LOG", "$ALIAS_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
     ],
-    "dealEncounterFaceup": [
-      ["DEFINE", "$DEAL_FACEUP", true],
-      ["DEFINE", "$DEAL_GROUP_ID", "sharedEncounterDeck"],
-      ["ACTION_LIST", "dealEncounter"]
-    ],
-    "dealEncounterFacedown": [
-      ["DEFINE", "$DEAL_FACEUP", false],
-      ["DEFINE", "$DEAL_GROUP_ID", "sharedEncounterDeck"],
-      ["ACTION_LIST", "dealEncounter"]
-    ],
-    "dealSecondFaceup": [
-      ["DEFINE", "$DEAL_FACEUP", true],
-      ["DEFINE", "$DEAL_GROUP_ID", "sharedEncounter2Deck"],
-      ["ACTION_LIST", "dealEncounter"]
-    ],
-    "dealSecondFacedown": [
-      ["DEFINE", "$DEAL_FACEUP", false],
-      ["DEFINE", "$DEAL_GROUP_ID", "sharedEncounter2Deck"],
-      ["ACTION_LIST", "dealEncounter"]
-    ],
-    "dealThirdFaceup": [
-      ["DEFINE", "$DEAL_FACEUP", true],
-      ["DEFINE", "$DEAL_GROUP_ID", "sharedEncounter3Deck"],
-      ["ACTION_LIST", "dealEncounter"]
-    ],
-    "dealThirdFacedown": [
-      ["DEFINE", "$DEAL_FACEUP", false],
-      ["DEFINE", "$DEAL_GROUP_ID", "sharedEncounter3Deck"],
-      ["ACTION_LIST", "dealEncounter"]
-    ],
+    "dealEncounterFaceup": ["DEAL_ENCOUNTER_CARD", true],
+    "dealEncounterFacedown": ["DEAL_ENCOUNTER_CARD", false],
+    "dealSecondFaceup": ["DEAL_ENCOUNTER_CARD", true, "sharedEncounter2Deck"],
+    "dealSecondFacedown": ["DEAL_ENCOUNTER_CARD", false, "sharedEncounter2Deck"],
+    "dealThirdFaceup": ["DEAL_ENCOUNTER_CARD", true, "sharedEncounter3Deck"],
+    "dealThirdFacedown": ["DEAL_ENCOUNTER_CARD", false, "sharedEncounter3Deck"],
     "drawBoost": [
       ["COND",
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
@@ -183,33 +159,16 @@
           ["LOG", "$ALIAS_N"," shuffled the encounter discard pile into the encounter deck."]
         ]
       ],
-      ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+      ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
       ["SET", "/cardById/$CARD_ID/boost", true],
-      ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], -1],
+      ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1],
       ["SET", "/cardById/$CARD_ID/rotation", -30],
       ["SET", "/cardById/$CARD_ID/currentSide", "B"],
       ["SET", "/cardById/$CARD_ID/boost", false],
-      ["LOG", "$ALIAS_N", " drew a boost card."]
+      ["LOG", "{{$ALIAS_N}} drew a boost card."]
     ],
     "straighten": [
       ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0]
-    ],
-    "dealEncounter": [
-      ["COND",
-        ["EQUAL", ["LENGTH", "$GAME.groupById.$DEAL_GROUP_ID.stackIds"], 0],
-        ["LOG", "Encounter Deck is empty."],
-        true,
-        [
-          ["DEFINE", "$CARD_ID", ["GET_CARD_ID", "$DEAL_GROUP_ID", 0, 0]],
-          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, ["PROCESS_MAP", {"allowFlip": "$DEAL_FACEUP"}]],
-          ["COND",
-            ["DEFINED", "$ALIAS_N"],
-            ["LOG", "{{$ALIAS_N}} dealt an encounter card."],
-            true,
-            ["LOG", "An ecounter card was dealt."]
-          ]
-        ]
-      ]
     ],
     "mulligan": [
       ["CONFIRM", "Mulligan?"],
