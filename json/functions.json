@@ -25,6 +25,46 @@
         ]
       ]
     },
+    "DISCARD_CARD": {
+      "args": ["$DISCARD_CARD_ID"],
+      "code": [
+        ["VAR", "$DISCARD_CARD", "$GAME.cardById.$DISCARD_CARD_ID"],
+        ["COND",
+          ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
+          ["LOG", "{{$ALIAS_N}} failed to discard {{$DISCARD_CARD.currentFace.name}} because it is not associated with a discard pile. Please drag the card instead."],
+          true,
+          [
+            ["LOG", "{{$ALIAS_N}} discarded {{$DISCARD_CARD.currentFace.name}}."],
+            ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
+            ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
+            ["COND",
+              ["AND",
+                ["EQUAL", "$DISCARD_CARD.sides.A.type", "Villain"],
+                ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]
+              ],
+              [
+                ["VAR", "$CARD_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]"],
+                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
+                ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$CARD_ID"],
+                ["ACTION_LIST", "setVillainHealth"]
+              ]
+            ],
+            ["COND",
+              ["AND",
+                ["EQUAL", "$DISCARD_CARD.sides.A.type", "Main Scheme"],
+                ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedMainSchemeDeck.stackIds"], 0]
+              ],
+              [
+                ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainSchemeDeck.parentCardIds.[0]"],
+                ["MOVE_CARD", "$CARD_ID", "sharedMainScheme", 0],
+                ["DEFINE", "$SCHEME_CARD", "$GAME.cardById.$CARD_ID"],
+                ["ACTION_LIST", "setSchemeStartingThreat"]
+              ]
+            ]
+          ]
+        ]
+      ]
+    },
     "SET_SIDE": {
       "args": ["$PLAYER", "$CARD_ID", "$SIDE"],
       "code": [

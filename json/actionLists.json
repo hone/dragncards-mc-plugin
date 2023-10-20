@@ -69,57 +69,11 @@
       ["SET", "/villainHitPoints", "$VILLAIN_HIT_POINTS"],
       ["LOG", "Set villain hit points to ", "$VILLAIN_HIT_POINTS", "."]
     ],
-    "discardCard": [
-      ["COND",
-        ["NOT", ["DEFINED", "$DISCARD_CARD_ID"]],
-        ["DEFINE", "$DISCARD_CARD_ID", "$ACTIVE_CARD_ID"]
-      ],
-      ["DEFINE", "$DISCARD_CARD", "$GAME.cardById.$DISCARD_CARD_ID"],
-      ["DEFINE", "$CURRENT_SIDE", "$DISCARD_CARD.currentSide"],
-      ["DEFINE", "$DISCARD_FACE", "$DISCARD_CARD.$CURRENT_SIDE"],
-      ["COND",
-        ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
-        ["LOG", "$ALIAS_N", " failed to discard ", "$DISCARD_CARD.sides.$DISCARD_FACE.name", " because it is not associated with a discard pile. Please drag the card instead."],
-        true,
-        [
-          ["LOG", "$ALIAS_N", " discarded ", "$DISCARD_CARD.sides.$DISCARD_FACE.name", "."],
-          ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
-          ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
-          ["COND",
-            ["AND",
-              ["EQUAL", "$DISCARD_CARD.sides.A.type", "Villain"],
-              ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]
-            ],
-            [
-              ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedVillainDeck.stackIds.[0]"],
-              ["DEFINE", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds.[0]"],
-              ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
-              ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$CARD_ID"],
-              ["ACTION_LIST", "setVillainHealth"]
-            ]
-          ],
-          ["COND",
-            ["AND",
-              ["EQUAL", "$DISCARD_CARD.sides.A.type", "Main Scheme"],
-              ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedMainSchemeDeck.stackIds"], 0]
-            ],
-            [
-              ["DEFINE", "$STACK_ID", "$GAME.groupById.sharedMainSchemeDeck.stackIds.[0]"],
-              ["DEFINE", "$CARD_ID", "$GAME.stackById.$STACK_ID.cardIds.[0]"],
-              ["MOVE_CARD", "$CARD_ID", "sharedMainScheme", 0],
-              ["DEFINE", "$SCHEME_CARD", "$GAME.cardById.$CARD_ID"],
-              ["ACTION_LIST", "setSchemeStartingThreat"]
-            ]
-          ]
-        ]
-      ]
-    ],
     "discardRandomCard": [
       ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
       ["DEFINE", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$INDEX", ["RANDOM_INT", 0, ["SUBTRACT", "$CURRENT_HAND_SIZE", 1]]],
-      ["DEFINE", "$DISCARD_CARD_ID", "$GAME.groupById.$HAND_GROUP_ID.parentCardIds.[$INDEX]"],
-      ["ACTION_LIST", "discardCard"]
+      ["DISCARD_CARD", "$GAME.groupById.$HAND_GROUP_ID.parentCardIds.[$INDEX]"]
     ],
     "flipCard": [
       ["COND",
@@ -295,8 +249,7 @@
           ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 1]
         ],
         [
-          ["DEFINE", "$DISCARD_CARD_ID", "$CARD_ID"],
-          ["ACTION_LIST", "discardCard"],
+          ["DISCARD_CARD", "$CARD_ID"],
           ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"]
         ]
       ],
@@ -305,7 +258,7 @@
         ["EQUAL", "$GAME.cardById.$DISCARD_CARD_ID.sides.A.type", "$DISCARD_TYPE"],
         ["MOVE_CARD", "$DISCARD_CARD_ID", "$DEST_GROUP_ID", 0],
         true,
-        ["ACTION_LIST", "discardCard"]
+        ["DISCARD_CARD", "$DISCARD_CARD_ID"]
       ]
     ]
   }
