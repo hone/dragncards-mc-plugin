@@ -54,21 +54,6 @@
         ["LOG", "Setting starting threat for ", "$SCHEME_CARD.sides.$SCHEME_FACE.name", " to ", "$STARTING_THREAT"]
       ]
     ],
-    "setVillainHealth": [
-      ["DEFINE", "$VILLAIN_HIT_POINTS", -1],
-      ["COND",
-        ["NOT_EQUAL", "$VILLAIN_CARD.sides.A.hitPointsFixed", null],
-        ["DEFINE", "$VILLAIN_HIT_POINTS", "$VILLAIN_CARD.sides.A.hitPointsFixed"],
-        ["NOT_EQUAL", "$VILLAIN_CARD.sides.A.hitPointsScaling", null],
-        ["DEFINE", "$VILLAIN_HIT_POINTS", ["MULTIPLY", "$VILLAIN_CARD.sides.A.hitPointsScaling", "$GAME.numPlayers"]]
-      ],
-      ["COND",
-        ["DEFINED", "$INCREASE_VILLAIN_HIT_POINTS"],
-        ["DEFINE", "$VILLAIN_HIT_POINTS", ["ADD", "$VILLAIN_HIT_POINTS", "$INCREASE_VILLAIN_HIT_POINTS"]]
-      ],
-      ["SET", "/villainHitPoints", "$VILLAIN_HIT_POINTS"],
-      ["LOG", "Set villain hit points to ", "$VILLAIN_HIT_POINTS", "."]
-    ],
     "discardRandomCard": [
       ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
       ["DEFINE", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],

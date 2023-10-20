@@ -45,8 +45,7 @@
               [
                 ["VAR", "$CARD_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]"],
                 ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
-                ["DEFINE", "$VILLAIN_CARD", "$GAME.cardById.$CARD_ID"],
-                ["ACTION_LIST", "setVillainHealth"]
+                ["SET_VILLAIN_HEALTH", "$CARD_ID"]
               ]
             ],
             ["COND",
@@ -71,6 +70,25 @@
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["LOG", "{{$PLAYER}} changed {{$CARD.currentFace.name}} ({{$CARD.currentSide}}) to {{$CARD.sides.$SIDE.name}} ({{$SIDE}})."],
         ["SET", "/cardById/$CARD_ID/currentSide", "$SIDE"]
+      ]
+    },
+    "SET_VILLAIN_HEALTH": {
+      "args": ["$CARD_ID", {"$INCREASE_HIT_POINTS": 0}],
+      "code": [
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["VAR", "$HIT_POINTS", -1],
+        ["COND",
+          ["NOT_EQUAL", "$CARD.sides.A.hitPointsFixed", null],
+          ["VAR", "$HIT_POINTS", "$CARD.sides.A.hitPointsFixed"],
+          ["NOT_EQUAL", "$CARD.sides.A.hitPointsScaling", null],
+          ["VAR", "$HIT_POINTS", ["MULTIPLY", "$CARD.sides.A.hitPointsScaling", "$GAME.numPlayers"]]
+        ],
+        ["COND",
+          ["GREATER_THAN", "$INCREASE_HIT_POINTS", 0],
+          ["VAR", "$HIT_POINTS", ["ADD", "$HIT_POINTS", "$INCREASE_HIT_POINTS"]]
+        ],
+        ["LOG", "Set villain hit points to {{$HIT_POINTS}}."],
+        ["SET", "/villainHitPoints", "$HIT_POINTS"]
       ]
     }
   }

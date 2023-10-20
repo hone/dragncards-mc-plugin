@@ -203,7 +203,11 @@
                 ],
                 ["SET", "/cardById/$VILLAIN_CARD.id/currentSide", "B"]
               ],
-              ["ACTION_LIST", "setVillainHealth"]
+              ["COND",
+                ["NOT", ["DEFINED", "$INCREASE_VILLAIN_HIT_POINTS"]],
+                ["DEFIND", "$INCREASE_VILLAIN_HIT_POINTS", 0]
+              ],
+              ["SET_VILLAIN_HEALTH", "$VILLAIN_CARD.id", "$INCREASE_VILLAIN_HIT_POINTS"]
             ]
           ],
           ["COND",
