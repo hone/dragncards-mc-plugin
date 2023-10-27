@@ -212,7 +212,7 @@
           ],
           ["COND",
             ["DEFINED", "$SCHEME_CARD"],
-            ["ACTION_LIST", "setSchemeStartingThreat"]
+            ["SET_SCHEME_STARTING_THREAT", "$SCHEME_CARD.id"]
           ]
         ]
       ]
@@ -242,10 +242,7 @@
           ["EQUAL", "$TARGET.currentSide", "A"],
           ["EQUAL", "$TARGET.boost", false]
         ],
-        "then": [
-          ["DEFINE", "$SCHEME_CARD", "$TARGET"],
-          ["ACTION_LIST", "setSchemeStartingThreat"]
-        ]
+        "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },
       {
         "_comment": "When a player deck empties, give them an encounter deck and shuffle the deck.",

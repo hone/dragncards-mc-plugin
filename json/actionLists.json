@@ -32,28 +32,6 @@
         ]
       ]
     ],
-    "setSchemeStartingThreat": [
-      ["DEFINE", "$STARTING_THREAT", 0],
-      ["COND",
-        ["EQUAL", "$SCHEME_CARD.sides.A.type", "Main Scheme"],
-        ["DEFINE", "$SCHEME_FACE", "B"],
-        true,
-        ["DEFINE", "$SCHEME_FACE", "A"]
-      ],
-      ["COND",
-        ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
-        ["DEFINE", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
-      ],
-      ["COND",
-        ["NOT_EQUAL", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
-        ["DEFINE", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$SCHEME_CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
-      ],
-      [
-        ["DEFINE", "$SCHEME_CARD_ID", "$SCHEME_CARD.id"],
-        ["SET", "/cardById/$SCHEME_CARD_ID/tokens/threat", "$STARTING_THREAT"],
-        ["LOG", "Setting starting threat for ", "$SCHEME_CARD.sides.$SCHEME_FACE.name", " to ", "$STARTING_THREAT"]
-      ]
-    ],
     "discardRandomCard": [
       ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
       ["DEFINE", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],

@@ -56,8 +56,7 @@
               [
                 ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainSchemeDeck.parentCardIds.[0]"],
                 ["MOVE_CARD", "$CARD_ID", "sharedMainScheme", 0],
-                ["DEFINE", "$SCHEME_CARD", "$GAME.cardById.$CARD_ID"],
-                ["ACTION_LIST", "setSchemeStartingThreat"]
+                ["SET_SCHEME_STARTING_THREAT", "$CARD_ID"]
               ]
             ]
           ]
@@ -70,6 +69,31 @@
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["LOG", "{{$PLAYER}} changed {{$CARD.currentFace.name}} ({{$CARD.currentSide}}) to {{$CARD.sides.$SIDE.name}} ({{$SIDE}})."],
         ["SET", "/cardById/$CARD_ID/currentSide", "$SIDE"]
+      ]
+    },
+    "SET_SCHEME_STARTING_THREAT": {
+      "args": ["$CARD_ID"],
+      "code": [
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["DEFINE", "$STARTING_THREAT", 0],
+        ["COND",
+          ["EQUAL", "$CARD.sides.A.type", "Main Scheme"],
+          ["VAR", "$SCHEME_FACE", "B"],
+          true,
+          ["VAR", "$SCHEME_FACE", "A"]
+        ],
+        ["COND",
+          ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
+          ["VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
+        ],
+        ["COND",
+          ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
+          ["VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
+        ],
+        [
+          ["LOG", "Setting starting threat for ${{$CARD.sides.$SCHEME_FACE.name}} to {{$STARTING_THREAT}}."],
+          ["SET", "/cardById/$CARD_ID/tokens/threat", "$STARTING_THREAT"]
+        ]
       ]
     },
     "SET_VILLAIN_HEALTH": {
