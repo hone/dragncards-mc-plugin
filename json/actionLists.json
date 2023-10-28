@@ -142,18 +142,6 @@
       ["INCREASE_VAL", "/roundNumber", 1],
       ["LOG", "Player Phase - Begins"]
     ],
-    "setMode": [
-      ["SET", "/mode", "$MODE"],
-      ["LOG", "Mode is set to ", "$MODE"]
-    ],
-    "setStandardMode": [
-      ["DEFINE", "$MODE", "standard"],
-      ["ACTION_LIST", "setMode"]
-    ],
-    "setExpertMode": [
-      ["DEFINE", "$MODE", "expert"],
-      ["ACTION_LIST", "setMode"]
-    ],
     "toggleLoadRequired": [
       ["COND",
         "$GAME.loadRequired",

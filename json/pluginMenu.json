@@ -3,11 +3,11 @@
     "options": [
       {
         "label": "id:setStandardMode",
-        "actionList": "setStandardMode"
+        "actionList": ["SET_MODE", "standard"]
       },
       {
         "label": "id:setExpertMode",
-        "actionList": "setExpertMode"
+        "actionList": ["SET_MODE", "expert"]
       },
       {
         "label": "id:toggleLoadRequired",

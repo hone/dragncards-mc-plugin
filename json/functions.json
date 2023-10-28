@@ -63,6 +63,13 @@
         ]
       ]
     },
+    "SET_MODE": {
+      "args": ["$MODE"],
+      "code": [
+        ["SET", "/mode", "$MODE"],
+        ["LOG", "Mode is set to ", "$MODE"]
+      ]
+    },
     "SET_SIDE": {
       "args": ["$PLAYER", "$CARD_ID", "$SIDE"],
       "code": [
