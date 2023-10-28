@@ -1,7 +1,7 @@
 {
   "actionLists": {
     "drawHand": [
-      ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
+      ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
       ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],
       ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
       ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
@@ -103,12 +103,12 @@
       ]
     ],
     "shadowsOfThePast": [
-      ["DEFINE", "$GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "NemesisSet"]],
+      ["DEFINE", "$GROUP_ID", "{{$PLAYER_N}}NemesisSet"],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.$GROUP_ID.parentCardIds", [
         ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["COND",
           "$CARD.sides.A.nemesisMinion",
-          ["MOVE_CARD", "$CARD_ID", ["JOIN_STRING", "$PLAYER_N", "Engaged"], 0],
+          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", 0],
           ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
           ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
           true,

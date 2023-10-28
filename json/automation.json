@@ -48,7 +48,7 @@
             ],
             ["EQUAL", "$CARD.sides.A.databaseId", "9a11225a-84cd-5f63-9a38-45f0c5f95db1"]
           ],
-          ["MOVE_CARD", "$CARD.id", ["JOIN_STRING", "$PLAYER_N", "Play1"], -1]],
+          ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Play1", -1]],
         ["COND",
           ["EQUAL", "$CARD.sides.A.type", "Villain"],
           [
@@ -121,8 +121,8 @@
           ]
         ]
       ]],
-      ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
-      ["DEFINE", "$PLAYER_N_NEMESIS_SET_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "NemesisSet"]],
+      ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
+      ["DEFINE", "$PLAYER_N_NEMESIS_SET_GROUP_ID", "{{$PLAYER_N}}NemesisSet"],
       ["COND",
         ["AND",
           ["DEFINED", "$SPDR"],
@@ -153,7 +153,7 @@
           ["COND",
             ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_NEMESIS_SET_GROUP_ID.stackIds"], 0],
             [
-              ["DEFINE", "$BUNDLE", ["JOIN_STRING", "$IDENTITY_CARD.sides.$HERO_SIDE.name", " (marvelcdb bundle)"]],
+              ["DEFINE", "$BUNDLE", "{{$IDENTITY_CARD.sides.$HERO_SIDE.name}} (marvelcdb bundle)"],
               ["LOAD_CARDS", "$BUNDLE"]
             ]
           ],
@@ -254,9 +254,9 @@
           ["GREATER_THAN", ["LENGTH", "$GAME.groupById.{{$PLAYER_N}}Discard.stackIds"], 0]
         ],
         "then": [
-          ["DEFINE", "$DECK_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Deck"]],
+          ["DEFINE", "$DECK_GROUP_ID", "{{$PLAYER_N}}Deck"],
           ["ACTION_LIST", "dealEncounterFacedown"],
-          ["MOVE_STACKS", ["JOIN_STRING", "$PLAYER_N", "Discard"], "$DECK_GROUP_ID"],
+          ["MOVE_STACKS", "{{$PLAYER_N}}Discard", "$DECK_GROUP_ID"],
           ["SHUFFLE_GROUP", "$DECK_GROUP_ID"],
           ["LOG", "$ALIAS_N", " emptied their deck."]
         ]
