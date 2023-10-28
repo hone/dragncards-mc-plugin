@@ -1,8 +1,5 @@
 {
   "actionLists": {
-    "drawCard": [
-      "DRAW_CARD"
-    ],
     "drawHand": [
       ["DEFINE", "$HAND_GROUP_ID", ["JOIN_STRING", "$PLAYER_N", "Hand"]],
       ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],

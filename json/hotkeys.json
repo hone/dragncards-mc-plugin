@@ -17,7 +17,7 @@
       {"key": "T", "actionList": "dealThirdFacedown", "label": "id:dealThirdFacedown"},
       {"key": "Shift+T", "actionList": "dealThirdFaceup", "label": "id:dealThirdFaceup"},
       {"key": "B", "actionList": "drawBoost", "label": "id:dealBoostCard"},
-      {"key": "D", "actionList": "drawCard", "label": "id:drawCard"},
+      {"key": "D", "actionList": ["DRAW_CARD"], "label": "id:drawCard"},
       {"key": "Shift+M", "actionList": "mulligan", "label": "id:mulligan"},
       {"key": "Shift+R", "actionList": "readyAll", "label": "id:readyAll"},
       {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
