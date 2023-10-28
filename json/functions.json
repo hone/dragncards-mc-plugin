@@ -63,6 +63,13 @@
         ]
       ]
     },
+    "LOAD_REQUIRED": {
+      "args": ["$SCENARIO"],
+      "code": ["COND",
+        "$GAME.loadRequired",
+        ["LOAD_CARDS", "{{$SCENARIO}} (required)"]
+      ]
+    },
     "SET_MODE": {
       "args": ["$MODE"],
       "code": [

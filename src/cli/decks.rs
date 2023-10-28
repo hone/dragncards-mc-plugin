@@ -681,10 +681,7 @@ fn process_sets_by_packs(
 
             let mut post_load_action_list =
                 if set.r#type == SetType::Villain && set.requires.is_some() {
-                    Some(ActionList::List(vec![
-                        json!(["DEFINE", "$SCENARIO_NAME", set.name.clone()]),
-                        json!(["ACTION_LIST", "loadRequired"]),
-                    ]))
+                    Some(ActionList::List(vec![json!(["LOAD_REQUIRED", set.name])]))
                 } else {
                     None
                 };

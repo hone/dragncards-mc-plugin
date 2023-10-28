@@ -169,12 +169,6 @@
         ]
       ]
     ],
-    "loadRequired": [
-      ["COND",
-        ["EQUAL", "$GAME.loadRequired", true],
-        ["LOAD_CARDS", "{{$SCENARIO_NAME}} (required)"]
-      ]
-    ],
     "multipleDoubleSidedVillains": [
       ["SHUFFLE_GROUP", "sharedVillainDeck"],
       ["COND",
