@@ -166,7 +166,7 @@
       ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", 0]
     ],
     "discardMinion": [
-      "DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Play1",
+      "DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Engaged",
       ["POINTER",
         ["EQUAL", "$CARD.sides.A.type", "Minion"]
       ]
