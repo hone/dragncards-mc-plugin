@@ -155,7 +155,7 @@
     "toggleTableButton": [
       ["COND",
         ["AND",
-          ["EQUAL", "$GAME.layoutVariants.sideGroupVisible", true],
+          "$GAME.layoutVariants.sideGroupVisible",
           ["EQUAL", "$GAME.layoutVariants.sideGroupId", "$SIDE_GROUP_ID"]
         ],
         [
