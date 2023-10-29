@@ -23,7 +23,7 @@
       {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
       {"key": "Shift+S", "actionList": "shadowsOfThePast", "label": "id:shadowsOfThePast"},
       {"key": "Shift+P", "actionList": "playerEndPhase", "label": "id:playerEndPhase"},
-      {"key": "K", "actionList": "villainEncounterPhase", "label": "id:villainEncounterPhase"},
+      {"key": "L", "actionList": "villainEncounterPhase", "label": "id:villainEncounterPhase"},
       {"key": "Shift+V", "actionList": "villainEndPhase", "label": "id:villainEndPhase"}
     ],
     "card": [
