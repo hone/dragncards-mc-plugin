@@ -16,7 +16,7 @@
       ],
       ["MOVE_CARD", "$CARD.id", "sharedVillain", 0],
       ["LOG", "{{$CARD.sides.A.name}} increases villain health by 10."],
-      ["DEFINE", "$INCREASE_VILLAIN_HIT_POINTS", 10]
+      ["DEFINE", "$INCREASE_HIT_POINTS", 10]
     ]
   ]
 ]
