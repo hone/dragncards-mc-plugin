@@ -9,7 +9,7 @@ sets:
 	curl "https://cerebro-beta-bot.herokuapp.com/sets" | jq . > fixtures/cerebro/sets.json
 
 marvelcdb:
-	curl "https://marvelcdb.com/api/public/cards/" | jq . > fixtures/marvelcdb.json
+	curl "https://marvelcdb.com/api/public/cards/?encounter=1" | jq . > fixtures/marvelcdb.json
 
 lint:
 	for file in $$(ls json/*.json); do \
