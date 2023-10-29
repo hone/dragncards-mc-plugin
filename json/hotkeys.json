@@ -29,7 +29,7 @@
     "card": [
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
-      {"key": "Shift+B", "actionList": "straighten", "label": "id:straighten"},
+      {"key": "R", "actionList": ["READY_CARD", "$ACTIVE_CARD_ID"], "label": "id:ready"},
       {"key": "Alt+1", "actionList": ["SET_SIDE", "$ALIAS_N", "$ACTIVE_CARD_ID", "A"], "label": "id:setSideA"},
       {"key": "Alt+2", "actionList": ["SET_SIDE", "$ALIAS_N", "$ACTIVE_CARD_ID", "B"], "label": "id:setSideB"},
       {"key": "Alt+3", "actionList": ["SET_SIDE", "$ALIAS_N", "$ACTIVE_CARD_ID", "C"], "label": "id:setSideC"},

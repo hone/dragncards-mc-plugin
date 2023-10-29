@@ -89,11 +89,33 @@
         ]
       ]
     },
+    "EXHAUST_CARD": {
+      "args": ["$CARD_ID", {"$CONTROLLER": null}],
+      "code": [
+        ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 90],
+        ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", true],
+        ["COND",
+          ["DEFINED", "$CONTROLLER"],
+          ["LOG", "{{$CONTROLLER}} exhausted {{$ACTIVE_FACE.name}}."]
+        ]
+      ]
+    },
     "LOAD_REQUIRED": {
       "args": ["$SCENARIO"],
       "code": ["COND",
         "$GAME.loadRequired",
         ["LOAD_CARDS", "{{$SCENARIO}} (required)"]
+      ]
+    },
+    "READY_CARD": {
+      "args": ["$CARD_ID", {"$CONTROLLER": null}],
+      "code": [
+        ["SET", "/cardById/$CARD_ID/rotation", 0],
+        ["SET", "/cardById/$CARD_ID/exhausted", false],
+        ["COND",
+          ["DEFINED", "$CONTROLLER"],
+          ["LOG", "{{$CONTROLLER}} readied {{$ACTIVE_FACE.name}}."]
+        ]
       ]
     },
     "SET_MODE": {

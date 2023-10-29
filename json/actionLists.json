@@ -16,17 +16,9 @@
     "toggleExhaust": [
       ["COND",
         ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 90], "$ACTIVE_CARD.inPlay"],
-        [
-          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", false],
-          ["LOG", "$ALIAS_N", " readied ", "$ACTIVE_FACE.name", "."]
-        ],
+        ["READY_CARD", "$ACTIVE_CARD_ID", "$ALIAS_N"],
         ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 0], "$ACTIVE_CARD.inPlay"],
-        [
-          ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 90],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", true],
-          ["LOG", "$ALIAS_N", " exhausted ", "$ACTIVE_FACE.name", "."]
-        ]
+        ["EXHAUST_CARD", "$ACTIVE_CARD_ID", "$ALIAS_N"]
       ]
     ],
     "discardRandomCard": [
@@ -81,9 +73,6 @@
       ["SET", "/cardById/$CARD_ID/boost", false],
       ["LOG", "{{$ALIAS_N}} drew a boost card."]
     ],
-    "straighten": [
-      ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 0]
-    ],
     "mulligan": [
       ["CONFIRM", "Mulligan?"],
       ["DEFINE", "$PLAYER", "$PLAYER_N"],
@@ -95,10 +84,7 @@
       ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
           ["EQUAL", "$CARD.controller", "$PLAYER_N"],
-          [
-            ["SET", "/cardById/$CARD_ID/exhausted", false],
-            ["SET", "/cardById/$CARD_ID/rotation", 0]
-          ]
+          ["READY_CARD", "$CARD_ID"]
         ]
       ]
     ],
