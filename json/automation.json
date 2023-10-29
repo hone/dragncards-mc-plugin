@@ -138,10 +138,7 @@
         [
           ["COND",
             ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0],
-            [
-              ["DEFINE", "$PLAYER", "$PLAYER_N"],
-              ["ACTION_LIST", "drawHand"]
-            ]
+            ["DRAW_HAND", "$PLAYER_N"]
           ],
           ["COND",
             ["EQUAL", "$GAME.playerData.$PLAYER_N.hitPoints", 0],

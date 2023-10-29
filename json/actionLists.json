@@ -1,18 +1,5 @@
 {
   "actionLists": {
-    "drawHand": [
-      ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
-      ["DEFINE", "$HAND_SIZE", "$GAME.playerData.$PLAYER_N.handSize"],
-      ["DEFINE", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
-      ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
-      ["LOG", "$ALIAS_N", " draws ", "$DRAW_SIZE", " cards."],
-      ["DRAW_CARD", "$DRAW_SIZE"],
-      ["DEFINE", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]]],
-      ["COND",
-        ["GREATER_THAN", "$DRAW_SIZE", 0],
-        ["DRAW_CARD", "$DRAW_SIZE"]
-      ]
-    ],
     "toggleExhaust": [
       ["COND",
         ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 90], "$ACTIVE_CARD.inPlay"],
@@ -75,9 +62,8 @@
     ],
     "mulligan": [
       ["CONFIRM", "Mulligan?"],
-      ["DEFINE", "$PLAYER", "$PLAYER_N"],
-      ["ACTION_LIST", "drawHand"],
-      ["LOG", "$ALIAS_N", " mulliganed."]
+      ["DRAW_HAND", "$PLAYER_N"],
+      ["LOG", "{{$ALIAS_N}} mulliganed."]
     ],
     "readyAll": [
       ["LOG", "$ALIAS_N", " readied all their cards."],
@@ -106,7 +92,7 @@
       ["LOG", "Player Phase - Ends"],
       ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
         ["ACTION_LIST", "readyAll"],
-        ["ACTION_LIST", "drawHand"]
+        ["DRAW_HAND", "$PLAYER_N"]
       ]],
       ["DEFINE", "$MAIN_SCHEME_CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
       ["DEFINE", "$MAIN_SCHEME_CARD", "$GAME.cardById.$MAIN_SCHEME_CARD_ID"],

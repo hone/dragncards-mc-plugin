@@ -89,6 +89,22 @@
         ]
       ]
     },
+    "DRAW_HAND": {
+      "args": ["$PLAYER"],
+      "code": [
+        ["VAR", "$GROUP_ID", "{{$PLAYER}}Hand"],
+        ["VAR", "$HAND_SIZE", "$GAME.playerData.$PLAYER.handSize"],
+        ["VAR", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]],
+        ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
+        ["LOG", "${{ALIAS_N}} draws {{$DRAW_SIZE}} cards."],
+        ["DRAW_CARD", "$DRAW_SIZE"],
+        ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]]],
+        ["COND",
+          ["GREATER_THAN", "$DRAW_SIZE", 0],
+          ["DRAW_CARD", "$DRAW_SIZE"]
+        ]
+      ]
+    },
     "EXHAUST_CARD": {
       "args": ["$CARD_ID", {"$CONTROLLER": null}],
       "code": [
