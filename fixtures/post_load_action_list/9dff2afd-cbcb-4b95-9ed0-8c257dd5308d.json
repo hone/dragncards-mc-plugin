@@ -1,8 +1,10 @@
 [
   ["LOG", "Setup: Discard cards until environment is discarded"],
-  ["DEFINE", "$DISCARD_TYPE", "Environment"],
-  ["DEFINE", "$DEST_GROUP_ID", "sharedVillain"],
-  ["ACTION_LIST", "discardUntil"],
+  ["DISCARD_UNTIL", "sharedEncounterDeck", "sharedVillain",
+    ["POINTER",
+      ["EQUAL", "$CARD.sides.A.type", "Environment"]
+    ]
+  ],
   ["COND",
     ["EQUAL", "$GAME.mode", "expert"],
     [

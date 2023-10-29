@@ -180,27 +180,14 @@
       ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", 0]
     ],
     "discardMinion": [
-      ["DEFINE", "$DISCARD_TYPE", "Minion"],
-      ["ACTION_LIST", "discardUntil"]
+      "DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Play1",
+      ["POINTER",
+        ["EQUAL", "$CARD.sides.A.type", "Minion"]
+      ]
     ],
-    "discardUntil": [
-      ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
-      ["WHILE",
-        ["AND",
-          ["NOT_EQUAL", "$GAME.cardById.$CARD_ID.sides.A.type", "$DISCARD_TYPE"],
-          ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 1]
-        ],
-        [
-          ["DISCARD_CARD", "$CARD_ID"],
-          ["DEFINE", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"]
-        ]
-      ],
-      ["DEFINE", "$DISCARD_CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
-      ["COND",
-        ["EQUAL", "$GAME.cardById.$DISCARD_CARD_ID.sides.A.type", "$DISCARD_TYPE"],
-        ["MOVE_CARD", "$DISCARD_CARD_ID", "$DEST_GROUP_ID", 0],
-        true,
-        ["DISCARD_CARD", "$DISCARD_CARD_ID"]
+    "discardSideScheme": ["DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Play1",
+      ["POINTER",
+        ["EQUAL", "$CARD.sides.A.type", "Side Scheme"]
       ]
     ]
   }
