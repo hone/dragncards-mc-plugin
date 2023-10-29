@@ -30,7 +30,7 @@
       "label": "id:mainSchemeDeck",
       "tableLabel": "id:mainSchemeDeck",
       "canHaveAttachments": false,
-      "shuffleOnLoad": true,
+      "shuffleOnLoad": false,
       "onCardEnter": {
         "currentSide": "B",
         "controller": "shared",
