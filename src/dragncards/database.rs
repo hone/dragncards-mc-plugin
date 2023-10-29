@@ -8,7 +8,7 @@ use uuid::Uuid;
 
 const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Card {
     pub database_id: Uuid,

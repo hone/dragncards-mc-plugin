@@ -1,7 +1,12 @@
 use crate::{cerebro, dragncards::database::Card};
 use csv::WriterBuilder;
-use std::collections::HashMap;
+use futures::{stream, StreamExt};
+use std::{collections::HashMap, path::Path};
+use tokio::fs;
 use uuid::Uuid;
+
+const CONCURRENT_REQUESTS: usize = 20;
+const DEFAULT_DOWNLOAD_SERVER: &str = "http://localhost:5000";
 
 #[derive(clap::Args)]
 pub struct DatabaseArgs {
@@ -9,6 +14,10 @@ pub struct DatabaseArgs {
     pub output: Option<std::path::PathBuf>,
     #[arg(long, default_value_t = false)]
     pub offline: bool,
+    #[arg(long)]
+    pub download: Option<std::path::PathBuf>,
+    #[arg(long)]
+    pub download_server: Option<String>,
 }
 
 pub async fn execute(args: DatabaseArgs) {
@@ -18,7 +27,7 @@ pub async fn execute(args: DatabaseArgs) {
         .into_iter()
         .map(|pack| (pack.id.clone(), pack))
         .collect();
-    let cards: Vec<Card> = cerebro::get_cards(Some(args.offline))
+    let mut cards: Vec<Card> = cerebro::get_cards(Some(args.offline))
         .await
         .unwrap()
         .into_iter()
@@ -31,6 +40,39 @@ pub async fn execute(args: DatabaseArgs) {
         })
         .flatten()
         .collect();
+    if let Some(download_path) = args.download {
+        let download_server = &args
+            .download_server
+            .clone()
+            .unwrap_or_else(|| String::from(DEFAULT_DOWNLOAD_SERVER));
+        let client = reqwest::Client::new();
+        let new_cards = stream::iter(cards)
+            .map(|card| {
+                let client = &client;
+                let download_path = &download_path;
+                async move {
+                    let image_url = url::Url::parse(&card.image_url).unwrap();
+                    let image_path = image_url.path().trim_start_matches('/');
+                    let file_path = Path::new(image_path);
+
+                    fs::create_dir_all(download_path.join(file_path.parent().unwrap()))
+                        .await
+                        .unwrap();
+                    let new_image_path = download_path.join(file_path);
+                    if !new_image_path.as_path().exists() {
+                        let resp = client.get(&card.image_url).send().await.unwrap();
+                        let contents = resp.bytes().await.unwrap();
+                        fs::write(new_image_path.as_path(), contents).await.unwrap();
+                    }
+                    let mut new_card = card.clone();
+                    new_card.image_url = format!("{}/{}", download_server, image_path.to_string());
+
+                    new_card
+                }
+            })
+            .buffer_unordered(CONCURRENT_REQUESTS);
+        cards = new_cards.collect().await;
+    }
     let output = args
         .output
         .unwrap_or_else(|| std::path::PathBuf::from("./marvelcdb.tsv"));
