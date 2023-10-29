@@ -575,34 +575,6 @@
   },
   {
     "Deleted": false,
-    "Id": "22addcd8-a5b5-4b6f-bb72-fd0002b5edec",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Psylocke",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": "<:mc_psylocke:1146549747046416384>",
-    "Incomplete": true,
-    "Number": "41",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
-    "Id": "57b59d55-e796-4da9-af76-cec1396f60d1",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Angel",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": "<:mc_angel:1146549743774871653>",
-    "Incomplete": true,
-    "Number": "42",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "ae22b08d-5557-46f4-96c2-5ee809460c45",
     "Official": true,
     "AuthorId": null,
@@ -628,5 +600,33 @@
     "Number": "00",
     "ReleaseStatus": null,
     "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "22addcd8-a5b5-4b6f-bb72-fd0002b5edec",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Psylocke",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_psylocke:1146549747046416384>",
+    "Incomplete": false,
+    "Number": "41",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "57b59d55-e796-4da9-af76-cec1396f60d1",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Angel",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_angel:1146549743774871653>",
+    "Incomplete": false,
+    "Number": "42",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
   }
 ]
