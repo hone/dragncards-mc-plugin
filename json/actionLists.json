@@ -9,34 +9,34 @@
       ]
     ],
     "discardRandomCard": [
-      ["DEFINE", "$HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
-      ["DEFINE", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$HAND_GROUP_ID.stackIds"]],
-      ["DEFINE", "$INDEX", ["RANDOM_INT", 0, ["SUBTRACT", "$CURRENT_HAND_SIZE", 1]]],
-      ["DISCARD_CARD", "$GAME.groupById.$HAND_GROUP_ID.parentCardIds.[$INDEX]"]
+      ["VAR", "$GROUP_ID", "{{$PLAYER_N}}Hand"],
+      ["VAR", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]],
+      ["VAR", "$INDEX", ["RANDOM_INT", 0, ["SUBTRACT", "$CURRENT_HAND_SIZE", 1]]],
+      ["DISCARD_CARD", "$GAME.groupById.$GROUP_ID.parentCardIds.[$INDEX]"]
     ],
     "flipCard": [
       ["COND",
         ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
         [
-          ["LOG", "$ALIAS_N", " flipped ", "$ACTIVE_FACE.name", " facedown."],
+          ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} facedown."],
           ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
         ],
         true,
         [
           ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
-          ["LOG", "$ALIAS_N", " flipped ", "$ACTIVE_FACE.name", " faceup."]
+          ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} faceup."]
         ]
       ]
     ],
     "shuffleIntoDeck": [
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
-      ["DEFINE", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
+      ["VAR", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
       ["SHUFFLE_GROUP", "$GROUP_ID"],
-      ["LOG", "$ALIAS_N", " shuffled ", "$ACTIVE_FACE.name", " into ", "$GAME.groupById.$GROUP_ID.label", "."]
+      ["LOG", "{{$ALIAS_N}} shuffled {{$ACTIVE_FACE.name}} into {{$GAME.groupById.$GROUP_ID.label}}."]
     ],
     "zeroTokens": [
       ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
-      ["LOG", "$ALIAS_N", " removed all tokens from ", "$ACTIVE_FACE.name", "."]
+      ["LOG", "{{$ALIAS_N}} removed all tokens from {{$ACTIVE_FACE.name}}."]
     ],
     "dealEncounterFaceup": ["DEAL_ENCOUNTER_CARD", true],
     "dealEncounterFacedown": ["DEAL_ENCOUNTER_CARD", false],
@@ -48,8 +48,8 @@
       ["COND",
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
         [
-          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
-          ["LOG", "$ALIAS_N"," shuffled the encounter discard pile into the encounter deck."]
+          ["LOG", "{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."],
+          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"]
         ]
       ],
       ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
@@ -66,7 +66,7 @@
       ["LOG", "{{$ALIAS_N}} mulliganed."]
     ],
     "readyAll": [
-      ["LOG", "$ALIAS_N", " readied all their cards."],
+      ["LOG", "{{$ALIAS_N}} readied all their cards."],
       ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
         ["COND", 
           ["EQUAL", "$CARD.controller", "$PLAYER_N"],
@@ -75,9 +75,9 @@
       ]
     ],
     "shadowsOfThePast": [
-      ["DEFINE", "$GROUP_ID", "{{$PLAYER_N}}NemesisSet"],
+      ["VAR", "$GROUP_ID", "{{$PLAYER_N}}NemesisSet"],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.$GROUP_ID.parentCardIds", [
-        ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["COND",
           "$CARD.sides.A.nemesisMinion",
           ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", 0],
@@ -94,12 +94,12 @@
         ["ACTION_LIST", "readyAll"],
         ["DRAW_HAND", "$PLAYER_N"]
       ]],
-      ["DEFINE", "$MAIN_SCHEME_CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
-      ["DEFINE", "$MAIN_SCHEME_CARD", "$GAME.cardById.$MAIN_SCHEME_CARD_ID"],
-      ["DEFINE", "$THREAT_INCREASE", ["ADD", "$MAIN_SCHEME_CARD.tokens.acceleration", "$GAME.numPlayers"]],
-      ["INCREASE_VAL", "/cardById/$MAIN_SCHEME_CARD_ID/tokens/threat", "$THREAT_INCREASE"],
+      ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
+      ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+      ["VAR", "$THREAT_INCREASE", ["ADD", "$CARD.tokens.acceleration", "$GAME.numPlayers"]],
+      ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/threat", "$THREAT_INCREASE"],
       ["LOG", "Villain Phase - Begins"],
-      ["LOG", "Villain Phase - Acceleration: Place ", "$THREAT_INCREASE", " on " ,"$MAIN_SCHEME_CARD.sides.B.name", "."],
+      ["LOG", "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."],
       ["SET", "/stepId", "2.1"]
     ],
     "villainEncounterPhase": [
@@ -117,9 +117,9 @@
     "toggleLoadRequired": [
       ["COND",
         "$GAME.loadRequired",
-        ["DEFINE", "$LOAD_REQUIRED", false],
+        ["VAR", "$LOAD_REQUIRED", false],
         true,
-        ["DEFINE", "$LOAD_REQUIRED", true]
+        ["VAR", "$LOAD_REQUIRED", true]
       ],
       ["LOG", "Loading Required Modular Sets is set to ", "$LOAD_REQUIRED"],
       ["SET", "/loadRequired", "$LOAD_REQUIRED"]
