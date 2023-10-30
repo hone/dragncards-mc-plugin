@@ -66,26 +66,26 @@
     "DISCARD_UNTIL": {
       "args": ["$SOURCE_GROUP_ID", "$DEST_GROUP_ID", "$COND"],
       "code": [
-        ["VAR", "$CARD_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
-        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
+        ["VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"],
         ["WHILE",
           ["AND",
             ["NOT", ["ACTION_LIST", "$COND"]],
             ["GREATER_THAN", ["LENGTH", "$GAME.groupById.$SOURCE_GROUP_ID.stackIds"], 1]
           ],
           [
-            ["DISCARD_CARD", "$CARD_ID"],
-            ["VAR", "$CARD_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
-            ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"]
+            ["DISCARD_CARD", "$CARD_ITEM_ID"],
+            ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
+            ["VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"]
           ]
         ],
-        ["VAR", "$CARD_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
-        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
+        ["VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"],
         ["COND",
           ["ACTION_LIST", "$COND"],
-          ["MOVE_CARD", "$CARD_ID", "$DEST_GROUP_ID", 0],
+          ["MOVE_CARD", "$CARD_ITEM_ID", "$DEST_GROUP_ID", 0],
           true,
-          ["DISCARD_CARD", "$CARD_ID"]
+          ["DISCARD_CARD", "$CARD_ITEM_ID"]
         ]
       ]
     },

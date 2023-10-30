@@ -154,7 +154,7 @@
     "discardMinion": [
       "DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Engaged",
       ["POINTER",
-        ["EQUAL", "$CARD.sides.A.type", "Minion"]
+        ["EQUAL", "$CARD_ITEM.sides.A.type", "Minion"]
       ]
     ],
     "discardSideScheme": ["DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Play1",
