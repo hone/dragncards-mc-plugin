@@ -1,0 +1,20 @@
+[
+  ["VAR", "$SPELL_COND", 
+    ["POINTER",
+      ["AND",
+        ["EQUAL", "$CARD_ITEM.sides.A.type", "Environment"],
+        ["IN_STRING", "$CARD_ITEM.sides.A.traits", "Spell"]
+      ]
+    ]
+  ],
+  ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER",
+    ["DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Engaged", "$SPELL_COND"]
+  ],
+  ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER",
+      ["DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Engaged", "$SPELL_COND"]
+    ]
+  ]
+]
