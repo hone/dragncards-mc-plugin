@@ -301,6 +301,13 @@
           ["VAR", "$GROUP_ID", "$TARGET.groupId"],
           ["SET", "/cardById/$TARGET_ID/currentSide", "$GAME.groupById.$GROUP_ID.onCardEnter.currentSide"]
         ]
+      },
+      {
+        "_comment": "Add tough to card with toughness wehn it enters play",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/inPlay"],
+        "condition": ["AND", "$TARGET.inPlay", "$TARGET.currentFace.toughness"],
+        "then": ["INCREASE_VAL", "/cardById/$TARGET_ID/tokens/tough", 1]
       }
     ],
     "cards": {

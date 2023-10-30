@@ -27,6 +27,7 @@ pub struct Card {
     pub stage: Option<String>,
     pub starting_threat_fixed: Option<i64>,
     pub starting_threat_scaling: Option<i64>,
+    pub toughness: bool,
     pub permanent: bool,
     pub nemesis_minion: bool,
 }
@@ -81,6 +82,11 @@ impl Card {
                     starting_threat_fixed: None,
                     starting_threat_scaling: None,
                     stage: card.stage.clone(),
+                    toughness: card
+                        .rules
+                        .clone()
+                        .map(|rules| rules.contains("Toughness."))
+                        .unwrap_or(false),
                     nemesis_minion,
                     permanent,
                 };

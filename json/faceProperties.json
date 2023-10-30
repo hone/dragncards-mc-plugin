@@ -6,6 +6,7 @@
     "nemesisMinion": {"type": "boolean", "default": false},
     "permanent": {"type": "boolean", "default": false},
     "startingThreatFixed" : {"type": "integer", "default": null},
-    "startingThreatScaling" : {"type": "integer", "default": null}
+    "startingThreatScaling" : {"type": "integer", "default": null},
+    "toughness" : {"type": "boolean", "default": false}
   }
 }
