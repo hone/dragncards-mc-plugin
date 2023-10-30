@@ -291,12 +291,15 @@
         ]
       },
       {
-        "_comment": "Remove all tokens when a card leaves play",
+        "_comment": "Reset card when it leaves play",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay"],
         "condition": ["NOT", "$TARGET.inPlay"],
         "then": [
-          ["SET", "/cardById/$TARGET_ID/tokens", {}]
+          ["SET", "/cardById/$TARGET_ID/tokens", {}],
+          ["READY_CARD", "$TARGET_ID"],
+          ["VAR", "$GROUP_ID", "$TARGET.groupId"],
+          ["SET", "/cardById/$TARGET_ID/currentSide", "$GAME.groupById.$GROUP_ID.onCardEnter.currentSide"]
         ]
       }
     ],
