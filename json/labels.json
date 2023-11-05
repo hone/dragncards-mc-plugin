@@ -391,10 +391,10 @@
       "English": "Toggle Loading Required Modular Sets"
     },
     "playerEndPhase": {
-      "English": "Player End Phase"
+      "English": "Player End Phase / Start Villain Phase"
     },
     "villainEndPhase": {
-      "English": "Villain End Phase"
+      "English": "Villain End Phase / Start Player Phase"
     },
     "villainEncounterPhase": {
       "English": "Villain Encounter Phase"
