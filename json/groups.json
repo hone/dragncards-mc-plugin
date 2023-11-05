@@ -338,7 +338,8 @@
         "currentSide": "A",
         "controller": "player1",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDeck"
+        "deckGroupId": "sharedEncounterDeck",
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "player1OutOfPlay": {
@@ -491,7 +492,8 @@
         "currentSide": "A",
         "controller": "player2",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDeck"
+        "deckGroupId": "sharedEncounterDeck",
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "player2OutOfPlay": {
@@ -644,7 +646,8 @@
         "currentSide": "A",
         "controller": "player3",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDeck"
+        "deckGroupId": "sharedEncounterDeck",
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "player3OutOfPlay": {
@@ -797,7 +800,8 @@
         "currentSide": "A",
         "controller": "player4",
         "inPlay": false,
-        "deckGroupId": "sharedEncounterDeck"
+        "deckGroupId": "sharedEncounterDeck",
+        "discardGroupId": "sharedEncounterDiscard"
       }
     },
     "player4OutOfPlay": {
