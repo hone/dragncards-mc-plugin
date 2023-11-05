@@ -18,7 +18,7 @@
       {"key": "Shift+T", "actionList": "dealThirdFaceup", "label": "id:dealThirdFaceup"},
       {"key": "B", "actionList": "drawBoost", "label": "id:dealBoostCard"},
       {"key": "D", "actionList": ["DRAW_CARD"], "label": "id:drawCard"},
-      {"key": "Shift+M", "actionList": "mulligan", "label": "id:mulligan"},
+      {"key": "Shift+D", "actionList": "mulliganDrawHand", "label": "id:mulliganDrawHand"},
       {"key": "Shift+R", "actionList": "readyAll", "label": "id:readyAll"},
       {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
       {"key": "Shift+S", "actionList": "shadowsOfThePast", "label": "id:shadowsOfThePast"},

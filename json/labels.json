@@ -369,8 +369,8 @@
     "dealThirdFaceup": {
       "English": "Deal Third Encounter Card Faceup"
     },
-    "mulligan": {
-      "English": "Mulligan"
+    "mulliganDrawHand": {
+      "English": "Mulligan / Draw Up to Hand Size"
     },
     "labelMarkAsVictory": {
       "English": "Victory"

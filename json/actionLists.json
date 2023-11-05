@@ -66,10 +66,15 @@
         ["LOG", "{{$ALIAS_N}} drew a boost card."]
       ]
     ],
-    "mulligan": [
-      ["CONFIRM", "Mulligan?"],
-      ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"],
-      ["LOG", "{{$ALIAS_N}} mulliganed."]
+    "mulliganDrawHand": [
+      ["COND",
+        ["EQUAL", "$GAME.roundNumber", 0],
+        [
+          ["CONFIRM", "Mulligan?"],
+          ["LOG", "{{$ALIAS_N}} mulliganed."]
+        ]
+      ],
+      ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"]
     ],
     "readyAll": [
       ["LOG", "{{$ALIAS_N}} readied all their cards."],
