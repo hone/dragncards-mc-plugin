@@ -7,6 +7,7 @@
     "permanent": {"type": "boolean", "default": false},
     "startingThreatFixed" : {"type": "integer", "default": null},
     "startingThreatScaling" : {"type": "integer", "default": null},
-    "toughness" : {"type": "boolean", "default": false}
+    "toughness" : {"type": "boolean", "default": false},
+    "victory": {"type": "integer", "default": null}
   }
 }

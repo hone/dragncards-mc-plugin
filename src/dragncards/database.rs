@@ -30,6 +30,7 @@ pub struct Card {
     pub toughness: bool,
     pub permanent: bool,
     pub nemesis_minion: bool,
+    pub victory: Option<i64>,
 }
 
 impl Card {
@@ -89,6 +90,7 @@ impl Card {
                         .unwrap_or(false),
                     nemesis_minion,
                     permanent,
+                    victory: card.victory().map(|v| v as i64),
                 };
 
                 if let Some(health) = card.health.as_ref() {

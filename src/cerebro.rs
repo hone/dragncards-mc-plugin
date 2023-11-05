@@ -63,13 +63,25 @@ impl Card {
     pub fn hinder(&self) -> Option<u32> {
         if let Some(rules) = self.rules.as_ref() {
             lazy_static! {
-                static ref HINDER_RE: Regex = Regex::new(r"Hinder (\d+)\{i\}").unwrap();
+                static ref HINDER_RE: Regex = Regex::new(r"Hinder (\d+)\{i\}.").unwrap();
             }
             if let Some(captures) = HINDER_RE.captures(rules) {
                 return Some(captures[1].parse::<u32>().unwrap());
             }
         }
 
+        None
+    }
+
+    pub fn victory(&self) -> Option<i32> {
+        if let Some(rules) = self.rules.as_ref() {
+            lazy_static! {
+                static ref VICTORY_RE: Regex = Regex::new(r"Victory (-?\d+).").unwrap();
+            }
+            if let Some(captures) = VICTORY_RE.captures(rules) {
+                return Some(captures[1].parse::<i32>().unwrap());
+            }
+        }
         None
     }
 }
@@ -338,11 +350,40 @@ pub async fn get_sets(offline: Option<bool>) -> Result<Vec<Set>, reqwest::Error>
 mod tests {
     use super::*;
 
+    fn card_by_id(id: &str) -> Card {
+        let cards: Vec<Card> =
+            serde_json::from_str(include_str!("../fixtures/cerebro/cards.json")).unwrap();
+        cards
+            .iter()
+            .filter(|card| card.id == id)
+            .next()
+            .unwrap()
+            .clone()
+    }
+
     #[test]
     fn it_parses_cards_fixture() {
         let result: Result<Vec<Card>, _> =
             serde_json::from_str(include_str!("../fixtures/cerebro/cards.json"));
         assert!(result.is_ok());
+    }
+
+    #[test]
+    fn it_parses_hinder() {
+        let card = card_by_id("40146");
+        assert_eq!(card.hinder(), Some(1));
+        let card_no_hinder = card_by_id("01026");
+        assert!(card_no_hinder.hinder().is_none())
+    }
+
+    #[test]
+    fn it_parses_victory() {
+        let card = card_by_id("16178B");
+        assert_eq!(card.victory(), Some(1));
+        let card_negative_victory = card_by_id("27181");
+        assert_eq!(card_negative_victory.victory(), Some(-1));
+        let card_no_victory = card_by_id("01026");
+        assert!(card_no_victory.victory().is_none());
     }
 
     #[test]
