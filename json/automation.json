@@ -242,6 +242,17 @@
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },
       {
+        "_comment": "When a side scheme is flipped face up set starting threat",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/currentSide"],
+        "condition": ["AND",
+          ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
+          ["EQUAL", "$TARGET.currentSide", "A"],
+          "TARGET.inPlay"
+        ],
+        "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
+      },
+      {
         "_comment": "When a player deck empties, give them an encounter deck and shuffle the deck.",
         "type": "trigger",
         "listenTo": ["/groupById/*/stackIds"],
