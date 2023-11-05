@@ -1,6 +1,6 @@
 {
   "pluginName": "Marvel Champions: The Card Game",
-  "tutorialUrl": "https://youtube.com",
+  "tutorialUrl": "https://github.com/hone/dragncards-mc-plugin/wiki",
   "minPlayers": 1,
   "maxPlayers": 4,
   "firstPlayerImageUrl": "https://raw.githubusercontent.com/hone/dragncards-mc-plugin/main/tokens/first_player_token.svg",
