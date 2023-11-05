@@ -20,7 +20,7 @@
       },
       {
         "label": "id:handSize",
-        "imageUrl": "https://raw.githubusercontent.com/hone/dragncards-mc-plugin/main/tokens/hand.svg",
+        "imageUrl": "https://dragncards-wotr.s3.amazonaws.com/tokens/HandSize.png",
         "playerProperty": "handSize"
       }
     ]
