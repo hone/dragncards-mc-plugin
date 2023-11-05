@@ -119,6 +119,13 @@
             ["LOG", "Peni Detected"],
             ["DEFINE", "$SPDR_PENI", true]
           ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.databaseId", "3392ba83-1e54-599f-82f1-14b2ffca0616"],
+          [
+            ["LOG", "Miles Morales Detected"],
+            ["DEFINE", "$BUNDLE", "Spider-Man (Miles Morales) (marvelcdb bundle)"]
+          ]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],
@@ -150,7 +157,10 @@
           ["COND",
             ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_NEMESIS_SET_GROUP_ID.stackIds"], 0],
             [
-              ["DEFINE", "$BUNDLE", "{{$IDENTITY_CARD.sides.$HERO_SIDE.name}} (marvelcdb bundle)"],
+              ["COND",
+                ["NOT", ["DEFINED", "$BUNDLE"]],
+                ["DEFINE", "$BUNDLE", "{{$IDENTITY_CARD.sides.$HERO_SIDE.name}} (marvelcdb bundle)"]
+              ],
               ["LOAD_CARDS", "$BUNDLE"]
             ]
           ],

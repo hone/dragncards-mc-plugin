@@ -27,6 +27,8 @@ const NEBULA_HERO_SET_ID: Uuid = uuid!("470b185d-42e4-413b-b516-854b4b2f0231");
 const NEBULA_SCENARIO_SET_ID: Uuid = uuid!("835990d9-d2ff-4c5c-aa8d-b8550e179847");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
 const SHIP_COMMAND_SET_ID: Uuid = uuid!("a789f0f5-d822-40f6-8e83-d8e5e27d40d2");
+const SPIDER_MAN_MILES_MORALES_HERO_SET_ID: Uuid = uuid!("6c95c419-7658-4d74-935c-5da7a68ceeb0");
+const SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID: Uuid = uuid!("e6b2b98f-2876-45e9-b489-28d056d39b54");
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
 const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
 const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
@@ -440,24 +442,28 @@ fn build_hero_deck<'a>(
         .find(|(card, _)| card.r#type == CardType::Obligation)
         .unwrap();
     player_cards.push(obligation_card);
+    let hero_set = &pack_set_map
+        .get(&pack.id)
+        .unwrap()
+        .iter()
+        .filter(|set| set.r#type == SetType::Hero && set.id == player_cards[0].1.set_id.unwrap())
+        .next()
+        .unwrap();
 
     let mut deck = process_hero_deck(&player_cards, &pack, &&marvelcdb_cards);
     let mut obligation_nemesis_bundle =
         process_hero_deck(&vec![obligation_card], &pack, &&marvelcdb_cards);
-    let hero_name = if pack.r#type == PackType::CampaignExpansion {
-        let hero_card = &player_cards
-            .iter()
-            .find(|card| card.0.r#type == CardType::Hero)
-            .unwrap();
-        hero_card.0.name.clone()
-    } else {
-        pack.name.clone()
-    };
+    let hero_name = hero_set.name.clone();
     let nemesis_set_name = &pack_set_map
         .get(&pack.id)
         .unwrap()
         .iter()
-        .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&hero_name))
+        .filter(|set| {
+            set.r#type == SetType::Nemesis
+                && (set.name.contains(&hero_name)
+                    || (hero_set.id == SPIDER_MAN_MILES_MORALES_HERO_SET_ID
+                        && set.id == SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID))
+        })
         .next()
         .unwrap()
         .name;
