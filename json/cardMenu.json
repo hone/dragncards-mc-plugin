@@ -8,7 +8,7 @@
     ],
     "options": [
       {"label": "id:exhaustReady", "actionList": "toggleExhaust"},
-      {"label": "id:discard", "actionList": "discardCard"}
+      {"label": "id:discard", "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"]}
     ]
   }
 }
