@@ -41,7 +41,6 @@
               ["LOG", "{{$CONTROLLER}} discarded {{$DISCARD_CARD.currentFace.name}}."]
             ],
             ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
-            ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
             ["COND",
               ["AND",
                 ["EQUAL", "$DISCARD_CARD.sides.A.type", "Villain"],
@@ -50,9 +49,16 @@
               [
                 ["VAR", "$CARD_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]"],
                 ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
-                ["SET_VILLAIN_HEALTH", "$CARD_ID"]
+                ["SET_VILLAIN_HEALTH", "$CARD_ID"],
+                ["FOR_EACH_KEY_VAL", "$TOKEN", "$VALUE", "$DISCARD_CARD.tokens",
+                  ["COND",
+                    ["NOT", ["EQUAL", "$TOKEN", "damage"]],
+                    ["SET", "/cardById/$CARD_ID/tokens/$TOKEN", "$VALUE"]
+                  ]
+                ]
               ]
             ],
+            ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
             ["COND",
               ["AND",
                 ["EQUAL", "$DISCARD_CARD.sides.A.type", "Main Scheme"],
