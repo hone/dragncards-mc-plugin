@@ -70,7 +70,7 @@ pub async fn execute(args: DatabaseArgs) {
                     new_card
                 }
             })
-            .buffer_unordered(CONCURRENT_REQUESTS);
+            .buffered(CONCURRENT_REQUESTS);
         cards = new_cards.collect().await;
     }
     let output = args
