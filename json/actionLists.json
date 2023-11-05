@@ -48,7 +48,10 @@
       ["COND",
         ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
         [
-          ["LOG", "{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."],
+          ["COND",
+            ["DEFINED", "$ALIAS_N"],
+            ["LOG", "{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."]
+          ],
           ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"]
         ]
       ],
@@ -58,11 +61,14 @@
       ["SET", "/cardById/$CARD_ID/rotation", -30],
       ["SET", "/cardById/$CARD_ID/currentSide", "B"],
       ["SET", "/cardById/$CARD_ID/boost", false],
-      ["LOG", "{{$ALIAS_N}} drew a boost card."]
+      ["COND",
+        ["DEFINED", "$ALIAS_N"],
+        ["LOG", "{{$ALIAS_N}} drew a boost card."]
+      ]
     ],
     "mulligan": [
       ["CONFIRM", "Mulligan?"],
-      ["DRAW_HAND", "$PLAYER_N"],
+      ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"],
       ["LOG", "{{$ALIAS_N}} mulliganed."]
     ],
     "readyAll": [
@@ -90,9 +96,9 @@
     ],
     "playerEndPhase": [
       ["LOG", "Player Phase - Ends"],
-      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
         ["ACTION_LIST", "readyAll"],
-        ["DRAW_HAND", "$PLAYER_N"]
+        ["DRAW_HAND", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"]
       ]],
       ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
       ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],

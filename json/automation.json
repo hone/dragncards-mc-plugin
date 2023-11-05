@@ -138,7 +138,7 @@
         [
           ["COND",
             ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0],
-            ["DRAW_HAND", "$PLAYER_N"]
+            ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"]
           ],
           ["COND",
             ["EQUAL", "$GAME.playerData.$PLAYER_N.hitPoints", 0],
@@ -221,7 +221,7 @@
         "listenTo": ["/cardById/*/inPlay", "/cardById/*/currentSide"],
         "condition": ["AND", "$TARGET.inPlay", ["NOT_EQUAL", "$TARGET.currentFace.handSize", null]],
         "then": [
-          ["DEFINE", "$CONTROLLER", "$TARGET.controller"],
+          ["VAR", "$CONTROLLER", "$TARGET.controller"],
           ["SET", "/playerData/$CONTROLLER/handSize", "$TARGET.currentFace.handSize"],
           ["LOG", "$ALIAS_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
         ]
@@ -297,7 +297,7 @@
         "condition": ["NOT", "$TARGET.inPlay"],
         "then": [
           ["SET", "/cardById/$TARGET_ID/tokens", {}],
-          ["READY_CARD", "$TARGET_ID"],
+          ["READY_CARD", "$TARGET_ID", null],
           ["VAR", "$GROUP_ID", "$TARGET.groupId"],
           ["SET", "/cardById/$TARGET_ID/currentSide", "$GAME.groupById.$GROUP_ID.onCardEnter.currentSide"]
         ]

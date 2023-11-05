@@ -30,9 +30,9 @@
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},
       {"key": "F", "actionList": "flipCard", "label": "id:flip"},
       {"key": "R", "actionList": ["READY_CARD", "$ACTIVE_CARD_ID"], "label": "id:ready"},
-      {"key": "Alt+1", "actionList": ["SET_SIDE", "$ALIAS_N", "$ACTIVE_CARD_ID", "A"], "label": "id:setSideA"},
-      {"key": "Alt+2", "actionList": ["SET_SIDE", "$ALIAS_N", "$ACTIVE_CARD_ID", "B"], "label": "id:setSideB"},
-      {"key": "Alt+3", "actionList": ["SET_SIDE", "$ALIAS_N", "$ACTIVE_CARD_ID", "C"], "label": "id:setSideC"},
+      {"key": "Alt+1", "actionList": ["SET_SIDE", "$ACTIVE_CARD_ID", "A", "$ALIAS_N"], "label": "id:setSideA"},
+      {"key": "Alt+2", "actionList": ["SET_SIDE", "$ACTIVE_CARD_ID", "B", "$ALIAS_N"], "label": "id:setSideB"},
+      {"key": "Alt+3", "actionList": ["SET_SIDE", "$ACTIVE_CARD_ID", "C", "$ALIAS_N"], "label": "id:setSideC"},
       {"key": "H", "actionList": "shuffleIntoDeck", "label": "id:shuffleIntoDeck"},
       {"key": "0", "actionList": "zeroTokens", "label": "id:removeAllTokens"},
       {"key": "X", "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"], "label": "id:discard"}

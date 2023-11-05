@@ -4,7 +4,8 @@
       "args": [
         {"$FACE_UP": false},
         {"$GROUP_ID": "sharedEncounterDeck"},
-        {"$PLAYER": "$PLAYER_N"}
+        {"$PLAYER": "$PLAYER_N"},
+        {"$CONTROLLER": "$ALIAS_N"}
       ],
       "code": [
         ["VAR", "$GROUP", "$GAME.groupById.$GROUP_ID"],
@@ -16,25 +17,29 @@
             ["VAR", "$CARD_ID", ["GET_CARD_ID", "$GROUP_ID", 0, 0]],
             ["MOVE_CARD", "$CARD_ID", "{{$PLAYER}}Engaged", -1, 0, ["PROCESS_MAP", {"allowFlip": "$FACE_UP"}]],
             ["COND",
-              ["DEFINED", "$ALIAS_N"],
-              ["LOG", "{{$ALIAS_N}} dealt an encounter card."],
-              true,
-              ["LOG", "An ecounter card was dealt."]
+              ["DEFINED", "$CONTROLLER"],
+              ["LOG", "{{$CONTROLLER}} dealt an encounter card."]
             ]
           ]
         ]
       ]
     },
     "DISCARD_CARD": {
-      "args": ["$DISCARD_CARD_ID"],
+      "args": ["$DISCARD_CARD_ID", {"$CONTROLLER": "$ALIAS_N"}],
       "code": [
         ["VAR", "$DISCARD_CARD", "$GAME.cardById.$DISCARD_CARD_ID"],
         ["COND",
           ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
-          ["LOG", "{{$ALIAS_N}} failed to discard {{$DISCARD_CARD.currentFace.name}} because it is not associated with a discard pile. Please drag the card instead."],
+          ["COND",
+            ["DEFINED", "$CONTROLLER"],
+            ["LOG", "{{$CONTROLLER}} failed to discard {{$DISCARD_CARD.currentFace.name}} because it is not associated with a discard pile. Please drag the card instead."]
+          ],
           true,
           [
-            ["LOG", "{{$ALIAS_N}} discarded {{$DISCARD_CARD.currentFace.name}}."],
+            ["COND",
+              ["DEFINED", "$CONTROLLER"],
+              ["LOG", "{{$CONTROLLER}} discarded {{$DISCARD_CARD.currentFace.name}}."]
+            ],
             ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
             ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
             ["COND",
@@ -64,7 +69,7 @@
       ]
     },
     "DISCARD_UNTIL": {
-      "args": ["$SOURCE_GROUP_ID", "$DEST_GROUP_ID", "$COND"],
+      "args": ["$SOURCE_GROUP_ID", "$DEST_GROUP_ID", "$COND", {"$CONTROLLER": null}],
       "code": [
         ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
         ["VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"],
@@ -74,7 +79,7 @@
             ["GREATER_THAN", ["LENGTH", "$GAME.groupById.$SOURCE_GROUP_ID.stackIds"], 1]
           ],
           [
-            ["DISCARD_CARD", "$CARD_ITEM_ID"],
+            ["DISCARD_CARD", "$CARD_ITEM_ID", "$CONTROLLER"],
             ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
             ["VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"]
           ]
@@ -85,18 +90,21 @@
           ["ACTION_LIST", "$COND"],
           ["MOVE_CARD", "$CARD_ITEM_ID", "$DEST_GROUP_ID", 0],
           true,
-          ["DISCARD_CARD", "$CARD_ITEM_ID"]
+          ["DISCARD_CARD", "$CARD_ITEM_ID", "$CONTROLLER"]
         ]
       ]
     },
     "DRAW_HAND": {
-      "args": ["$PLAYER"],
+      "args": ["$PLAYER", {"$CONTROLLER": "$ALIAS_N"}],
       "code": [
         ["VAR", "$GROUP_ID", "{{$PLAYER}}Hand"],
         ["VAR", "$HAND_SIZE", "$GAME.playerData.$PLAYER.handSize"],
         ["VAR", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]],
         ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
-        ["LOG", "${{ALIAS_N}} draws {{$DRAW_SIZE}} cards."],
+        ["COND",
+          ["DEFINED", "$CONTROLLER"],
+          ["LOG", "{{$CONTROLLER}} draws {{$DRAW_SIZE}} cards."]
+        ],
         ["DRAW_CARD", "$DRAW_SIZE"],
         ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]]],
         ["COND",
@@ -106,13 +114,14 @@
       ]
     },
     "EXHAUST_CARD": {
-      "args": ["$CARD_ID", {"$CONTROLLER": null}],
+      "args": ["$CARD_ID", {"$CONTROLLER": "$ALIAS_N"}],
       "code": [
-        ["SET", "/cardById/$ACTIVE_CARD_ID/rotation", 90],
-        ["SET", "/cardById/$ACTIVE_CARD_ID/exhausted", true],
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["SET", "/cardById/$CARD_ID/rotation", 90],
+        ["SET", "/cardById/$CARD_ID/exhausted", true],
         ["COND",
           ["DEFINED", "$CONTROLLER"],
-          ["LOG", "{{$CONTROLLER}} exhausted {{$ACTIVE_FACE.name}}."]
+          ["LOG", "{{$CONTROLLER}} exhausted {{$CARD.currentFace.name}}."]
         ]
       ]
     },
@@ -124,13 +133,14 @@
       ]
     },
     "READY_CARD": {
-      "args": ["$CARD_ID", {"$CONTROLLER": null}],
+      "args": ["$CARD_ID", {"$CONTROLLER": "$ALIAS_N"}],
       "code": [
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["SET", "/cardById/$CARD_ID/rotation", 0],
         ["SET", "/cardById/$CARD_ID/exhausted", false],
         ["COND",
           ["DEFINED", "$CONTROLLER"],
-          ["LOG", "{{$CONTROLLER}} readied {{$ACTIVE_FACE.name}}."]
+          ["LOG", "{{$CONTROLLER}} readied {{$CARD.currentFace.name}}."]
         ]
       ]
     },
@@ -142,10 +152,13 @@
       ]
     },
     "SET_SIDE": {
-      "args": ["$PLAYER", "$CARD_ID", "$SIDE"],
+      "args": ["$CARD_ID", "$SIDE", {"$CONTROLLER": "$ALIAS_N"}],
       "code": [
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-        ["LOG", "{{$PLAYER}} changed {{$CARD.currentFace.name}} ({{$CARD.currentSide}}) to {{$CARD.sides.$SIDE.name}} ({{$SIDE}})."],
+        ["COND",
+          ["DEFINED", "$CONTROLLER"],
+          ["LOG", "{{$CONTROLLER}} changed {{$CARD.currentFace.name}} ({{$CARD.currentSide}}) to {{$CARD.sides.$SIDE.name}} ({{$SIDE}})."]
+        ],
         ["SET", "/cardById/$CARD_ID/currentSide", "$SIDE"]
       ]
     },
