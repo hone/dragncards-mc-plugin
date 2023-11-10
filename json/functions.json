@@ -144,6 +144,7 @@
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["SET", "/cardById/$CARD_ID/rotation", 0],
         ["SET", "/cardById/$CARD_ID/exhausted", false],
+        ["SET", "/cardById/$CARD_ID/boost", false],
         ["COND",
           ["DEFINED", "$CONTROLLER"],
           ["LOG", "{{$CONTROLLER}} readied {{$CARD.currentFace.name}}."]

@@ -56,10 +56,9 @@
         ]
       ],
       ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
-      ["SET", "/cardById/$CARD_ID/boost", true],
       ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, {"allowFlip": false}],
       ["SET", "/cardById/$CARD_ID/rotation", -30],
-      ["SET", "/cardById/$CARD_ID/boost", false],
+      ["SET", "/cardById/$CARD_ID/boost", true],
       ["COND",
         ["DEFINED", "$ALIAS_N"],
         ["LOG", "{{$ALIAS_N}} drew a boost card."]

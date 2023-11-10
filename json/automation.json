@@ -246,7 +246,8 @@
             ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
             ["EQUAL", "$TARGET.sides.A.type", "Player Side Scheme"]
           ],
-          ["EQUAL", "$TARGET.currentSide", "A"]
+          ["EQUAL", "$TARGET.currentSide", "A"],
+          ["NOT", "$TARGET.boost"]
         ],
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },
@@ -257,6 +258,7 @@
         "condition": ["AND",
           ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
           ["EQUAL", "$TARGET.currentSide", "A"],
+          ["NOT", "$TARGET.boost"],
           "$TARGET.inPlay"
         ],
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
@@ -335,6 +337,7 @@
         "listenTo": ["/cardById/*/currentSide"],
         "condition": ["AND",
           ["EQUAL", "$TARGET.currentSide", "A"],
+          ["NOT", "$TARGET.boost"],
           "$TARGET.sides.A.toughness",
           "$TARGET.inPlay"
         ],
