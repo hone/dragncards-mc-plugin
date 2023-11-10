@@ -257,7 +257,7 @@
         "condition": ["AND",
           ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
           ["EQUAL", "$TARGET.currentSide", "A"],
-          "TARGET.inPlay"
+          "$TARGET.inPlay"
         ],
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },
