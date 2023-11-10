@@ -246,8 +246,7 @@
             ["EQUAL", "$TARGET.sides.A.type", "Side Scheme"],
             ["EQUAL", "$TARGET.sides.A.type", "Player Side Scheme"]
           ],
-          ["EQUAL", "$TARGET.currentSide", "A"],
-          ["EQUAL", "$TARGET.boost", false]
+          ["EQUAL", "$TARGET.currentSide", "A"]
         ],
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },

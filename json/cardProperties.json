@@ -1,5 +1,3 @@
 {
-  "cardProperties": {
-    "boost": {"type": "boolean", "default": false}
-  }
+  "cardProperties": {}
 }
