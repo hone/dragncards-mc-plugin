@@ -323,10 +323,21 @@
         ]
       },
       {
-        "_comment": "Add tough to card with toughness wehn it enters play",
+        "_comment": "Add tough to card with toughness when it enters play",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay"],
         "condition": ["AND", "$TARGET.inPlay", "$TARGET.currentFace.toughness"],
+        "then": ["INCREASE_VAL", "/cardById/$TARGET_ID/tokens/tough", 1]
+      },
+      {
+        "_comment": "When a card is flipped face up add tough to a card with toughness",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/currentSide"],
+        "condition": ["AND",
+          ["EQUAL", "$TARGET.currentSide", "A"],
+          "$TARGET.sides.A.toughness",
+          "$TARGET.inPlay"
+        ],
         "then": ["INCREASE_VAL", "/cardById/$TARGET_ID/tokens/tough", 1]
       }
     ],
