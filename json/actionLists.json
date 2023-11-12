@@ -67,10 +67,7 @@
     "mulliganDrawHand": [
       ["COND",
         ["EQUAL", "$GAME.roundNumber", 0],
-        [
-          ["CONFIRM", "Mulligan?"],
-          ["LOG", "{{$ALIAS_N}} mulliganed."]
-        ]
+        ["LOG", "{{$ALIAS_N}} mulliganed."]
       ],
       ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"]
     ],
@@ -95,7 +92,8 @@
           true,
           ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", 0]
         ]
-      ]]
+      ]],
+      ["SHUFFLE_GROUP", "$GROUP_ID"]
     ],
     "playerEndPhase": [
       ["LOG", "Player Phase - Ends"],
