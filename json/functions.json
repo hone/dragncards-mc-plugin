@@ -111,6 +111,7 @@
           ["DEFINED", "$CONTROLLER"],
           ["LOG", "{{$CONTROLLER}} draws {{$DRAW_SIZE}} cards."]
         ],
+        ["DEFINE", "$PLAYER_N", "$PLAYER"],
         ["DRAW_CARD", "$DRAW_SIZE"],
         ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]]],
         ["COND",
