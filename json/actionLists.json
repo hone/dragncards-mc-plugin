@@ -2,7 +2,13 @@
   "actionLists": {
     "toggleExhaust": [
       ["COND",
-        ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 90], "$ACTIVE_CARD.inPlay"],
+        ["AND",
+          ["OR",
+            ["EQUAL", "$ACTIVE_CARD.rotation", 90],
+            "$ACTIVE_CARD.boost"
+          ],
+          "$ACTIVE_CARD.inPlay"
+        ],
         ["READY_CARD", "$ACTIVE_CARD_ID", "$ALIAS_N"],
         ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 0], "$ACTIVE_CARD.inPlay"],
         ["EXHAUST_CARD", "$ACTIVE_CARD_ID", "$ALIAS_N"]
