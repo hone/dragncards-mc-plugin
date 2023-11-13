@@ -92,9 +92,9 @@
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["COND",
           "$CARD.sides.A.nemesisMinion",
-          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", 0],
+          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1],
           ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
-          ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
+          ["MOVE_CARD", "$CARD_ID", "sharedVillain", -1],
           true,
           ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", 0]
         ]
