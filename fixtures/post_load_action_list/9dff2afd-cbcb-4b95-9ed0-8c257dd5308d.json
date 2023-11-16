@@ -2,14 +2,14 @@
   ["LOG", "Setup: Discard cards until environment is discarded"],
   ["DISCARD_UNTIL", "sharedEncounterDeck", "sharedVillain",
     ["POINTER",
-      ["EQUAL", "$CARD.sides.A.type", "Environment"]
+      ["EQUAL", "$CARD_ITEM.sides.A.type", "Environment"]
     ]
   ],
   ["COND",
     ["EQUAL", "$GAME.mode", "expert"],
     [
       ["LOG", "Setup: Reveal Super Absorbing Power"],
-      ["DEFINE",
+      ["VAR",
         "$ENV_CARD",
         ["ONE_CARD", "$CARD",
           ["EQUAL", "$CARD.databaseId", "fa891b35-2416-5449-862d-ab55681dd786"]
