@@ -505,20 +505,6 @@
   },
   {
     "Deleted": false,
-    "Id": "274d7af9-55a1-432c-afd4-adafd64f9d8c",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Deadpool",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": true,
-    "Number": "44",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "f8774d23-af2d-4e4f-aed6-7d19699325b5",
     "Official": true,
     "AuthorId": null,
@@ -575,20 +561,6 @@
   },
   {
     "Deleted": false,
-    "Id": "ae22b08d-5557-46f4-96c2-5ee809460c45",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "X-23",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": "<:mc_x23:1146549745762975845>",
-    "Incomplete": true,
-    "Number": "43",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "95f1edcf-728c-4a82-a730-aa7a46645c14",
     "Official": true,
     "AuthorId": null,
@@ -603,6 +575,20 @@
   },
   {
     "Deleted": false,
+    "Id": "136e5350-c1b3-461a-8a5a-34fb41a6ec09",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Age of Apocalypse",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": true,
+    "Number": "45",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
     "Id": "22addcd8-a5b5-4b6f-bb72-fd0002b5edec",
     "Official": true,
     "AuthorId": null,
@@ -613,7 +599,7 @@
     "Incomplete": false,
     "Number": "41",
     "ReleaseStatus": null,
-    "SpoilerTag": true
+    "SpoilerTag": false
   },
   {
     "Deleted": false,
@@ -627,6 +613,34 @@
     "Incomplete": false,
     "Number": "42",
     "ReleaseStatus": null,
-    "SpoilerTag": true
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "ae22b08d-5557-46f4-96c2-5ee809460c45",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "X-23",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_x23:1146549745762975845>",
+    "Incomplete": false,
+    "Number": "43",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "274d7af9-55a1-432c-afd4-adafd64f9d8c",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Deadpool",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "44",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]
