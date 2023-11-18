@@ -686,8 +686,13 @@ fn process_sets_by_packs(
             };
 
             let mut post_load_action_list =
-                if set.r#type == SetType::Villain && set.requires.is_some() {
-                    Some(ActionList::List(vec![json!(["LOAD_REQUIRED", set.name])]))
+                if set.r#type == SetType::Villain {
+                    let mut post_load_action_list_vector = vec![json!(["SET", "/layoutVariants/largeMainScheme", false])];
+                    if set.requires.is_some() {
+                        post_load_action_list_vector.push(json!(["LOAD_REQUIRED", set.name]))
+                    }
+
+                    Some(ActionList::List(post_load_action_list_vector))
                 } else {
                     None
                 };
