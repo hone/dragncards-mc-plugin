@@ -1,0 +1,32 @@
+[
+  ["SET", "/layoutVariants/largeMainScheme", true],
+  ["DEFINE", "$NUM_VILLAINS", 2],
+  ["LOG", "Setup: Put Avengers Tower into play."],
+  ["VAR",
+    "$ENV_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ee7c8594-b457-5fbc-88ae-74d677528351"]]
+  ],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
+  ["LOG", "Setup: Every player gets a Black Order Besieger"],
+  ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+    ["DEFINE",
+      "$MINION_CARD",
+      ["ONE_CARD", "$CARD",
+        ["AND",
+          ["EQUAL", "$CARD.databaseId", "e7d9f591-cc2d-507f-b99b-1908308e774d"],
+          ["EQUAL", "$CARD.groupId", "sharedEncounterDeck"]
+        ]
+      ]
+    ],
+    ["MOVE_CARD", "$MINION_CARD.id", "{{$PLAYER_N}}Engaged", -1]
+  ]],
+  ["VAR",
+    "$ATTACHMENT_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "93a05c64-11a2-54ae-9fa9-1c8c0bb41a6d"]]
+  ],
+  ["VAR",
+    "$SCHEME_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "d4881afa-e54f-5e09-bafe-a64953708bd8"]]
+  ],
+  ["ATTACH_CARD", "$ATTACHMENT_CARD.id", "$SCHEME_CARD.id"]
+]
