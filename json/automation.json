@@ -4,6 +4,10 @@
       ["DEFINE", "$LOADED_PLAYER_DECK", false],
       ["DEFINE", "$LOADED_SCENARIO_DECK", false],
       ["COND",
+        ["NOT", ["DEFINED", "$NUM_VILLAINS"]],
+        ["DEFINE", "$NUM_VILLAINS", 1]
+      ],
+      ["COND",
         ["NOT", ["DEFINED", "$FIRST_STAGE"]],
         ["COND",
           ["EQUAL", "$GAME.mode", "standard"],
@@ -54,13 +58,13 @@
           [
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],
             ["COND",
-              ["OR",
-                ["EQUAL", "$CARD.sides.A.stage", "$FIRST_STAGE"],
-                ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"],
-                ["EQUAL", "$CARD.sides.A.stage", "A"]
-              ],
-              ["COND",
-                ["EQUAL",
+              ["AND",
+                ["OR",
+                  ["EQUAL", "$CARD.sides.A.stage", "$FIRST_STAGE"],
+                  ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"],
+                  ["EQUAL", "$CARD.sides.A.stage", "A"]
+                ],
+                ["LESS_THAN",
                   ["LENGTH",
                     ["FILTER_CARDS",
                       "$CARD",
@@ -70,10 +74,10 @@
                       ]
                     ]
                   ],
-                  0
-                ],
-                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
-              ]
+                  "$NUM_VILLAINS"
+                ]
+              ],
+              ["MOVE_CARD", "$CARD_ID", "sharedVillain", -1]
             ],
             ["COND",
               ["OR",
