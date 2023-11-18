@@ -57,6 +57,18 @@
           ["EQUAL", "$CARD.sides.A.type", "Villain"],
           [
             ["DEFINE", "$LOADED_SCENARIO_DECK", true],
+            ["VAR",
+              "$CURRENT_NUM_VILLAINS",
+              ["LENGTH",
+                ["FILTER_CARDS",
+                  "$CARD",
+                      ["AND",
+                        ["EQUAL", "$CARD.sides.A.type", "Villain"],
+                        ["EQUAL", "$CARD.groupId", "sharedVillain"]
+                      ]
+                ]
+              ]
+            ],
             ["COND",
               ["AND",
                 ["OR",
@@ -64,20 +76,14 @@
                   ["EQUAL", "$CARD.sides.A.stage", "$DOUBLE_SIDED_STAGE"],
                   ["EQUAL", "$CARD.sides.A.stage", "A"]
                 ],
-                ["LESS_THAN",
-                  ["LENGTH",
-                    ["FILTER_CARDS",
-                      "$CARD",
-                      ["AND",
-                        ["EQUAL", "$CARD.sides.A.type", "Villain"],
-                        ["EQUAL", "$CARD.groupId", "sharedVillain"]
-                      ]
-                    ]
-                  ],
-                  "$NUM_VILLAINS"
-                ]
+                ["LESS_THAN", "$CURRENT_NUM_VILLAINS", "$NUM_VILLAINS"]
               ],
-              ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
+              ["COND",
+                ["EQUAL", "$CURRENT_NUM_VILLAINS", 0],
+                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0],
+                true,
+                ["MOVE_CARD", "$CARD_ID", "sharedVillain", 1]
+              ]
             ],
             ["COND",
               ["OR",
