@@ -77,7 +77,7 @@
                   "$NUM_VILLAINS"
                 ]
               ],
-              ["MOVE_CARD", "$CARD_ID", "sharedVillain", -1]
+              ["MOVE_CARD", "$CARD_ID", "sharedVillain", 0]
             ],
             ["COND",
               ["OR",
