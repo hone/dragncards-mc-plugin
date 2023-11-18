@@ -221,10 +221,13 @@
               ["SET_VILLAIN_HEALTH", "$VILLAIN_CARD.id", "$INCREASE_VILLAIN_HIT_POINTS"]
             ]
           ],
-          ["COND",
-            ["DEFINED", "$SCHEME_CARD"],
-            ["SET_SCHEME_STARTING_THREAT", "$SCHEME_CARD.id"]
-          ]
+          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds", [
+            ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+            ["COND",
+              ["EQUAL", "$CARD.sides.A.type", "Main Scheme"],
+              ["SET_SCHEME_STARTING_THREAT", "$CARD_ID"]
+            ]
+          ]]
         ]
       ]
     ],
