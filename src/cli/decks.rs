@@ -21,6 +21,7 @@ const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const ESCAPE_THE_MUSEUM_SET_ID: Uuid = uuid!("76c1a33e-7eed-4980-9561-7e3d9f815c32");
 const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
+const INVOCATION_SET_ID: Uuid = uuid!("ac654f5f-ec2c-4774-8732-a3e59ae5360d");
 const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
 const NEBULA_HERO_SET_ID: Uuid = uuid!("470b185d-42e4-413b-b516-854b4b2f0231");
@@ -640,7 +641,7 @@ fn process_sets_by_packs(
                         SetType::Supplementary => {
                             if set.id == WEATHER_SET_ID {
                                 Some("playerNPlay1")
-                            } else if set.name == "Invocation" {
+                            } else if set.id == INVOCATION_SET_ID {
                                 Some("playerNDeck2")
                             } else {
                                 None
