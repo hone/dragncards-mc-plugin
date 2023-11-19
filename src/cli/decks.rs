@@ -97,24 +97,31 @@ impl fmt::Display for DeckListRootKey {
 }
 
 pub async fn execute(args: DecksArgs) {
-    let packs: Vec<Pack> = cerebro::get_packs(Some(args.offline))
+    let packs_handler = tokio::spawn(cerebro::get_packs(Some(args.offline)));
+    let cards_handler = tokio::spawn(cerebro::get_cards(Some(args.offline)));
+    let sets_handler = tokio::spawn(cerebro::get_sets(Some(args.offline)));
+    let marvelcdb_handler = tokio::spawn(marvelcdb::get_cards(Some(args.offline)));
+    let packs: Vec<Pack> = packs_handler
         .await
+        .unwrap()
         .unwrap()
         .into_iter()
         .filter(|pack| pack.official && !pack.incomplete)
         .collect();
-    let cards: Vec<Card> = cerebro::get_cards(Some(args.offline))
+    let cards: Vec<Card> = cards_handler
         .await
+        .unwrap()
         .unwrap()
         .into_iter()
         .filter(|card| card.official)
         .collect();
     let marvelcdb_cards: Vec<marvelcdb::Card> =
-        marvelcdb::get_cards(Some(args.offline)).await.unwrap();
+        marvelcdb_handler.await.unwrap().unwrap();
 
     let pack_map: HashMap<&Uuid, &Pack> = packs.iter().map(|pack| (&pack.id, pack)).collect();
-    let sets: Vec<Set> = cerebro::get_sets(Some(args.offline))
+    let sets: Vec<Set> = sets_handler
         .await
+        .unwrap()
         .unwrap()
         .into_iter()
         .filter(|set| {

@@ -21,14 +21,18 @@ pub struct DatabaseArgs {
 }
 
 pub async fn execute(args: DatabaseArgs) {
-    let pack_map: HashMap<Uuid, cerebro::Pack> = cerebro::get_packs(Some(args.offline))
+    let pack_handler = tokio::spawn(cerebro::get_packs(Some(args.offline)));
+    let card_handler = tokio::spawn(cerebro::get_cards(Some(args.offline)));
+    let pack_map: HashMap<Uuid, cerebro::Pack> = pack_handler
         .await
+        .unwrap()
         .unwrap()
         .into_iter()
         .map(|pack| (pack.id.clone(), pack))
         .collect();
-    let mut cards: Vec<Card> = cerebro::get_cards(Some(args.offline))
+    let mut cards: Vec<Card> = card_handler
         .await
+        .unwrap()
         .unwrap()
         .into_iter()
         .filter_map(|card| {
