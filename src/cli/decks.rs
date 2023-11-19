@@ -610,7 +610,7 @@ fn process_sets_by_packs(
                 .iter()
                 .filter_map(|ordered_card| {
                     let card = ordered_card.card;
-                    if card.id.ends_with("B") {
+                    if card.id.ends_with("B") && card.name != "Android Efficiency" {
                         return None;
                     }
 

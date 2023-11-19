@@ -7,6 +7,7 @@ use std::collections::HashMap;
 use uuid::Uuid;
 
 const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
+const ANDROID_EFFICIENCY_ID_BASE: &'static str = "01144";
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -134,7 +135,7 @@ pub enum CardBack {
 pub fn uuid(code: &str) -> Uuid {
     let id = if let Ok(_) = code.parse::<u32>() {
         code
-    } else if code.contains(WAKANDA_FOREVER_ID_BASE) {
+    } else if code.contains(WAKANDA_FOREVER_ID_BASE) || code.contains(ANDROID_EFFICIENCY_ID_BASE) {
         code
     } else {
         let mut chars = code.chars();
@@ -162,7 +163,7 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
 
 fn card_back(card: &CerebroCard) -> CardBack {
     // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
-    if !card.id.contains(WAKANDA_FOREVER_ID_BASE) && card.id.parse::<u32>().is_err() {
+    if !card.id.contains(WAKANDA_FOREVER_ID_BASE) && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE) && card.id.parse::<u32>().is_err() {
         return CardBack::MultiSided;
     }
 
