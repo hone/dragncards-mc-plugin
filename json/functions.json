@@ -175,11 +175,10 @@
       "code": [
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
         ["DEFINE", "$STARTING_THREAT", 0],
+        ["VAR", "$SCHEME_FACE", "A"],
         ["COND",
           ["EQUAL", "$CARD.sides.A.type", "Main Scheme"],
-          ["VAR", "$SCHEME_FACE", "B"],
-          true,
-          ["VAR", "$SCHEME_FACE", "A"]
+          ["VAR", "$SCHEME_FACE", "B"]
         ],
         ["COND",
           ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
