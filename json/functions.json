@@ -152,6 +152,18 @@
         ]
       ]
     },
+    "READY_ALL": {
+      "args": [{"$PLAYER": "$PLAYER_N"}, {"$CONTROLLER": "$ALIAS_N"}],
+      "code": [
+        ["LOG", "{{$ALIAS_N}} readied all their cards."],
+        ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
+          ["COND",
+            ["EQUAL", "$CARD.controller", "$PLAYER"],
+            ["READY_CARD", "$CARD_ID"]
+          ]
+        ]
+      ]
+    },
     "SET_MODE": {
       "args": ["$MODE"],
       "code": [

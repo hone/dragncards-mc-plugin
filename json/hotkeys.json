@@ -19,7 +19,7 @@
       {"key": "B", "actionList": "drawBoost", "label": "id:dealBoostCard"},
       {"key": "D", "actionList": ["DRAW_CARD"], "label": "id:drawCard"},
       {"key": "Shift+D", "actionList": "mulliganDrawHand", "label": "id:mulliganDrawHand"},
-      {"key": "Shift+R", "actionList": "readyAll", "label": "id:readyAll"},
+      {"key": "Shift+R", "actionList": ["READY_ALL", "$PLAYER_N", "$ALIAS_N"], "label": "id:readyAll"},
       {"key": "Shift+X", "actionList": "discardRandomCard", "label": "id:discardRandom"},
       {"key": "Shift+S", "actionList": "shadowsOfThePast", "label": "id:shadowsOfThePast"},
       {"key": "Shift+P", "actionList": "playerEndPhase", "label": "id:playerEndPhase"},

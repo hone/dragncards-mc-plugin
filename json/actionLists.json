@@ -77,15 +77,6 @@
       ],
       ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"]
     ],
-    "readyAll": [
-      ["LOG", "{{$ALIAS_N}} readied all their cards."],
-      ["FOR_EACH_KEY_VAL", "$CARD_ID", "$CARD", "$GAME.cardById",
-        ["COND", 
-          ["EQUAL", "$CARD.controller", "$PLAYER_N"],
-          ["READY_CARD", "$CARD_ID"]
-        ]
-      ]
-    ],
     "shadowsOfThePast": [
       ["VAR", "$GROUP_ID", "{{$PLAYER_N}}NemesisSet"],
       ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.$GROUP_ID.parentCardIds", [
@@ -104,7 +95,7 @@
     "playerEndPhase": [
       ["LOG", "Player Phase - Ends"],
       ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
-        ["ACTION_LIST", "readyAll"],
+        ["READY_ALL", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"],
         ["DRAW_HAND", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"]
       ]],
       ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
