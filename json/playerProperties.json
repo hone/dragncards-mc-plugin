@@ -1,6 +1,6 @@
 {
   "playerProperties": {
-    "hitPoints":  {"type": "integer", "default": 0, "min": 0},
-    "handSize": {"type": "integer", "default": 0, "min": 0}
+    "hitPoints":  {"type": "integer", "default": 0, "min": 0, "label": "hitPoints"},
+    "handSize": {"type": "integer", "default": 0, "min": 0, "label": "handSize"}
   }
 }

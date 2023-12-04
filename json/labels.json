@@ -401,6 +401,9 @@
     },
     "shadowsOfThePast": {
       "English": "Shadows of the Past"
+    },
+    "loadRequired": {
+      "English": "Automatically Load Required Modular Sets"
     }
   }
 }
