@@ -86,8 +86,8 @@
           ],
           [
             ["DISCARD_CARD", "$CARD_ITEM_ID", "$CONTROLLER"],
-            ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
-            ["VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"]
+            ["UPDATE_VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
+            ["UPDATE_VAR", "$CARD_ITEM", "$GAME.cardById.$CARD_ITEM_ID"]
           ]
         ],
         ["VAR", "$CARD_ITEM_ID", "$GAME.groupById.$SOURCE_GROUP_ID.parentCardIds.[0]"],
@@ -113,7 +113,7 @@
         ],
         ["DEFINE", "$PLAYER_N", "$PLAYER"],
         ["DRAW_CARD", "$DRAW_SIZE"],
-        ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]]],
+        ["UPDATE_VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]]],
         ["COND",
           ["GREATER_THAN", "$DRAW_SIZE", 0],
           ["DRAW_CARD", "$DRAW_SIZE"]
@@ -186,19 +186,19 @@
       "args": ["$CARD_ID"],
       "code": [
         ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-        ["DEFINE", "$STARTING_THREAT", 0],
+        ["VAR", "$STARTING_THREAT", 0],
         ["VAR", "$SCHEME_FACE", "A"],
         ["COND",
           ["EQUAL", "$CARD.sides.A.type", "Main Scheme"],
-          ["VAR", "$SCHEME_FACE", "B"]
+          ["UPDATE_VAR", "$SCHEME_FACE", "B"]
         ],
         ["COND",
           ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
-          ["VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
+          ["UPDATE_VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
         ],
         ["COND",
           ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
-          ["VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
+          ["UPDATE_VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
         ],
         [
           ["LOG", "Setting starting threat for {{$CARD.sides.$SCHEME_FACE.name}} to {{$STARTING_THREAT}}."],
@@ -213,13 +213,13 @@
         ["VAR", "$HIT_POINTS", -1],
         ["COND",
           ["NOT_EQUAL", "$CARD.sides.A.hitPointsFixed", null],
-          ["VAR", "$HIT_POINTS", "$CARD.sides.A.hitPointsFixed"],
+          ["UPDATE_VAR", "$HIT_POINTS", "$CARD.sides.A.hitPointsFixed"],
           ["NOT_EQUAL", "$CARD.sides.A.hitPointsScaling", null],
-          ["VAR", "$HIT_POINTS", ["MULTIPLY", "$CARD.sides.A.hitPointsScaling", "$GAME.numPlayers"]]
+          ["UPDATE_VAR", "$HIT_POINTS", ["MULTIPLY", "$CARD.sides.A.hitPointsScaling", "$GAME.numPlayers"]]
         ],
         ["COND",
           ["GREATER_THAN", "$INCREASE_HIT_POINTS", 0],
-          ["VAR", "$HIT_POINTS", ["ADD", "$HIT_POINTS", "$INCREASE_HIT_POINTS"]]
+          ["UPDATE_VAR", "$HIT_POINTS", ["ADD", "$HIT_POINTS", "$INCREASE_HIT_POINTS"]]
         ],
         ["LOG", "Set villain hit points to {{$HIT_POINTS}}."],
         ["SET", "/villainHitPoints", "$HIT_POINTS"]

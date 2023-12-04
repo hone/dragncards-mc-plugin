@@ -61,13 +61,20 @@
           ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"]
         ]
       ],
-      ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
-      ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, {"allowFlip": false}],
-      ["SET", "/cardById/$CARD_ID/rotation", -30],
-      ["SET", "/cardById/$CARD_ID/boost", true],
       ["COND",
-        ["DEFINED", "$ALIAS_N"],
-        ["LOG", "{{$ALIAS_N}} drew a boost card."]
+        ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
+        [
+          ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, {"allowFlip": false}],
+          ["SET", "/cardById/$CARD_ID/rotation", -30],
+          ["SET", "/cardById/$CARD_ID/boost", true],
+          ["COND",
+            ["DEFINED", "$ALIAS_N"],
+            ["LOG", "{{$ALIAS_N}} drew a boost card."]
+          ]
+        ],
+        true,
+        ["LOG", "No encounter deck to draw boost card."]
       ]
     ],
     "mulliganDrawHand": [
@@ -119,12 +126,7 @@
       ["LOG", "Player Phase - Begins"]
     ],
     "toggleLoadRequired": [
-      ["COND",
-        "$GAME.loadRequired",
-        ["VAR", "$LOAD_REQUIRED", false],
-        true,
-        ["VAR", "$LOAD_REQUIRED", true]
-      ],
+      ["VAR", "$LOAD_REQUIRED", ["NOT", "$GAME.loadRequired"]],
       ["LOG", "Loading Required Modular Sets is set to ", "$LOAD_REQUIRED"],
       ["SET", "/loadRequired", "$LOAD_REQUIRED"]
     ],
