@@ -108,6 +108,10 @@
         ["VAR", "$REMAINING_CARDS", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]],
         ["VAR", "$DRAW_SIZE", ["SUBTRACT", "$HAND_SIZE", "$REMAINING_CARDS"]],
         ["COND",
+          ["LESS_THAN", "$DRAW_SIZE", 0],
+          ["UPDATE_VAR", "$DRAW_SIZE", 0]
+        ],
+        ["COND",
           ["DEFINED", "$CONTROLLER"],
           ["LOG", "{{$CONTROLLER}} draws {{$DRAW_SIZE}} cards."]
         ],
