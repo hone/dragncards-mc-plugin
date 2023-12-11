@@ -130,23 +130,6 @@
       ["LOG", "Loading Required Modular Sets is set to ", "$LOAD_REQUIRED"],
       ["SET", "/loadRequired", "$LOAD_REQUIRED"]
     ],
-    "toggleTableButton": [
-      ["COND",
-        ["AND",
-          "$GAME.layoutVariants.sideGroupVisible",
-          ["EQUAL", "$GAME.layoutVariants.sideGroupId", "$SIDE_GROUP_ID"]
-        ],
-        [
-          ["SET", "/layoutVariants/sideGroupVisible", false],
-          ["SET", "/layoutVariants/sideGroupId", ""]
-        ],
-        true,
-        [
-          ["SET", "/layoutVariants/sideGroupVisible", true],
-          ["SET", "/layoutVariants/sideGroupId", "$SIDE_GROUP_ID"]
-        ]
-      ]
-    ],
     "multipleDoubleSidedVillains": [
       ["SHUFFLE_GROUP", "sharedVillainDeck"],
       ["COND",

@@ -37,31 +37,19 @@
       ],
       "tableButtons": [
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedVictoryDisplay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedVictoryDisplay"],
           "label": "VD", "left": "98%", "top": "80%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedCampaignDeck"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedCampaignDeck"],
           "label": "CAM", "left": "98%", "top": "85%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNOutOfPlay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNOutOfPlay"],
           "label": "OOP", "left": "98%", "top": "90%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNNemesisSet"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNNemesisSet"],
           "label": "NEM", "left": "98%", "top": "95%", "width": "2%", "height": "5%"
         }
       ]
@@ -105,31 +93,19 @@
       ],
       "tableButtons": [
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedVictoryDisplay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedVictoryDisplay"],
           "label": "VD", "left": "98%", "top": "80%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedCampaignDeck"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedCampaignDeck"],
           "label": "CAM", "left": "98%", "top": "85%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNOutOfPlay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNOutOfPlay"],
           "label": "OOP", "left": "98%", "top": "90%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNNemesisSet"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNNemesisSet"],
           "label": "NEM", "left": "98%", "top": "95%", "width": "2%", "height": "5%"
         }
       ]
@@ -180,31 +156,19 @@
       ],
       "tableButtons": [
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedVictoryDisplay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedVictoryDisplay"],
           "label": "VD", "left": "98%", "top": "80%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedCampaignDeck"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedCampaignDeck"],
           "label": "CAM", "left": "98%", "top": "85%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNOutOfPlay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNOutOfPlay"],
           "label": "OOP", "left": "98%", "top": "90%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNNemesisSet"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNNemesisSet"],
           "label": "NEM", "left": "98%", "top": "95%", "width": "2%", "height": "5%"
         }
       ]
@@ -259,31 +223,19 @@
       ],
       "tableButtons": [
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedVictoryDisplay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedVictoryDisplay"],
           "label": "VD", "left": "98%", "top": "80%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "sharedCampaignDeck"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "sharedCampaignDeck"],
           "label": "CAM", "left": "98%", "top": "85%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNOutOfPlay"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNOutOfPlay"],
           "label": "OOP", "left": "98%", "top": "90%", "width": "2%", "height": "5%"
         },
         {
-          "actionList": [
-            ["DEFINE", "$SIDE_GROUP_ID", "playerNNemesisSet"],
-            ["ACTION_LIST", "toggleTableButton"]
-          ],
+          "actionList": ["TOGGLE_TABLE_BUTTON", "playerNNemesisSet"],
           "label": "NEM", "left": "98%", "top": "95%", "width": "2%", "height": "5%"
         }
       ]

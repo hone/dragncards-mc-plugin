@@ -224,6 +224,26 @@
         ["LOG", "Set villain hit points to {{$HIT_POINTS}}."],
         ["SET", "/villainHitPoints", "$HIT_POINTS"]
       ]
+    },
+    "TOGGLE_TABLE_BUTTON": {
+      "args": ["$SIDE_GROUP_ID"],
+      "code": [
+        ["COND",
+          ["AND",
+            "$GAME.layoutVariants.sideGroupVisible",
+            ["EQUAL", "$GAME.layoutVariants.sideGroupId", "$SIDE_GROUP_ID"]
+          ],
+          [
+            ["SET", "/layoutVariants/sideGroupVisible", false],
+            ["SET", "/layoutVariants/sideGroupId", ""]
+          ],
+          true,
+          [
+            ["SET", "/layoutVariants/sideGroupVisible", true],
+            ["SET", "/layoutVariants/sideGroupId", "$SIDE_GROUP_ID"]
+          ]
+        ]
+      ]
     }
   }
 }
