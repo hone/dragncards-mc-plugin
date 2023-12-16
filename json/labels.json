@@ -300,6 +300,9 @@
     "handSize": {
       "English": "Hand Size"
     },
+    "zeroTokens": {
+      "English": "Remove All Tokens"
+    },
     "name": {
       "English": "name"
     },
