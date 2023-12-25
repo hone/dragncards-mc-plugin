@@ -115,8 +115,7 @@ pub async fn execute(args: DecksArgs) {
         .into_iter()
         .filter(|card| card.official)
         .collect();
-    let marvelcdb_cards: Vec<marvelcdb::Card> =
-        marvelcdb_handler.await.unwrap().unwrap();
+    let marvelcdb_cards: Vec<marvelcdb::Card> = marvelcdb_handler.await.unwrap().unwrap();
 
     let pack_map: HashMap<&Uuid, &Pack> = packs.iter().map(|pack| (&pack.id, pack)).collect();
     let sets: Vec<Set> = sets_handler
@@ -630,7 +629,8 @@ fn process_sets_by_packs(
                                         .stage
                                         .as_ref()
                                         .map(|stage| stage == "1A")
-                                        .unwrap_or(false) || set.id == TOWER_DEFENSE_SET_ID
+                                        .unwrap_or(false)
+                                        || set.id == TOWER_DEFENSE_SET_ID
                                     {
                                         "sharedMainScheme"
                                     } else {
