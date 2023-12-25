@@ -390,6 +390,9 @@
     "toggleLoadMode": {
       "English": "Toggle Loading Standard/Expert Sets"
     },
+    "toggleLoadRecommends": {
+      "English": "Toggle Loading Recommended Modular Sets"
+    },
     "toggleLoadRequired": {
       "English": "Toggle Loading Required Modular Sets"
     },

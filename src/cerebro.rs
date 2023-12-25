@@ -294,6 +294,7 @@ pub struct Set {
     pub modulars: Option<u32>,
     pub pack_id: Uuid,
     pub requires: Option<Vec<Uuid>>,
+    pub recommends: Option<Vec<Uuid>>,
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq, Hash)]

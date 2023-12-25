@@ -163,7 +163,10 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
 
 fn card_back(card: &CerebroCard) -> CardBack {
     // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
-    if !card.id.contains(WAKANDA_FOREVER_ID_BASE) && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE) && card.id.parse::<u32>().is_err() {
+    if !card.id.contains(WAKANDA_FOREVER_ID_BASE)
+        && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
+        && card.id.parse::<u32>().is_err()
+    {
         return CardBack::MultiSided;
     }
 

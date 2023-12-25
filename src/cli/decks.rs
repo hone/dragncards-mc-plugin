@@ -205,6 +205,8 @@ pub async fn execute(args: DecksArgs) {
 
     // add required modulars to villain scenarios
     process_required_modular_sets(&mut pre_built_decks, &sets);
+    // add recommends modulars to villain scenarios
+    process_recommends_modular_sets(&mut pre_built_decks, &sets);
 
     let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
 
@@ -700,6 +702,9 @@ fn process_sets_by_packs(
                 if set.requires.is_some() {
                     post_load_action_list_vector.push(json!(["LOAD_REQUIRED", set.name]));
                 }
+                if set.recommends.is_some() {
+                    post_load_action_list_vector.push(json!(["LOAD_RECOMMENDS", set.name]));
+                }
                 post_load_action_list_vector.push(json!(["ACTION_LIST", "loadMode"]));
 
                 Some(ActionList::List(post_load_action_list_vector))
@@ -773,6 +778,36 @@ fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &V
                             card.load_group_id = String::from("sharedOutOfPlay");
                         }
                     }
+
+                    cards
+                })
+                .flatten()
+                .collect();
+
+            pre_built_decks.insert(
+                label.clone(),
+                PreBuiltDeck {
+                    label,
+                    cards,
+                    post_load_action_list: None,
+                },
+            );
+        }
+    }
+}
+
+fn process_recommends_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &Vec<Set>) {
+    let villain_scenarios_recommends = sets
+        .iter()
+        .filter(|set| set.r#type == SetType::Villain && set.recommends.is_some());
+    for scenario in villain_scenarios_recommends {
+        if let Some(recommmends) = scenario.recommends.as_ref() {
+            let label = format!("{} (recommends)", scenario.name);
+            let cards: Vec<crate::dragncards::decks::Card> = recommmends
+                .iter()
+                .map(|require| {
+                    let set = sets.iter().find(|set| &set.id == require).unwrap();
+                    let cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
 
                     cards
                 })

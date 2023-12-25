@@ -10,6 +10,10 @@
         "actionList": "toggleLoadMode"
       },
       {
+        "label": "id:toggleLoadRecommends",
+        "actionList": "toggleLoadRecommends"
+      },
+      {
         "label": "id:toggleLoadRequired",
         "actionList": "toggleLoadRequired"
       }

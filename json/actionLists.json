@@ -151,6 +151,11 @@
       ["LOG", "Loading Standard/Expert Sets is set to ", "$LOAD_MODE"],
       ["SET", "/loadMode", "$LOAD_MODE"]
     ],
+    "toggleLoadRecommends": [
+      ["VAR", "$LOAD_RECOMMENDS", ["NOT", "$GAME.loadRecommends"]],
+      ["LOG", "Loading Recommended Modular Sets is set to ", "$LOAD_RECOMMENDS"],
+      ["SET", "/loadRecommends", "$LOAD_RECOMMENDS"]
+    ],
     "toggleLoadRequired": [
       ["VAR", "$LOAD_REQUIRED", ["NOT", "$GAME.loadRequired"]],
       ["LOG", "Loading Required Modular Sets is set to ", "$LOAD_REQUIRED"],

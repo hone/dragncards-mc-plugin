@@ -3,6 +3,7 @@
     "expertSet": {"type": "string", "default": "Expert", "label": "expertSet"},
     "loadMode": {"type": "boolean", "default": true, "label": "loadMode"},
     "loadRequired": {"type": "boolean", "default": true, "label": "loadRequired"},
+    "loadRecommends": {"type": "boolean", "default": true, "label": "loadRecommends"},
     "mode": {"type": "string", "default": "standard", "label": "mode"},
     "standardSet": {"type": "string", "default": "Standard", "label": "standard"},
     "villainHitPoints": {"type": "integer", "default": 0, "label": "villainHitPoints"}
