@@ -153,16 +153,20 @@
       "args": ["$SCENARIO"],
       "code": ["COND",
         "$GAME.loadRecommends",
-        ["LOG", "Loading {{$SCENARIO}} recommends cards."],
-        ["LOAD_CARDS", "{{$SCENARIO}} (recommends)"]
+        [
+          ["LOG", "Loading {{$SCENARIO}} recommends cards."],
+          ["LOAD_CARDS", "{{$SCENARIO}} (recommends)"]
+        ]
       ]
     },
     "LOAD_REQUIRED": {
       "args": ["$SCENARIO"],
       "code": ["COND",
         "$GAME.loadRequired",
-        ["LOG", "Loading {{$SCENARIO}} required cards."],
-        ["LOAD_CARDS", "{{$SCENARIO}} (required)"]
+        [
+          ["LOG", "Loading {{$SCENARIO}} required cards."],
+          ["LOAD_CARDS", "{{$SCENARIO}} (required)"]
+        ]
       ]
     },
     "READY_CARD": {
