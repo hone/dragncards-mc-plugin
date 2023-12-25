@@ -138,29 +138,6 @@
       ["INCREASE_VAL", "/roundNumber", 1],
       ["LOG", "Player Phase - Begins"]
     ],
-    "toggleMode": [
-      ["VAR", "$MODE", "standard"],
-      ["COND",
-        ["EQUAL", "$GAME.mode", "standard"],
-        ["UPDATE_VAR", "$MODE", "expert"]
-      ],
-      ["SET_MODE", "$MODE"]
-    ],
-    "toggleLoadMode": [
-      ["VAR", "$LOAD_MODE", ["NOT", "$GAME.loadMode"]],
-      ["LOG", "Loading Standard/Expert Sets is set to ", "$LOAD_MODE"],
-      ["SET", "/loadMode", "$LOAD_MODE"]
-    ],
-    "toggleLoadRecommends": [
-      ["VAR", "$LOAD_RECOMMENDS", ["NOT", "$GAME.loadRecommends"]],
-      ["LOG", "Loading Recommended Modular Sets is set to ", "$LOAD_RECOMMENDS"],
-      ["SET", "/loadRecommends", "$LOAD_RECOMMENDS"]
-    ],
-    "toggleLoadRequired": [
-      ["VAR", "$LOAD_REQUIRED", ["NOT", "$GAME.loadRequired"]],
-      ["LOG", "Loading Required Modular Sets is set to ", "$LOAD_REQUIRED"],
-      ["SET", "/loadRequired", "$LOAD_REQUIRED"]
-    ],
     "multipleDoubleSidedVillains": [
       ["SHUFFLE_GROUP", "sharedVillainDeck"],
       ["COND",

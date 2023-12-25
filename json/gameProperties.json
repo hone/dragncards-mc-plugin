@@ -1,11 +1,38 @@
 {
   "gameProperties": {
-    "expertSet": {"type": "string", "default": "Expert", "label": "expertSet"},
-    "loadMode": {"type": "boolean", "default": true, "label": "loadMode"},
-    "loadRequired": {"type": "boolean", "default": true, "label": "loadRequired"},
-    "loadRecommends": {"type": "boolean", "default": true, "label": "loadRecommends"},
-    "mode": {"type": "string", "default": "standard", "label": "mode"},
-    "standardSet": {"type": "string", "default": "Standard", "label": "standard"},
-    "villainHitPoints": {"type": "integer", "default": 0, "label": "villainHitPoints"}
+    "loadMode": {"type": "boolean", "default": true, "label": "id:loadMode", "showInSettings": true},
+    "loadRequired": {"type": "boolean", "default": true, "label": "id:loadRequired", "showInSettings": true},
+    "loadRecommends": {"type": "boolean", "default": true, "label": "id:loadRecommends", "showInSettings": true},
+    "mode": {
+      "type": "option",
+      "default": "standard",
+      "label": "id:mode",
+      "showInSettings": true,
+      "options": [
+        {"id": "standard", "label": "id:standard"},
+        {"id": "expert", "label": "id:expert"}
+      ]
+    },
+    "standardSet": {
+      "type": "option",
+      "default": "Standard",
+      "label": "id:standardSet",
+      "showInSettings": true,
+      "options": [
+        {"id": "Standard", "label": "id:standard"},
+        {"id": "Standard II", "label": "id:standardII"}
+      ]
+    },
+    "expertSet": {
+     "type": "option",
+     "default": "Expert",
+     "label": "id:expertSet",
+     "showInSettings": true,
+     "options": [
+       {"id": "Expert", "label": "id:expert"},
+       {"id": "Expert II", "label": "id:expertII"}
+     ]
+    },
+    "villainHitPoints": {"type": "integer", "default": 0, "label": "id:villainHitPoints"}
   }
 }

@@ -1,22 +1,6 @@
 {
   "pluginMenu": {
     "options": [
-      {
-        "label": "id:toggleMode",
-        "actionList": "toggleMode"
-      },
-      {
-        "label": "id:toggleLoadMode",
-        "actionList": "toggleLoadMode"
-      },
-      {
-        "label": "id:toggleLoadRecommends",
-        "actionList": "toggleLoadRecommends"
-      },
-      {
-        "label": "id:toggleLoadRequired",
-        "actionList": "toggleLoadRequired"
-      }
     ]
   }
 }

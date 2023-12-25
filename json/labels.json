@@ -384,18 +384,6 @@
     "labelMarkAsIncomplete": {
       "English": "Incomplete"
     },
-    "toggleMode": {
-      "English": "Toggle Standard/Expert Mode"
-    },
-    "toggleLoadMode": {
-      "English": "Toggle Loading Standard/Expert Sets"
-    },
-    "toggleLoadRecommends": {
-      "English": "Toggle Loading Recommended Modular Sets"
-    },
-    "toggleLoadRequired": {
-      "English": "Toggle Loading Required Modular Sets"
-    },
     "playerEndPhase": {
       "English": "Player End Phase / Start Villain Phase"
     },
@@ -411,14 +399,32 @@
     "loadMode": {
       "English": "Automatically Load Standard/Expert Sets"
     },
+    "loadRecommends": {
+      "English": "Automatically Load Recommended Modular Sets"
+    },
     "loadRequired": {
       "English": "Automatically Load Required Modular Sets"
+    },
+    "mode": {
+      "English": "Mode"
     },
     "expertSet": {
       "English": "Expert Set"
     },
     "standardSet": {
       "English": "Standard Set"
+    },
+    "standard": {
+      "English": "Standard"
+    },
+    "standardII": {
+      "English": "Standard II"
+    },
+    "expert": {
+      "English": "Expert"
+    },
+    "expertII": {
+      "English": "Expert II"
     }
   }
 }
