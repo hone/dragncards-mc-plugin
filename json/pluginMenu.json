@@ -2,12 +2,12 @@
   "pluginMenu": {
     "options": [
       {
-        "label": "id:setStandardMode",
-        "actionList": ["SET_MODE", "standard"]
+        "label": "id:toggleMode",
+        "actionList": "toggleMode"
       },
       {
-        "label": "id:setExpertMode",
-        "actionList": ["SET_MODE", "expert"]
+        "label": "id:toggleLoadMode",
+        "actionList": "toggleLoadMode"
       },
       {
         "label": "id:toggleLoadRequired",

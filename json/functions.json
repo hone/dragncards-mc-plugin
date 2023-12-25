@@ -136,6 +136,19 @@
         ]
       ]
     },
+    "LOAD_MODE_CARDS": {
+      "args": [{"$STANDARD": "Standard"}, {"$EXPERT": null}],
+      "code": [
+        [
+          ["LOG", "Loading Standard Cards: {{$STANDARD}}"],
+          ["LOAD_CARDS", "$STANDARD"],
+          ["COND",
+            ["DEFINED", "$EXPERT"],
+            ["LOAD_CARDS", "$EXPERT"]
+          ]
+        ]
+      ]
+    },
     "LOAD_REQUIRED": {
       "args": ["$SCENARIO"],
       "code": ["COND",

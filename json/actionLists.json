@@ -34,6 +34,19 @@
         ]
       ]
     ],
+    "loadMode": [
+      ["COND",
+        "$GAME.loadMode",
+        [
+          ["VAR", "$EXPERT_SET", null],
+          ["COND",
+            ["EQUAL", "$GAME.mode", "expert"],
+            ["UPDATE_VAR", "$EXPERT_SET", "$GAME.expertSet"]
+          ],
+          ["LOAD_MODE_CARDS", "$GAME.standardSet", "$EXPERT_SET"]
+        ]
+      ]
+    ],
     "shuffleIntoDeck": [
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
       ["VAR", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
@@ -124,6 +137,19 @@
       ["SET", "/stepId", "1.1"],
       ["INCREASE_VAL", "/roundNumber", 1],
       ["LOG", "Player Phase - Begins"]
+    ],
+    "toggleMode": [
+      ["VAR", "$MODE", "standard"],
+      ["COND",
+        ["EQUAL", "$GAME.mode", "standard"],
+        ["UPDATE_VAR", "$MODE", "expert"]
+      ],
+      ["SET_MODE", "$MODE"]
+    ],
+    "toggleLoadMode": [
+      ["VAR", "$LOAD_MODE", ["NOT", "$GAME.loadMode"]],
+      ["LOG", "Loading Standard/Expert Sets is set to ", "$LOAD_MODE"],
+      ["SET", "/loadMode", "$LOAD_MODE"]
     ],
     "toggleLoadRequired": [
       ["VAR", "$LOAD_REQUIRED", ["NOT", "$GAME.loadRequired"]],

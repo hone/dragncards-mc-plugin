@@ -1,7 +1,10 @@
 {
   "gameProperties": {
-    "mode": {"type": "string", "default": "standard", "label": "mode"},
+    "expertSet": {"type": "string", "default": "Expert", "label": "expertSet"},
+    "loadMode": {"type": "boolean", "default": true, "label": "loadMode"},
     "loadRequired": {"type": "boolean", "default": true, "label": "loadRequired"},
+    "mode": {"type": "string", "default": "standard", "label": "mode"},
+    "standardSet": {"type": "string", "default": "Standard", "label": "standard"},
     "villainHitPoints": {"type": "integer", "default": 0, "label": "villainHitPoints"}
   }
 }

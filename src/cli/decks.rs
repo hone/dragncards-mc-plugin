@@ -694,17 +694,18 @@ fn process_sets_by_packs(
                 set.name.clone()
             };
 
-            let mut post_load_action_list =
-                if set.r#type == SetType::Villain {
-                    let mut post_load_action_list_vector = vec![json!(["SET", "/layoutVariants/largeMainScheme", false])];
-                    if set.requires.is_some() {
-                        post_load_action_list_vector.push(json!(["LOAD_REQUIRED", set.name]))
-                    }
+            let mut post_load_action_list = if set.r#type == SetType::Villain {
+                let mut post_load_action_list_vector =
+                    vec![json!(["SET", "/layoutVariants/largeMainScheme", false])];
+                if set.requires.is_some() {
+                    post_load_action_list_vector.push(json!(["LOAD_REQUIRED", set.name]));
+                }
+                post_load_action_list_vector.push(json!(["ACTION_LIST", "loadMode"]));
 
-                    Some(ActionList::List(post_load_action_list_vector))
-                } else {
-                    None
-                };
+                Some(ActionList::List(post_load_action_list_vector))
+            } else {
+                None
+            };
             let mut fixtures_path =
                 std::path::Path::new("fixtures/post_load_action_list").join(set.id.to_string());
             fixtures_path.set_extension("json");

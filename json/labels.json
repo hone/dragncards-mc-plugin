@@ -384,11 +384,11 @@
     "labelMarkAsIncomplete": {
       "English": "Incomplete"
     },
-    "setStandardMode": {
-      "English": "Set Standard Mode"
+    "toggleMode": {
+      "English": "Toggle Standard/Expert Mode"
     },
-    "setExpertMode": {
-      "English": "Set Expert Mode"
+    "toggleLoadMode": {
+      "English": "Toggle Loading Standard/Expert Sets"
     },
     "toggleLoadRequired": {
       "English": "Toggle Loading Required Modular Sets"
@@ -405,8 +405,17 @@
     "shadowsOfThePast": {
       "English": "Shadows of the Past"
     },
+    "loadMode": {
+      "English": "Automatically Load Standard/Expert Sets"
+    },
     "loadRequired": {
       "English": "Automatically Load Required Modular Sets"
+    },
+    "expertSet": {
+      "English": "Expert Set"
+    },
+    "standardSet": {
+      "English": "Standard Set"
     }
   }
 }
