@@ -1,5 +1,7 @@
 use crate::{
-    cerebro::{Card as CerebroCard, CardType, Classification, Pack, Printing, ScalingNumber},
+    cerebro::{
+        Acceleration, Card as CerebroCard, CardType, Classification, Pack, Printing, ScalingNumber,
+    },
     marvelcdb,
 };
 use serde::Serialize;
@@ -28,6 +30,8 @@ pub struct Card {
     pub stage: Option<String>,
     pub starting_threat_fixed: Option<i64>,
     pub starting_threat_scaling: Option<i64>,
+    pub acceleration_fixed: Option<i64>,
+    pub acceleration_scaling: Option<i64>,
     pub toughness: bool,
     pub permanent: bool,
     pub nemesis_minion: bool,
@@ -92,6 +96,8 @@ impl Card {
                     nemesis_minion,
                     permanent,
                     victory: card.victory().map(|v| v as i64),
+                    acceleration_fixed: None,
+                    acceleration_scaling: None,
                 };
 
                 if let Some(health) = card.health.as_ref() {
@@ -115,6 +121,18 @@ impl Card {
                 if let Some(hinder) = card.hinder() {
                     let existing = new_card.starting_threat_scaling.unwrap_or(0);
                     new_card.starting_threat_scaling = Some(existing + hinder as i64);
+                }
+
+                if let Some(acceleration) = card.acceleration.as_ref() {
+                    match acceleration {
+                        Acceleration::Fixed(i) => new_card.acceleration_fixed = Some(*i as i64),
+                        Acceleration::Scaling(i) => new_card.acceleration_scaling = Some(*i as i64),
+                        Acceleration::FixedStar(i) => new_card.acceleration_fixed = Some(*i as i64),
+                        Acceleration::ScalingStar(i) => {
+                            new_card.acceleration_scaling = Some(*i as i64)
+                        }
+                        _ => (),
+                    }
                 }
 
                 new_card

@@ -57,6 +57,7 @@ pub struct Card {
     pub hand: Option<String>,
     pub health: Option<ScalingNumber>,
     pub starting_threat: Option<ScalingNumber>,
+    pub acceleration: Option<Acceleration>,
 }
 
 impl Card {
@@ -86,7 +87,7 @@ impl Card {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum ScalingNumber {
     Fixed(u32),
     Scaling(u32),
@@ -99,7 +100,7 @@ impl<'de> Visitor<'de> for ScalingNumberVisitor {
     type Value = ScalingNumber;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("an integer or integer{i} for player scaling")
+        formatter.write_str("an integer, integer{i} for player scaling, —, or ∞")
     }
 
     fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
@@ -107,14 +108,15 @@ impl<'de> Visitor<'de> for ScalingNumberVisitor {
         E: de::Error,
     {
         lazy_static! {
-            static ref SCALING_NUMBER_RE: Regex = Regex::new(r"(\d+)(\{i\})?").unwrap();
+            static ref SCALING_NUMBER_RE: Regex =
+                Regex::new(r"(?<number>\d+)(?<scaling>\{i\})?").unwrap();
         }
 
         if let Some(captures) = SCALING_NUMBER_RE.captures(value) {
-            let number = captures[1]
+            let number = captures["number"]
                 .parse::<u32>()
                 .map_err(|_| E::custom(format!("Need an integer: {value}")))?;
-            if captures.get(2).is_some() {
+            if captures.name("scaling").is_some() {
                 Ok(ScalingNumber::Scaling(number))
             } else {
                 Ok(ScalingNumber::Fixed(number))
@@ -137,6 +139,76 @@ impl<'de> Deserialize<'de> for ScalingNumber {
         D: Deserializer<'de>,
     {
         deserializer.deserialize_str(ScalingNumberVisitor)
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub enum Acceleration {
+    Fixed(u32),
+    Scaling(u32),
+    FixedX,
+    ScalingX,
+    ZeroStar, // This isn't a FixedStar b/c there's no leading '+'
+    FixedStar(u32),
+    ScalingStar(u32),
+    None,
+}
+
+struct AccelerationVisitor;
+
+impl<'de> Visitor<'de> for AccelerationVisitor {
+    type Value = Acceleration;
+
+    fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        formatter
+            .write_str("an integer, X, integer{i} for player scaling, or +X{i} for player scaling")
+    }
+
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        lazy_static! {
+            static ref ACCELERATION_RE: Regex =
+                Regex::new(r"[+](?<digit>\d+|X)(?<scaling>\{i\})?(?<star> \{s\})?").unwrap();
+        }
+
+        if let Some(captures) = ACCELERATION_RE.captures(value) {
+            if let Ok(number) = captures["digit"].parse::<u32>() {
+                if captures.name("scaling").is_some() && captures.name("star").is_none() {
+                    Ok(Acceleration::Scaling(number))
+                } else if captures.name("scaling").is_some() && captures.name("star").is_some() {
+                    Ok(Acceleration::ScalingStar(number))
+                } else if captures.name("scaling").is_none() && captures.name("star").is_some() {
+                    Ok(Acceleration::FixedStar(number))
+                } else {
+                    Ok(Acceleration::Fixed(number))
+                }
+            } else {
+                if captures.name("scaling").is_some() {
+                    Ok(Acceleration::ScalingX)
+                } else {
+                    Ok(Acceleration::FixedX)
+                }
+            }
+        } else if ["∞", "—", "–", "-"].contains(&value) {
+            Ok(Acceleration::None)
+        } else if value == "0 {s}" {
+            Ok(Acceleration::ZeroStar)
+        } else {
+            Err(E::custom(format!(
+                "Not an integer, X, integer{{i}}, or +X{{i}} format: '{value}'"
+            )))
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for Acceleration {
+    fn deserialize<D>(deserializer: D) -> Result<Acceleration, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_str(AccelerationVisitor)
     }
 }
 
@@ -375,6 +447,35 @@ mod tests {
         assert_eq!(card.hinder(), Some(1));
         let card_no_hinder = card_by_id("01026");
         assert!(card_no_hinder.hinder().is_none())
+    }
+
+    #[test]
+    fn it_parses_acceleration() {
+        let card_fixed = card_by_id("11010B");
+        assert_eq!(card_fixed.acceleration, Some(Acceleration::Fixed(1)));
+        let card_scaling = card_by_id("01097B");
+        assert_eq!(card_scaling.acceleration, Some(Acceleration::Scaling(1)));
+
+        let card_scaling_x = card_by_id("16092B");
+        assert_eq!(card_scaling_x.acceleration, Some(Acceleration::ScalingX));
+        let card_fixed_x = card_by_id("02018B");
+        assert_eq!(card_fixed_x.acceleration, Some(Acceleration::FixedX));
+
+        let card_zero_star = card_by_id("40166B");
+        assert_eq!(card_zero_star.acceleration, Some(Acceleration::ZeroStar));
+        let card_fixed_star = card_by_id("07001B");
+        assert_eq!(
+            card_fixed_star.acceleration,
+            Some(Acceleration::FixedStar(1))
+        );
+        let card_scaling_star = card_by_id("24006B");
+        assert_eq!(
+            card_scaling_star.acceleration,
+            Some(Acceleration::ScalingStar(1))
+        );
+
+        let card_none = card_by_id("40139B");
+        assert_eq!(card_none.acceleration, Some(Acceleration::None));
     }
 
     #[test]
