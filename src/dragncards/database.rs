@@ -1,6 +1,7 @@
 use crate::{
     cerebro::{
-        Acceleration, Card as CerebroCard, CardType, Classification, Pack, Printing, ScalingNumber,
+        Acceleration, Card as CerebroCard, CardType, Classification, Icon, Pack, Printing,
+        ScalingNumber,
     },
     marvelcdb,
 };
@@ -32,6 +33,10 @@ pub struct Card {
     pub starting_threat_scaling: Option<i64>,
     pub acceleration_fixed: Option<i64>,
     pub acceleration_scaling: Option<i64>,
+    pub acceleration: Option<i64>,
+    pub amplify: Option<i64>,
+    pub crisis: Option<i64>,
+    pub hazard: Option<i64>,
     pub toughness: bool,
     pub permanent: bool,
     pub nemesis_minion: bool,
@@ -98,6 +103,26 @@ impl Card {
                     victory: card.victory().map(|v| v as i64),
                     acceleration_fixed: None,
                     acceleration_scaling: None,
+                    acceleration: card
+                        .icons()
+                        .map(|icons| {
+                            icons
+                                .get(&Icon::Acceleration)
+                                .map(|quantity| *quantity as i64)
+                        })
+                        .flatten(),
+                    amplify: card
+                        .icons()
+                        .map(|icons| icons.get(&Icon::Amplify).map(|quantity| *quantity as i64))
+                        .flatten(),
+                    crisis: card
+                        .icons()
+                        .map(|icons| icons.get(&Icon::Crisis).map(|quantity| *quantity as i64))
+                        .flatten(),
+                    hazard: card
+                        .icons()
+                        .map(|icons| icons.get(&Icon::Hazard).map(|quantity| *quantity as i64))
+                        .flatten(),
                 };
 
                 if let Some(health) = card.health.as_ref() {

@@ -2,6 +2,10 @@
   "faceProperties": {
     "accelerationFixed": {"type": "integer", "default": null},
     "accelerationScaling": {"type": "integer", "default": null},
+    "acceleration": {"type": "integer", "default": null},
+    "amplify": {"type": "integer", "default": null},
+    "crisis": {"type": "integer", "default": null},
+    "hazard": {"type": "integer", "default": null},
     "handSize" : {"type": "integer", "default": null},
     "hitPointsFixed" : {"type": "integer", "default": null},
     "hitPointsScaling" : {"type": "integer", "default": null},

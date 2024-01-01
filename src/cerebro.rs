@@ -4,7 +4,7 @@ use serde::{
     de::{self, Visitor},
     Deserialize, Deserializer, Serialize,
 };
-use std::fmt;
+use std::{collections::HashMap, fmt};
 use uuid::Uuid;
 
 const PACKS_API: &str = "https://cerebro-beta-bot.herokuapp.com/packs";
@@ -61,6 +61,36 @@ pub struct Card {
 }
 
 impl Card {
+    pub fn icons(&self) -> Option<HashMap<Icon, usize>> {
+        if let Some(rules) = self.rules.as_ref() {
+            let mut icons = HashMap::new();
+            let acceleration_icons = rules.matches("{a}").collect::<Vec<_>>().len();
+            if acceleration_icons > 0 {
+                icons.insert(Icon::Acceleration, acceleration_icons);
+            }
+            let amplify_icons = rules.matches("{y}").collect::<Vec<_>>().len();
+            if amplify_icons > 0 {
+                icons.insert(Icon::Amplify, amplify_icons);
+            }
+            let crisis_icons = rules.matches("{c}").collect::<Vec<_>>().len();
+            if crisis_icons > 0 {
+                icons.insert(Icon::Crisis, crisis_icons);
+            }
+            let hazard_icons = rules.matches("{h}").collect::<Vec<_>>().len();
+            if hazard_icons > 0 {
+                icons.insert(Icon::Hazard, hazard_icons);
+            }
+
+            if icons.len() > 0 {
+                Some(icons)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+
     pub fn hinder(&self) -> Option<u32> {
         if let Some(rules) = self.rules.as_ref() {
             lazy_static! {
@@ -85,6 +115,14 @@ impl Card {
         }
         None
     }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum Icon {
+    Acceleration,
+    Amplify,
+    Crisis,
+    Hazard,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -486,6 +524,57 @@ mod tests {
         assert_eq!(card_negative_victory.victory(), Some(-1));
         let card_no_victory = card_by_id("01026");
         assert!(card_no_victory.victory().is_none());
+    }
+
+    #[test]
+    fn it_parses_icons() {
+        let card = card_by_id("27088B");
+        assert_eq!(card.icons(), None);
+
+        let accelerate = card_by_id("16112");
+        assert_eq!(
+            accelerate
+                .icons()
+                .map(|icons| icons.get(&Icon::Acceleration).map(|quantity| *quantity))
+                .flatten(),
+            Some(2 as usize)
+        );
+
+        let amplify = card_by_id("16069");
+        assert_eq!(
+            amplify
+                .icons()
+                .map(|icons| icons.get(&Icon::Amplify).map(|quantity| *quantity))
+                .flatten(),
+            Some(1 as usize)
+        );
+
+        let crisis = card_by_id("16066");
+        assert_eq!(
+            crisis
+                .icons()
+                .map(|icons| icons.get(&Icon::Crisis).map(|quantity| *quantity))
+                .flatten(),
+            Some(1 as usize)
+        );
+
+        let hazard = card_by_id("16068");
+        assert_eq!(
+            hazard
+                .icons()
+                .map(|icons| icons.get(&Icon::Hazard).map(|quantity| *quantity))
+                .flatten(),
+            Some(1 as usize)
+        );
+
+        let multi = card_by_id("27155");
+        if let Some(icons) = multi.icons() {
+            assert_eq!(icons.get(&Icon::Acceleration), Some(1 as usize).as_ref());
+            assert_eq!(icons.get(&Icon::Crisis), Some(1 as usize).as_ref());
+            assert_eq!(icons.get(&Icon::Hazard), Some(1 as usize).as_ref());
+        } else {
+            assert!(multi.icons().is_some());
+        }
     }
 
     #[test]

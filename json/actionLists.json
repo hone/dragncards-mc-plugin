@@ -121,7 +121,18 @@
       ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
       ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
       ["VAR", "$SCHEME_ACCELERATION", ["ADD", "$CARD.sides.B.accelerationFixed", ["MULTIPLY", "$CARD.sides.B.accelerationScaling", "$GAME.numPlayers"]]],
-      ["VAR", "$THREAT_INCREASE", ["ADD", "$SCHEME_ACCELERATION", "$CARD.tokens.acceleration"]],
+      ["VAR", "$ACCELERATION_ICONS", 0],
+      ["FOR_EACH_VAL", "$CARD",
+        ["FILTER_CARDS",
+          "$CARD",
+          ["AND",
+            "$CARD.inPlay",
+            ["GREATER_THAN", "$CARD.currentFace.acceleration", 0]
+          ]
+        ],
+        ["UPDATE_VAR", "$ACCELERATION_ICONS", ["ADD", "$ACCELERATION_ICONS", "$CARD.currentFace.acceleration"]]
+      ],
+      ["VAR", "$THREAT_INCREASE", ["ADD", ["ADD", "$SCHEME_ACCELERATION", "$CARD.tokens.acceleration"], "$ACCELERATION_ICONS"]],
       ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/threat", "$THREAT_INCREASE"],
       ["LOG", "Villain Phase - Begins"],
       ["LOG", "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."],
