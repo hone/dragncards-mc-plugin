@@ -2,6 +2,7 @@
 {
     "imageUrlPrefix": {
         "Default": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/official/",
-        "English": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/official/"
+        "English": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/official/",
+        "Italian": "https://s3.console.aws.amazon.com/s3/buckets/marvel-ita?region=eu-west-3&tab=objects"
     }
 }
