@@ -321,6 +321,9 @@
     "flip": {
       "English": "Flip Card"
     },
+    "flipButton": {
+      "English": "Flip"
+    },
     "setSideA": {
       "English": "Set Side A"
     },
@@ -372,8 +375,20 @@
     "dealThirdFaceup": {
       "English": "Deal Third Encounter Card Faceup"
     },
+    "dealEncounterFacedownTouch": {
+      "English": "Deal From Enc. Deck"
+    },
+    "dealSecondFacedownTouch": {
+      "English": "Deal From Enc. Deck 2"
+    },
+    "dealThirdFacedownTouch": {
+      "English": "Deal From Enc. Deck 3"
+    },
     "mulliganDrawHand": {
       "English": "Mulligan / Draw Up to Hand Size"
+    },
+    "drawHand": {
+      "English": "Draw Up to Hand Size"
     },
     "labelMarkAsVictory": {
       "English": "Victory"
@@ -387,8 +402,14 @@
     "playerEndPhase": {
       "English": "Player End Phase / Start Villain Phase"
     },
+    "playerEndPhaseTouch": {
+      "English": "End Player Phase"
+    },
     "villainEndPhase": {
       "English": "Villain End Phase / Start Player Phase"
+    },
+    "villainEndPhaseTouch": {
+      "English": "End Villain Phase"
     },
     "villainEncounterPhase": {
       "English": "Villain Encounter Phase"
@@ -425,6 +446,24 @@
     },
     "expertII": {
       "English": "Expert II"
+    },
+    "exhaust": {
+      "English": "Exhaust"
+    },
+    "damage": {
+      "English": "Damage"
+    },
+    "thwart": {
+      "English": "Thwart"
+    },
+    "shuffle": {
+      "English": "Shuffle"
+    },
+    "discardRandomButton": {
+      "English": "Discard Random"
+    },
+    "encounterPhase": {
+      "English": "Encounter Phase"
     }
   }
 }

@@ -69,12 +69,6 @@
               "actionList": "flipCard"
             },
             {
-              "id": "ready",
-              "label": "id:ready",
-              "actionType": "card",
-              "actionList": ["READY_CARD", "$ACTIVE_CARD_ID"]
-            },
-            {
               "id": "setSideA",
               "label": "id:setSideA",
               "actionType": "card",
@@ -105,45 +99,27 @@
               "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"]
             },
             {
-                "dragnButton": "targetCard"
+              "dragnButton": "targetCard"
             }
         ],
         [
             {
               "id": "dealEncounterFacedown",
-              "label": "id:dealEncounterFacedown",
+              "label": "id:dealEncounterFacedownTouch",
               "actionType": "game",
               "actionList": "dealEncounterFacedown"
             },
             {
-              "id": "dealEncounterFaceup",
-              "label": "id:dealEncounterFaceup",
-              "actionType": "game",
-              "actionList": "dealEncounterFaceup"
-            },
-            {
               "id": "dealSecondFacedown",
-              "label": "id:dealSecondFacedown",
+              "label": "id:dealSecondFacedownTouch",
               "actionType": "game",
               "actionList": "dealSecondFacedown"
             },
             {
-              "id": "dealSecondFaceup",
-              "label": "id:dealSecondFaceup",
-              "actionType": "game",
-              "actionList": "dealSecondFaceup"
-            },
-            {
               "id": "dealThirdFacedown",
-              "label": "id:dealThirdFacedown",
+              "label": "id:dealThirdFacedownTouch",
               "actionType": "game",
               "actionList": "dealThirdFacedown"
-            },
-            {
-              "id": "dealThirdFaceup",
-              "label": "id:dealThirdFaceup",
-              "actionType": "game",
-              "actionList": "dealThirdFaceup"
             },
             {
               "id": "drawBoost",
@@ -159,7 +135,7 @@
             },
             {
               "id": "mulliganDrawHand",
-              "label": "id:mulliganDrawHand",
+              "label": "id:drawHand",
               "actionType": "game",
               "actionList": "mulliganDrawHand"
             },
@@ -171,7 +147,7 @@
             },
             {
               "id": "discardRandomCard",
-              "label": "id:discardRandom",
+              "label": "id:discardRandomButton",
               "actionType": "game",
               "actionList": "discardRandomCard"
             },
@@ -183,33 +159,33 @@
             },
             {
               "id": "playerEndPhase",
-              "label": "id:playerEndPhase",
+              "label": "id:playerEndPhaseTouch",
               "actionType": "game",
               "actionList": "playerEndPhase"
             },
             {
               "id": "villainEncounterPhase",
-              "label": "id:villainEncounterPhase",
+              "label": "id:encounterPhase",
               "actionType": "game",
               "actionList": "villainEncounterPhase"
             },
             {
               "id": "villainEndPhase",
-              "label": "id:villainEndPhase",
+              "label": "id:villainEndPhaseTouch",
               "actionType": "game",
               "actionList": "villainEndPhase"
-            },
-            {
-              "dragnButton": "clearTargets"
-            },
-            {
-              "dragnButton": "undo"
             },
             {
               "dragnButton": "nextStep"
             },
             {
+              "dragnButton": "undo"
+            },
+            {
               "dragnButton": "saveGame"
+            },
+            {
+              "dragnButton": "clearTargets"
             }
         ]
     ]
