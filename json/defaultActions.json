@@ -1,0 +1,82 @@
+{
+    "defaultActions": [
+        {
+          "actionList": [],
+          "label": "",
+          "condition": ["IN_STRING", "$ACTIVE_CARD.groupId", "Hand"]
+        },
+        {
+          "actionList": "shuffleIntoDeck",
+          "label": "id:shuffle",
+          "condition": ["EQUAL", "$ACTIVE_CARD.layoutType", "pile"]
+        },
+        {
+          "actionList": "flipCard",
+          "label": "id:flipButton",
+          "condition": ["EQUAL", "$ACTIVE_CARD.currentSide", "B"],
+          "position": "bottom"
+        },
+        {
+          "actionList": "flipCard",
+          "label": "id:flipButton",
+          "condition": ["EQUAL", "$ACTIVE_FACE.type", "Hero"],
+          "position": "bottom"
+        },
+        {
+          "actionList": [
+            ["LOG", "{{$ALIAS_N}} removed 1 threat token from {{$ACTIVE_FACE.name}}."],
+            ["DECREASE_VAL", "/cardById/$ACTIVE_CARD_ID/tokens/threat", 1]
+          ],
+          "label": "id:thwart",
+          "condition": ["GREATER_THAN", "$ACTIVE_TOKENS.threat", 0]
+        },
+        {
+          "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"],
+          "label": "id:discard",
+          "condition": ["AND", ["IN_STRING", "$ACTIVE_FACE.type", "Scheme"], ["EQUAL", "$ACTIVE_TOKENS.threat", 0]]
+        },
+        {
+          "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"],
+          "label": "id:discard",
+          "condition": ["AND", ["IN_STRING", "$ACTIVE_FACE.type", "Scheme"], ["EQUAL", "$ACTIVE_TOKENS.threat", 0]]
+        },
+        {
+          "actionList": [
+            ["LOG", "{{$ALIAS_N}} added 1 damage token to {{$ACTIVE_FACE.name}}."],
+            ["INCREASE_VAL", "/cardById/$ACTIVE_CARD_ID/tokens/damage", 1]
+          ],
+          "label": "id:damage",
+          "condition": ["AND", ["EQUAL", "$ACTIVE_FACE.type", "Minion"], ["OR", ["LESS_THAN", "$ACTIVE_TOKENS.damage", "$ACTIVE_FACE.hitPoints"], ["LESS_THAN", "$ACTIVE_TOKENS.damage", "$ACTIVE_FACE.hitPointsFixed"]]]
+        },
+        {
+          "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"],
+          "label": "id:discard",
+          "condition": ["AND", ["EQUAL", "$ACTIVE_FACE.type", "Minion"], ["OR", ["GREATER_EQUAL", "$ACTIVE_TOKENS.damage", "$ACTIVE_FACE.hitPoints"], ["GREATER_EQUAL", "$ACTIVE_TOKENS.damage", "$ACTIVE_FACE.hitPointsFixed"]]]
+        },
+        {
+          "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"],
+          "label": "id:discard",
+          "condition": ["EQUAL", "$ACTIVE_FACE.type", "Treachery"]
+        },
+        {
+          "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"],
+          "label": "id:discard",
+          "condition": ["EQUAL", "$ACTIVE_FACE.type", "Event"]
+        },
+        {
+          "actionList": [],
+          "label": "",
+          "condition": ["IN_STRING", "$ACTIVE_FACE.type", "Scheme"]
+        },
+        {
+          "actionList": "toggleExhaust",
+          "label": "id:exhaust",
+          "condition": ["EQUAL", "$ACTIVE_CARD.rotation", 0]
+        },
+        {
+          "actionList": "toggleExhaust",
+          "label": "id:ready",
+          "condition": ["EQUAL", "$ACTIVE_CARD.rotation", 90]
+        }
+    ]
+}
