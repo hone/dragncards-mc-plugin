@@ -642,5 +642,19 @@
     "Number": "44",
     "ReleaseStatus": null,
     "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "66dadf29-3214-4672-a305-69bc8660c00d",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Iceman",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "46",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
   }
 ]

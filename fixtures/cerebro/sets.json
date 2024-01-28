@@ -3752,5 +3752,47 @@
     "Recommends": [
       "f2317c8b-fe41-4abb-afd7-3baac5dd5c3c"
     ]
+  },
+  {
+    "Deleted": false,
+    "Id": "83107f01-5ffe-449e-9a10-37301266b28c",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Iceman",
+    "Type": "Hero Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "66dadf29-3214-4672-a305-69bc8660c00d",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "72ccb401-6bc3-4cdc-8c4b-ba98b671ef33",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Iceman Nemesis",
+    "Type": "Nemesis Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "66dadf29-3214-4672-a305-69bc8660c00d",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "31602d0c-f670-46a3-b063-5887258f0fe5",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Frostbite",
+    "Type": "Supplementary Set",
+    "CanSimulate": false,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "66dadf29-3214-4672-a305-69bc8660c00d",
+    "Requires": null,
+    "Recommends": null
   }
 ]
