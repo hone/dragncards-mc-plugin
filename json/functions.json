@@ -260,19 +260,39 @@
       "code": [
         ["COND",
           ["AND",
-            "$GAME.layoutVariants.sideGroupVisible",
-            ["EQUAL", "$GAME.layoutVariants.sideGroupId", "$SIDE_GROUP_ID"]
+            "$GAME.playerData.$PLAYER_N.layout.regions.sideGroup.visible",
+            ["EQUAL", "$GAME.playerData.$PLAYER_N.layout.regions.sideGroup.groupId", "$SIDE_GROUP_ID"]
           ],
           [
-            ["SET", "/layoutVariants/sideGroupVisible", false],
-            ["SET", "/layoutVariants/sideGroupId", ""]
+            ["LOG", "{{$PLAYER_N}} updated their layout to display {{$GAME.groupById.$SIDE_GROUP_ID.label}}."],
+            ["SET", "/playerData/$PLAYER_N/layout/regions/sideGroup/visible", false],
+            ["ADJUST_PLAYER_REGION_SIZES", 100]
           ],
           true,
           [
-            ["SET", "/layoutVariants/sideGroupVisible", true],
-            ["SET", "/layoutVariants/sideGroupId", "$SIDE_GROUP_ID"]
+            ["LOG", "{{$PLAYER_N}} updated their layout to hide {{$GAME.groupById.$SIDE_GROUP_ID.label}}."],
+            ["SET", "/playerData/$PLAYER_N/layout/regions/sideGroup/groupId", "$SIDE_GROUP_ID"],
+            ["SET", "/playerData/$PLAYER_N/layout/regions/sideGroup/visible", true],
+            ["ADJUST_PLAYER_REGION_SIZES", 90]
           ]
         ]
+      ]
+    },
+    "ADJUST_PLAYER_REGION_SIZES": {
+      "args": ["$TOTAL_WIDTH"],
+      "code": [
+        ["VAR", "$WIDTH", ["DIVIDE", "$TOTAL_WIDTH", "$GAME.numPlayers", 1]],
+        ["FOR_EACH_START_STOP_STEP", "$I", 1, ["ADD", "$GAME.numPlayers", 1], 1, [
+          ["VAR", "$LEFT", ["CALC", "{{$WIDTH}} * ({{$I}} - 1)"]],
+          ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Engaged/width", "{{$WIDTH}}%"],
+          ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play1/width", "{{$WIDTH}}%"],
+          ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play2/width", "{{$WIDTH}}%"],
+          ["COND", ["DEFINED", "$GAME.playerData.$PLAYER_N.layout.regions.player{{$I}}Play3"], ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play3/width", "{{$WIDTH}}%"]],
+          ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Engaged/left", "{{$LEFT}}%"],
+          ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play1/left", "{{$LEFT}}%"],
+          ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play2/left", "{{$LEFT}}%"],
+          ["COND", ["DEFINED", "$GAME.playerData.$PLAYER_N.layout.regions.player{{$I}}Play3"], ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play3/left", "{{$LEFT}}%"]]
+        ]]
       ]
     }
   }
