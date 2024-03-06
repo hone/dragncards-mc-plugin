@@ -294,6 +294,19 @@
           ["COND", ["DEFINED", "$GAME.playerData.$PLAYER_N.layout.regions.player{{$I}}Play3"], ["SET", "/playerData/$PLAYER_N/layout/regions/player{{$I}}Play3/left", "{{$LEFT}}%"]]
         ]]
       ]
+    },
+    "ALL_PLAYER_DECKS_LOADED": {
+      "args": [],
+      "code": [
+        ["VAR", "$ALL_PLAYER_DECKS_LOADED", true],
+        ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+          ["COND",
+            ["NOT", "$GAME.playerData.$PLAYER_I.loadedDeck"],
+            ["UPDATE_VAR", "$ALL_PLAYER_DECKS_LOADED", false]
+          ]
+        ]],
+        "$ALL_PLAYER_DECKS_LOADED"
+      ]
     }
   }
 }

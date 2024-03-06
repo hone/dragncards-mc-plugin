@@ -150,13 +150,9 @@
           ["LOAD_CARDS", "SP//dr (Peni Parker)"]
         ]
       ],
-      ["COND",
-        ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0]],
+      ["COND", ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0]],
         [
-          ["COND",
-            ["EQUAL", ["LENGTH", "$GAME.groupById.$PLAYER_N_HAND_GROUP_ID.stackIds"], 0],
-            ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"]
-          ],
+          ["SET", "/playerData/$PLAYER_N/loadedDeck", true],
           ["COND",
             ["EQUAL", "$GAME.playerData.$PLAYER_N.hitPoints", 0],
             [
@@ -200,6 +196,10 @@
       ],
       ["COND", "$LOADED_SCENARIO_DECK",
         [
+          ["COND", 
+            ["NOT", ["ALL_PLAYER_DECKS_LOADED"]], 
+            ["ABORT", "Load all player decks before loading the scenario."]
+          ],
           ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedVillain.parentCardIds", [
             ["DEFINE", "$CARD", "$GAME.cardById.$CARD_ID"],
             ["COND",
