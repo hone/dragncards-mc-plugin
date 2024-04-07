@@ -533,20 +533,6 @@
   },
   {
     "Deleted": false,
-    "Id": "3c2be1ca-a703-46d2-9fbe-4c0db34f84e7",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "NeXt Evolution",
-    "Type": "Campaign Expansion",
-    "CouncilNumber": null,
-    "Emoji": "<:mc_next_evolution:1146549748891930766>",
-    "Incomplete": false,
-    "Number": "40",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "4e0e9457-dea2-4d1c-bc3e-ca9b230a03d0",
     "Official": true,
     "AuthorId": null,
@@ -582,7 +568,7 @@
     "Type": "Campaign Expansion",
     "CouncilNumber": null,
     "Emoji": null,
-    "Incomplete": true,
+    "Incomplete": false,
     "Number": "45",
     "ReleaseStatus": null,
     "SpoilerTag": true
@@ -652,9 +638,37 @@
     "Type": "Hero Pack",
     "CouncilNumber": null,
     "Emoji": null,
-    "Incomplete": false,
+    "Incomplete": true,
     "Number": "46",
     "ReleaseStatus": null,
     "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "1508b98b-28f3-492a-9b46-a213f584cf03",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Jubilee",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": true,
+    "Number": "47",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "3c2be1ca-a703-46d2-9fbe-4c0db34f84e7",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "NeXt Evolution",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": "<:mc_next_evolution:1146549748891930766>",
+    "Incomplete": false,
+    "Number": "40",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]
