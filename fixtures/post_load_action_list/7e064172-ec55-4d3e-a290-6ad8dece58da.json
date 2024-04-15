@@ -1,0 +1,10 @@
+[
+  ["LOG", "Setup: Reveal Pursued by the Past"],
+  ["VAR",
+    "$ENV_CARD",
+    ["ONE_CARD", "$CARD",
+      ["EQUAL", "$CARD.databaseId", "b24e0dfc-f3fa-5815-a97c-2eebf7dd8cdf"]
+    ]
+  ],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1]
+]

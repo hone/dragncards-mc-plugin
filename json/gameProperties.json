@@ -18,7 +18,8 @@
       "label": "id:standardSet",
       "options": [
         {"id": "Standard", "label": "id:standard"},
-        {"id": "Standard II", "label": "id:standardII"}
+        {"id": "Standard II", "label": "id:standardII"},
+        {"id": "Standard III", "label": "id:standardIII"}
       ]
     },
     "expertSet": {
