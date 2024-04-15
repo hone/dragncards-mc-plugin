@@ -1,13 +1,12 @@
 {
   "gameProperties": {
-    "loadMode": {"type": "boolean", "default": true, "label": "id:loadMode", "showInSettings": true},
-    "loadRequired": {"type": "boolean", "default": true, "label": "id:loadRequired", "showInSettings": true},
-    "loadRecommends": {"type": "boolean", "default": true, "label": "id:loadRecommends", "showInSettings": true},
+    "loadMode": {"type": "boolean", "default": true, "label": "id:loadMode"},
+    "loadRequired": {"type": "boolean", "default": true, "label": "id:loadRequired"},
+    "loadRecommends": {"type": "boolean", "default": true, "label": "id:loadRecommends"},
     "mode": {
       "type": "option",
       "default": "standard",
       "label": "id:mode",
-      "showInSettings": true,
       "options": [
         {"id": "standard", "label": "id:standard"},
         {"id": "expert", "label": "id:expert"}
@@ -17,7 +16,6 @@
       "type": "option",
       "default": "Standard",
       "label": "id:standardSet",
-      "showInSettings": true,
       "options": [
         {"id": "Standard", "label": "id:standard"},
         {"id": "Standard II", "label": "id:standardII"}
@@ -27,7 +25,6 @@
      "type": "option",
      "default": "Expert",
      "label": "id:expertSet",
-     "showInSettings": true,
      "options": [
        {"id": "Expert", "label": "id:expert"},
        {"id": "Expert II", "label": "id:expertII"}
