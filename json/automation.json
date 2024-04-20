@@ -136,6 +136,13 @@
             ["LOG", "Miles Morales Detected"],
             ["DEFINE", "$BUNDLE", "Spider-Man (Miles Morales) (marvelcdb bundle)"]
           ]
+        ],
+        ["COND",
+          ["EQUAL", "$CARD.groupId", "{{$PLAYER_N}}Deck2"],
+          [
+            ["LOG", "Detected cards in 2nd player deck."],
+            ["TOGGLE_PLAYER_DECK_2", "$PLAYER_N", true]
+          ]
         ]
       ]],
       ["DEFINE", "$PLAYER_N_HAND_GROUP_ID", "{{$PLAYER_N}}Hand"],

@@ -307,6 +307,27 @@
         ]],
         "$ALL_PLAYER_DECKS_LOADED"
       ]
+    },
+    "TOGGLE_PLAYER_DECK_2": {
+      "args": ["$PLAYER_I", "$VISIBILITY"],
+      "code": [
+        ["COND",
+          "$VISIBILITY",
+          [
+            ["LOG", "{{$PLAYER_I}} updated their layout to display their second deck."],
+            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/visible", true],
+            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/visible", true],
+            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", "60%"]
+          ],
+          ["TRUE"],
+          [
+            ["LOG", "{{$PLAYER_I}} updated their layout to hide their second deck."],
+            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/visible", false],
+            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/visible", false],
+            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", "60%"]
+          ]
+        ]
+      ]
     }
   }
 }
