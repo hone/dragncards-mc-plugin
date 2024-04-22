@@ -328,6 +328,32 @@
           ]
         ]
       ]
+    },
+    "TOGGLE_ENCOUNTER_2_DECK": {
+      "args": ["$VISIBILITY"],
+      "code": [
+        ["COND",
+          "$VISIBILITY",
+          [
+            ["LOG", "{{$PLAYER_I}} updated the layout to display the second encounter deck."],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounter2Deck/visible", true],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounter2Discard/visible", true],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounterDeck/left", "60%"],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounterDiscard/left", "70%"],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedVillain/width", "45%"]
+
+          ],
+          ["TRUE"],
+          [
+            ["LOG", "{{$PLAYER_I}} updated the layout to hide the second encounter deck."],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounter2Deck/visible", false],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounter2Discard/visible", false],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounterDeck/left", "80%"],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedEncounterDiscard/left", "90%"],
+            ["UPDATE_LAYOUT", "/layout/regions/sharedVillain/width", "65%"]
+          ]
+        ]
+      ]
     }
   }
 }
