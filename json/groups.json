@@ -243,7 +243,7 @@
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
-        "currentSide": "A",
+        "currentSide": "B",
         "controller": "player1",
         "inPlay": false,
         "deckGroupId": "player1Deck2",
@@ -397,7 +397,7 @@
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
-        "currentSide": "A",
+        "currentSide": "B",
         "controller": "player2",
         "inPlay": false,
         "deckGroupId": "player2Deck2",
@@ -551,7 +551,7 @@
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
-        "currentSide": "A",
+        "currentSide": "B",
         "controller": "player3",
         "inPlay": false,
         "deckGroupId": "player3Deck2",
@@ -705,7 +705,7 @@
       "canHaveAttachments": false,
       "shuffleOnLoad": true,
       "onCardEnter": {
-        "currentSide": "A",
+        "currentSide": "B",
         "controller": "player4",
         "inPlay": false,
         "deckGroupId": "player4Deck2",
