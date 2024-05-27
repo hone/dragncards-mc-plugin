@@ -561,20 +561,6 @@
   },
   {
     "Deleted": false,
-    "Id": "136e5350-c1b3-461a-8a5a-34fb41a6ec09",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Age of Apocalypse",
-    "Type": "Campaign Expansion",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": false,
-    "Number": "45",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "22addcd8-a5b5-4b6f-bb72-fd0002b5edec",
     "Official": true,
     "AuthorId": null,
@@ -631,20 +617,6 @@
   },
   {
     "Deleted": false,
-    "Id": "66dadf29-3214-4672-a305-69bc8660c00d",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Iceman",
-    "Type": "Hero Pack",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": true,
-    "Number": "46",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "1508b98b-28f3-492a-9b46-a213f584cf03",
     "Official": true,
     "AuthorId": null,
@@ -668,6 +640,34 @@
     "Emoji": "<:mc_next_evolution:1146549748891930766>",
     "Incomplete": false,
     "Number": "40",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "136e5350-c1b3-461a-8a5a-34fb41a6ec09",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Age of Apocalypse",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "45",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "66dadf29-3214-4672-a305-69bc8660c00d",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Iceman",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "46",
     "ReleaseStatus": null,
     "SpoilerTag": false
   }
