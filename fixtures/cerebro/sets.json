@@ -4057,5 +4057,19 @@
     "PackId": "136e5350-c1b3-461a-8a5a-34fb41a6ec09",
     "Requires": null,
     "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "d0f685d8-ab67-4eba-93df-a06611517267",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Sauron",
+    "Type": "Modular Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "66dadf29-3214-4672-a305-69bc8660c00d",
+    "Requires": null,
+    "Recommends": null
   }
 ]
