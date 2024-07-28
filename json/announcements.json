@@ -1,5 +1,7 @@
 {
   "announcements": [
+    "2024-07-28: Fix: Fix Flash of Light, Firecracker, and Plasmoid Energy IDs",
+    "2024-07-25: Feat: Add Jubilee Hero Pack.",
     "2024-04-15: Feat: Add Standard III to preferences.",
     "2024-04-07: Feat: Add Age of Apocalypse cards. Enforce deck load order.",
     "2024-01-01: Feat: Take into account card acceleration + acceleration icons for threat increase",

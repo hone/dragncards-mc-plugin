@@ -561,7 +561,10 @@ fn process_hero_deck(
         .into_iter()
         .filter_map(|(card, printing)| {
             // Multi-Sided cards shouldn't be loaded twice
-            if card.id.ends_with("B") || card.id.ends_with("C") {
+            if (card.id.ends_with("B") || card.id.ends_with("C"))
+                && !["Firecracker", "Flash of Light", "Plasmoid Energy"]
+                    .contains(&card.name.as_str())
+            {
                 return None;
             }
             let mut load_group_id = match card.r#type {

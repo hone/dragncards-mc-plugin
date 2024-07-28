@@ -11,6 +11,9 @@ use uuid::Uuid;
 
 const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 const ANDROID_EFFICIENCY_ID_BASE: &'static str = "01144";
+const FIRECRACKER_ID_BASE: &'static str = "47007";
+const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
+const PLASMOID_ENERGY_ID_BASE: &'static str = "47010";
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -178,7 +181,12 @@ pub enum CardBack {
 pub fn uuid(code: &str) -> Uuid {
     let id = if let Ok(_) = code.parse::<u32>() {
         code
-    } else if code.contains(WAKANDA_FOREVER_ID_BASE) || code.contains(ANDROID_EFFICIENCY_ID_BASE) {
+    } else if code.contains(WAKANDA_FOREVER_ID_BASE)
+        || code.contains(ANDROID_EFFICIENCY_ID_BASE)
+        || code.contains(FIRECRACKER_ID_BASE)
+        || code.contains(FLASH_OF_LIGHT_ID_BASE)
+        || code.contains(PLASMOID_ENERGY_ID_BASE)
+    {
         code
     } else {
         let mut chars = code.chars();
@@ -208,6 +216,9 @@ fn card_back(card: &CerebroCard) -> CardBack {
     // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
     if !card.id.contains(WAKANDA_FOREVER_ID_BASE)
         && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
+        && !card.id.contains(FIRECRACKER_ID_BASE)
+        && !card.id.contains(FLASH_OF_LIGHT_ID_BASE)
+        && !card.id.contains(PLASMOID_ENERGY_ID_BASE)
         && card.id.parse::<u32>().is_err()
     {
         return CardBack::MultiSided;
