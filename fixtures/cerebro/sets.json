@@ -4071,5 +4071,19 @@
     "PackId": "66dadf29-3214-4672-a305-69bc8660c00d",
     "Requires": null,
     "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "13f25a29-84a4-4990-b2c4-fdf6b587a66e",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Arcade",
+    "Type": "Modular Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "1508b98b-28f3-492a-9b46-a213f584cf03",
+    "Requires": null,
+    "Recommends": null
   }
 ]
