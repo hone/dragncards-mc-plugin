@@ -257,8 +257,8 @@
         ]
       ]
     ],
-    "gameRules": [
-      {
+    "gameRules": {
+      "handSize": {
         "_comment": "When a card enters play or flips, if it has a hand size, set the player's hand size to that value.",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay", "/cardById/*/currentSide"],
@@ -269,7 +269,7 @@
           ["LOG", "$ALIAS_N", " set their hand size to ", "$TARGET.currentFace.handSize", "."]
         ]
       },
-      {
+      "setSideSchemeStartingThreat": {
         "_comment": "When a side scheme enters play set starting threat",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay"],
@@ -284,7 +284,7 @@
         ],
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },
-      {
+      "setFlippedSideSchemeStartingThreat": {
         "_comment": "When a side scheme is flipped face up set starting threat",
         "type": "trigger",
         "listenTo": ["/cardById/*/currentSide"],
@@ -296,7 +296,7 @@
         ],
         "then": ["SET_SCHEME_STARTING_THREAT", "$TARGET_ID"]
       },
-      {
+      "playerDeckEmptied": {
         "_comment": "When a player deck empties, give them an encounter deck and shuffle the deck.",
         "type": "trigger",
         "listenTo": ["/groupById/*/stackIds"],
@@ -313,7 +313,7 @@
           ["LOG", "$ALIAS_N", " emptied their deck."]
         ]
       },
-      {
+      "encounterDeckEmptied": {
         "_comment": "When the encounter deck empties, add an acceleration token and shuffle the deck.",
         "type": "trigger",
         "listenTo": ["/groupById/*/stackIds"],
@@ -330,7 +330,7 @@
           ["INCREASE_VAL", "/cardById/$SCHEME_CARD_ID/tokens/acceleration", 1]
         ]
       },
-      {
+      "encounter2DeckEmptied": {
         "_comment": "When the second encounter deck empties, shuffle the deck.",
         "type": "trigger",
         "listenTo": ["/groupById/*/stackIds"],
@@ -345,7 +345,7 @@
           ["LOG", "Second Encounter Deck has been reshuffled."]
         ]
       },
-      {
+      "resetCardLeavesPlay": {
         "_comment": "Reset card when it leaves play",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay"],
@@ -357,14 +357,14 @@
           ["SET", "/cardById/$TARGET_ID/currentSide", "$GAME.groupById.$GROUP_ID.onCardEnter.currentSide"]
         ]
       },
-      {
+      "toughness": {
         "_comment": "Add tough to card with toughness when it enters play",
         "type": "trigger",
         "listenTo": ["/cardById/*/inPlay"],
         "condition": ["AND", "$TARGET.inPlay", "$TARGET.currentFace.toughness"],
         "then": ["INCREASE_VAL", "/cardById/$TARGET_ID/tokens/tough", 1]
       },
-      {
+      "flipToughness": {
         "_comment": "When a card is flipped face up add tough to a card with toughness",
         "type": "trigger",
         "listenTo": ["/cardById/*/currentSide"],
@@ -376,7 +376,7 @@
         ],
         "then": ["INCREASE_VAL", "/cardById/$TARGET_ID/tokens/tough", 1]
       }
-    ],
+    },
     "cards": {
 
     }
