@@ -3,7 +3,5 @@
   "tutorialUrl": "https://github.com/hone/dragncards-mc-plugin/wiki",
   "minPlayers": 1,
   "maxPlayers": 4,
-  "firstPlayerImageUrl": "https://raw.githubusercontent.com/hone/dragncards-mc-plugin/main/tokens/first_player_token.svg",
-  "backgroundUrl": "https://i.imgur.com/Ofpl3Hs.jpeg",
-  "defaultAttachmentDirection": "left"
+  "backgroundUrl": "https://i.imgur.com/Ofpl3Hs.jpeg"
 }

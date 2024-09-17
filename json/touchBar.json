@@ -97,9 +97,6 @@
               "label": "id:discard",
               "actionType": "card",
               "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"]
-            },
-            {
-              "dragnButton": "targetCard"
             }
         ],
         [
@@ -176,16 +173,16 @@
               "actionList": "villainEndPhase"
             },
             {
-              "dragnButton": "nextStep"
+              "id": "undo",
+              "label": "Undo",
+              "actionType": "engine",
+              "actionList": "undo"
             },
             {
-              "dragnButton": "undo"
-            },
-            {
-              "dragnButton": "saveGame"
-            },
-            {
-              "dragnButton": "clearTargets"
+              "id": "save",
+              "label": "Save",
+              "actionType": "engine",
+              "actionList": "save"
             }
         ]
     ]
