@@ -22,14 +22,28 @@
     ],
     "flipCard": [
       ["COND",
+          // A always flips to B
         ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
         [
           ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} facedown."],
           ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
         ],
-        true,
+          // IF there's no side C, it's B->A
+        ["EQUAL", "$ACTIVE_CARD.sides.C", null],
         [
           ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
+          ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} faceup."]
+        ],
+          // if you're on side C, flip to A
+        ["EQUAL", "$ACTIVE_CARD.currentSide", "C"],
+        [
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
+          ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} faceup."]       
+        ],
+          // Otherwise this is B->C
+        true,
+        [
+          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "C"],
           ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} faceup."]
         ]
       ]
