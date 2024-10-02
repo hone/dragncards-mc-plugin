@@ -670,5 +670,19 @@
     "Number": "47",
     "ReleaseStatus": null,
     "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "25467c68-d66c-4390-8e4d-817fe62dd6c6",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Nightcrawler",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "48",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]

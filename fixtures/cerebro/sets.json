@@ -4085,5 +4085,47 @@
     "PackId": "1508b98b-28f3-492a-9b46-a213f584cf03",
     "Requires": null,
     "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "93c10458-a47f-4ceb-9089-28273e747cdd",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Nightcrawler",
+    "Type": "Hero Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "25467c68-d66c-4390-8e4d-817fe62dd6c6",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "1577a0ce-3f3e-44ea-899a-9a061a226dd2",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Nightcrawler Nemesis",
+    "Type": "Nemesis Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "25467c68-d66c-4390-8e4d-817fe62dd6c6",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "7204ee44-9bdd-4810-9cc6-bf026dfdcbc8",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Crazy Gang",
+    "Type": "Modular Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "25467c68-d66c-4390-8e4d-817fe62dd6c6",
+    "Requires": null,
+    "Recommends": null
   }
 ]
