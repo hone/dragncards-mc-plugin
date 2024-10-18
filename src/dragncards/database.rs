@@ -209,7 +209,7 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
         &card.id
     };
 
-    format!("https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/{official}/{id}.jpg")
+    format!("/{official}/{id}.jpg")
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {

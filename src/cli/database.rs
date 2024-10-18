@@ -55,9 +55,7 @@ pub async fn execute(args: DatabaseArgs) {
                 let client = &client;
                 let download_path = &download_path;
                 async move {
-                    let image_url = url::Url::parse(&card.image_url).unwrap();
-                    let image_path = image_url.path().trim_start_matches('/');
-                    let file_path = Path::new(image_path);
+                    let file_path = Path::new(&card.image_url);
 
                     fs::create_dir_all(download_path.join(file_path.parent().unwrap()))
                         .await
@@ -69,7 +67,7 @@ pub async fn execute(args: DatabaseArgs) {
                         fs::write(new_image_path.as_path(), contents).await.unwrap();
                     }
                     let mut new_card = card.clone();
-                    new_card.image_url = format!("{}/{}", download_server, image_path.to_string());
+                    new_card.image_url = format!("{}/{}", download_server, &card.image_url);
 
                     new_card
                 }
