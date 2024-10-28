@@ -68,6 +68,7 @@ enum SubMenuRootKey {
 struct OrderedCard<'a> {
     pub pack_number: PackNumber,
     pub set_number: Option<SetNumber>,
+    pub artificial_id: String,
     pub card: &'a Card,
 }
 
@@ -432,6 +433,7 @@ fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> Ordere
     OrderedCard {
         set_number: printing.set_number.clone(),
         pack_number: printing.pack_number.clone(),
+        artificial_id: printing.artificial_id.clone(),
         card,
     }
 }
@@ -598,7 +600,7 @@ fn process_hero_deck(
             Some(dragncards::decks::Card {
                 load_group_id: load_group_id.to_string(),
                 quantity,
-                database_id: dragncards::database::uuid(&card.id),
+                database_id: dragncards::database::uuid(&printing.artificial_id),
                 _name: card.name.clone(),
             })
         })
@@ -680,7 +682,7 @@ fn process_sets_by_packs(
                             .as_ref()
                             .map(|i| i.length())
                             .unwrap_or(1),
-                        database_id: dragncards::database::uuid(&card.id),
+                        database_id: dragncards::database::uuid(&ordered_card.artificial_id),
                         _name: card.name.clone(),
                     })
                 })
