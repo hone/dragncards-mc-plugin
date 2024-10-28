@@ -3,6 +3,6 @@
     "imageUrlPrefix": {
         "Default": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards",
         "English": "https://cerebrodatastorage.blob.core.windows.net/cerebro-cards",
-        "Italian": "https://carte-marvel-championslcg.s3.eu-north-1.amazonaws.com/"
+        "Italian": "https://carte-marvel-championslcg.s3.eu-north-1.amazonaws.com"
     }
 }
