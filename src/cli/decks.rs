@@ -24,6 +24,8 @@ const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190
 const INVOCATION_SET_ID: Uuid = uuid!("ac654f5f-ec2c-4774-8732-a3e59ae5360d");
 const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
+const MAGNETO_HERO_SET_ID: Uuid = uuid!("bd133431-cdd8-4dd9-b4ce-902616c62d60");
+const MAGNETO_SCENARIO_SET_ID: Uuid = uuid!("e58e0891-9d07-4928-bf2e-1c49d209e9c1");
 const NEBULA_HERO_SET_ID: Uuid = uuid!("470b185d-42e4-413b-b516-854b4b2f0231");
 const NEBULA_SCENARIO_SET_ID: Uuid = uuid!("835990d9-d2ff-4c5c-aa8d-b8550e179847");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
@@ -38,6 +40,7 @@ const WEATHER_SET_ID: Uuid = uuid!("a89bb587-77f5-414a-a24b-c6871dfc446c");
 
 const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
 const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
+const MAGNETO_HERO_PACK_ID: Uuid = uuid!("6fbb5675-2619-44f0-82e1-6ca43ebc0f79");
 const NEBULA_HERO_PACK_ID: Uuid = uuid!("c2a6c65a-032b-4339-b3d2-9d913528573f");
 const SPDR_HERO_PACK_ID: Uuid = uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f");
 const VENOM_HERO_PACK_ID: Uuid = uuid!("09ae1f69-a66f-4283-8cc9-ca6e3c169018");
@@ -68,6 +71,7 @@ enum SubMenuRootKey {
 struct OrderedCard<'a> {
     pub pack_number: PackNumber,
     pub set_number: Option<SetNumber>,
+    pub artificial_id: String,
     pub card: &'a Card,
 }
 
@@ -346,6 +350,10 @@ pub async fn execute(args: DecksArgs) {
                 String::from("Nebula (Hero)")
             } else if set.id == NEBULA_SCENARIO_SET_ID {
                 String::from("Nebula (Scenario)")
+            } else if set.id == MAGNETO_HERO_SET_ID {
+                String::from("Magneto (Hero)")
+            } else if set.id == MAGNETO_SCENARIO_SET_ID {
+                String::from("Magneto (Scenario)")
             } else {
                 set.name.clone()
             };
@@ -432,6 +440,7 @@ fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> Ordere
     OrderedCard {
         set_number: printing.set_number.clone(),
         pack_number: printing.pack_number.clone(),
+        artificial_id: printing.artificial_id.clone(),
         card,
     }
 }
@@ -539,6 +548,8 @@ fn build_hero_deck<'a>(
         String::from("Venom (Hero)")
     } else if pack.id == NEBULA_HERO_PACK_ID {
         String::from("Nebula (Hero)")
+    } else if pack.id == MAGNETO_HERO_PACK_ID {
+        String::from("Magneto (Hero)")
     } else {
         hero_name
     };
@@ -598,7 +609,7 @@ fn process_hero_deck(
             Some(dragncards::decks::Card {
                 load_group_id: load_group_id.to_string(),
                 quantity,
-                database_id: dragncards::database::uuid(&card.id),
+                database_id: dragncards::database::uuid(&printing.artificial_id),
                 _name: card.name.clone(),
             })
         })
@@ -680,7 +691,7 @@ fn process_sets_by_packs(
                             .as_ref()
                             .map(|i| i.length())
                             .unwrap_or(1),
-                        database_id: dragncards::database::uuid(&card.id),
+                        database_id: dragncards::database::uuid(&ordered_card.artificial_id),
                         _name: card.name.clone(),
                     })
                 })
@@ -695,6 +706,10 @@ fn process_sets_by_packs(
                 String::from("Nebula (Hero)")
             } else if set.id == NEBULA_SCENARIO_SET_ID {
                 String::from("Nebula (Scenario)")
+            } else if set.id == MAGNETO_HERO_SET_ID {
+                String::from("Magneto (Hero)")
+            } else if set.id == MAGNETO_SCENARIO_SET_ID {
+                String::from("Magneto (Scenario)")
             } else {
                 set.name.clone()
             };

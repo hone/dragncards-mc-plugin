@@ -78,7 +78,7 @@ impl Card {
 
                 let mut new_card = Card {
                     database_id,
-                    cerebro_id: card.id.clone(),
+                    cerebro_id: printing.artificial_id.clone(),
                     marvelcdb_id: marvelcdb::card_id(&pack.number, &printing.pack_number.0),
                     name: card.name.clone(),
                     subname: card.subname.clone(),
@@ -209,7 +209,7 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
         &card.id
     };
 
-    format!("https://cerebrodatastorage.blob.core.windows.net/cerebro-cards/{official}/{id}.jpg")
+    format!("/{official}/{id}.jpg")
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
