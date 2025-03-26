@@ -4169,5 +4169,61 @@
     "PackId": "6fbb5675-2619-44f0-82e1-6ca43ebc0f79",
     "Requires": null,
     "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "626a0378-a3b2-48e7-8e63-c5c598d20baa",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Maria Hill",
+    "Type": "Hero Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "8ef0bb7a-90c9-4cba-a5ae-626e72c0bd9d",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "15abec20-853f-473d-9fdf-54b859737a7c",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Maria Hill Nemesis",
+    "Type": "Nemesis Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "8ef0bb7a-90c9-4cba-a5ae-626e72c0bd9d",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "76cc5dd0-4bfc-4d85-8c48-cf45dc544d41",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Nick Fury",
+    "Type": "Hero Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "8ef0bb7a-90c9-4cba-a5ae-626e72c0bd9d",
+    "Requires": null,
+    "Recommends": null
+  },
+  {
+    "Deleted": false,
+    "Id": "d9686b45-4d06-4fe8-8777-4d6b3dd9db21",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Nick Fury Nemesis",
+    "Type": "Nemesis Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": null,
+    "PackId": "8ef0bb7a-90c9-4cba-a5ae-626e72c0bd9d",
+    "Requires": null,
+    "Recommends": null
   }
 ]
