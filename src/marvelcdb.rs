@@ -13,6 +13,7 @@ pub struct Card {
     pub code: String,
     pub position: u32,
     pub quantity: u32,
+    pub deck_limit: Option<u32>,
 }
 
 #[derive(Deserialize)]
