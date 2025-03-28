@@ -698,5 +698,19 @@
     "Number": "49",
     "ReleaseStatus": null,
     "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "8ef0bb7a-90c9-4cba-a5ae-626e72c0bd9d",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Agents of S.H.I.E.L.D.",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "50",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]

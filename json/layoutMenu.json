@@ -1,8 +1,0 @@
-{
-  "layoutMenu": [
-    {"label": "id:standard1Player", "layoutId": "standard1Player", "numPlayers": 1},
-    {"label": "id:standard2Player", "layoutId": "standard2Player", "numPlayers": 2},
-    {"label": "id:standard3Player", "layoutId": "standard3Player", "numPlayers": 3},
-    {"label": "id:standard4Player", "layoutId": "standard4Player", "numPlayers": 4}
-  ]
-}
