@@ -631,20 +631,6 @@
   },
   {
     "Deleted": false,
-    "Id": "136e5350-c1b3-461a-8a5a-34fb41a6ec09",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Age of Apocalypse",
-    "Type": "Campaign Expansion",
-    "CouncilNumber": null,
-    "Emoji": null,
-    "Incomplete": false,
-    "Number": "45",
-    "ReleaseStatus": null,
-    "SpoilerTag": true
-  },
-  {
-    "Deleted": false,
     "Id": "66dadf29-3214-4672-a305-69bc8660c00d",
     "Official": true,
     "AuthorId": null,
@@ -701,6 +687,20 @@
   },
   {
     "Deleted": false,
+    "Id": "136e5350-c1b3-461a-8a5a-34fb41a6ec09",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Age of Apocalypse",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "45",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
     "Id": "8ef0bb7a-90c9-4cba-a5ae-626e72c0bd9d",
     "Official": true,
     "AuthorId": null,
@@ -711,6 +711,6 @@
     "Incomplete": false,
     "Number": "50",
     "ReleaseStatus": null,
-    "SpoilerTag": false
+    "SpoilerTag": true
   }
 ]
