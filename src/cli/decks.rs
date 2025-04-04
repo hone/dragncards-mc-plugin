@@ -16,6 +16,8 @@ use uuid::{uuid, Uuid};
 
 const TOUCHED_ID: &str = "38002";
 
+const BLACK_WIDOW_HERO_SET_ID: Uuid = uuid!("bfc8883c-a5ce-4d92-9ae6-c9d2d614bcf6");
+const BLACK_WIDOW_SCENARIO_SET_ID: Uuid = uuid!("4b735880-0ee6-46d1-92ea-db2427e905e7");
 const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9");
 const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const ESCAPE_THE_MUSEUM_SET_ID: Uuid = uuid!("76c1a33e-7eed-4980-9561-7e3d9f815c32");
@@ -38,6 +40,7 @@ const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
 const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
 const WEATHER_SET_ID: Uuid = uuid!("a89bb587-77f5-414a-a24b-c6871dfc446c");
 
+const BLACK_WIDOW_HERO_PACK_ID: Uuid = uuid!("9f61b8cc-f3f4-439f-9fdb-60e9b2e03ef4");
 const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
 const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
 const MAGNETO_HERO_PACK_ID: Uuid = uuid!("6fbb5675-2619-44f0-82e1-6ca43ebc0f79");
@@ -354,6 +357,10 @@ pub async fn execute(args: DecksArgs) {
                 String::from("Magneto (Hero)")
             } else if set.id == MAGNETO_SCENARIO_SET_ID {
                 String::from("Magneto (Scenario)")
+            } else if set.id == BLACK_WIDOW_HERO_SET_ID {
+                String::from("Black Widow (Hero)")
+            } else if set.id == BLACK_WIDOW_SCENARIO_SET_ID {
+                String::from("Black Widow (Scenario)")
             } else {
                 set.name.clone()
             };
@@ -550,6 +557,8 @@ fn build_hero_deck<'a>(
         String::from("Nebula (Hero)")
     } else if pack.id == MAGNETO_HERO_PACK_ID {
         String::from("Magneto (Hero)")
+    } else if pack.id == BLACK_WIDOW_HERO_PACK_ID {
+        String::from("Black Widow (Hero)")
     } else {
         hero_name
     };
@@ -713,6 +722,10 @@ fn process_sets_by_packs(
                 String::from("Magneto (Hero)")
             } else if set.id == MAGNETO_SCENARIO_SET_ID {
                 String::from("Magneto (Scenario)")
+            } else if set.id == BLACK_WIDOW_HERO_SET_ID {
+                String::from("Black Widow (Hero)")
+            } else if set.id == BLACK_WIDOW_SCENARIO_SET_ID {
+                String::from("Black Widow (Scenario)")
             } else {
                 set.name.clone()
             };

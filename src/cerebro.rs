@@ -273,6 +273,12 @@ pub enum CardType {
     Deterrence,
     Environment,
     Event,
+    #[serde(rename = "Evidence - Means")]
+    EvidenceMeans,
+    #[serde(rename = "Evidence - Motive")]
+    EvidenceMotive,
+    #[serde(rename = "Evidence - Opportunity")]
+    EvidenceOpportunity,
     Hero,
     #[serde(rename = "Main Scheme")]
     MainScheme,

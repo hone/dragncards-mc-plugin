@@ -36,6 +36,12 @@ pub enum TypeCode {
     Attachment,
     Environment,
     Event,
+    #[serde(rename = "Evidence - Means", alias = "evidence_means")]
+    EvidenceMeans,
+    #[serde(rename = "Evidence - Motive", alias = "evidence_motive")]
+    EvidenceMotive,
+    #[serde(rename = "Evidence - Opportunity", alias = "evidence_opportunity")]
+    EvidenceOpportunity,
     MainScheme,
     Minion,
     Obligation,
