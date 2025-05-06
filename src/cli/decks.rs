@@ -610,13 +610,17 @@ fn process_hero_deck(
             if ["29002A", "29003A"].contains(&card.id.as_str()) {
                 load_group_id = "playerNOutOfPlay";
             }
-            let marvelcdb_card = marvelcdb_cards
+            let quantity = if let Some(marvelcdb_card) = marvelcdb_cards
                 .iter()
                 .find(|card| card.code == marvelcdb::card_id(&pack.number, &printing.pack_number.0))
-                .unwrap();
-            let quantity = match marvelcdb_card.deck_limit {
-                Some(limit) => std::cmp::min(marvelcdb_card.quantity, limit),
-                None => marvelcdb_card.quantity,
+            {
+                match marvelcdb_card.deck_limit {
+                    Some(limit) => std::cmp::min(marvelcdb_card.quantity, limit),
+                    None => marvelcdb_card.quantity,
+                }
+            } else {
+                println!("Missing from marvelcdb: {}", card.id);
+                1
             };
             Some(dragncards::decks::Card {
                 load_group_id: load_group_id.to_string(),
