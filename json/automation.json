@@ -138,6 +138,13 @@
           ]
         ],
         ["COND",
+          ["EQUAL", "$CARD.databaseId", "24204dfc-8ac2-5089-b103-40e6984853eb"],
+          [
+            ["LOG", "Shuri Detected"],
+            ["DEFINE", "$BUNDLE", "Black Panther (Shuri) (marvelcdb bundle)"]
+          ]
+        ],
+        ["COND",
           ["AND",
             ["EQUAL", "$CARD.groupId", "{{$PLAYER_N}}Deck2"],
             ["NOT", "$GAME.playerData.$PLAYER_N.layout.regions.playerNDeck2.visible"]
