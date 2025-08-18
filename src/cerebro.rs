@@ -4,7 +4,7 @@ use serde::{
     de::{self, Visitor},
     Deserialize, Deserializer, Serialize,
 };
-use std::{collections::HashMap, fmt};
+use std::{collections::HashMap, fmt, ops::RangeInclusive};
 use uuid::Uuid;
 
 const PACKS_API: &str = "https://cerebro-beta-bot.herokuapp.com/packs";
@@ -347,11 +347,24 @@ impl<'de> Deserialize<'de> for PackNumber {
 }
 
 #[derive(Clone, Debug)]
-pub struct SetNumber(pub std::ops::RangeInclusive<u32>);
+pub enum SetNumber {
+    Unknown,
+    Range(RangeInclusive<u32>),
+}
 
 impl SetNumber {
     pub fn length(&self) -> u32 {
-        self.0.end() - self.0.start() + 1
+        match self {
+            SetNumber::Unknown => 1,
+            SetNumber::Range(r) => r.end() - r.start() + 1,
+        }
+    }
+
+    pub fn as_range(&self) -> Option<&RangeInclusive<u32>> {
+        match self {
+            SetNumber::Unknown => None,
+            SetNumber::Range(r) => Some(r),
+        }
     }
 }
 
@@ -384,7 +397,9 @@ impl<'de> Visitor<'de> for SetNumberVisitor {
                 })
                 .unwrap_or(Ok(start))?;
 
-            Ok(SetNumber(start..=end))
+            Ok(SetNumber::Range(start..=end))
+        } else if value == "??" {
+            Ok(SetNumber::Unknown)
         } else {
             Err(E::custom(format!("Not in range format: {value}")))
         }

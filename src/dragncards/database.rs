@@ -71,8 +71,11 @@ impl Card {
                             .set_number
                             .as_ref()
                             .map(|set_number| {
-                                let range = &set_number.0;
-                                range.contains(&1) || range.contains(&2)
+                                if let Some(range) = set_number.as_range() {
+                                    range.contains(&1) || range.contains(&2)
+                                } else {
+                                    false
+                                }
                             })
                             .unwrap_or(false));
 
