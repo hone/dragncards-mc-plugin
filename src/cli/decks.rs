@@ -433,22 +433,29 @@ fn build_hero_deck<'a>(
     pack_set_map: &HashMap<&Uuid, Vec<&Set>>,
     pre_built_decks: &mut IndexMap<String, dragncards::decks::PreBuiltDeck>,
 ) {
+    let hero_set = &pack_set_map
+        .get(&pack.id)
+        .unwrap()
+        .iter()
+        .filter(|set| set.r#type == SetType::Hero && set.id == cards[0].1.set_id.unwrap())
+        .next()
+        .unwrap();
     let mut player_cards: Vec<_> = cards
         .iter()
         .take_while(|(card, _)| card.r#type != CardType::Obligation)
+        // filter out supplementary cards like Invocation/Weather Deck
+        .filter(|(_, printing)| {
+            printing
+                .set_id
+                .map(|set_id| set_id == hero_set.id)
+                .unwrap_or(true)
+        })
         .collect();
     let obligation_card = cards
         .iter()
         .find(|(card, _)| card.r#type == CardType::Obligation)
         .unwrap();
     player_cards.push(obligation_card);
-    let hero_set = &pack_set_map
-        .get(&pack.id)
-        .unwrap()
-        .iter()
-        .filter(|set| set.r#type == SetType::Hero && set.id == player_cards[0].1.set_id.unwrap())
-        .next()
-        .unwrap();
 
     let mut deck = process_hero_deck(&player_cards, &pack, &&marvelcdb_cards);
     let mut obligation_nemesis_bundle =

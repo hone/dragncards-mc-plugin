@@ -202,6 +202,10 @@
             ["LOAD_CARDS", "Invocation (Supplementary)"]
           ],
           ["COND",
+            ["EQUAL", "$IDENTITY_CARD.databaseId", "f2476b12-9b49-5c2b-ba30-0a2b20c431a2"],
+            ["LOAD_CARDS", "Weather Deck (Supplementary)"]
+          ],
+          ["COND",
             ["AND",
               ["DEFINED", "$IRONHEART"],
               ["NOT", ["DEFINED", "$IRONHEART_UPGRADES"]]
