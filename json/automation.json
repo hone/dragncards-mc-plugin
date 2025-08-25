@@ -145,6 +145,13 @@
           ]
         ],
         ["COND",
+          ["EQUAL", "$CARD.databaseId", "90a31753-4e68-57d6-8ddd-042b043ccc75"],
+          [
+            ["LOG", "Specialized Training Detected"],
+            ["DEFINE", "$SPECIALIZED_TRAINING", true]
+          ]
+        ],
+        ["COND",
           ["AND",
             ["EQUAL", "$CARD.groupId", "{{$PLAYER_N}}Deck2"],
             ["NOT", "$GAME.playerData.$PLAYER_N.layout.regions.playerNDeck2.visible"]
@@ -211,6 +218,13 @@
               ["NOT", ["DEFINED", "$IRONHEART_UPGRADES"]]
             ],
             ["LOAD_CARDS", "Ironheart (Hero) [version upgrades]"]
+          ],
+          ["COND",
+            ["DEFINED", "$SPECIALIZED_TRAINING"],
+            [
+              ["LOAD_CARDS", "Specialized Training [specialist bundle]"],
+              ["DEFINE", "$SPECIALIZED_TRAINING", false]
+            ]
           ],
           ["COND",
             ["GREATER_THAN", ["LENGTH", "$GAME.groupById.{{$PLAYER_N}}Deck2.stackIds"], 0],

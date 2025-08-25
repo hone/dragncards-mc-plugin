@@ -40,6 +40,10 @@ const IRONHEART_A_DATABASE_ID: Uuid = uuid!("0006bfd8-06a5-5928-8d17-1b4971407db
 const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc9258600557");
 const PENI_PARKER_A_DATABASE_ID: Uuid = uuid!("36943f94-3731-5bed-9b56-59fbdd69f968");
 
+const COMBAT_SPECIALIST_CARD_ID: &str = "43034";
+const DEFENSE_SPECIALIST_CARD_ID: &str = "43035";
+const FRONT_LINE_SPECIALIST_CARD_ID: &str = "43036";
+const SURVEILLANCE_SPECIALIST_CARD_ID: &str = "43037";
 const THE_SLEEPER_CARD_ID: &str = "04130";
 const KANGS_DOMINION_CARD_ID: &str = "11023";
 
@@ -320,6 +324,36 @@ pub async fn execute(args: DecksArgs) {
             },
         );
     }
+
+    // Make Specialized Training Bundle
+    let specialized_training_bundle_deck = cards.iter().filter_map(|card| {
+        if [
+            COMBAT_SPECIALIST_CARD_ID,
+            DEFENSE_SPECIALIST_CARD_ID,
+            FRONT_LINE_SPECIALIST_CARD_ID,
+            SURVEILLANCE_SPECIALIST_CARD_ID,
+        ]
+        .contains(&card.id.as_str())
+        {
+            Some(dragncards::decks::Card {
+                load_group_id: String::from("playerNOutOfPlay"),
+                quantity: 1,
+                database_id: dragncards::database::uuid(&card.printings[0].artificial_id),
+                _name: card.name.clone(),
+            })
+        } else {
+            None
+        }
+    });
+    let specialized_training_bundle_label = "Specialized Training [specialist bundle]";
+    pre_built_decks.insert(
+        specialized_training_bundle_label.to_string(),
+        PreBuiltDeck {
+            label: specialized_training_bundle_label.to_string(),
+            cards: specialized_training_bundle_deck.collect(),
+            post_load_action_list: None,
+        },
+    );
 
     let json =
         serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
