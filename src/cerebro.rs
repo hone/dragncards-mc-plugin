@@ -13,6 +13,7 @@ const SETS_API: &str = "https://cerebro-beta-bot.herokuapp.com/sets";
 
 #[derive(Deserialize)]
 #[serde(rename_all = "PascalCase")]
+#[allow(dead_code)]
 pub struct Pack {
     pub deleted: bool,
     pub id: Uuid,
@@ -41,6 +42,7 @@ pub enum PackType {
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "PascalCase")]
+#[allow(dead_code)]
 pub struct Card {
     pub id: String,
     pub deleted: bool,

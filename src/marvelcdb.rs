@@ -6,6 +6,7 @@ const CARDS_API: &str = "https://marvelcdb.com/api/public/cards/?encounter=1";
 const PACKS_API: &str = "https://marvelcdb.com/api/public/packs";
 
 #[derive(Deserialize)]
+#[allow(dead_code)]
 pub struct Card {
     pub name: String,
     pub type_code: TypeCode,
@@ -17,6 +18,7 @@ pub struct Card {
 }
 
 #[derive(Deserialize)]
+#[allow(dead_code)]
 pub struct Pack {
     pub name: String,
     pub code: String,
