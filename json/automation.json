@@ -199,14 +199,14 @@
           ],
           ["COND",
             ["EQUAL", "$IDENTITY_CARD.databaseId", "1a09dcb7-083f-5781-87c0-7b0d723cd232"],
-            ["LOAD_CARDS", "Invocation"]
+            ["LOAD_CARDS", "Invocation (Supplementary)"]
           ],
           ["COND",
             ["AND",
               ["DEFINED", "$IRONHEART"],
               ["NOT", ["DEFINED", "$IRONHEART_UPGRADES"]]
             ],
-            ["LOAD_CARDS", "Ironheart (Version Upgrades)"]
+            ["LOAD_CARDS", "Ironheart (Hero) [version upgrades]"]
           ],
           ["COND",
             ["GREATER_THAN", ["LENGTH", "$GAME.groupById.{{$PLAYER_N}}Deck2.stackIds"], 0],

@@ -16,8 +16,6 @@ use uuid::{uuid, Uuid};
 
 const TOUCHED_ID: &str = "38002";
 
-const BLACK_WIDOW_HERO_SET_ID: Uuid = uuid!("bfc8883c-a5ce-4d92-9ae6-c9d2d614bcf6");
-const BLACK_WIDOW_SCENARIO_SET_ID: Uuid = uuid!("4b735880-0ee6-46d1-92ea-db2427e905e7");
 const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9");
 const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const ESCAPE_THE_MUSEUM_SET_ID: Uuid = uuid!("76c1a33e-7eed-4980-9561-7e3d9f815c32");
@@ -26,27 +24,17 @@ const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190
 const INVOCATION_SET_ID: Uuid = uuid!("ac654f5f-ec2c-4774-8732-a3e59ae5360d");
 const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
-const MAGNETO_HERO_SET_ID: Uuid = uuid!("bd133431-cdd8-4dd9-b4ce-902616c62d60");
-const MAGNETO_SCENARIO_SET_ID: Uuid = uuid!("e58e0891-9d07-4928-bf2e-1c49d209e9c1");
-const NEBULA_HERO_SET_ID: Uuid = uuid!("470b185d-42e4-413b-b516-854b4b2f0231");
-const NEBULA_SCENARIO_SET_ID: Uuid = uuid!("835990d9-d2ff-4c5c-aa8d-b8550e179847");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
 const SHIP_COMMAND_SET_ID: Uuid = uuid!("a789f0f5-d822-40f6-8e83-d8e5e27d40d2");
 const SPIDER_MAN_MILES_MORALES_HERO_SET_ID: Uuid = uuid!("6c95c419-7658-4d74-935c-5da7a68ceeb0");
 const SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID: Uuid = uuid!("e6b2b98f-2876-45e9-b489-28d056d39b54");
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
 const TOWER_DEFENSE_SET_ID: Uuid = uuid!("e7543321-15b7-4a39-8b86-da6a913662c0");
-const VENOM_HERO_SET_ID: Uuid = uuid!("19ee1d90-0a7d-466c-9c74-5251ada1045d");
-const VENOM_SCENARIO_SET_ID: Uuid = uuid!("1bb3c0d6-add0-4313-809a-5e337666069c");
 const WEATHER_SET_ID: Uuid = uuid!("a89bb587-77f5-414a-a24b-c6871dfc446c");
 
-const BLACK_WIDOW_HERO_PACK_ID: Uuid = uuid!("9f61b8cc-f3f4-439f-9fdb-60e9b2e03ef4");
 const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
 const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
-const MAGNETO_HERO_PACK_ID: Uuid = uuid!("6fbb5675-2619-44f0-82e1-6ca43ebc0f79");
-const NEBULA_HERO_PACK_ID: Uuid = uuid!("c2a6c65a-032b-4339-b3d2-9d913528573f");
 const SPDR_HERO_PACK_ID: Uuid = uuid!("33bf13c0-14dc-4cb8-8668-710ddab6989f");
-const VENOM_HERO_PACK_ID: Uuid = uuid!("09ae1f69-a66f-4283-8cc9-ca6e3c169018");
 
 const IRONHEART_A_DATABASE_ID: Uuid = uuid!("0006bfd8-06a5-5928-8d17-1b4971407dbc");
 const IRONHEART_B_DATABASE_ID: Uuid = uuid!("23858611-0f2c-5e28-8aae-cc9258600557");
@@ -192,8 +180,8 @@ pub async fn execute(args: DecksArgs) {
     let mut pre_built_decks = process_sets_by_packs(&packs, &pack_set_map, &set_card_map);
 
     // Next Evolution handle villain shared across two scenarios
-    let marauders = pre_built_decks.remove("Marauders").unwrap();
-    for deck_name in ["Morlock Siege", "On the Run"] {
+    let marauders = pre_built_decks.swap_remove("Marauders (Scenario)").unwrap();
+    for deck_name in ["Morlock Siege (Scenario)", "On the Run (Scenario)"] {
         let deck = pre_built_decks.get_mut(deck_name).unwrap();
         if let Some(action_list) = deck.post_load_action_list.as_mut() {
             match action_list {
@@ -296,32 +284,37 @@ pub async fn execute(args: DecksArgs) {
             })
             .collect();
         let obligation_card = deck.last().unwrap().clone();
-        let nemesis_set_name = &pack_set_map
-            .get(&CORE_SET_PACK_ID)
+        let nemesis_set_name = set_label(
+            &pack_set_map
+                .get(&CORE_SET_PACK_ID)
+                .unwrap()
+                .iter()
+                .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
+                .next()
+                .unwrap(),
+        );
+        let nemesis_set = &pre_built_decks
+            .get(nemesis_set_name.as_str())
             .unwrap()
-            .iter()
-            .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
-            .next()
-            .unwrap()
-            .name;
-        let nemesis_set = &pre_built_decks.get(nemesis_set_name).unwrap().cards;
+            .cards;
         deck.extend(nemesis_set.clone());
         let mut obligation_nemesis_bundle = nemesis_set.clone();
         obligation_nemesis_bundle.insert(0, obligation_card);
 
-        let label = format!("{name} (marvelcdb bundle)");
+        let marvelcdb_label = format!("{name} (Hero) [marvelcdb bundle]");
         pre_built_decks.insert(
-            label.clone(),
+            marvelcdb_label.clone(),
             PreBuiltDeck {
-                label,
+                label: marvelcdb_label,
                 cards: obligation_nemesis_bundle,
                 post_load_action_list: None,
             },
         );
+        let deck_label = format!("{name} (Hero)");
         pre_built_decks.insert(
-            name.clone(),
+            deck_label.clone(),
             PreBuiltDeck {
-                label: name,
+                label: deck_label,
                 cards: deck,
                 post_load_action_list: None,
             },
@@ -345,26 +338,7 @@ pub async fn execute(args: DecksArgs) {
             if set.id == MARAUDERS_SET_ID {
                 continue;
             }
-            let deck_list_id = if set.id == VENOM_HERO_SET_ID {
-                String::from("Venom (Hero)")
-            } else if set.id == VENOM_SCENARIO_SET_ID {
-                String::from("Venom (Scenario)")
-            } else if set.id == NEBULA_HERO_SET_ID {
-                String::from("Nebula (Hero)")
-            } else if set.id == NEBULA_SCENARIO_SET_ID {
-                String::from("Nebula (Scenario)")
-            } else if set.id == MAGNETO_HERO_SET_ID {
-                String::from("Magneto (Hero)")
-            } else if set.id == MAGNETO_SCENARIO_SET_ID {
-                String::from("Magneto (Scenario)")
-            } else if set.id == BLACK_WIDOW_HERO_SET_ID {
-                String::from("Black Widow (Hero)")
-            } else if set.id == BLACK_WIDOW_SCENARIO_SET_ID {
-                String::from("Black Widow (Scenario)")
-            } else {
-                set.name.clone()
-            };
-
+            let deck_list_id = set_label(&set);
             let deck_lists = pack_sub_menu
                 .entry(set.r#type.clone())
                 .or_insert_with(|| Vec::new());
@@ -480,24 +454,28 @@ fn build_hero_deck<'a>(
     let mut obligation_nemesis_bundle =
         process_hero_deck(&vec![obligation_card], &pack, &&marvelcdb_cards);
     let hero_name = hero_set.name.clone();
-    let nemesis_set_name = &pack_set_map
-        .get(&pack.id)
+    let nemesis_set_name = set_label(
+        &pack_set_map
+            .get(&pack.id)
+            .unwrap()
+            .iter()
+            .filter(|set| {
+                set.r#type == SetType::Nemesis
+                    && (set.name.contains(&hero_name)
+                        || (hero_set.id == SPIDER_MAN_MILES_MORALES_HERO_SET_ID
+                            && set.id == SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID))
+            })
+            .next()
+            .unwrap(),
+    );
+    let nemesis_set = &pre_built_decks
+        .get(nemesis_set_name.as_str())
         .unwrap()
-        .iter()
-        .filter(|set| {
-            set.r#type == SetType::Nemesis
-                && (set.name.contains(&hero_name)
-                    || (hero_set.id == SPIDER_MAN_MILES_MORALES_HERO_SET_ID
-                        && set.id == SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID))
-        })
-        .next()
-        .unwrap()
-        .name;
-    let nemesis_set = &pre_built_decks.get(nemesis_set_name).unwrap().cards;
+        .cards;
     deck.extend(nemesis_set.clone());
     obligation_nemesis_bundle.extend(nemesis_set.clone());
 
-    let label = format!("{hero_name} (marvelcdb bundle)");
+    let label = format!("{hero_name} (Hero) [marvelcdb bundle]");
     pre_built_decks.insert(
         label.clone(),
         PreBuiltDeck {
@@ -519,7 +497,7 @@ fn build_hero_deck<'a>(
             })
             .collect::<Vec<dragncards::decks::Card>>();
 
-        let label = String::from("Ironheart (Version Upgrades)");
+        let label = String::from("Ironheart (Hero) [version upgrades]");
         pre_built_decks.insert(
             label.clone(),
             PreBuiltDeck {
@@ -551,17 +529,7 @@ fn build_hero_deck<'a>(
             },
         );
     }
-    let pre_built_label = if pack.id == VENOM_HERO_PACK_ID {
-        String::from("Venom (Hero)")
-    } else if pack.id == NEBULA_HERO_PACK_ID {
-        String::from("Nebula (Hero)")
-    } else if pack.id == MAGNETO_HERO_PACK_ID {
-        String::from("Magneto (Hero)")
-    } else if pack.id == BLACK_WIDOW_HERO_PACK_ID {
-        String::from("Black Widow (Hero)")
-    } else {
-        hero_name
-    };
+    let pre_built_label = set_label(&hero_set);
     pre_built_decks.insert(
         pre_built_label.clone(),
         dragncards::decks::PreBuiltDeck {
@@ -713,27 +681,7 @@ fn process_sets_by_packs(
                 })
                 .collect();
 
-            // Venom is the set name for both the Hero/Scenario
-            let label = if set.id == VENOM_HERO_SET_ID {
-                String::from("Venom (Hero)")
-            } else if set.id == VENOM_SCENARIO_SET_ID {
-                String::from("Venom (Scenario)")
-            } else if set.id == NEBULA_HERO_SET_ID {
-                String::from("Nebula (Hero)")
-            } else if set.id == NEBULA_SCENARIO_SET_ID {
-                String::from("Nebula (Scenario)")
-            } else if set.id == MAGNETO_HERO_SET_ID {
-                String::from("Magneto (Hero)")
-            } else if set.id == MAGNETO_SCENARIO_SET_ID {
-                String::from("Magneto (Scenario)")
-            } else if set.id == BLACK_WIDOW_HERO_SET_ID {
-                String::from("Black Widow (Hero)")
-            } else if set.id == BLACK_WIDOW_SCENARIO_SET_ID {
-                String::from("Black Widow (Scenario)")
-            } else {
-                set.name.clone()
-            };
-
+            let label = set_label(&set);
             let mut post_load_action_list = if set.r#type == SetType::Villain {
                 let mut post_load_action_list_vector =
                     vec![json!(["SET", "/layoutVariants/largeMainScheme", false])];
@@ -798,12 +746,16 @@ fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &V
         .filter(|set| set.r#type == SetType::Villain && set.requires.is_some());
     for scenario in villain_scenarios_requires {
         if let Some(requires) = scenario.requires.as_ref() {
-            let label = format!("{} (required)", scenario.name);
+            let label = format!("{} (Scenario) [required]", scenario.name);
             let cards: Vec<crate::dragncards::decks::Card> = requires
                 .iter()
                 .map(|require| {
                     let set = sets.iter().find(|set| &set.id == require).unwrap();
-                    let mut cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
+                    let mut cards = pre_built_decks
+                        .get(set_label(&set).as_str())
+                        .unwrap()
+                        .cards
+                        .clone();
 
                     if set.id == EXPERIMENTAL_WEAPONS_SET_ID && scenario.id == CROSSBONES_SET_ID {
                         for card in cards.iter_mut() {
@@ -840,12 +792,16 @@ fn process_recommends_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: 
         .filter(|set| set.r#type == SetType::Villain && set.recommends.is_some());
     for scenario in villain_scenarios_recommends {
         if let Some(recommmends) = scenario.recommends.as_ref() {
-            let label = format!("{} (recommends)", scenario.name);
+            let label = format!("{} (Scenario) [recommends]", scenario.name);
             let cards: Vec<crate::dragncards::decks::Card> = recommmends
                 .iter()
                 .map(|require| {
                     let set = sets.iter().find(|set| &set.id == require).unwrap();
-                    let cards = pre_built_decks.get(&set.name).unwrap().cards.clone();
+                    let cards = pre_built_decks
+                        .get(set_label(&set).as_str())
+                        .unwrap()
+                        .cards
+                        .clone();
 
                     cards
                 })
@@ -862,4 +818,8 @@ fn process_recommends_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: 
             );
         }
     }
+}
+
+fn set_label(set: &Set) -> String {
+    format!("{} ({})", set.name, set.r#type)
 }

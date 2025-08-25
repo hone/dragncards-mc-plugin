@@ -446,6 +446,19 @@ pub enum SetType {
     Villain,
 }
 
+impl fmt::Display for SetType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            SetType::Campaign => write!(f, "Campaign"),
+            SetType::Hero => write!(f, "Hero"),
+            SetType::Modular => write!(f, "Modular"),
+            SetType::Nemesis => write!(f, "Nemesis"),
+            SetType::Supplementary => write!(f, "Supplementary"),
+            SetType::Villain => write!(f, "Scenario"),
+        }
+    }
+}
+
 pub async fn get_packs(offline: Option<bool>) -> Result<Vec<Pack>, reqwest::Error> {
     let mut packs: Vec<Pack> = if offline.unwrap_or(false) {
         serde_json::from_str(include_str!("../fixtures/cerebro/packs.json")).unwrap()

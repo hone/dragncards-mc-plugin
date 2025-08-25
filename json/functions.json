@@ -141,10 +141,10 @@
       "code": [
         [
           ["LOG", "Loading Standard Cards: {{$STANDARD}}"],
-          ["LOAD_CARDS", "$STANDARD"],
+          ["LOAD_CARDS", "{{$STANDARD}} (Modular)"],
           ["COND",
             ["DEFINED", "$EXPERT"],
-            ["LOAD_CARDS", "$EXPERT"]
+            ["LOAD_CARDS", "{{$EXPERT}} (Modular)"]
           ]
         ]
       ]
@@ -155,7 +155,7 @@
         "$GAME.loadRecommends",
         [
           ["LOG", "Loading {{$SCENARIO}} recommends cards."],
-          ["LOAD_CARDS", "{{$SCENARIO}} (recommends)"]
+          ["LOAD_CARDS", "{{$SCENARIO}} (Scenario) [recommends]"]
         ]
       ]
     },
@@ -165,7 +165,7 @@
         "$GAME.loadRequired",
         [
           ["LOG", "Loading {{$SCENARIO}} required cards."],
-          ["LOAD_CARDS", "{{$SCENARIO}} (required)"]
+          ["LOAD_CARDS", "{{$SCENARIO}} (Scenario) [required]"]
         ]
       ]
     },
