@@ -134,14 +134,14 @@
           ["EQUAL", "$CARD.databaseId", "3392ba83-1e54-599f-82f1-14b2ffca0616"],
           [
             ["LOG", "Miles Morales Detected"],
-            ["DEFINE", "$BUNDLE", "Spider-Man (Miles Morales) (marvelcdb bundle)"]
+            ["DEFINE", "$BUNDLE", "Spider-Man (Miles Morales) (Hero) [marvelcdb bundle]"]
           ]
         ],
         ["COND",
           ["EQUAL", "$CARD.databaseId", "24204dfc-8ac2-5089-b103-40e6984853eb"],
           [
             ["LOG", "Shuri Detected"],
-            ["DEFINE", "$BUNDLE", "Black Panther (Shuri) (marvelcdb bundle)"]
+            ["DEFINE", "$BUNDLE", "Black Panther (Shuri) (Hero) [marvelcdb bundle]"]
           ]
         ],
         ["COND",
@@ -192,7 +192,7 @@
             [
               ["COND",
                 ["NOT", ["DEFINED", "$BUNDLE"]],
-                ["DEFINE", "$BUNDLE", "{{$IDENTITY_CARD.sides.$HERO_SIDE.name}} (marvelcdb bundle)"]
+                ["DEFINE", "$BUNDLE", "{{$IDENTITY_CARD.sides.$HERO_SIDE.name}} (Hero) [marvelcdb bundle]"]
               ],
               ["LOAD_CARDS", "$BUNDLE"]
             ]
