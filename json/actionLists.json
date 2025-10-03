@@ -110,7 +110,7 @@
           ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", 0]
         ]
       ]],
-      ["SHUFFLE_GROUP", "$GROUP_ID"]
+      ["SHUFFLE_GROUP", "sharedEncounterDeck"]
     ],
     "playerEndPhase": [
       ["LOG", "Player Phase - Ends"],
