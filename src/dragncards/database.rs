@@ -1,7 +1,7 @@
 use crate::{
     cerebro::{
         Acceleration, Card as CerebroCard, CardType, Classification, Icon, Pack, Printing,
-        ScalingNumber,
+        ScalingNumber, Set,
     },
     marvelcdb,
 };
@@ -31,6 +31,7 @@ pub struct Card {
     pub hand_size: Option<u32>,
     pub hit_points_fixed: Option<i64>,
     pub hit_points_scaling: Option<i64>,
+    pub set: Option<String>,
     pub stage: Option<String>,
     pub starting_threat_fixed: Option<i64>,
     pub starting_threat_scaling: Option<i64>,
@@ -47,7 +48,11 @@ pub struct Card {
 }
 
 impl Card {
-    pub fn new(card: CerebroCard, packs: &HashMap<Uuid, Pack>) -> Vec<Card> {
+    pub fn new(
+        card: CerebroCard,
+        packs: &HashMap<Uuid, Pack>,
+        sets: &HashMap<Uuid, Set>,
+    ) -> Vec<Card> {
         let card_back = card_back(&card);
 
         card.printings
@@ -55,6 +60,11 @@ impl Card {
             .map(|printing| {
                 let database_id = uuid(&printing.artificial_id);
                 let pack = packs.get(&printing.pack_id).unwrap();
+                let set = printing
+                    .set_id
+                    .as_ref()
+                    .and_then(|set_id| sets.get(set_id))
+                    .map(|set| set.name.clone());
                 let image_url = image_url(&card, &printing);
                 let permanent = card
                     .rules
@@ -96,6 +106,7 @@ impl Card {
                         .map(|hand_size| hand_size.parse::<u32>().unwrap()),
                     hit_points_fixed: None,
                     hit_points_scaling: None,
+                    set,
                     starting_threat_fixed: None,
                     starting_threat_scaling: None,
                     stage: card.stage.clone(),

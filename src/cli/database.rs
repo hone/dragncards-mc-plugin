@@ -30,6 +30,13 @@ pub async fn execute(args: DatabaseArgs) {
         .into_iter()
         .map(|pack| (pack.id.clone(), pack))
         .collect();
+    let set_map: HashMap<Uuid, cerebro::Set> = tokio::spawn(cerebro::get_sets(Some(args.offline)))
+        .await
+        .unwrap()
+        .unwrap()
+        .into_iter()
+        .map(|set| (set.id.clone(), set))
+        .collect();
     let mut cards: Vec<Card> = card_handler
         .await
         .unwrap()
@@ -37,7 +44,7 @@ pub async fn execute(args: DatabaseArgs) {
         .into_iter()
         .filter_map(|card| {
             if card.official {
-                Some(Card::new(card, &pack_map))
+                Some(Card::new(card, &pack_map, &set_map))
             } else {
                 None
             }
