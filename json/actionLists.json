@@ -22,17 +22,28 @@
     ],
     "flipCard": [
       ["COND",
-        ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
+        ["DEFINED", "$ACTIVE_CARD.sides.C"],
         [
-          ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} facedown."],
-          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"]
+          ["COND",
+            ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
+            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"],
+            ["EQUAL", "$ACTIVE_CARD.currentSide", "B"],
+            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "C"],
+            true,
+            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"]
+          ]
         ],
         true,
         [
-          ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"],
-          ["LOG", "{{$ALIAS_N}} flipped {{$ACTIVE_FACE.name}} faceup."]
+          ["COND",
+            ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
+            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"],
+            true,
+            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"]
+          ]
         ]
-      ]
+      ],
+      ["LOG", "{{$ALIAS_N}} flipped the card to {{$ACTIVE_FACE.name}}."]
     ],
     "loadMode": [
       ["COND",
