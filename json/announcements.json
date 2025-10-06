@@ -1,5 +1,6 @@
 {
   "announcements": [
+    "2025-10-05: Feat: Add Standard/Expert Set info to save game metadata",
     "2025-10-05: Feat: Card Flip now supports 3 sided cards",
     "2025-10-03: Feat: Add Scenario/Hero info to save game metadata",
     "2025-10-03: Fix: Shuffle deck for Shadows of the Past hotkey",
