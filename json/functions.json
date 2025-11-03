@@ -43,7 +43,10 @@
             ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
             ["COND",
               ["AND",
-                ["EQUAL", "$DISCARD_CARD.sides.A.type", "Villain"],
+                ["OR",
+                  ["EQUAL", "$DISCARD_CARD.sides.A.type", "Villain"],
+                  ["EQUAL", "$DISCARD_CARD.sides.A.type", "Leader"]
+                ],
                 ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedVillainDeck.stackIds"], 0]
               ],
               [
@@ -149,15 +152,52 @@
         ]
       ]
     },
-    "LOAD_RECOMMENDS": {
+    "LOAD_LEADER_BY_MODE": {
+      "args": [],
+      "code": [
+        ["VAR", "$STAGE_I", ["ONE_CARD", "$CARD", ["AND", ["EQUAL", "$CARD.sides.A.type", "Leader"], ["EQUAL", "$CARD.sides.A.stage", "I"]]]],
+        ["VAR", "$STAGE_II", ["ONE_CARD", "$CARD", ["AND", ["EQUAL", "$CARD.sides.A.type", "Leader"], ["EQUAL", "$CARD.sides.A.stage", "II"]]]],
+        ["VAR", "$STAGE_III", ["ONE_CARD", "$CARD", ["AND", ["EQUAL", "$CARD.sides.A.type", "Leader"], ["EQUAL", "$CARD.sides.A.stage", "III"]]]],
+        ["VAR", "$STAGE_IV", ["ONE_CARD", "$CARD", ["AND", ["EQUAL", "$CARD.sides.A.type", "Leader"], ["EQUAL", "$CARD.sides.A.stage", "IV"]]]],
+        ["COND",
+          ["EQUAL", "$GAME.mode", "standard"],
+          [
+            ["MOVE_CARD", "$STAGE_I.id", "sharedVillain", 0],
+            ["MOVE_CARD", "$STAGE_II.id", "sharedVillainDeck", 0],
+            ["MOVE_CARD", "$STAGE_III.id", "sharedVillainDiscard", 0],
+            ["MOVE_CARD", "$STAGE_IV.id", "sharedVillainDiscard", 0],
+            ["SET_VILLAIN_HEALTH", "$STAGE_I.id"]
+          ],
+          ["EQUAL", "$GAME.mode", "expert"],
+          [
+            ["MOVE_CARD", "$STAGE_I.id", "sharedVillainDiscard", 0],
+            ["MOVE_CARD", "$STAGE_II.id", "sharedVillainDiscard", 0],
+            ["MOVE_CARD", "$STAGE_III.id", "sharedVillain", 0],
+            ["MOVE_CARD", "$STAGE_IV.id", "sharedVillainDeck", 0],
+            ["SET_VILLAIN_HEALTH", "$STAGE_III.id"]
+          ]
+        ]
+      ]
+    },
+    "LOAD_LEADER_RECOMMENDS": {
       "args": ["$SCENARIO"],
       "code": ["COND",
         "$GAME.loadRecommends",
         [
           ["LOG", "Loading {{$SCENARIO}} recommends cards."],
-          ["LOAD_CARDS", "{{$SCENARIO}} (Scenario) [recommends]"]
+          ["LOAD_CARDS", "{{$SCENARIO}} (Leader) [recommends]"]
         ]
       ]
+    },
+    "LOAD_RECOMMENDS": {
+    "args": ["$SCENARIO"],
+    "code": ["COND",
+      "$GAME.loadRecommends",
+      [
+        ["LOG", "Loading {{$SCENARIO}} recommends cards."],
+        ["LOAD_CARDS", "{{$SCENARIO}} (Scenario) [recommends]"]
+      ]
+    ]
     },
     "LOAD_REQUIRED": {
       "args": ["$SCENARIO"],

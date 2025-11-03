@@ -156,6 +156,19 @@
         "tough"
       ]
     },
+    "Leader": {
+      "width": 1.0,
+      "height": 1.39,
+      "tokens": [
+        "damage",
+        "threat",
+        "generic",
+        "acceleration",
+        "confused",
+        "stunned",
+        "tough"
+      ]
+    },
     "Main Scheme": {
       "width": 1.39,
       "height": 1.0,

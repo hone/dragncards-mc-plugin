@@ -51,6 +51,7 @@ pub async fn execute(args: DatabaseArgs) {
         })
         .flatten()
         .collect();
+    cards.sort_by(|a, b| a.cerebro_id.cmp(&b.cerebro_id));
     if let Some(download_path) = args.download {
         let download_server = &args
             .download_server

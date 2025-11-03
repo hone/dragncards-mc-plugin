@@ -44,6 +44,7 @@ pub enum TypeCode {
     EvidenceMotive,
     #[serde(rename = "Evidence - Opportunity", alias = "evidence_opportunity")]
     EvidenceOpportunity,
+    Leader,
     MainScheme,
     Minion,
     Obligation,

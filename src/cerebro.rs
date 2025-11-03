@@ -282,6 +282,7 @@ pub enum CardType {
     #[serde(rename = "Evidence - Opportunity")]
     EvidenceOpportunity,
     Hero,
+    Leader,
     #[serde(rename = "Main Scheme")]
     MainScheme,
     Minion,
@@ -400,7 +401,7 @@ impl<'de> Visitor<'de> for SetNumberVisitor {
                 .unwrap_or(Ok(start))?;
 
             Ok(SetNumber::Range(start..=end))
-        } else if value == "??" {
+        } else if ["??", "???"].contains(&value) {
             Ok(SetNumber::Unknown)
         } else {
             Err(E::custom(format!("Not in range format: {value}")))
@@ -436,6 +437,8 @@ pub enum SetType {
     Campaign,
     #[serde(rename = "Hero Set")]
     Hero,
+    #[serde(rename = "Leader Set")]
+    Leader,
     #[serde(rename = "Modular Set")]
     Modular,
     #[serde(rename = "Nemesis Set")]
@@ -451,6 +454,7 @@ impl fmt::Display for SetType {
         match self {
             SetType::Campaign => write!(f, "Campaign"),
             SetType::Hero => write!(f, "Hero"),
+            SetType::Leader => write!(f, "Leader"),
             SetType::Modular => write!(f, "Modular"),
             SetType::Nemesis => write!(f, "Nemesis"),
             SetType::Supplementary => write!(f, "Supplementary"),

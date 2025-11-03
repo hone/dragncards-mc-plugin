@@ -355,6 +355,38 @@ pub async fn execute(args: DecksArgs) {
         },
     );
 
+    // Civil War Scenario Recommends
+    let doc = dragncards::civil_war_leader::Doc::from_fixture();
+    for (name, leader) in doc.leaders.into_iter() {
+        let mut deck: Vec<dragncards::decks::Card> = leader
+            .main_schemes
+            .into_iter()
+            .map(|card| dragncards::decks::Card {
+                load_group_id: card.load_group_id,
+                quantity: 1,
+                database_id: card.uuid,
+                _name: card.name,
+            })
+            .collect();
+        leader.sets.iter().for_each(|set_name| {
+            let set = &pre_built_decks
+                .get(&format!("{set_name} (Modular)"))
+                .unwrap()
+                .cards;
+            deck.extend(set.clone());
+        });
+
+        let deck_label = format!("{name} (Leader) [recommends]");
+        pre_built_decks.insert(
+            deck_label.clone(),
+            PreBuiltDeck {
+                label: deck_label,
+                cards: deck,
+                post_load_action_list: None,
+            },
+        );
+    }
+
     let json =
         serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
             .unwrap();
@@ -401,6 +433,15 @@ pub async fn execute(args: DecksArgs) {
                         values.push(SubMenu::DeckLists {
                             label: pack.name.clone(),
                             deck_lists,
+                        });
+                    }
+                    SetType::Leader => {
+                        let values = root_sub_menus
+                            .entry(SubMenuRootKey::Scenarios)
+                            .or_insert_with(|| Vec::new());
+                        values.push(SubMenu::DeckLists {
+                            label: pack.name.clone(),
+                            deck_lists: deck_lists,
                         });
                     }
                     SetType::Modular => {
@@ -663,7 +704,7 @@ fn process_sets_by_packs(
                     }
 
                     let mut load_group_id = match set.r#type {
-                        SetType::Modular | SetType::Villain => {
+                        SetType::Leader | SetType::Modular | SetType::Villain => {
                             let load_group_id = match card.r#type {
                                 CardType::MainScheme => {
                                     if card
@@ -678,7 +719,7 @@ fn process_sets_by_packs(
                                         "sharedMainSchemeDeck"
                                     }
                                 }
-                                CardType::Villain => "sharedVillainDeck",
+                                CardType::Leader | CardType::Villain => "sharedVillainDeck",
                                 _ => "sharedEncounterDeck",
                             };
 
@@ -723,7 +764,9 @@ fn process_sets_by_packs(
                 .collect();
 
             let label = set_label(&set);
-            let mut post_load_action_list = if set.r#type == SetType::Villain {
+            let mut post_load_action_list = if [SetType::Villain, SetType::Leader]
+                .contains(&set.r#type)
+            {
                 let mut post_load_action_list_vector =
                     vec![json!(["SET", "/layoutVariants/largeMainScheme", false])];
                 if set.requires.is_some() {
@@ -731,8 +774,13 @@ fn process_sets_by_packs(
                 }
                 if set.recommends.is_some() {
                     post_load_action_list_vector.push(json!(["LOAD_RECOMMENDS", set.name]));
+                } else if set.r#type == SetType::Leader {
+                    post_load_action_list_vector.push(json!(["LOAD_LEADER_RECOMMENDS", set.name]));
                 }
                 post_load_action_list_vector.push(json!(["ACTION_LIST", "loadMode"]));
+                if SetType::Leader == set.r#type {
+                    post_load_action_list_vector.push(json!(["LOAD_LEADER_BY_MODE"]));
+                }
 
                 Some(ActionList::List(post_load_action_list_vector))
             } else {
