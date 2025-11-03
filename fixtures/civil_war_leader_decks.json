@@ -1,0 +1,32 @@
+{
+  "leaders": {
+    "Iron Man": {
+      "mainSchemes": [
+        { "uuid": "827d371e-6ff7-5f65-8313-cc03c2890509", "name": "Cut Off Support", "loadGroupId": "sharedMainScheme" },
+        { "uuid": "c2ed8dd5-20f7-535a-99d6-804e1d2f1ed3", "name": "Negative Zone Prison", "loadGroupId": "sharedMainSchemeDeck" }
+      ],
+      "sets": ["Mighty Avengers", "The Initiative", "Maria Hill", "Dangerous Recruits"]
+    },
+    "Captain Marvel": {
+      "mainSchemes": [
+        { "uuid": "ef9dae92-1197-50cd-9b93-8aa91b8d8345", "name": "S.H.I.E.L.D. Recruits", "loadGroupId": "sharedMainScheme" },
+        { "uuid": "0ca879c6-2c71-52a6-9e76-5b7ae2b96bcb", "name": "Hunting Rebel Heroes", "loadGroupId": "sharedMainSchemeDeck" }
+      ],
+      "sets": ["Cape-Killer", "Martial Law", "Heroes for Hire", "Paladin"]
+    },
+    "Captain America": {
+      "mainSchemes": [
+        { "uuid": "0eb21e82-2680-55d2-936e-875b0cb70c9b", "name": "Superhero Resistance", "loadGroupId": "sharedMainScheme" },
+        { "uuid": "d7c75585-d1f1-513f-8f9f-968bffa3b1e6", "name": "Resistance Tactics", "loadGroupId": "sharedMainSchemeDeck" }
+      ],
+      "sets": ["New Avengers", "Secret Avengers", "Namor"]
+    },
+    "Spider-Woman": {
+      "mainSchemes": [
+        { "uuid": "4281fedb-8b51-5c44-b630-5a7e1f091f89", "name": "Open Rebellion", "loadGroupId": "sharedMainScheme" },
+        { "uuid": "b271db3f-3b74-5c55-aba0-2c1a49f00633", "name": "Neighborhood Protectors", "loadGroupId": "sharedMainSchemeDeck" }
+      ],
+      "sets": ["Spider-Man", "Defenders", "Hell's Kitchen", "Cloak & Dagger"]
+    }
+  }
+}

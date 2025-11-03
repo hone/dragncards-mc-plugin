@@ -782,5 +782,19 @@
     "Number": "55",
     "ReleaseStatus": null,
     "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "306aa17f-1ad7-4754-bf41-29786bad854a",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Civil War",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "56",
+    "ReleaseStatus": null,
+    "SpoilerTag": true
   }
 ]
