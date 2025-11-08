@@ -19,7 +19,7 @@
         { "uuid": "0eb21e82-2680-55d2-936e-875b0cb70c9b", "name": "Superhero Resistance", "loadGroupId": "sharedMainScheme" },
         { "uuid": "d7c75585-d1f1-513f-8f9f-968bffa3b1e6", "name": "Resistance Tactics", "loadGroupId": "sharedMainSchemeDeck" }
       ],
-      "sets": ["New Avengers", "Secret Avengers", "Namor"]
+      "sets": ["New Avengers", "Secret Avengers", "Namor", "Atlanteans"]
     },
     "Spider-Woman": {
       "mainSchemes": [
