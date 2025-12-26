@@ -1,0 +1,10 @@
+id	name	subname	type	classification	traits	rules	cost	resource	hand	health	thwart	attack	defense	recover	starting_threat	acceleration	stage	set
+01001a	Spider-Man	Peter Parker	Hero	Hero	Avenger	Spider-Sense — Interrupt: When the villain initiates an attack against you, draw 1 card.		{w}	5	10	1	2	3				1	Spider-Man
+01001b	Peter Parker	Spider-Man	Alter-Ego	Hero	Genius	Resource: Generate a {w} resource. (Limit once per round.)			6	10				3			1	Spider-Man
+01003	Backflip		Event	Hero	Defense,Skill	Interrupt: When you would take any amount of damage from an attack, prevent all of that damage.	0	{p}										Spider-Man
+01094	Rhino		Villain	Encounter	Brute,Criminal	Rhino Hide — Interrupt: When Rhino would take damage, prevent 1 of that damage.				14		Rhino	I	1	2		I	Rhino
+01095	Rhino		Villain	Encounter	Brute,Criminal	Rhino Hide — Interrupt: When Rhino would take damage, prevent 1 of that damage.				15		Rhino	II	2	3		II	Rhino
+01097a	The Break-In!		Main Scheme	Encounter		When Revealed: Place 1 threat on this scheme per player.									7{i}		1A	Rhino
+01098	Armored Rhino Suit		Attachment	Encounter	Armor,Item,Tech	"Attached to Rhino.
+Forced Interrupt: When Rhino takes damage, place 1 threat on the main scheme."				3								Rhino
+01103	Shocker	Herman Schultz	Minion	Encounter	Criminal,Elite	Guard. (While this minion is engaged with you, you cannot attack the villain.)	2			3		3	3	1				Rhino

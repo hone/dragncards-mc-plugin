@@ -1,6 +1,7 @@
 mod cerebro;
 mod cli;
 mod dragncards;
+mod local;
 mod marvelcdb;
 
 use clap::Parser;
