@@ -65,6 +65,18 @@ impl CardRules for Card {
     fn rules_text(&self) -> Option<&str> {
         self.rules.as_deref()
     }
+
+    fn health(&self) -> Option<&ScalingNumber> {
+        self.health.as_ref()
+    }
+
+    fn starting_threat(&self) -> Option<&ScalingNumber> {
+        self.starting_threat.as_ref()
+    }
+
+    fn acceleration(&self) -> Option<&Acceleration> {
+        self.acceleration.as_ref()
+    }
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -348,46 +360,33 @@ mod tests {
         assert_eq!(
             accelerate
                 .icons()
-                .map(|icons| icons.get(&Icon::Acceleration).map(|quantity| *quantity))
-                .flatten(),
-            Some(2 as usize)
+                .and_then(|i| i.get(&Icon::Acceleration).copied()),
+            Some(2)
         );
 
         let amplify = card_by_id("16069");
         assert_eq!(
-            amplify
-                .icons()
-                .map(|icons| icons.get(&Icon::Amplify).map(|quantity| *quantity))
-                .flatten(),
-            Some(1 as usize)
+            amplify.icons().and_then(|i| i.get(&Icon::Amplify).copied()),
+            Some(1)
         );
 
         let crisis = card_by_id("16066");
         assert_eq!(
-            crisis
-                .icons()
-                .map(|icons| icons.get(&Icon::Crisis).map(|quantity| *quantity))
-                .flatten(),
-            Some(1 as usize)
+            crisis.icons().and_then(|i| i.get(&Icon::Crisis).copied()),
+            Some(1)
         );
 
         let hazard = card_by_id("16068");
         assert_eq!(
-            hazard
-                .icons()
-                .map(|icons| icons.get(&Icon::Hazard).map(|quantity| *quantity))
-                .flatten(),
-            Some(1 as usize)
+            hazard.icons().and_then(|i| i.get(&Icon::Hazard).copied()),
+            Some(1)
         );
 
         let multi = card_by_id("27155");
-        if let Some(icons) = multi.icons() {
-            assert_eq!(icons.get(&Icon::Acceleration), Some(1 as usize).as_ref());
-            assert_eq!(icons.get(&Icon::Crisis), Some(1 as usize).as_ref());
-            assert_eq!(icons.get(&Icon::Hazard), Some(1 as usize).as_ref());
-        } else {
-            assert!(multi.icons().is_some());
-        }
+        let icons = multi.icons().unwrap();
+        assert_eq!(icons.get(&Icon::Acceleration), Some(&1));
+        assert_eq!(icons.get(&Icon::Crisis), Some(&1));
+        assert_eq!(icons.get(&Icon::Hazard), Some(&1));
     }
 
     #[test]
@@ -402,5 +401,39 @@ mod tests {
         let result: Result<Vec<Set>, _> =
             serde_json::from_str(include_str!("../fixtures/cerebro/sets.json"));
         assert!(result.is_ok());
+    }
+
+    #[test]
+    fn it_implements_card_rules_stats() {
+        // Let's manually construct a minimal Card.
+        let card = Card {
+            id: "test".to_string(),
+            deleted: false,
+            official: true,
+            classification: Classification::Basic,
+            incomplete: false,
+            name: "Test".to_string(),
+            subname: None,
+            rules: Some("Hinder 1{i}.".to_string()),
+            r#type: CardType::MainScheme,
+            printings: vec![],
+            stage: None,
+            traits: None,
+            hand: None,
+            health: Some(ScalingNumber::Scaling(5)),
+            starting_threat: Some(ScalingNumber::Fixed(2)),
+            acceleration: Some(Acceleration::Fixed(1)),
+        };
+
+        // Health: Scaling(5) -> (None, Some(5))
+        assert_eq!(card.health_parsed(), (None, Some(5)));
+        
+        // Threat: Fixed(2) + Hinder 1{i} -> (Some(2), Some(1))
+        // Wait, Fixed(2) has NO scaling component. Hinder adds to scaling.
+        // So (Some(2), Some(1)).
+        assert_eq!(card.starting_threat_parsed(), (Some(2), Some(1)));
+
+        // Acceleration: Fixed(1) -> (Some(1), None)
+        assert_eq!(card.acceleration_parsed(), (Some(1), None));
     }
 }

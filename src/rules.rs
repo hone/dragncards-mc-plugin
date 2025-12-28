@@ -16,9 +16,19 @@ pub enum Icon {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum ScalingNumber {
-    Fixed(u32),
-    Scaling(u32),
+    Fixed(usize),
+    Scaling(usize),
     Infinity,
+}
+
+impl ScalingNumber {
+    pub fn as_tuple(&self) -> (Option<i64>, Option<usize>) {
+        match self {
+            ScalingNumber::Fixed(i) => (Some(*i as i64), None),
+            ScalingNumber::Scaling(i) => (None, Some(*i)),
+            ScalingNumber::Infinity => (Some(-1 as i64), None),
+        }
+    }
 }
 
 struct ScalingNumberVisitor;
@@ -41,7 +51,7 @@ impl<'de> Visitor<'de> for ScalingNumberVisitor {
 
         if let Some(captures) = SCALING_NUMBER_RE.captures(value) {
             let number = captures["number"]
-                .parse::<u32>()
+                .parse::<usize>()
                 .map_err(|_| E::custom(format!("Need an integer: {value}")))?;
             if captures.name("scaling").is_some() {
                 Ok(ScalingNumber::Scaling(number))
@@ -71,14 +81,27 @@ impl<'de> Deserialize<'de> for ScalingNumber {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Acceleration {
-    Fixed(u32),
-    Scaling(u32),
+    Fixed(usize),
+    Scaling(usize),
     FixedX,
     ScalingX,
     ZeroStar, // This isn't a FixedStar b/c there's no leading '+'
-    FixedStar(u32),
-    ScalingStar(u32),
+    FixedStar(usize),
+    ScalingStar(usize),
     None,
+}
+
+impl Acceleration {
+    pub fn as_tuple(&self) -> (Option<usize>, Option<usize>) {
+        match self {
+            Acceleration::Fixed(i) => (Some(*i), None),
+            Acceleration::Scaling(i) => (None, Some(*i)),
+            Acceleration::FixedStar(i) => (Some(*i), None),
+            Acceleration::ScalingStar(i) => (None, Some(*i)),
+            Acceleration::ZeroStar => (Some(0), None),
+            _ => (None, None),
+        }
+    }
 }
 
 struct AccelerationVisitor;
@@ -101,7 +124,7 @@ impl<'de> Visitor<'de> for AccelerationVisitor {
         }
 
         if let Some(captures) = ACCELERATION_RE.captures(value) {
-            if let Ok(number) = captures["digit"].parse::<u32>() {
+            if let Ok(number) = captures["digit"].parse::<usize>() {
                 if captures.name("scaling").is_some() && captures.name("star").is_none() {
                     Ok(Acceleration::Scaling(number))
                 } else if captures.name("scaling").is_some() && captures.name("star").is_some() {
@@ -189,32 +212,33 @@ pub enum CardType {
 pub trait CardRules {
     fn rules_text(&self) -> Option<&str>;
 
-    fn health_raw(&self) -> Option<&str> {
+    // New Typed Accessors
+    fn health(&self) -> Option<&ScalingNumber> {
         None
     }
-    fn starting_threat_raw(&self) -> Option<&str> {
+    fn starting_threat(&self) -> Option<&ScalingNumber> {
         None
     }
-    fn acceleration_raw(&self) -> Option<&str> {
+    fn acceleration(&self) -> Option<&Acceleration> {
         None
     }
 
     fn icons(&self) -> Option<HashMap<Icon, usize>> {
         if let Some(rules) = self.rules_text() {
             let mut icons = HashMap::new();
-            let acceleration_icons = rules.matches("{a}").collect::<Vec<_>>().len();
+            let acceleration_icons = rules.matches("{a}").count();
             if acceleration_icons > 0 {
                 icons.insert(Icon::Acceleration, acceleration_icons);
             }
-            let amplify_icons = rules.matches("{y}").collect::<Vec<_>>().len();
+            let amplify_icons = rules.matches("{y}").count();
             if amplify_icons > 0 {
                 icons.insert(Icon::Amplify, amplify_icons);
             }
-            let crisis_icons = rules.matches("{c}").collect::<Vec<_>>().len();
+            let crisis_icons = rules.matches("{c}").count();
             if crisis_icons > 0 {
                 icons.insert(Icon::Crisis, crisis_icons);
             }
-            let hazard_icons = rules.matches("{h}").collect::<Vec<_>>().len();
+            let hazard_icons = rules.matches("{h}").count();
             if hazard_icons > 0 {
                 icons.insert(Icon::Hazard, hazard_icons);
             }
@@ -229,13 +253,13 @@ pub trait CardRules {
         }
     }
 
-    fn hinder(&self) -> Option<u32> {
+    fn hinder(&self) -> Option<usize> {
         if let Some(rules) = self.rules_text() {
             lazy_static! {
                 static ref HINDER_RE: Regex = Regex::new(r"Hinder (\d+)\{i\}.").unwrap();
             }
             if let Some(captures) = HINDER_RE.captures(rules) {
-                return Some(captures[1].parse::<u32>().unwrap());
+                return Some(captures[1].parse::<usize>().unwrap());
             }
         }
 
@@ -272,47 +296,26 @@ pub trait CardRules {
             .unwrap_or(false)
     }
 
-    fn health_parsed(&self) -> (Option<i64>, Option<i64>) {
-        parse_scaling_number_str(self.health_raw())
+    fn health_parsed(&self) -> (Option<i64>, Option<usize>) {
+        self.health().map(|s| s.as_tuple()).unwrap_or((None, None))
     }
 
-    fn starting_threat_parsed(&self) -> (Option<i64>, Option<i64>) {
-        let (fixed, scaling) = parse_scaling_number_str(self.starting_threat_raw());
+    fn starting_threat_parsed(&self) -> (Option<i64>, Option<usize>) {
+        let (fixed, scaling) = self
+            .starting_threat()
+            .map(|s| s.as_tuple())
+            .unwrap_or((None, None));
         if let Some(hinder) = self.hinder() {
-            (fixed, Some(scaling.unwrap_or(0) + hinder as i64))
+            (fixed, Some(scaling.unwrap_or(0) + hinder))
         } else {
             (fixed, scaling)
         }
     }
 
-    fn acceleration_parsed(&self) -> (Option<i64>, Option<i64>) {
-        parse_acceleration_str(self.acceleration_raw())
-    }
-}
-
-pub fn parse_scaling_number_str(input: Option<&str>) -> (Option<i64>, Option<i64>) {
-    match input {
-        Some(s) => {
-            if ["∞", "—", "–", "-"].contains(&s) {
-                (Some(-1), None)
-            } else {
-                lazy_static! {
-                    static ref SCALING_RE: Regex =
-                        Regex::new(r"(?<number>\d+)(?<scaling>\{i\})?").unwrap();
-                }
-                if let Some(captures) = SCALING_RE.captures(s) {
-                    let num = captures["number"].parse::<i64>().unwrap();
-                    if captures.name("scaling").is_some() {
-                        (None, Some(num))
-                    } else {
-                        (Some(num), None)
-                    }
-                } else {
-                    (None, None)
-                }
-            }
-        }
-        None => (None, None),
+    fn acceleration_parsed(&self) -> (Option<usize>, Option<usize>) {
+        self.acceleration()
+            .map(|a| a.as_tuple())
+            .unwrap_or((None, None))
     }
 }
 
@@ -322,95 +325,53 @@ mod tests {
 
     struct MockCard {
         rules: Option<String>,
-        health: Option<String>,
-        threat: Option<String>,
-        accel: Option<String>,
     }
 
     impl CardRules for MockCard {
-        fn rules_text(&self) -> Option<&str> { self.rules.as_deref() }
-        fn health_raw(&self) -> Option<&str> { self.health.as_deref() }
-        fn starting_threat_raw(&self) -> Option<&str> { self.threat.as_deref() }
-        fn acceleration_raw(&self) -> Option<&str> { self.accel.as_deref() }
+        fn rules_text(&self) -> Option<&str> {
+            self.rules.as_deref()
+        }
     }
 
     #[test]
     fn test_victory_parsing() {
-        let card = MockCard { 
-            rules: Some("Victory 1.".to_string()), 
-            health: None, threat: None, accel: None 
+        let card = MockCard {
+            rules: Some("Victory 1.".to_string()),
         };
         assert_eq!(card.victory(), Some(1));
 
-        let card_neg = MockCard { 
-            rules: Some("Victory -2.".to_string()), 
-            health: None, threat: None, accel: None 
+        let card_neg = MockCard {
+            rules: Some("Victory -2.".to_string()),
         };
         assert_eq!(card_neg.victory(), Some(-2));
     }
 
     #[test]
     fn test_hinder_parsing() {
-        let card = MockCard { 
-            rules: Some("Hinder 3{i}.".to_string()), 
-            health: None, threat: None, accel: None 
+        let card = MockCard {
+            rules: Some("Hinder 3{i}.".to_string()),
         };
-        assert_eq!(card.hinder(), Some(3));
+        assert_eq!(card.hinder(), Some(3)); // usize
     }
 
     #[test]
     fn test_icon_parsing() {
         let card = MockCard {
             rules: Some("Rules with {a}{a} and {c} and {h}.".to_string()),
-            health: None, threat: None, accel: None
         };
         let icons = card.icons().unwrap();
-        assert_eq!(icons.get(&Icon::Acceleration), Some(&2));
+        assert_eq!(icons.get(&Icon::Acceleration), Some(&2)); // usize
         assert_eq!(icons.get(&Icon::Crisis), Some(&1));
         assert_eq!(icons.get(&Icon::Hazard), Some(&1));
         assert!(icons.get(&Icon::Amplify).is_none());
     }
 
     #[test]
-    fn test_scaling_number_parsing() {
-        assert_eq!(parse_scaling_number_str(Some("10")), (Some(10), None));
-        assert_eq!(parse_scaling_number_str(Some("5{i}")), (None, Some(5)));
-        assert_eq!(parse_scaling_number_str(Some("∞")), (Some(-1), None));
-    }
-
-    #[test]
-    fn test_acceleration_parsing() {
-        assert_eq!(parse_acceleration_str(Some("+1")), (Some(1), None));
-        assert_eq!(parse_acceleration_str(Some("+2{i}")), (None, Some(2)));
-        assert_eq!(parse_acceleration_str(Some("0 {s}")), (Some(0), None));
-    }
-}
-pub fn parse_acceleration_str(input: Option<&str>) -> (Option<i64>, Option<i64>) {
-    match input {
-        Some(s) => {
-            lazy_static! {
-                static ref ACCEL_RE: Regex =
-                    Regex::new(r"[+](?<digit>\d+|X)(?<scaling>\{i\})?(?<star> \{s\})?").unwrap();
-            }
-            if let Some(captures) = ACCEL_RE.captures(s) {
-                if let Ok(number) = captures["digit"].parse::<i64>() {
-                    let is_scaling = captures.name("scaling").is_some();
-                    if is_scaling {
-                        (None, Some(number))
-                    } else {
-                        (Some(number), None)
-                    }
-                } else {
-                    (None, None)
-                }
-            } else {
-                if s == "0 {s}" {
-                    (Some(0), None)
-                } else {
-                    (None, None)
-                }
-            }
-        }
-        None => (None, None),
+    fn test_permanent_and_tough() {
+        let card = MockCard {
+            rules: Some("Permanent. Toughness.".to_string()),
+        };
+        assert!(card.is_permanent());
+        assert!(card.is_tough());
     }
 }
