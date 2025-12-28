@@ -3,6 +3,7 @@ mod cli;
 mod dragncards;
 mod local;
 mod marvelcdb;
+mod rules;
 
 use clap::Parser;
 use cli::DragncardsMcCli;

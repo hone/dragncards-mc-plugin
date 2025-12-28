@@ -1,9 +1,7 @@
 use crate::{
-    cerebro::{
-        Acceleration, Card as CerebroCard, CardType, Classification, Icon, Pack, Printing,
-        ScalingNumber, Set,
-    },
+    cerebro::{Card as CerebroCard, Pack, Printing, Set},
     marvelcdb,
+    rules::{Acceleration, CardRules, CardType, Classification, Icon, ScalingNumber},
 };
 use serde::Serialize;
 use std::collections::HashMap;
@@ -117,7 +115,7 @@ impl Card {
                         .unwrap_or(false),
                     nemesis_minion,
                     permanent,
-                    victory: card.victory().map(|v| v as i64),
+                    victory: card.victory(),
                     acceleration_fixed: None,
                     acceleration_scaling: None,
                     acceleration: card
@@ -183,7 +181,7 @@ impl Card {
     }
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum CardBack {
     MultiSided,

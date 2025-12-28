@@ -1,4 +1,7 @@
-use crate::cerebro::{CardType, Classification};
+use crate::{
+    dragncards::database::{CardBack, Card as DragnCard, uuid},
+    rules::{CardRules, CardType, Classification, Icon},
+};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize, PartialEq)]
@@ -24,6 +27,83 @@ pub struct Card {
     pub set: Option<String>,
 }
 
+impl CardRules for Card {
+    fn rules_text(&self) -> Option<&str> {
+        self.rules.as_deref()
+    }
+
+    fn health_raw(&self) -> Option<&str> {
+        self.health.as_deref()
+    }
+
+    fn starting_threat_raw(&self) -> Option<&str> {
+        self.starting_threat.as_deref()
+    }
+
+    fn acceleration_raw(&self) -> Option<&str> {
+        self.acceleration.as_deref()
+    }
+}
+
+impl From<Card> for DragnCard {
+    fn from(card: Card) -> Self {
+        let database_id = uuid(&card.id);
+        let cerebro_id = card.id.clone();
+        let marvelcdb_id = card.id.clone();
+        
+        let card_back = match card.r#type {
+            CardType::Hero | CardType::AlterEgo | CardType::MainScheme => CardBack::MultiSided,
+            CardType::Ally
+            | CardType::Event
+            | CardType::PlayerSideScheme
+            | CardType::Resource
+            | CardType::Support
+            | CardType::Upgrade => CardBack::Player,
+            CardType::Villain => CardBack::Villain,
+            _ => CardBack::Encounter,
+        };
+
+        let icons = card.icons();
+        let (hit_points_fixed, hit_points_scaling) = card.health_parsed();
+        let (starting_threat_fixed, starting_threat_scaling) = card.starting_threat_parsed();
+        let (acceleration_fixed, acceleration_scaling) = card.acceleration_parsed();
+        let toughness = card.is_tough();
+        let permanent = card.is_permanent();
+        let nemesis_minion = card.r#type == CardType::Minion && card.has_nemesis_minion_rule();
+        let victory = card.victory();
+
+        DragnCard {
+            database_id,
+            cerebro_id,
+            marvelcdb_id,
+            name: card.name,
+            subname: card.subname,
+            r#type: card.r#type,
+            classification: card.classification,
+            image_url: format!("/local/{}.jpg", card.id),
+            card_back,
+            traits: card.traits,
+            hand_size: card.hand.and_then(|h| h.parse::<u32>().ok()),
+            hit_points_fixed,
+            hit_points_scaling,
+            set: card.set,
+            stage: card.stage,
+            starting_threat_fixed,
+            starting_threat_scaling,
+            acceleration_fixed,
+            acceleration_scaling,
+            acceleration: icons.as_ref().and_then(|i| i.get(&Icon::Acceleration).map(|&v| v as i64)),
+            amplify: icons.as_ref().and_then(|i| i.get(&Icon::Amplify).map(|&v| v as i64)),
+            crisis: icons.as_ref().and_then(|i| i.get(&Icon::Crisis).map(|&v| v as i64)),
+            hazard: icons.as_ref().and_then(|i| i.get(&Icon::Hazard).map(|&v| v as i64)),
+            toughness,
+            permanent,
+            nemesis_minion,
+            victory,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -46,7 +126,67 @@ mod tests {
         
         let cards: Vec<Card> = result.into_iter().map(|r| r.unwrap()).collect();
         assert!(cards.len() > 0);
-        assert_eq!(cards[0].name, "Spider-Man");
-        assert_eq!(cards[0].id, "01001a");
-    }
-}
+                assert_eq!(cards[0].name, "Spider-Man");
+                assert_eq!(cards[0].id, "01001a");
+            }
+        
+            #[test]
+            fn it_transforms_to_dragncard() {
+                let local_card = Card {
+                    id: "01001a".to_string(),
+                    name: "Spider-Man".to_string(),
+                    subname: Some("Peter Parker".to_string()),
+                    r#type: CardType::Hero,
+                    classification: Classification::Hero,
+                    traits: Some("Avenger".to_string()),
+                    rules: Some("Spider-Sense — Interrupt: When the villain initiates an attack against you, draw 1 card.".to_string()),
+                    cost: None,
+                    resource: Some("{w}".to_string()),
+                    hand: Some("5".to_string()),
+                    health: Some("10".to_string()),
+                    thwart: Some("1".to_string()),
+                    attack: Some("2".to_string()),
+                    defense: Some("3".to_string()),
+                    recover: None,
+                    starting_threat: None,
+                    acceleration: None,
+                    stage: None,
+                    set: Some("Spider-Man".to_string()),
+                };
+        
+                let dragn_card: DragnCard = local_card.into();
+                assert_eq!(dragn_card.name, "Spider-Man");
+                assert_eq!(dragn_card.hit_points_fixed, Some(10));
+                assert_eq!(dragn_card.hand_size, Some(5));
+                assert_eq!(dragn_card.card_back, CardBack::MultiSided);
+            }
+        
+            #[test]
+            fn it_handles_scaling_threat_and_hinder() {
+                let local_card = Card {
+                    id: "01097a".to_string(),
+                    name: "The Break-In!".to_string(),
+                    subname: None,
+                    r#type: CardType::MainScheme,
+                    classification: Classification::Encounter,
+                    traits: None,
+                    rules: Some("When Revealed: Place 1 threat on this scheme per player. Hinder 2{i}.".to_string()),
+                    cost: None,
+                    resource: None,
+                    hand: None,
+                    health: None,
+                    thwart: None,
+                    attack: None,
+                    defense: None,
+                    recover: None,
+                    starting_threat: Some("7{i}".to_string()),
+                    acceleration: None,
+                    stage: Some("1A".to_string()),
+                    set: Some("Rhino".to_string()),
+                };
+        
+                let dragn_card: DragnCard = local_card.into();
+                assert_eq!(dragn_card.starting_threat_scaling, Some(9)); // 7 (base) + 2 (hinder)
+            }
+        }
+        

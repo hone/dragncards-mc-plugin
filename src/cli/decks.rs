@@ -1,12 +1,11 @@
 use crate::{
-    cerebro::{
-        self, Card, CardType, Pack, PackNumber, PackType, Printing, Set, SetNumber, SetType,
-    },
+    cerebro::{self, Card, Pack, PackNumber, PackType, Printing, Set, SetNumber, SetType},
     dragncards::{
         self,
         decks::{ActionList, DeckList, DeckMenu, PreBuiltDeck, SubMenu},
     },
     marvelcdb,
+    rules::CardType,
 };
 use atoi::atoi;
 use indexmap::IndexMap;
