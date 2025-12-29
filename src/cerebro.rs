@@ -59,6 +59,12 @@ pub struct Card {
     pub health: Option<ScalingNumber>,
     pub starting_threat: Option<ScalingNumber>,
     pub acceleration: Option<Acceleration>,
+    pub attack: Option<String>,
+    pub defense: Option<String>,
+    pub recover: Option<String>,
+    pub scheme: Option<String>,
+    pub thwart: Option<String>,
+    pub boost: Option<String>,
 }
 
 impl CardRules for Card {
@@ -423,6 +429,12 @@ mod tests {
             health: Some(ScalingNumber::Scaling(5)),
             starting_threat: Some(ScalingNumber::Fixed(2)),
             acceleration: Some(Acceleration::Fixed(1)),
+            attack: None,
+            defense: None,
+            recover: None,
+            scheme: None,
+            thwart: None,
+            boost: None,
         };
 
         // Health: Scaling(5) -> (None, Some(5))
