@@ -4,6 +4,7 @@ use serde::Deserialize;
 pub struct Deck {
     pub name: String,
     pub r#type: DeckType,
+    pub pack: String,
     pub cards: Option<Vec<DeckCard>>,
     pub set_code: Option<String>,
 }
@@ -38,8 +39,9 @@ mod tests {
     fn it_deserializes_local_decks_toml() {
         let toml_str = r#"
             [[decks]]
-            name = "Spider-Man Starter Deck"
+            name = "Spider-Man"
             type = "hero"
+            pack = "Core Set"
             cards = [
                 { id = "01001a", quantity = 1 },
                 { id = "01001b", quantity = 1 },
@@ -47,21 +49,22 @@ mod tests {
             ]
 
             [[decks]]
-            name = "Rhino Encounter Set"
+            name = "Rhino"
             type = "scenario"
+            pack = "Core Set"
             set_code = "Rhino"
         "#;
 
         let local_decks: LocalDecks = toml::from_str(toml_str).unwrap();
         assert_eq!(local_decks.decks.len(), 2);
-        assert_eq!(local_decks.decks[0].name, "Spider-Man Starter Deck");
+        assert_eq!(local_decks.decks[0].name, "Spider-Man");
         assert_eq!(local_decks.decks[0].r#type, DeckType::Hero);
         assert_eq!(local_decks.decks[0].cards.as_ref().unwrap().len(), 3);
         assert_eq!(
             local_decks.decks[0].cards.as_ref().unwrap()[2].load_group_id,
             Some("sharedOutOfPlay".to_string())
         );
-        assert_eq!(local_decks.decks[1].name, "Rhino Encounter Set");
+        assert_eq!(local_decks.decks[1].name, "Rhino");
         assert_eq!(local_decks.decks[1].r#type, DeckType::Scenario);
         assert_eq!(local_decks.decks[1].set_code.as_ref().unwrap(), "Rhino");
     }
