@@ -1,9 +1,8 @@
-use crate::{cerebro, dragncards::database::Card, local};
+use crate::cli::common;
 use csv::WriterBuilder;
 use futures::{stream, StreamExt};
-use std::{collections::HashMap, path::Path};
+use std::path::{Path, PathBuf};
 use tokio::fs;
-use uuid::Uuid;
 
 const CONCURRENT_REQUESTS: usize = 20;
 const DEFAULT_DOWNLOAD_SERVER: &str = "http://localhost:5000";
@@ -11,65 +10,22 @@ const DEFAULT_DOWNLOAD_SERVER: &str = "http://localhost:5000";
 #[derive(clap::Args)]
 pub struct DatabaseArgs {
     #[arg(long)]
-    pub output: Option<std::path::PathBuf>,
+    pub output: Option<PathBuf>,
     #[arg(long, default_value_t = false)]
     pub offline: bool,
     #[arg(long)]
-    pub download: Option<std::path::PathBuf>,
+    pub download: Option<PathBuf>,
     #[arg(long)]
     pub download_server: Option<String>,
     #[arg(long)]
-    pub local: Vec<std::path::PathBuf>,
+    pub local: Vec<PathBuf>,
     #[arg(long, default_value_t = false)]
     pub api: bool,
 }
 
 pub async fn execute(args: DatabaseArgs) {
-    let mut cards: Vec<Card> = Vec::new();
+    let mut cards = common::load_card_database(&args.local, args.api, args.offline).await;
 
-    // 1. Local Source
-    if !args.local.is_empty() {
-        let local_cards = local::read_cards(&args.local);
-        let dragn_cards: Vec<Card> = local_cards.into_iter().map(|c| c.into()).collect();
-        cards.extend(dragn_cards);
-    }
-
-    // 2. API Source (Default if no local, or explicit opt-in)
-    if args.api || args.local.is_empty() {
-        let pack_handler = tokio::spawn(cerebro::get_packs(Some(args.offline)));
-        let card_handler = tokio::spawn(cerebro::get_cards(Some(args.offline)));
-        let pack_map: HashMap<Uuid, cerebro::Pack> = pack_handler
-            .await
-            .unwrap()
-            .unwrap()
-            .into_iter()
-            .map(|pack| (pack.id.clone(), pack))
-            .collect();
-        let set_map: HashMap<Uuid, cerebro::Set> = tokio::spawn(cerebro::get_sets(Some(args.offline)))
-            .await
-            .unwrap()
-            .unwrap()
-            .into_iter()
-            .map(|set| (set.id.clone(), set))
-            .collect();
-        let cerebro_cards: Vec<Card> = card_handler
-            .await
-            .unwrap()
-            .unwrap()
-            .into_iter()
-            .filter_map(|card| {
-                if card.official {
-                    Some(Card::new(card, &pack_map, &set_map))
-                } else {
-                    None
-                }
-            })
-            .flatten()
-            .collect();
-        cards.extend(cerebro_cards);
-    }
-
-    cards.sort_by(|a, b| a.cerebro_id.cmp(&b.cerebro_id));
     if let Some(download_path) = args.download {
         let download_server = &args
             .download_server
@@ -103,7 +59,7 @@ pub async fn execute(args: DatabaseArgs) {
     }
     let output = args
         .output
-        .unwrap_or_else(|| std::path::PathBuf::from("./marvelcdb.tsv"));
+        .unwrap_or_else(|| PathBuf::from("./marvelcdb.tsv"));
     let mut wtr = WriterBuilder::new()
         .delimiter(b'\t')
         .from_path(output)

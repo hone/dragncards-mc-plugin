@@ -4,7 +4,7 @@ use csv::ReaderBuilder;
 use models::card::Card;
 use std::path::{Path, PathBuf};
 
-pub fn read_cards(paths: &Vec<PathBuf>) -> Vec<Card> {
+pub fn read_cards(paths: &[PathBuf]) -> Vec<Card> {
     let mut cards = Vec::new();
     for path in paths {
         if path.is_dir() {
