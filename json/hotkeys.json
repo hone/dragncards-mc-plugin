@@ -10,8 +10,8 @@
       {"key": "7", "tokenType": "tough",        "label": "id:toughToken"},
       {"key": "8",       "tokenType": "atk", "label": "id:atkToken"},
       {"key": "9",       "tokenType": "thw", "label": "id:thwToken"},
-      {"key": "Shift+8", "tokenType": "def", "label": "id:defToken"},
-      {"key": "Shift+9", "tokenType": "rec", "label": "id:recToken"}
+      {"key": "I",       "tokenType": "def", "label": "id:defToken"},
+      {"key": "O",       "tokenType": "rec", "label": "id:recToken"}
     ],
     "game": [
       {"key": "E", "actionList": "dealEncounterFacedown", "label": "id:dealEncounterFacedown"},
