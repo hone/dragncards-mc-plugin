@@ -7,7 +7,11 @@
       {"key": "4", "tokenType": "acceleration", "label": "id:accelerationToken"},
       {"key": "5", "tokenType": "confused",     "label": "id:confusedToken"},
       {"key": "6", "tokenType": "stunned",      "label": "id:stunnedToken"},
-      {"key": "7", "tokenType": "tough",        "label": "id:toughToken"}
+      {"key": "7", "tokenType": "tough",        "label": "id:toughToken"},
+      {"key": "8",       "tokenType": "atk", "label": "id:atkToken"},
+      {"key": "9",       "tokenType": "thw", "label": "id:thwToken"},
+      {"key": "Shift+8", "tokenType": "def", "label": "id:defToken"},
+      {"key": "Shift+9", "tokenType": "rec", "label": "id:recToken"}
     ],
     "game": [
       {"key": "E", "actionList": "dealEncounterFacedown", "label": "id:dealEncounterFacedown"},
