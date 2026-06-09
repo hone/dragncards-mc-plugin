@@ -14,6 +14,7 @@ const ANDROID_EFFICIENCY_ID_BASE: &'static str = "01144";
 const FIRECRACKER_ID_BASE: &'static str = "47007";
 const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
 const PLASMOID_ENERGY_ID_BASE: &'static str = "47010";
+const REDSKULL_EXPERT_CAMPAIGN_OBLIGATION_IDS: &[&str] = &["04163", "04164", "04165", "04166"];
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -227,6 +228,10 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
+    if REDSKULL_EXPERT_CAMPAIGN_OBLIGATION_IDS.contains(&card.id.as_str()) {
+        return CardBack::Player;
+    }
+
     // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
     if !card.id.contains(WAKANDA_FOREVER_ID_BASE)
         && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
