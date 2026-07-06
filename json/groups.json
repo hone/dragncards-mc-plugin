@@ -815,6 +815,15 @@
         "inPlay": false,
         "deckGroupId": "player4OutOfPlay"
       }
-    }
+    },
+    "sharedWreckingCrewSideSchemes": {"label":"id:wreckingCrewSideSchemes","tableLabel":"id:wreckingCrewSideSchemes","canHaveAttachments":true,"shuffleOnLoad":false,"onCardEnter":{"currentSide":"A","controller":"shared","inPlay":true}},
+    "sharedWreckerEncounterDeck": {"canHaveAttachments":false,"shuffleOnLoad":true,"onCardEnter":{"currentSide":"B","controller":"shared","inPlay":false,"deckGroupId":"sharedWreckerEncounterDeck","discardGroupId":"sharedWreckerEncounterDiscard"},"label":"id:wreckerEncounterDeck","tableLabel":"id:wreckerEncounterDeck"},
+    "sharedWreckerEncounterDiscard": {"canHaveAttachments":false,"shuffleOnLoad":false,"onCardEnter":{"currentSide":"A","controller":"shared","inPlay":false,"deckGroupId":"sharedWreckerEncounterDeck","discardGroupId":"sharedWreckerEncounterDiscard"},"label":"id:wreckerEncounterDiscard","tableLabel":"id:wreckerEncounterDiscard"},
+    "sharedThunderballEncounterDeck": {"canHaveAttachments":false,"shuffleOnLoad":true,"onCardEnter":{"currentSide":"B","controller":"shared","inPlay":false,"deckGroupId":"sharedThunderballEncounterDeck","discardGroupId":"sharedThunderballEncounterDiscard"},"label":"id:thunderballEncounterDeck","tableLabel":"id:thunderballEncounterDeck"},
+    "sharedThunderballEncounterDiscard": {"canHaveAttachments":false,"shuffleOnLoad":false,"onCardEnter":{"currentSide":"A","controller":"shared","inPlay":false,"deckGroupId":"sharedThunderballEncounterDeck","discardGroupId":"sharedThunderballEncounterDiscard"},"label":"id:thunderballEncounterDiscard","tableLabel":"id:thunderballEncounterDiscard"},
+    "sharedPiledriverEncounterDeck": {"canHaveAttachments":false,"shuffleOnLoad":true,"onCardEnter":{"currentSide":"B","controller":"shared","inPlay":false,"deckGroupId":"sharedPiledriverEncounterDeck","discardGroupId":"sharedPiledriverEncounterDiscard"},"label":"id:piledriverEncounterDeck","tableLabel":"id:piledriverEncounterDeck"},
+    "sharedPiledriverEncounterDiscard": {"canHaveAttachments":false,"shuffleOnLoad":false,"onCardEnter":{"currentSide":"A","controller":"shared","inPlay":false,"deckGroupId":"sharedPiledriverEncounterDeck","discardGroupId":"sharedPiledriverEncounterDiscard"},"label":"id:piledriverEncounterDiscard","tableLabel":"id:piledriverEncounterDiscard"},
+    "sharedBulldozerEncounterDeck": {"canHaveAttachments":false,"shuffleOnLoad":true,"onCardEnter":{"currentSide":"B","controller":"shared","inPlay":false,"deckGroupId":"sharedBulldozerEncounterDeck","discardGroupId":"sharedBulldozerEncounterDiscard"},"label":"id:bulldozerEncounterDeck","tableLabel":"id:bulldozerEncounterDeck"},
+    "sharedBulldozerEncounterDiscard": {"canHaveAttachments":false,"shuffleOnLoad":false,"onCardEnter":{"currentSide":"A","controller":"shared","inPlay":false,"deckGroupId":"sharedBulldozerEncounterDeck","discardGroupId":"sharedBulldozerEncounterDiscard"},"label":"id:bulldozerEncounterDiscard","tableLabel":"id:bulldozerEncounterDiscard"}
   }
 }

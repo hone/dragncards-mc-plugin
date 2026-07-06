@@ -479,6 +479,20 @@
     },
     "toggleEncounterDeck2": {
       "English": "Toggle Second Encounter Deck"
-    }
+    },
+    "activeVillainToken": {"English":"active villain"},
+    "wreckingCrewSideSchemes": {"English":"Crew Side Schemes"},
+    "wreckerEncounterDeck": {"English":"Wrecker Deck"},
+    "wreckerEncounterDiscard": {"English":"Wrecker Discard"},
+    "thunderballEncounterDeck": {"English":"Thunderball Deck"},
+    "thunderballEncounterDiscard": {"English":"Thunderball Discard"},
+    "piledriverEncounterDeck": {"English":"Piledriver Deck"},
+    "piledriverEncounterDiscard": {"English":"Piledriver Discard"},
+    "bulldozerEncounterDeck": {"English":"Bulldozer Deck"},
+    "bulldozerEncounterDiscard": {"English":"Bulldozer Discard"},
+    "wreckingCrewActiveTie": {"English":"Choose the active villain"},
+    "wreckingCrewChooseActiveVillain": {"English":"Multiple Wrecking Crew side schemes are tied for most threat. The first player chooses the active villain."},
+    "setActiveVillain": {"English":"Set Active Villain"},
+    "wreckingCrewNoNemesisObligation": {"English":"This scenario does not use nemesis or obligation cards. Delete them before the game starts."}
   }
 }

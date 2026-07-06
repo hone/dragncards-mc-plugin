@@ -68,39 +68,13 @@
       ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
       ["LOG", "{{$ALIAS_N}} removed all tokens from {{$ACTIVE_FACE.name}}."]
     ],
-    "dealEncounterFaceup": ["DEAL_ENCOUNTER_CARD", true],
-    "dealEncounterFacedown": ["DEAL_ENCOUNTER_CARD", false],
+    "dealEncounterFaceup": [["COND",["GREATER_THAN",["LENGTH","$GAME.groupById.sharedWreckingCrewSideSchemes.parentCardIds"],0],[["DEAL_WRECKING_CREW_ENCOUNTER_CARD",true]],true,[["DEAL_ENCOUNTER_CARD",true]]]],
+    "dealEncounterFacedown": [["COND",["GREATER_THAN",["LENGTH","$GAME.groupById.sharedWreckingCrewSideSchemes.parentCardIds"],0],[["DEAL_WRECKING_CREW_ENCOUNTER_CARD",false]],true,[["DEAL_ENCOUNTER_CARD",false]]]],
     "dealSecondFaceup": ["DEAL_ENCOUNTER_CARD", true, "sharedEncounter2Deck"],
     "dealSecondFacedown": ["DEAL_ENCOUNTER_CARD", false, "sharedEncounter2Deck"],
     "dealThirdFaceup": ["DEAL_ENCOUNTER_CARD", true, "sharedEncounter3Deck"],
     "dealThirdFacedown": ["DEAL_ENCOUNTER_CARD", false, "sharedEncounter3Deck"],
-    "drawBoost": [
-      ["COND",
-        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
-        [
-          ["COND",
-            ["DEFINED", "$ALIAS_N"],
-            ["LOG", "{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."]
-          ],
-          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"]
-        ]
-      ],
-      ["COND",
-        ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
-        [
-          ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
-          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, {"allowFlip": false}],
-          ["SET", "/cardById/$CARD_ID/rotation", -30],
-          ["SET", "/cardById/$CARD_ID/boost", true],
-          ["COND",
-            ["DEFINED", "$ALIAS_N"],
-            ["LOG", "{{$ALIAS_N}} drew a boost card."]
-          ]
-        ],
-        true,
-        ["LOG", "No encounter deck to draw boost card."]
-      ]
-    ],
+    "drawBoost": [["COND",["GREATER_THAN",["LENGTH","$GAME.groupById.sharedWreckingCrewSideSchemes.parentCardIds"],0],[["DRAW_WRECKING_CREW_BOOST"]],true,[["COND",["EQUAL",["LENGTH","$GAME.groupById.sharedEncounterDeck.stackIds"],0],[["COND",["DEFINED","$ALIAS_N"],["LOG","{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."]],["MOVE_STACKS","sharedEncounterDiscard","sharedEncounterDeck",["LENGTH","$GAME.groupById.sharedEncounterDiscard.stackIds"],"shuffle"]]],["COND",["GREATER_THAN",["LENGTH","$GAME.groupById.sharedEncounterDeck.stackIds"],0],[["VAR","$CARD_ID","$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],["MOVE_CARD","$CARD_ID","{{$PLAYER_N}}Engaged",-1,0,{"allowFlip":false}],["SET","/cardById/$CARD_ID/rotation",-30],["SET","/cardById/$CARD_ID/boost",true],["COND",["DEFINED","$ALIAS_N"],["LOG","{{$ALIAS_N}} drew a boost card."]]],true,["LOG","No encounter deck to draw boost card."]]]]],
     "mulliganDrawHand": [
       ["COND",
         ["EQUAL", "$GAME.roundNumber", 0],
@@ -123,37 +97,8 @@
       ]],
       ["SHUFFLE_GROUP", "sharedEncounterDeck"]
     ],
-    "playerEndPhase": [
-      ["LOG", "Player Phase - Ends"],
-      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
-        ["READY_ALL", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"],
-        ["DRAW_HAND", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"]
-      ]],
-      ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
-      ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-      ["VAR", "$SCHEME_ACCELERATION", ["ADD", "$CARD.sides.B.accelerationFixed", ["MULTIPLY", "$CARD.sides.B.accelerationScaling", "$GAME.numPlayers"]]],
-      ["VAR", "$ACCELERATION_ICONS", 0],
-      ["FOR_EACH_VAL", "$CARD",
-        ["FILTER_CARDS",
-          "$CARD",
-          ["AND",
-            "$CARD.inPlay",
-            ["GREATER_THAN", "$CARD.currentFace.acceleration", 0]
-          ]
-        ],
-        ["UPDATE_VAR", "$ACCELERATION_ICONS", ["ADD", "$ACCELERATION_ICONS", "$CARD.currentFace.acceleration"]]
-      ],
-      ["VAR", "$THREAT_INCREASE", ["ADD", ["ADD", "$SCHEME_ACCELERATION", "$CARD.tokens.acceleration"], "$ACCELERATION_ICONS"]],
-      ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/threat", "$THREAT_INCREASE"],
-      ["LOG", "Villain Phase - Begins"],
-      ["LOG", "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."],
-      ["SET", "/stepId", "2.1"]
-    ],
-    "villainEncounterPhase": [
-      ["LOG", "Villain Phase - Encounter"],
-      ["SET", "/stepId", "2.3"],
-      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", ["ACTION_LIST", "dealEncounterFacedown"]]
-    ],
+    "playerEndPhase": [["COND",["GREATER_THAN",["LENGTH","$GAME.groupById.sharedWreckingCrewSideSchemes.parentCardIds"],0],[["WRECKING_CREW_PLAYER_END_PHASE"]],true,[["LOG","Player Phase - Ends"],["FOR_EACH_VAL","$PLAYER","$PLAYER_ORDER",[["READY_ALL","$PLAYER","$GAME.playerInfo.$PLAYER.alias"],["DRAW_HAND","$PLAYER","$GAME.playerInfo.$PLAYER.alias"]]],["VAR","$CARD_ID","$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],["VAR","$CARD","$GAME.cardById.$CARD_ID"],["VAR","$SCHEME_ACCELERATION",["ADD","$CARD.sides.B.accelerationFixed",["MULTIPLY","$CARD.sides.B.accelerationScaling","$GAME.numPlayers"]]],["VAR","$ACCELERATION_ICONS",0],["FOR_EACH_VAL","$CARD",["FILTER_CARDS","$CARD",["AND","$CARD.inPlay",["GREATER_THAN","$CARD.currentFace.acceleration",0]]],["UPDATE_VAR","$ACCELERATION_ICONS",["ADD","$ACCELERATION_ICONS","$CARD.currentFace.acceleration"]]],["VAR","$THREAT_INCREASE",["ADD",["ADD","$SCHEME_ACCELERATION","$CARD.tokens.acceleration"],"$ACCELERATION_ICONS"]],["INCREASE_VAL","/cardById/$CARD_ID/tokens/threat","$THREAT_INCREASE"],["LOG","Villain Phase - Begins"],["LOG","Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."],["SET","/stepId","2.1"]]]],
+    "villainEncounterPhase": [["COND",["GREATER_THAN",["LENGTH","$GAME.groupById.sharedWreckingCrewSideSchemes.parentCardIds"],0],[["WRECKING_CREW_VILLAIN_ENCOUNTER_PHASE"]],true,[["LOG","Villain Phase - Encounter"],["SET","/stepId","2.3"],["FOR_EACH_VAL","$PLAYER_N","$PLAYER_ORDER",["ACTION_LIST","dealEncounterFacedown"]]]]],
     "villainEndPhase": [
       ["LOG", "Villain Phase - Ends"],
       ["SET", "/firstPlayer", ["NEXT_PLAYER", "$GAME.firstPlayer"]],

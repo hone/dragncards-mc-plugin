@@ -31,6 +31,11 @@ const SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID: Uuid = uuid!("e6b2b98f-2876-45e9-
 const TASKMASTER_SET_ID: Uuid = uuid!("5007385a-9af0-47b3-a299-667972461357");
 const TOWER_DEFENSE_SET_ID: Uuid = uuid!("e7543321-15b7-4a39-8b86-da6a913662c0");
 const WEATHER_SET_ID: Uuid = uuid!("a89bb587-77f5-414a-a24b-c6871dfc446c");
+const WRECKING_CREW_SET_ID: Uuid = uuid!("d682cfd6-5b57-4e2f-bc30-888c5ade687d");
+const WRECKER_SET_ID: Uuid = uuid!("be4144af-e83a-4068-9c18-5174a2ea0e57");
+const THUNDERBALL_SET_ID: Uuid = uuid!("a4920896-3b20-4f13-ab89-fcbaf9c3870b");
+const PILEDRIVER_SET_ID: Uuid = uuid!("2c6e6d18-bc4f-4743-9377-af20188c5684");
+const BULLDOZER_SET_ID: Uuid = uuid!("a39ca62a-db4f-4c5b-9192-d296615d7e10");
 
 const CORE_SET_PACK_ID: Uuid = uuid!("25ab9c3e-d172-4501-87b6-40e3768cb267");
 const IRONHEART_HERO_PACK_ID: Uuid = uuid!("09c4f257-fb1a-4191-b193-b38022c28b3d");
@@ -206,6 +211,7 @@ pub async fn execute(args: DecksArgs) {
     process_required_modular_sets(&mut pre_built_decks, &sets);
     // add recommends modulars to villain scenarios
     process_recommends_modular_sets(&mut pre_built_decks, &sets);
+    process_wrecking_crew_scenario(&mut pre_built_decks, &set_card_map);
 
     let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
 
@@ -402,6 +408,17 @@ pub async fn execute(args: DecksArgs) {
         for set in sets.iter() {
             // Maurauders isn't a villain scenario
             if set.id == MARAUDERS_SET_ID {
+                continue;
+            }
+            // Wrecking Crew is a single scenario with four villain-specific encounter decks.
+            if [
+                WRECKER_SET_ID,
+                THUNDERBALL_SET_ID,
+                PILEDRIVER_SET_ID,
+                BULLDOZER_SET_ID,
+            ]
+            .contains(&set.id)
+            {
                 continue;
             }
             let deck_list_id = set_label(&set);
@@ -827,6 +844,98 @@ fn process_sets_by_packs(
     }
 
     pre_built_decks
+}
+
+fn process_wrecking_crew_scenario(
+    pre_built_decks: &mut PreBuiltDeckMap,
+    set_card_map: &HashMap<&Uuid, Vec<OrderedCard<'_>>>,
+) {
+    let scenario_label = String::from("Wrecking Crew (Scenario)");
+    let mut cards = Vec::new();
+    if let Some(main_scheme_cards) = set_card_map.get(&WRECKING_CREW_SET_ID) {
+        if let Some(breakout) = main_scheme_cards.iter().find(|ordered_card| {
+            ordered_card.card.name == "Breakout"
+                && ordered_card.card.stage.as_deref() == Some("1A")
+        }) {
+            cards.push(deck_card("sharedMainScheme", breakout));
+        }
+    }
+
+    for (set_id, side_scheme_name, encounter_group_id) in [
+        (
+            WRECKER_SET_ID,
+            "Day of Reckoning",
+            "sharedWreckerEncounterDeck",
+        ),
+        (
+            BULLDOZER_SET_ID,
+            "Clear the Road",
+            "sharedBulldozerEncounterDeck",
+        ),
+        (
+            PILEDRIVER_SET_ID,
+            "Pile It On!",
+            "sharedPiledriverEncounterDeck",
+        ),
+        (
+            THUNDERBALL_SET_ID,
+            "Thunderstruck",
+            "sharedThunderballEncounterDeck",
+        ),
+    ] {
+        if let Some(set_cards) = set_card_map.get(&set_id) {
+            for stage in ["A", "B"] {
+                if let Some(villain) = set_cards.iter().find(|ordered_card| {
+                    ordered_card.card.r#type == CardType::Villain
+                        && ordered_card.card.stage.as_deref() == Some(stage)
+                }) {
+                    cards.push(deck_card("sharedVillainDeck", villain));
+                }
+            }
+
+            if let Some(side_scheme) = set_cards
+                .iter()
+                .find(|ordered_card| ordered_card.card.name == side_scheme_name)
+            {
+                cards.push(deck_card("sharedWreckingCrewSideSchemes", side_scheme));
+            }
+
+            for ordered_card in set_cards.iter().filter(|ordered_card| {
+                ordered_card.card.r#type != CardType::Villain
+                    && ordered_card.card.r#type != CardType::SideScheme
+            }) {
+                cards.push(deck_card(encounter_group_id, ordered_card));
+            }
+        }
+    }
+
+    pre_built_decks.insert(
+        scenario_label.clone(),
+        PreBuiltDeck {
+            label: String::from("Wrecking Crew"),
+            cards,
+            post_load_action_list: Some(ActionList::List(vec![
+                json!(["DEFINE", "$NUM_VILLAINS", 4]),
+                json!(["DEFINE", "$FIRST_STAGE", "none"]),
+                json!(["DEFINE", "$DISCARDED_STAGE", "none"]),
+                json!(["DEFINE", "$DOUBLE_SIDED_STAGE", "none"]),
+                json!(["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "none"]),
+            ])),
+        },
+    );
+}
+
+fn deck_card(load_group_id: &str, ordered_card: &OrderedCard<'_>) -> dragncards::decks::Card {
+    dragncards::decks::Card {
+        load_group_id: load_group_id.to_string(),
+        quantity: ordered_card
+            .set_number
+            .as_ref()
+            .map(|i| i.length())
+            .unwrap_or(1),
+        database_id: dragncards::database::uuid(&ordered_card.artificial_id),
+        _name: ordered_card.card.name.clone(),
+    }
 }
 
 fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &Vec<Set>) {
