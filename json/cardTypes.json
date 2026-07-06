@@ -244,18 +244,6 @@
         "tough"
       ]
     },
-    "Villain": {
-      "width": 1.0,
-      "height": 1.39,
-      "tokens": [
-        "damage",
-        "threat",
-        "generic",
-        "acceleration",
-        "confused",
-        "stunned",
-        "tough"
-      ]
-    }
+    "Villain": {"width":1.0,"height":1.39,"tokens":["damage","threat","generic","acceleration","confused","stunned","tough","activeVillain"]}
   }
 }

@@ -17,6 +17,8 @@
           "hotkey": "Escape"
         }
       ]
-    }
+    },
+    "wreckingCrewActiveVillainTie": {"args":[],"message":"id:wreckingCrewChooseActiveVillain","options":[{"label":"Wrecker","code":["SET_ACTIVE_WRECKING_CREW_VILLAIN_BY_NAME","Wrecker"]},{"label":"Bulldozer","code":["SET_ACTIVE_WRECKING_CREW_VILLAIN_BY_NAME","Bulldozer"]},{"label":"Piledriver","code":["SET_ACTIVE_WRECKING_CREW_VILLAIN_BY_NAME","Piledriver"]},{"label":"Thunderball","code":["SET_ACTIVE_WRECKING_CREW_VILLAIN_BY_NAME","Thunderball"]}]},
+    "wreckingCrewNoNemesisObligation": {"args":[],"message":"id:wreckingCrewNoNemesisObligation","options":[{"label":"OK","hotkey":"Enter"}]}
   }
 }

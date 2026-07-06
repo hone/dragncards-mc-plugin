@@ -1,11 +1,6 @@
 {
   "cardMenu": {
-    "moveToGroupIds": [
-      "sharedEncounterDeck",
-      "sharedEncounterDiscard",
-      "sharedVictoryDisplay",
-      "sharedOutOfPlay"
-    ],
+    "moveToGroupIds": ["sharedEncounterDeck","sharedEncounterDiscard","sharedVictoryDisplay","sharedOutOfPlay","sharedWreckerEncounterDeck","sharedWreckerEncounterDiscard","sharedThunderballEncounterDeck","sharedThunderballEncounterDiscard","sharedPiledriverEncounterDeck","sharedPiledriverEncounterDiscard","sharedBulldozerEncounterDeck","sharedBulldozerEncounterDiscard","sharedWreckingCrewSideSchemes"],
     "options": [
       {"label": "id:exhaustReady", "actionList": "toggleExhaust"},
       {"label": "id:discard", "actionList": ["DISCARD_CARD", "$ACTIVE_CARD_ID"]}
