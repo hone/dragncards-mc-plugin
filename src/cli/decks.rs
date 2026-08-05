@@ -21,9 +21,11 @@ const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819
 const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
 const ESCAPE_THE_MUSEUM_SET_ID: Uuid = uuid!("76c1a33e-7eed-4980-9561-7e3d9f815c32");
 const EXPERIMENTAL_WEAPONS_SET_ID: Uuid = uuid!("5910b253-5fec-41d5-9433-ff7a59b028da");
+const GIFT_SET_ID: Uuid = uuid!("d74ec8ab-05af-4fe3-9711-287535480a99");
 const INFINITY_GAUNTLET_SET_ID: Uuid = uuid!("b6628b5a-835d-498a-8405-d49f384190a4");
 const INVOCATION_SET_ID: Uuid = uuid!("ac654f5f-ec2c-4774-8732-a3e59ae5360d");
 const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
+const LABOR_SET_ID: Uuid = uuid!("ab08506a-9eb2-4b32-ab65-e4768f751e34");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
 const SHIP_COMMAND_SET_ID: Uuid = uuid!("a789f0f5-d822-40f6-8e83-d8e5e27d40d2");
@@ -924,6 +926,8 @@ fn process_sets_by_packs(
                                 Some("playerNPlay1")
                             } else if set.id == INVOCATION_SET_ID {
                                 Some("playerNDeck2")
+                            } else if [GIFT_SET_ID, LABOR_SET_ID].contains(&set.id) {
+                                Some("playerNOutOfPlay")
                             } else {
                                 None
                             }

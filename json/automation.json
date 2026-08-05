@@ -216,6 +216,13 @@
             ["LOAD_CARDS", "Weather Deck (Supplementary)"]
           ],
           ["COND",
+            ["EQUAL", "$IDENTITY_CARD.databaseId", "4d81c1f5-fa94-5e37-ab2e-24c4e800f5c3"],
+            [
+              ["LOAD_CARDS", "Labor Deck (Supplementary)"],
+              ["LOAD_CARDS", "Gift Deck (Supplementary)"]
+            ]
+          ],
+          ["COND",
             ["AND",
               ["DEFINED", "$IRONHEART"],
               ["NOT", ["DEFINED", "$IRONHEART_UPGRADES"]]
