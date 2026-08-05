@@ -905,7 +905,10 @@ fn process_sets_by_packs(
                 .iter()
                 .filter_map(|ordered_card| {
                     let card = ordered_card.cerebro_card;
-                    if card.id.ends_with("B") && card.name != "Android Efficiency" {
+                    if (card.id.ends_with("B") || card.id.ends_with("C"))
+                        && card.name != "Android Efficiency"
+                        && !card.name.starts_with("A.I.M. Interference")
+                    {
                         return None;
                     }
 

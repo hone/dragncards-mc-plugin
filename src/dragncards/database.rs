@@ -7,6 +7,7 @@ use serde::Serialize;
 use std::collections::HashMap;
 use uuid::Uuid;
 
+const AIM_INTERFERENCE_ID_BASE: &'static str = "50184";
 const ANDROID_EFFICIENCY_ID_BASE: &'static str = "01144";
 const FIRECRACKER_ID_BASE: &'static str = "47007";
 const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
@@ -188,7 +189,8 @@ pub enum CardBack {
 pub fn uuid(code: &str) -> Uuid {
     let id = if let Ok(_) = code.parse::<u32>() {
         code
-    } else if code.contains(ANDROID_EFFICIENCY_ID_BASE)
+    } else if code.contains(AIM_INTERFERENCE_ID_BASE)
+        || code.contains(ANDROID_EFFICIENCY_ID_BASE)
         || code.contains(FIRECRACKER_ID_BASE)
         || code.contains(FLASH_OF_LIGHT_ID_BASE)
         || code.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
@@ -226,7 +228,8 @@ fn card_back(card: &CerebroCard) -> CardBack {
     }
 
     // Wakanda Forever / single-sided multi-card sets use A/B/C in id, but are not multi-sided cards
-    if !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
+    if !card.id.contains(AIM_INTERFERENCE_ID_BASE)
+        && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
         && !card.id.contains(FIRECRACKER_ID_BASE)
         && !card.id.contains(FLASH_OF_LIGHT_ID_BASE)
         && !card.id.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
