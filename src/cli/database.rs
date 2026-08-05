@@ -24,7 +24,12 @@ pub struct DatabaseArgs {
 }
 
 pub async fn execute(args: DatabaseArgs) {
-    let mut cards = common::load_card_database(&args.local, args.api, args.offline).await;
+    let mut cards: Vec<crate::dragncards::database::Card> =
+        common::load_card_database(&args.local, args.api, args.offline)
+            .await
+            .into_iter()
+            .map(|card| card.output)
+            .collect();
 
     if let Some(download_path) = args.download {
         let download_server = &args

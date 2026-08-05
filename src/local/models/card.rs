@@ -4,7 +4,7 @@ use crate::{
 };
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq)]
 pub struct Card {
     pub id: String,
     pub name: String,
@@ -26,26 +26,34 @@ pub struct Card {
     pub special: Option<String>,
     pub starting_threat: Option<ScalingNumber>,
     pub acceleration: Option<Acceleration>,
-    // TODO Change this to an enum in the future
     pub stage: Option<String>,
     pub set: Option<String>,
+    pub image_url: String,
 }
 
 impl CardRules for Card {
+    fn r#type(&self) -> CardType {
+        self.r#type.clone()
+    }
+
     fn rules_text(&self) -> Option<&str> {
         self.rules.as_deref()
     }
 
-    fn health(&self) -> Option<&ScalingNumber> {
-        self.health.as_ref()
+    fn health(&self) -> Option<ScalingNumber> {
+        self.health.clone()
     }
 
-    fn starting_threat(&self) -> Option<&ScalingNumber> {
-        self.starting_threat.as_ref()
+    fn starting_threat(&self) -> Option<ScalingNumber> {
+        self.starting_threat.clone()
     }
 
-    fn acceleration(&self) -> Option<&Acceleration> {
-        self.acceleration.as_ref()
+    fn acceleration(&self) -> Option<Acceleration> {
+        self.acceleration.clone()
+    }
+
+    fn stage(&self) -> Option<&str> {
+        self.stage.as_deref()
     }
 }
 
@@ -84,7 +92,7 @@ impl From<Card> for DragnCard {
             subname: card.subname,
             r#type: card.r#type,
             classification: card.classification,
-            image_url: format!("/local/{}.jpg", card.id),
+            image_url: card.image_url,
             card_back,
             traits: card.traits,
             hand_size: card.hand.and_then(|h| h.parse::<u32>().ok()),
@@ -162,6 +170,7 @@ mod tests {
             acceleration: None,
             stage: None,
             set: Some("Spider-Man".to_string()),
+            image_url: "https://example.com/image.png".to_string(),
         };
 
         let dragn_card: DragnCard = local_card.into();
@@ -198,6 +207,7 @@ mod tests {
             acceleration: None,
             stage: Some("1A".to_string()),
             set: Some("Rhino".to_string()),
+            image_url: "https://example.com/image.png".to_string(),
         };
 
         let dragn_card: DragnCard = local_card.into();

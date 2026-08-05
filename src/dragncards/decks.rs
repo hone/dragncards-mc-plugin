@@ -1,7 +1,35 @@
+use crate::rules::{CardRules, CardType};
 use indexmap::IndexMap;
 use serde::Serialize;
 use serde_json::Value;
 use uuid::Uuid;
+
+pub fn default_load_group_hero(card: &impl CardRules) -> &'static str {
+    let mut load_group_id = match card.r#type() {
+        CardType::Obligation => "sharedEncounterDeck",
+        CardType::Minion | CardType::SideScheme | CardType::Treachery => "playerNNemesisSet",
+        CardType::Hero | CardType::AlterEgo => "playerNPlay1",
+        _ => "playerNDeck",
+    };
+
+    if card.is_permanent() {
+        load_group_id = "playerNPlay1";
+    }
+    load_group_id
+}
+
+pub fn default_load_group_encounter(card: &impl CardRules) -> &'static str {
+    match card.r#type() {
+        CardType::MainScheme => {
+            if card.stage().as_deref() == Some("1A") {
+                "sharedMainScheme"
+            } else {
+                "sharedMainSchemeDeck"
+            }
+        }
+        _ => "sharedEncounterDeck",
+    }
+}
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -45,7 +73,7 @@ pub enum SubMenu {
         label: String,
         deck_lists: Vec<DeckList>,
     },
-    #[serde(rename_all = "camelCase")]
+    #[serde(rename = "subMenu", rename_all = "camelCase")]
     SubMenu {
         label: String,
         sub_menus: Vec<SubMenu>,
@@ -95,7 +123,7 @@ impl SubMenu {
     }
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct DeckList {
     pub label: String,

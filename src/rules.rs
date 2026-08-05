@@ -210,18 +210,12 @@ pub enum CardType {
 }
 
 pub trait CardRules {
+    fn r#type(&self) -> CardType;
     fn rules_text(&self) -> Option<&str>;
-
-    // New Typed Accessors
-    fn health(&self) -> Option<&ScalingNumber> {
-        None
-    }
-    fn starting_threat(&self) -> Option<&ScalingNumber> {
-        None
-    }
-    fn acceleration(&self) -> Option<&Acceleration> {
-        None
-    }
+    fn health(&self) -> Option<ScalingNumber>;
+    fn starting_threat(&self) -> Option<ScalingNumber>;
+    fn acceleration(&self) -> Option<Acceleration>;
+    fn stage(&self) -> Option<&str>;
 
     fn icons(&self) -> Option<HashMap<Icon, usize>> {
         if let Some(rules) = self.rules_text() {
@@ -328,8 +322,28 @@ mod tests {
     }
 
     impl CardRules for MockCard {
+        fn r#type(&self) -> CardType {
+            CardType::Hero
+        }
+
         fn rules_text(&self) -> Option<&str> {
             self.rules.as_deref()
+        }
+
+        fn health(&self) -> Option<ScalingNumber> {
+            None
+        }
+
+        fn starting_threat(&self) -> Option<ScalingNumber> {
+            None
+        }
+
+        fn acceleration(&self) -> Option<Acceleration> {
+            None
+        }
+
+        fn stage(&self) -> Option<&str> {
+            None
         }
     }
 

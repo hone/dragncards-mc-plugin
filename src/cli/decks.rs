@@ -1,16 +1,18 @@
 use crate::{
-    cerebro::{self, Card, Pack, PackNumber, PackType, Printing, Set, SetNumber, SetType},
+    cerebro::{self, Card as CerebroCard, Pack, PackType, Printing, Set, SetType},
+    cli::common,
     dragncards::{
         self,
+        database::Card as DragnCard,
         decks::{ActionList, DeckList, DeckMenu, PreBuiltDeck, SubMenu},
     },
-    marvelcdb,
+    local, marvelcdb,
     rules::CardType,
 };
 use atoi::atoi;
 use indexmap::IndexMap;
 use serde_json::json;
-use std::{collections::HashMap, fmt, fs::File, io::Write};
+use std::{collections::HashMap, fmt, fs::File, io::Write, path::PathBuf};
 use uuid::{uuid, Uuid};
 
 const TOUCHED_ID: &str = "38002";
@@ -52,6 +54,14 @@ type PreBuiltDeckMap = IndexMap<String, dragncards::decks::PreBuiltDeck>;
 pub struct DecksArgs {
     #[arg(long, default_value_t = false)]
     pub offline: bool,
+    #[arg(long, default_value_t = false)]
+    pub api_cards: bool,
+    #[arg(long, default_value_t = false)]
+    pub api_decks: bool,
+    #[arg(long)]
+    pub local_cards: Vec<PathBuf>,
+    #[arg(long)]
+    pub local_decks: Vec<PathBuf>,
 }
 
 #[derive(Eq, PartialEq, Hash)]
@@ -63,10 +73,9 @@ enum SubMenuRootKey {
 
 #[derive(Debug)]
 struct OrderedCard<'a> {
-    pub pack_number: PackNumber,
-    pub set_number: Option<SetNumber>,
-    pub artificial_id: String,
-    pub card: &'a Card,
+    pub cerebro_card: &'a CerebroCard,
+    pub printing: &'a Printing,
+    pub dragn_card: &'a DragnCard,
 }
 
 impl fmt::Display for SubMenuRootKey {
@@ -95,295 +104,525 @@ impl fmt::Display for DeckListRootKey {
 }
 
 pub async fn execute(args: DecksArgs) {
-    let packs_handler = tokio::spawn(cerebro::get_packs(Some(args.offline)));
-    let cards_handler = tokio::spawn(cerebro::get_cards(Some(args.offline)));
-    let sets_handler = tokio::spawn(cerebro::get_sets(Some(args.offline)));
-    let marvelcdb_handler = tokio::spawn(marvelcdb::get_cards(Some(args.offline)));
-    let packs: Vec<Pack> = packs_handler
-        .await
-        .unwrap()
-        .unwrap()
-        .into_iter()
-        .filter(|pack| pack.official && !pack.incomplete)
-        .collect();
-    let cards: Vec<Card> = cards_handler
-        .await
-        .unwrap()
-        .unwrap()
-        .into_iter()
-        .filter(|card| card.official)
-        .collect();
-    let marvelcdb_cards: Vec<marvelcdb::Card> = marvelcdb_handler.await.unwrap().unwrap();
+    let loaded_cards =
+        common::load_card_database(&args.local_cards, args.api_cards, args.offline).await;
+    let mut pre_built_decks: PreBuiltDeckMap = IndexMap::new();
+    let mut root_sub_menus = HashMap::<SubMenuRootKey, Vec<SubMenu>>::new();
+    let mut root_deck_lists = HashMap::<DeckListRootKey, Vec<DeckList>>::new();
 
-    let pack_map: HashMap<&Uuid, &Pack> = packs.iter().map(|pack| (&pack.id, pack)).collect();
-    let sets: Vec<Set> = sets_handler
-        .await
-        .unwrap()
-        .unwrap()
-        .into_iter()
-        .filter(|set| {
-            set.official
-                && !pack_map
-                    .get(&set.pack_id)
-                    .map(|pack| pack.incomplete)
-                    .unwrap_or(true)
-        })
-        .collect();
+    // 1. Official API Decks
+    if args.api_decks || args.local_decks.is_empty() {
+        let packs_handler = tokio::spawn(cerebro::get_packs(Some(args.offline)));
+        let sets_handler = tokio::spawn(cerebro::get_sets(Some(args.offline)));
+        let marvelcdb_handler = tokio::spawn(marvelcdb::get_cards(Some(args.offline)));
 
-    let mut set_card_map: HashMap<&Uuid, Vec<OrderedCard>> = HashMap::new();
-    for card in cards.iter() {
-        for printing in card.printings.iter() {
-            if let Some(set_id) = printing.set_id.as_ref() {
-                let entry = set_card_map.entry(&set_id).or_insert(Vec::new());
-                entry.push(ordered_card_from_printing(card, printing));
-            }
-        }
-    }
-    for ordered_cards in set_card_map.values_mut() {
-        ordered_cards.sort_by(|a, b| a.pack_number.cmp(&b.pack_number));
-    }
+        let packs: Vec<Pack> = packs_handler
+            .await
+            .unwrap()
+            .unwrap()
+            .into_iter()
+            .filter(|pack| pack.official && !pack.incomplete)
+            .collect();
+        let marvelcdb_cards: Vec<marvelcdb::Card> = marvelcdb_handler.await.unwrap().unwrap();
 
-    let mut pack_set_map: HashMap<&Uuid, Vec<&Set>> = HashMap::new();
-    for set in sets.iter() {
-        let entry = pack_set_map.entry(&set.pack_id).or_insert(Vec::new());
-        if set_card_map.get(&set.id).is_some() {
-            entry.push(set);
-        } else {
-            println!("{:?}", set);
-        }
-    }
+        let pack_map: HashMap<&Uuid, &Pack> = packs.iter().map(|pack| (&pack.id, pack)).collect();
+        let sets: Vec<Set> = sets_handler
+            .await
+            .unwrap()
+            .unwrap()
+            .into_iter()
+            .filter(|set| {
+                set.official
+                    && !pack_map
+                        .get(&set.pack_id)
+                        .map(|pack| pack.incomplete)
+                        .unwrap_or(true)
+            })
+            .collect();
 
-    // order sets by pack based on the first card number in the set
-    for sets in pack_set_map.values_mut() {
-        sets.sort_by(|a, b| {
-            atoi::<usize>(
-                set_card_map
-                    .get(&a.id)
-                    .unwrap()
-                    .first()
-                    .unwrap()
-                    .pack_number
-                    .0
-                    .as_bytes(),
-            )
-            .cmp(&atoi::<usize>(
-                set_card_map
-                    .get(&b.id)
-                    .unwrap()
-                    .first()
-                    .unwrap()
-                    .pack_number
-                    .0
-                    .as_bytes(),
-            ))
-        });
-    }
-
-    // build scenarios, modulars, campaign, nemesis set
-    let mut pre_built_decks = process_sets_by_packs(&packs, &pack_set_map, &set_card_map);
-
-    // Next Evolution handle villain shared across two scenarios
-    let marauders = pre_built_decks.swap_remove("Marauders (Scenario)").unwrap();
-    for deck_name in ["Morlock Siege (Scenario)", "On the Run (Scenario)"] {
-        let deck = pre_built_decks.get_mut(deck_name).unwrap();
-        if let Some(action_list) = deck.post_load_action_list.as_mut() {
-            match action_list {
-                ActionList::List(list) => {
-                    list.push(json!(["ACTION_LIST", "multipleDoubleSidedVillains"]));
+        let mut ordered_cards: Vec<OrderedCard> = loaded_cards
+            .iter()
+            .filter_map(|loaded_card| {
+                if let common::SourceCard::Cerebro {
+                    card: cerebro_card,
+                    printing,
+                } = &loaded_card.source
+                {
+                    Some(OrderedCard {
+                        cerebro_card,
+                        printing,
+                        dragn_card: &loaded_card.output,
+                    })
+                } else {
+                    None
                 }
-                // should not get here
-                ActionList::Id(_) => (),
+            })
+            .collect();
+        ordered_cards.sort_by(|a, b| a.printing.pack_number.cmp(&b.printing.pack_number));
+
+        let mut set_card_map: HashMap<&Uuid, Vec<&OrderedCard>> = HashMap::new();
+        for card in ordered_cards.iter() {
+            if let Some(set_id) = card.printing.set_id.as_ref() {
+                let entry = set_card_map.entry(&set_id).or_insert(Vec::new());
+                entry.push(card);
             }
-        } else {
-            deck.post_load_action_list =
-                Some(ActionList::Id(String::from("multipleDoubleSidedVillains")));
         }
-        deck.cards.append(&mut marauders.cards.clone());
-    }
 
-    // add required modulars to villain scenarios
-    process_required_modular_sets(&mut pre_built_decks, &sets);
-    // add recommends modulars to villain scenarios
-    process_recommends_modular_sets(&mut pre_built_decks, &sets);
+        for ordered_cards in set_card_map.values_mut() {
+            ordered_cards.sort_by(|a, b| a.printing.pack_number.cmp(&b.printing.pack_number));
+        }
 
-    let mut packs_card_map: HashMap<&Uuid, Vec<(&Card, &Printing)>> = HashMap::new();
+        let mut pack_set_map: HashMap<&Uuid, Vec<&Set>> = HashMap::new();
+        for set in sets.iter() {
+            let entry = pack_set_map.entry(&set.pack_id).or_insert(Vec::new());
+            if set_card_map.get(&set.id).is_some() {
+                entry.push(set);
+            } else {
+                println!("{:?}", set);
+            }
+        }
 
-    for card in cards.iter() {
-        for printing in card.printings.iter() {
+        // order sets by pack based on the first card number in the set
+        for sets in pack_set_map.values_mut() {
+            sets.sort_by(|a, b| {
+                atoi::<usize>(
+                    set_card_map
+                        .get(&a.id)
+                        .unwrap()
+                        .first()
+                        .unwrap()
+                        .printing
+                        .pack_number
+                        .0
+                        .as_bytes(),
+                )
+                .cmp(&atoi::<usize>(
+                    set_card_map
+                        .get(&b.id)
+                        .unwrap()
+                        .first()
+                        .unwrap()
+                        .printing
+                        .pack_number
+                        .0
+                        .as_bytes(),
+                ))
+            });
+        }
+
+        // build scenarios, modulars, campaign, nemesis set
+        pre_built_decks = process_sets_by_packs(&packs, &pack_set_map, &set_card_map);
+
+        // Next Evolution handle villain shared across two scenarios
+        let marauders = pre_built_decks.swap_remove("Marauders (Scenario)").unwrap();
+        for deck_name in ["Morlock Siege (Scenario)", "On the Run (Scenario)"] {
+            let deck = pre_built_decks.get_mut(deck_name).unwrap();
+            if let Some(action_list) = deck.post_load_action_list.as_mut() {
+                match action_list {
+                    ActionList::List(list) => {
+                        list.push(json!(["ACTION_LIST", "multipleDoubleSidedVillains"]));
+                    }
+                    // should not get here
+                    ActionList::Id(_) => (),
+                }
+            } else {
+                deck.post_load_action_list =
+                    Some(ActionList::Id(String::from("multipleDoubleSidedVillains")));
+            }
+            deck.cards.append(&mut marauders.cards.clone());
+        }
+
+        // add required modulars to villain scenarios
+        process_required_modular_sets(&mut pre_built_decks, &sets);
+        // add recommends modulars to villain scenarios
+        process_recommends_modular_sets(&mut pre_built_decks, &sets);
+
+        let mut packs_card_map: HashMap<&Uuid, Vec<&OrderedCard>> = HashMap::new();
+
+        for card in ordered_cards.iter() {
             let entry = packs_card_map
-                .entry(&printing.pack_id)
+                .entry(&card.printing.pack_id)
                 .or_insert(Vec::new());
 
-            entry.push((card, printing));
+            entry.push(card);
         }
-    }
 
-    // build hero decks in campaign boxes (need this for the nemesis sets to be built first)
-    for pack in packs
-        .iter()
-        .filter(|pack| !pack.incomplete && pack.r#type == PackType::CampaignExpansion)
-    {
-        let value = packs_card_map.get_mut(&pack.id).unwrap();
-        value.sort_by(|(_, printing_a), (_, printing_b)| {
-            atoi::<usize>(printing_a.pack_number.0.as_bytes())
-                .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
-        });
-
-        build_hero_deck(
-            &value.iter().collect(),
-            &pack,
-            &marvelcdb_cards,
-            &pack_set_map,
-            &mut pre_built_decks,
-        );
-
-        let second_hero = value
+        // build hero decks in campaign boxes (need this for the nemesis sets to be built first)
+        for pack in packs
             .iter()
-            // skip past the 1st hero
-            .skip(5)
-            .skip_while(|card| {
-                card.0.r#type != CardType::Hero && card.0.r#type != CardType::AlterEgo
-            })
-            .collect();
-        build_hero_deck(
-            &second_hero,
-            &pack,
-            &marvelcdb_cards,
-            &pack_set_map,
-            &mut pre_built_decks,
-        );
-    }
-
-    // build hero pack decks
-    for pack in packs
-        .iter()
-        .filter(|pack| !pack.incomplete && pack.r#type == PackType::HeroPack)
-    {
-        let value = packs_card_map.get_mut(&pack.id).unwrap();
-        value.sort_by(|(_, printing_a), (_, printing_b)| {
-            atoi::<usize>(printing_a.pack_number.0.as_bytes())
-                .cmp(&atoi::<usize>(printing_b.pack_number.0.as_bytes()))
-        });
-
-        build_hero_deck(
-            &value.iter().collect(),
-            &pack,
-            &marvelcdb_cards,
-            &pack_set_map,
-            &mut pre_built_decks,
-        );
-    }
-
-    // core set heroes
-    let doc = dragncards::core_set_hero::Doc::from_fixture();
-    for (name, cards) in doc.heroes.into_iter() {
-        let mut deck: Vec<dragncards::decks::Card> = cards
-            .into_iter()
-            .map(|card| dragncards::decks::Card {
-                load_group_id: card.load_group_id,
-                quantity: card.quantity,
-                database_id: card.uuid,
-                _name: card.name,
-            })
-            .collect();
-        let obligation_card = deck.last().unwrap().clone();
-        let nemesis_set_name = set_label(
-            &pack_set_map
-                .get(&CORE_SET_PACK_ID)
-                .unwrap()
-                .iter()
-                .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
-                .next()
-                .unwrap(),
-        );
-        let nemesis_set = &pre_built_decks
-            .get(nemesis_set_name.as_str())
-            .unwrap()
-            .cards;
-        deck.extend(nemesis_set.clone());
-        let mut obligation_nemesis_bundle = nemesis_set.clone();
-        obligation_nemesis_bundle.insert(0, obligation_card);
-
-        let marvelcdb_label = format!("{name} (Hero) [marvelcdb bundle]");
-        pre_built_decks.insert(
-            marvelcdb_label.clone(),
-            PreBuiltDeck {
-                label: marvelcdb_label,
-                cards: obligation_nemesis_bundle,
-                post_load_action_list: None,
-            },
-        );
-        let deck_label = format!("{name} (Hero)");
-        pre_built_decks.insert(
-            deck_label.clone(),
-            PreBuiltDeck {
-                label: deck_label,
-                cards: deck,
-                post_load_action_list: None,
-            },
-        );
-    }
-
-    // Make Specialized Training Bundle
-    let specialized_training_bundle_deck = cards.iter().filter_map(|card| {
-        if [
-            COMBAT_SPECIALIST_CARD_ID,
-            DEFENSE_SPECIALIST_CARD_ID,
-            FRONT_LINE_SPECIALIST_CARD_ID,
-            SURVEILLANCE_SPECIALIST_CARD_ID,
-        ]
-        .contains(&card.id.as_str())
+            .filter(|pack| !pack.incomplete && pack.r#type == PackType::CampaignExpansion)
         {
-            Some(dragncards::decks::Card {
-                load_group_id: String::from("playerNOutOfPlay"),
-                quantity: 1,
-                database_id: dragncards::database::uuid(&card.printings[0].artificial_id),
-                _name: card.name.clone(),
-            })
-        } else {
-            None
-        }
-    });
-    let specialized_training_bundle_label = "Specialized Training [specialist bundle]";
-    pre_built_decks.insert(
-        specialized_training_bundle_label.to_string(),
-        PreBuiltDeck {
-            label: specialized_training_bundle_label.to_string(),
-            cards: specialized_training_bundle_deck.collect(),
-            post_load_action_list: None,
-        },
-    );
+            let value = packs_card_map.get_mut(&pack.id).unwrap();
+            value.sort_by(|a, b| {
+                atoi::<usize>(a.printing.pack_number.0.as_bytes())
+                    .cmp(&atoi::<usize>(b.printing.pack_number.0.as_bytes()))
+            });
 
-    // Civil War Scenario Recommends
-    let doc = dragncards::civil_war_leader::Doc::from_fixture();
-    for (name, leader) in doc.leaders.into_iter() {
-        let mut deck: Vec<dragncards::decks::Card> = leader
-            .main_schemes
-            .into_iter()
-            .map(|card| dragncards::decks::Card {
-                load_group_id: card.load_group_id,
-                quantity: 1,
-                database_id: card.uuid,
-                _name: card.name,
-            })
-            .collect();
-        leader.sets.iter().for_each(|set_name| {
-            let set = &pre_built_decks
-                .get(&format!("{set_name} (Modular)"))
+            build_hero_deck(
+                &value,
+                &pack,
+                &marvelcdb_cards,
+                &pack_set_map,
+                &mut pre_built_decks,
+            );
+
+            let second_hero = value
+                .iter()
+                // skip past the 1st hero
+                .skip(5)
+                .skip_while(|card| {
+                    card.cerebro_card.r#type != CardType::Hero
+                        && card.cerebro_card.r#type != CardType::AlterEgo
+                })
+                .copied()
+                .collect();
+            build_hero_deck(
+                &second_hero,
+                &pack,
+                &marvelcdb_cards,
+                &pack_set_map,
+                &mut pre_built_decks,
+            );
+        }
+
+        // build hero pack decks
+        for pack in packs
+            .iter()
+            .filter(|pack| !pack.incomplete && pack.r#type == PackType::HeroPack)
+        {
+            let value = packs_card_map.get_mut(&pack.id).unwrap();
+            value.sort_by(|a, b| {
+                atoi::<usize>(a.printing.pack_number.0.as_bytes())
+                    .cmp(&atoi::<usize>(b.printing.pack_number.0.as_bytes()))
+            });
+
+            build_hero_deck(
+                &value,
+                &pack,
+                &marvelcdb_cards,
+                &pack_set_map,
+                &mut pre_built_decks,
+            );
+        }
+
+        // core set heroes
+        let doc = dragncards::core_set_hero::Doc::from_fixture();
+        for (name, cards) in doc.heroes.into_iter() {
+            let mut deck: Vec<dragncards::decks::Card> = cards
+                .into_iter()
+                .map(|card| dragncards::decks::Card {
+                    load_group_id: card.load_group_id,
+                    quantity: card.quantity,
+                    database_id: card.uuid,
+                    _name: card.name,
+                })
+                .collect();
+            let obligation_card = deck.last().unwrap().clone();
+            let nemesis_set_name = set_label(
+                &pack_set_map
+                    .get(&CORE_SET_PACK_ID)
+                    .unwrap()
+                    .iter()
+                    .filter(|set| set.r#type == SetType::Nemesis && set.name.contains(&name))
+                    .next()
+                    .unwrap(),
+            );
+            let nemesis_set = &pre_built_decks
+                .get(nemesis_set_name.as_str())
                 .unwrap()
                 .cards;
-            deck.extend(set.clone());
-        });
+            deck.extend(nemesis_set.clone());
+            let mut obligation_nemesis_bundle = nemesis_set.clone();
+            obligation_nemesis_bundle.insert(0, obligation_card);
 
-        let deck_label = format!("{name} (Leader) [recommends]");
+            let marvelcdb_label = format!("{name} (Hero) [marvelcdb bundle]");
+            pre_built_decks.insert(
+                marvelcdb_label.clone(),
+                PreBuiltDeck {
+                    label: marvelcdb_label,
+                    cards: obligation_nemesis_bundle,
+                    post_load_action_list: None,
+                },
+            );
+            let deck_label = format!("{name} (Hero)");
+            pre_built_decks.insert(
+                deck_label.clone(),
+                PreBuiltDeck {
+                    label: deck_label,
+                    cards: deck,
+                    post_load_action_list: None,
+                },
+            );
+        }
+
+        // Make Specialized Training Bundle
+        let specialized_training_bundle_deck = loaded_cards.iter().filter_map(|card| {
+            if [
+                COMBAT_SPECIALIST_CARD_ID,
+                DEFENSE_SPECIALIST_CARD_ID,
+                FRONT_LINE_SPECIALIST_CARD_ID,
+                SURVEILLANCE_SPECIALIST_CARD_ID,
+            ]
+            .contains(&card.output.cerebro_id.as_str())
+            {
+                Some(dragncards::decks::Card {
+                    load_group_id: String::from("playerNOutOfPlay"),
+                    quantity: 1,
+                    database_id: card.output.database_id,
+                    _name: card.output.name.clone(),
+                })
+            } else {
+                None
+            }
+        });
+        let specialized_training_bundle_label = "Specialized Training [specialist bundle]";
         pre_built_decks.insert(
-            deck_label.clone(),
+            specialized_training_bundle_label.to_string(),
             PreBuiltDeck {
-                label: deck_label,
-                cards: deck,
+                label: specialized_training_bundle_label.to_string(),
+                cards: specialized_training_bundle_deck.collect(),
                 post_load_action_list: None,
             },
         );
+
+    let json =
+        serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
+            .unwrap();
+    let mut file = File::create("json/preBuiltDecks.json").unwrap();
+    write!(file, "{json}").unwrap();
+
+        }
+
+        // Build Official Menu
+        for pack in packs.iter() {
+            let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
+            let sets = pack_set_map.get(&pack.id).unwrap();
+            for set in sets.iter() {
+                // Maurauders isn't a villain scenario
+                if set.id == MARAUDERS_SET_ID {
+                    continue;
+                }
+                let deck_list_id = set_label(&set);
+                let deck_lists = pack_sub_menu
+                    .entry(set.r#type.clone())
+                    .or_insert_with(|| Vec::new());
+                deck_lists.push(DeckList {
+                    label: set.name.clone(),
+                    deck_list_id,
+                })
+            }
+
+            for (set_type, mut deck_lists) in pack_sub_menu.into_iter() {
+                if deck_lists.len() > 0 {
+                    match set_type {
+                        SetType::Villain => {
+                            let values = root_sub_menus
+                                .entry(SubMenuRootKey::Scenarios)
+                                .or_insert_with(|| Vec::new());
+                            values.push(SubMenu::DeckLists {
+                                label: pack.name.clone(),
+                                deck_lists,
+                            });
+                        }
+                        SetType::Campaign => {
+                            let values = root_sub_menus
+                                .entry(SubMenuRootKey::Campaign)
+                                .or_insert_with(|| Vec::new());
+                            values.push(SubMenu::DeckLists {
+                                label: pack.name.clone(),
+                                deck_lists,
+                            });
+                        }
+                        SetType::Modular => {
+                            let values = root_sub_menus
+                                .entry(SubMenuRootKey::ModularSets)
+                                .or_insert_with(|| Vec::new());
+                            values.push(SubMenu::DeckLists {
+                                label: pack.name.clone(),
+                                deck_lists,
+                            });
+                        }
+                        SetType::Hero => {
+                            let values = root_deck_lists
+                                .entry(DeckListRootKey::Heroes)
+                                .or_insert_with(|| Vec::new());
+                            values.append(&mut deck_lists);
+                        }
+                        SetType::Nemesis => {
+                            let values = root_deck_lists
+                                .entry(DeckListRootKey::NemesisSets)
+                                .or_insert_with(|| Vec::new());
+                            values.append(&mut deck_lists);
+                        }
+                        SetType::Supplementary => (),
+                    };
+                }
+            }
+        }
+    }
+
+    // 2. Local Decks
+    if !args.local_decks.is_empty() {
+        let local_decks = local::read_decks(&args.local_decks);
+        let mut local_groups: HashMap<(local::models::deck::DeckType, String), Vec<DeckList>> =
+            HashMap::new();
+
+        for deck in local_decks {
+            let mut dragn_cards = Vec::new();
+
+            if let Some(cards_list) = deck.cards {
+                for dc in cards_list {
+                    if let Some(card) = loaded_cards.iter().find(|c| c.output.cerebro_id == dc.id) {
+                        let load_group_id = dc.load_group_id.unwrap_or_else(|| {
+                            match deck.r#type {
+                                local::models::deck::DeckType::Hero => match &card.source {
+                                    common::SourceCard::Local(local_card) => {
+                                        dragncards::decks::default_load_group_hero(local_card)
+                                    }
+                                    common::SourceCard::Cerebro {
+                                        card: cerebro_card,
+                                        printing: _,
+                                    } => dragncards::decks::default_load_group_hero(cerebro_card),
+                                },
+                                _ => match &card.source {
+                                    common::SourceCard::Local(local_card) => {
+                                        dragncards::decks::default_load_group_encounter(local_card)
+                                    }
+                                    common::SourceCard::Cerebro {
+                                        card: cerebro_card,
+                                        printing: _,
+                                    } => dragncards::decks::default_load_group_encounter(
+                                        cerebro_card,
+                                    ),
+                                },
+                            }
+                            .to_string()
+                        });
+
+                        dragn_cards.push(dragncards::decks::Card {
+                            load_group_id,
+                            quantity: dc.quantity,
+                            database_id: card.output.database_id,
+                            _name: card.output.name.clone(),
+                        });
+                    }
+                }
+            }
+
+            if let Some(set_code) = deck.set_code {
+                for card in loaded_cards
+                    .iter()
+                    .filter(|c| c.output.set.as_deref() == Some(&set_code))
+                {
+                    if card.output.cerebro_id.ends_with("B") {
+                        continue;
+                    }
+
+                    let load_group_id = match deck.r#type {
+                        local::models::deck::DeckType::Hero => match &card.source {
+                            common::SourceCard::Local(local_card) => {
+                                dragncards::decks::default_load_group_hero(local_card)
+                            }
+                            common::SourceCard::Cerebro {
+                                card: cerebro_card,
+                                printing: _,
+                            } => dragncards::decks::default_load_group_hero(cerebro_card),
+                        },
+                        _ => match &card.source {
+                            common::SourceCard::Local(local_card) => {
+                                dragncards::decks::default_load_group_encounter(local_card)
+                            }
+                            common::SourceCard::Cerebro {
+                                card: cerebro_card,
+                                printing: _,
+                            } => dragncards::decks::default_load_group_encounter(cerebro_card),
+                        },
+                    }
+                    .to_string();
+
+                    dragn_cards.push(dragncards::decks::Card {
+                        load_group_id,
+                        quantity: 1,
+                        database_id: card.output.database_id,
+                        _name: card.output.name.clone(),
+                    });
+                }
+            }
+
+            let deck_tag = match deck.r#type {
+                local::models::deck::DeckType::Hero => "Hero",
+                local::models::deck::DeckType::Modular => "Modular",
+                local::models::deck::DeckType::Nemesis => "Nemesis",
+                local::models::deck::DeckType::Scenario => "Scenario",
+                local::models::deck::DeckType::Campaign => "Campaign",
+            };
+            let deck_label = format!("{} ({deck_tag})", deck.name);
+
+            let post_load_action_list = if [
+                local::models::deck::DeckType::Scenario,
+            ]
+            .contains(&deck.r#type)
+            {
+                let mut post_load_action_list_vector = vec![json!(["ACTION_LIST", "loadMode"])];
+
+                Some(ActionList::List(post_load_action_list_vector))
+            } else {
+                None
+            };
+
+            pre_built_decks.insert(
+                deck_label.clone(),
+                dragncards::decks::PreBuiltDeck {
+                    label: deck_label.clone(),
+                    cards: dragn_cards,
+                    post_load_action_list,
+                },
+            );
+
+            let deck_list = DeckList {
+                label: deck_label.clone(),
+                deck_list_id: deck_label.clone(),
+            };
+            local_groups
+                .entry((deck.r#type, deck.pack))
+                .or_default()
+                .push(deck_list);
+        }
+
+        for ((dtype, deck_label), lists) in local_groups {
+            match dtype {
+                local::models::deck::DeckType::Hero => {
+                    root_deck_lists
+                        .entry(DeckListRootKey::Heroes)
+                        .or_default()
+                        .extend(lists);
+                }
+                local::models::deck::DeckType::Nemesis => {
+                    root_deck_lists
+                        .entry(DeckListRootKey::NemesisSets)
+                        .or_default()
+                        .extend(lists);
+                }
+                local::models::deck::DeckType::Campaign => {
+                    root_sub_menus
+                        .entry(SubMenuRootKey::Campaign)
+                        .or_default()
+                        .push(SubMenu::DeckLists {
+                            label: deck_label,
+                            deck_lists: lists,
+                        });
+                }
+                local::models::deck::DeckType::Modular => {
+                    root_sub_menus
+                        .entry(SubMenuRootKey::ModularSets)
+                        .or_default()
+                        .push(SubMenu::DeckLists {
+                            label: deck_label,
+                            deck_lists: lists,
+                        });
+                }
+            }
+        }
     }
 
     let json =
@@ -392,83 +631,6 @@ pub async fn execute(args: DecksArgs) {
     let mut file = File::create("json/preBuiltDecks.json").unwrap();
     write!(file, "{json}").unwrap();
 
-    // Build `deckMenu.json`
-    let mut root_sub_menus = HashMap::<SubMenuRootKey, Vec<SubMenu>>::new();
-    let mut root_deck_lists = HashMap::<DeckListRootKey, Vec<DeckList>>::new();
-    for pack in packs.iter() {
-        let mut pack_sub_menu = HashMap::<SetType, Vec<DeckList>>::new();
-        let sets = pack_set_map.get(&pack.id).unwrap();
-        for set in sets.iter() {
-            // Maurauders isn't a villain scenario
-            if set.id == MARAUDERS_SET_ID {
-                continue;
-            }
-            let deck_list_id = set_label(&set);
-            let deck_lists = pack_sub_menu
-                .entry(set.r#type.clone())
-                .or_insert_with(|| Vec::new());
-            deck_lists.push(DeckList {
-                label: set.name.clone(),
-                deck_list_id,
-            })
-        }
-
-        for (set_type, mut deck_lists) in pack_sub_menu.into_iter() {
-            if deck_lists.len() > 0 {
-                match set_type {
-                    SetType::Villain => {
-                        let values = root_sub_menus
-                            .entry(SubMenuRootKey::Scenarios)
-                            .or_insert_with(|| Vec::new());
-                        values.push(SubMenu::DeckLists {
-                            label: pack.name.clone(),
-                            deck_lists,
-                        });
-                    }
-                    SetType::Campaign => {
-                        let values = root_sub_menus
-                            .entry(SubMenuRootKey::Campaign)
-                            .or_insert_with(|| Vec::new());
-                        values.push(SubMenu::DeckLists {
-                            label: pack.name.clone(),
-                            deck_lists,
-                        });
-                    }
-                    SetType::Leader => {
-                        let values = root_sub_menus
-                            .entry(SubMenuRootKey::Scenarios)
-                            .or_insert_with(|| Vec::new());
-                        values.push(SubMenu::DeckLists {
-                            label: pack.name.clone(),
-                            deck_lists: deck_lists,
-                        });
-                    }
-                    SetType::Modular => {
-                        let values = root_sub_menus
-                            .entry(SubMenuRootKey::ModularSets)
-                            .or_insert_with(|| Vec::new());
-                        values.push(SubMenu::DeckLists {
-                            label: pack.name.clone(),
-                            deck_lists,
-                        });
-                    }
-                    SetType::Hero => {
-                        let values = root_deck_lists
-                            .entry(DeckListRootKey::Heroes)
-                            .or_insert_with(|| Vec::new());
-                        values.append(&mut deck_lists);
-                    }
-                    SetType::Nemesis => {
-                        let values = root_deck_lists
-                            .entry(DeckListRootKey::NemesisSets)
-                            .or_insert_with(|| Vec::new());
-                        values.append(&mut deck_lists);
-                    }
-                    SetType::Supplementary => (),
-                };
-            }
-        }
-    }
     let mut sub_menus = root_sub_menus
         .into_iter()
         .map(|(key, values)| SubMenu::SubMenu {
@@ -491,17 +653,8 @@ pub async fn execute(args: DecksArgs) {
     write!(file, "{json}").unwrap();
 }
 
-fn ordered_card_from_printing<'a>(card: &'a Card, printing: &Printing) -> OrderedCard<'a> {
-    OrderedCard {
-        set_number: printing.set_number.clone(),
-        pack_number: printing.pack_number.clone(),
-        artificial_id: printing.artificial_id.clone(),
-        card,
-    }
-}
-
 fn build_hero_deck<'a>(
-    cards: &Vec<&(&Card, &Printing)>,
+    cards: &Vec<&OrderedCard>,
     pack: &Pack,
     marvelcdb_cards: &Vec<marvelcdb::Card>,
     pack_set_map: &HashMap<&Uuid, Vec<&Set>>,
@@ -511,23 +664,30 @@ fn build_hero_deck<'a>(
         .get(&pack.id)
         .unwrap()
         .iter()
-        .filter(|set| set.r#type == SetType::Hero && set.id == cards[0].1.set_id.unwrap())
+        .filter(|set| set.r#type == SetType::Hero && set.id == cards[0].printing.set_id.unwrap())
         .next()
         .unwrap();
     let mut player_cards: Vec<_> = cards
         .iter()
-        .take_while(|(card, _)| card.r#type != CardType::Obligation)
         // filter out supplementary cards like Invocation/Weather Deck
-        .filter(|(_, printing)| {
-            printing
+        .filter(|card| {
+            card.printing
                 .set_id
                 .map(|set_id| set_id == hero_set.id)
                 .unwrap_or(true)
         })
+        .take_while(|card| card.cerebro_card.r#type != CardType::Obligation)
         .collect();
     let obligation_card = cards
         .iter()
-        .find(|(card, _)| card.r#type == CardType::Obligation)
+        // Hercules has an obligation labor card
+        .filter(|card| {
+            card.printing
+                .set_id
+                .map(|set_id| set_id == hero_set.id)
+                .unwrap_or(true)
+        })
+        .find(|card| card.cerebro_card.r#type == CardType::Obligation)
         .unwrap();
     player_cards.push(obligation_card);
 
@@ -622,60 +782,54 @@ fn build_hero_deck<'a>(
 }
 
 fn process_hero_deck(
-    cards: &Vec<&&(&Card, &Printing)>,
+    cards: &Vec<&&OrderedCard>,
     pack: &Pack,
     marvelcdb_cards: &Vec<marvelcdb::Card>,
 ) -> Vec<dragncards::decks::Card> {
     cards
         .into_iter()
-        .filter_map(|(card, printing)| {
+        .filter_map(|ordered_card| {
             // Multi-Sided cards shouldn't be loaded twice
-            if (card.id.ends_with("B") || card.id.ends_with("C"))
+            if (ordered_card.cerebro_card.id.ends_with("B")
+                || ordered_card.cerebro_card.id.ends_with("C"))
                 && !["Firecracker", "Flash of Light", "Plasmoid Energy"]
-                    .contains(&card.name.as_str())
+                    .contains(&ordered_card.cerebro_card.name.as_str())
             {
                 return None;
             }
-            let mut load_group_id = match card.r#type {
-                CardType::Obligation => "sharedEncounterDeck",
-                CardType::Minion | CardType::SideScheme | CardType::Treachery => {
-                    "playerNNemesisSet"
-                }
-                // Hero/AlterEgo are consistently
-                CardType::Hero | CardType::AlterEgo => "playerNPlay1",
-                _ => "playerNDeck",
-            };
+            let mut load_group_id =
+                dragncards::decks::default_load_group_hero(ordered_card.cerebro_card);
             // Put Permanent Cards into play
-            if let Some(rules) = card.rules.as_ref() {
+            if let Some(rules) = ordered_card.cerebro_card.rules.as_ref() {
                 if (rules.contains("Permanent")
                     // Keep Campaign S.H.I.E.L.D. cards in the campaign area
-                    && printing.set_id != Some(CAMPAIGN_SHIELD_TECH_SET_ID))
-                    || card.id == TOUCHED_ID
+                    && ordered_card.printing.set_id != Some(CAMPAIGN_SHIELD_TECH_SET_ID))
+                    || ordered_card.cerebro_card.id == TOUCHED_ID
                 {
                     load_group_id = "playerNPlay1";
                 }
             }
             // Set Ironheart Version 2/3 Hero Cards out of play
-            if ["29002A", "29003A"].contains(&card.id.as_str()) {
+            if ["29002A", "29003A"].contains(&ordered_card.cerebro_card.id.as_str()) {
                 load_group_id = "playerNOutOfPlay";
             }
-            let quantity = if let Some(marvelcdb_card) = marvelcdb_cards
-                .iter()
-                .find(|card| card.code == marvelcdb::card_id(&pack.number, &printing.pack_number.0))
-            {
+
+            let quantity = if let Some(marvelcdb_card) = marvelcdb_cards.iter().find(|card| {
+                card.code == marvelcdb::card_id(&pack.number, &ordered_card.printing.pack_number.0)
+            }) {
                 match marvelcdb_card.deck_limit {
                     Some(limit) => std::cmp::min(marvelcdb_card.quantity, limit),
                     None => marvelcdb_card.quantity,
                 }
             } else {
-                println!("Missing from marvelcdb: {}", card.id);
+                println!("Missing from marvelcdb: {}", ordered_card.cerebro_card.id);
                 1
             };
             Some(dragncards::decks::Card {
                 load_group_id: load_group_id.to_string(),
                 quantity,
-                database_id: dragncards::database::uuid(&printing.artificial_id),
-                _name: card.name.clone(),
+                database_id: ordered_card.dragn_card.database_id,
+                _name: ordered_card.cerebro_card.name.clone(),
             })
         })
         .collect()
@@ -684,7 +838,7 @@ fn process_hero_deck(
 fn process_sets_by_packs(
     packs: &Vec<Pack>,
     pack_set_map: &HashMap<&Uuid, Vec<&Set>>,
-    set_card_map: &HashMap<&Uuid, Vec<OrderedCard>>,
+    set_card_map: &HashMap<&Uuid, Vec<&OrderedCard>>,
 ) -> PreBuiltDeckMap {
     let mut pre_built_decks: PreBuiltDeckMap = IndexMap::new();
 
@@ -697,30 +851,19 @@ fn process_sets_by_packs(
                 .unwrap()
                 .iter()
                 .filter_map(|ordered_card| {
-                    let card = ordered_card.card;
+                    let card = ordered_card.cerebro_card;
                     if card.id.ends_with("B") && card.name != "Android Efficiency" {
                         return None;
                     }
 
                     let mut load_group_id = match set.r#type {
                         SetType::Leader | SetType::Modular | SetType::Villain => {
-                            let load_group_id = match card.r#type {
-                                CardType::MainScheme => {
-                                    if card
-                                        .stage
-                                        .as_ref()
-                                        .map(|stage| stage == "1A")
-                                        .unwrap_or(false)
-                                        || set.id == TOWER_DEFENSE_SET_ID
-                                    {
-                                        "sharedMainScheme"
-                                    } else {
-                                        "sharedMainSchemeDeck"
-                                    }
-                                }
-                                CardType::Leader | CardType::Villain => "sharedVillainDeck",
-                                _ => "sharedEncounterDeck",
-                            };
+                            let mut load_group_id =
+                                dragncards::decks::default_load_group_encounter(card);
+                            if card.r#type == CardType::MainScheme && set.id == TOWER_DEFENSE_SET_ID
+                            {
+                                load_group_id = "sharedMainScheme";
+                            }
 
                             Some(load_group_id)
                         }
@@ -741,10 +884,11 @@ fn process_sets_by_packs(
                     if set.id == INFINITY_GAUNTLET_SET_ID {
                         load_group_id = Some("sharedInfinityGauntletDeck");
                     } else if (set.id == TASKMASTER_SET_ID
-                        && ordered_card.card.r#type == CardType::Ally)
+                        && ordered_card.cerebro_card.r#type == CardType::Ally)
                         || (set.id == RED_SKULL_SET_ID
-                            && ordered_card.card.id == THE_SLEEPER_CARD_ID)
-                        || (set.id == KANG_SET_ID && ordered_card.card.id == KANGS_DOMINION_CARD_ID)
+                            && ordered_card.cerebro_card.id == THE_SLEEPER_CARD_ID)
+                        || (set.id == KANG_SET_ID
+                            && ordered_card.cerebro_card.id == KANGS_DOMINION_CARD_ID)
                     {
                         load_group_id = Some("sharedOutOfPlay");
                     }
@@ -752,11 +896,12 @@ fn process_sets_by_packs(
                     load_group_id.map(|load_group_id| dragncards::decks::Card {
                         load_group_id: load_group_id.to_string(),
                         quantity: ordered_card
+                            .printing
                             .set_number
                             .as_ref()
                             .map(|i| i.length())
                             .unwrap_or(1),
-                        database_id: dragncards::database::uuid(&ordered_card.artificial_id),
+                        database_id: ordered_card.dragn_card.database_id,
                         _name: card.name.clone(),
                     })
                 })

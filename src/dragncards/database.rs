@@ -13,7 +13,7 @@ const FIRECRACKER_ID_BASE: &'static str = "47007";
 const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
 const PLASMOID_ENERGY_ID_BASE: &'static str = "47010";
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Card {
     pub database_id: Uuid,
@@ -35,6 +35,7 @@ pub struct Card {
     pub starting_threat_scaling: Option<usize>,
     pub acceleration_fixed: Option<usize>,
     pub acceleration_scaling: Option<usize>,
+    // icons on cards
     pub acceleration: Option<usize>,
     pub amplify: Option<usize>,
     pub crisis: Option<usize>,
@@ -46,11 +47,11 @@ pub struct Card {
 }
 
 impl Card {
-    pub fn new(
-        card: CerebroCard,
+    pub fn from_cerebro_card(
+        card: &CerebroCard,
         packs: &HashMap<Uuid, Pack>,
         sets: &HashMap<Uuid, Set>,
-    ) -> Vec<Card> {
+    ) -> Vec<(Card, CerebroCard, Printing)> {
         let card_back = card_back(&card);
 
         card.printings
@@ -167,7 +168,7 @@ impl Card {
                     }
                 }
 
-                new_card
+                (new_card, card.clone(), printing.clone())
             })
             .collect()
     }

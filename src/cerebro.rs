@@ -68,20 +68,28 @@ pub struct Card {
 }
 
 impl CardRules for Card {
+    fn r#type(&self) -> CardType {
+        self.r#type.clone()
+    }
+
     fn rules_text(&self) -> Option<&str> {
         self.rules.as_deref()
     }
 
-    fn health(&self) -> Option<&ScalingNumber> {
-        self.health.as_ref()
+    fn health(&self) -> Option<ScalingNumber> {
+        self.health.clone()
     }
 
-    fn starting_threat(&self) -> Option<&ScalingNumber> {
-        self.starting_threat.as_ref()
+    fn starting_threat(&self) -> Option<ScalingNumber> {
+        self.starting_threat.clone()
     }
 
-    fn acceleration(&self) -> Option<&Acceleration> {
-        self.acceleration.as_ref()
+    fn acceleration(&self) -> Option<Acceleration> {
+        self.acceleration.clone()
+    }
+
+    fn stage(&self) -> Option<&str> {
+        self.stage.as_deref()
     }
 }
 
@@ -439,7 +447,7 @@ mod tests {
 
         // Health: Scaling(5) -> (None, Some(5))
         assert_eq!(card.health_parsed(), (None, Some(5)));
-        
+
         // Threat: Fixed(2) + Hinder 1{i} -> (Some(2), Some(1))
         // Wait, Fixed(2) has NO scaling component. Hinder adds to scaling.
         // So (Some(2), Some(1)).

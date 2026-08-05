@@ -9,7 +9,7 @@ pub struct Deck {
     pub set_code: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Hash)]
 #[serde(rename_all = "lowercase")]
 pub enum DeckType {
     Hero,
