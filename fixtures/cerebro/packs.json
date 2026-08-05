@@ -838,5 +838,19 @@
     "Number": "59",
     "ReleaseStatus": null,
     "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "95903495-80a0-4ec9-87a4-0a57b4a36d95",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Fear No Evil",
+    "Type": "Campaign Expansion",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "60",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]
