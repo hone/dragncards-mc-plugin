@@ -27,6 +27,7 @@ pub fn default_load_group_encounter(card: &impl CardRules) -> &'static str {
                 "sharedMainSchemeDeck"
             }
         }
+        CardType::Leader | CardType::Villain => "sharedVillainDeck",
         _ => "sharedEncounterDeck",
     }
 }

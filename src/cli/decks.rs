@@ -385,12 +385,39 @@ pub async fn execute(args: DecksArgs) {
             },
         );
 
-    let json =
-        serde_json::to_string_pretty(&dragncards::decks::PreBuiltDeckDoc { pre_built_decks })
-            .unwrap();
-    let mut file = File::create("json/preBuiltDecks.json").unwrap();
-    write!(file, "{json}").unwrap();
+        // Civil War + Synthezoid Smackdown Scenario Recommends
+        let mut leaders = dragncards::civil_war_leader::Doc::from_fixture().leaders;
+        let synthezoid_smackdown_leaders =
+            dragncards::synthezoid_smackdown_leader::Doc::from_fixture().leaders;
+        leaders.extend(synthezoid_smackdown_leaders);
+        for (name, leader) in leaders.into_iter() {
+            let mut deck: Vec<dragncards::decks::Card> = leader
+                .main_schemes
+                .into_iter()
+                .map(|card| dragncards::decks::Card {
+                    load_group_id: card.load_group_id,
+                    quantity: 1,
+                    database_id: card.uuid,
+                    _name: card.name,
+                })
+                .collect();
+            leader.sets.iter().for_each(|set_name| {
+                let set = &pre_built_decks
+                    .get(&format!("{set_name} (Modular)"))
+                    .unwrap()
+                    .cards;
+                deck.extend(set.clone());
+            });
 
+            let deck_label = format!("{name} (Leader) [recommends]");
+            pre_built_decks.insert(
+                deck_label.clone(),
+                PreBuiltDeck {
+                    label: deck_label,
+                    cards: deck,
+                    post_load_action_list: None,
+                },
+            );
         }
 
         // Build Official Menu
@@ -431,6 +458,15 @@ pub async fn execute(args: DecksArgs) {
                             values.push(SubMenu::DeckLists {
                                 label: pack.name.clone(),
                                 deck_lists,
+                            });
+                        }
+                        SetType::Leader => {
+                            let values = root_sub_menus
+                                .entry(SubMenuRootKey::Scenarios)
+                                .or_insert_with(|| Vec::new());
+                            values.push(SubMenu::DeckLists {
+                                label: pack.name.clone(),
+                                deck_lists: deck_lists,
                             });
                         }
                         SetType::Modular => {
@@ -555,15 +591,20 @@ pub async fn execute(args: DecksArgs) {
                 local::models::deck::DeckType::Nemesis => "Nemesis",
                 local::models::deck::DeckType::Scenario => "Scenario",
                 local::models::deck::DeckType::Campaign => "Campaign",
+                local::models::deck::DeckType::Leader => "Leader",
             };
             let deck_label = format!("{} ({deck_tag})", deck.name);
 
             let post_load_action_list = if [
                 local::models::deck::DeckType::Scenario,
+                local::models::deck::DeckType::Leader,
             ]
             .contains(&deck.r#type)
             {
                 let mut post_load_action_list_vector = vec![json!(["ACTION_LIST", "loadMode"])];
+                if local::models::deck::DeckType::Leader == deck.r#type {
+                    post_load_action_list_vector.push(json!(["LOAD_LEADER_BY_MODE"]));
+                }
 
                 Some(ActionList::List(post_load_action_list_vector))
             } else {
@@ -602,6 +643,15 @@ pub async fn execute(args: DecksArgs) {
                         .entry(DeckListRootKey::NemesisSets)
                         .or_default()
                         .extend(lists);
+                }
+                local::models::deck::DeckType::Scenario | local::models::deck::DeckType::Leader => {
+                    root_sub_menus
+                        .entry(SubMenuRootKey::Scenarios)
+                        .or_default()
+                        .push(SubMenu::DeckLists {
+                            label: deck_label,
+                            deck_lists: lists,
+                        });
                 }
                 local::models::deck::DeckType::Campaign => {
                     root_sub_menus

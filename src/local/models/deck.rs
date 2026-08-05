@@ -17,6 +17,7 @@ pub enum DeckType {
     Scenario,
     Campaign,
     Nemesis,
+    Leader,
 }
 
 #[derive(Debug, Deserialize, PartialEq)]

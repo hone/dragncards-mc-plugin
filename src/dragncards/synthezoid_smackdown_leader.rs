@@ -9,7 +9,10 @@ pub struct Doc {
 
 impl Doc {
     pub fn from_fixture() -> Doc {
-        serde_json::from_str(include_str!("../../fixtures/civil_war_leader_decks.json")).unwrap()
+        serde_json::from_str(include_str!(
+            "../../fixtures/synthezoid_smackdown_leader_decks.json"
+        ))
+        .unwrap()
     }
 }
 
@@ -19,8 +22,9 @@ mod tests {
 
     #[test]
     fn it_parses_civil_war_leaders() {
-        let result: Result<Doc, _> =
-            serde_json::from_str(include_str!("../../fixtures/civil_war_leader_decks.json"));
+        let result: Result<Doc, _> = serde_json::from_str(include_str!(
+            "../../fixtures/synthezoid_smackdown_leader_decks.json"
+        ));
         assert!(result.is_ok());
     }
 }
