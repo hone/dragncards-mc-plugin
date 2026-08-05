@@ -13,7 +13,7 @@
         {
           "actionList": "flipCard",
           "label": "id:flipButton",
-          "condition": ["AND", ["EQUAL", "$ACTIVE_CARD.currentSide", "B"], ["NOT", ["EQUAL", "$ACTIVE_FACE.type", "Main Scheme"]]],
+          "condition": ["AND", ["EQUAL", "$ACTIVE_CARD.currentSide", "B"], ["NOT", ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Main Scheme"]]],
           "position": "bottom"
         },
         {
@@ -25,7 +25,7 @@
         {
           "actionList": "flipCard",
           "label": "id:flipButton",
-          "condition": ["AND", ["EQUAL", "$ACTIVE_FACE.type", "Main Scheme"], ["EQUAL", "$ACTIVE_CARD.currentSide", "A"]],
+          "condition": ["AND", ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Main Scheme"], ["EQUAL", "$ACTIVE_CARD.currentSide", "A"]],
           "position": "bottom"
         },
         {
