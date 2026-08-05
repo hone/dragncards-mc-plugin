@@ -796,5 +796,47 @@
     "Number": "56",
     "ReleaseStatus": null,
     "SpoilerTag": true
+  },
+  {
+    "Deleted": false,
+    "Id": "171bf34d-d8b4-47a2-8c42-4b166985d1e5",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Synthezoid Smackdown",
+    "Type": "Scenario Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "57",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "dd31aadf-19f1-426e-8309-417560bfb88e",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Wonder Man",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "58",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
+  },
+  {
+    "Deleted": false,
+    "Id": "2f9319c9-afd1-47cf-af3f-577d19fa07f0",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Hercules",
+    "Type": "Hero Pack",
+    "CouncilNumber": null,
+    "Emoji": null,
+    "Incomplete": false,
+    "Number": "59",
+    "ReleaseStatus": null,
+    "SpoilerTag": false
   }
 ]
