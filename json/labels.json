@@ -300,6 +300,12 @@
     "handSize": {
       "English": "Hand Size"
     },
+    "heroHandSizeModifier": {
+      "English": "Hero Hand Size Modifier"
+    },
+    "alterEgoHandSizeModifier": {
+      "English": "Alter-Ego Hand Size Modifier"
+    },
     "zeroTokens": {
       "English": "Remove All Tokens"
     },
@@ -470,6 +476,9 @@
     },
     "encounterPhase": {
       "English": "Encounter Phase"
+    },
+    "toggleEncounterDeck2": {
+      "English": "Toggle Second Encounter Deck"
     }
   }
 }

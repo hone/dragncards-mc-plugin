@@ -181,6 +181,69 @@
       ["POINTER",
         ["EQUAL", "$CARD.sides.A.type", "Side Scheme"]
       ]
+    ],
+    "importMc4dbDeck": [
+      ["VAR", "$URL", "$PROMPT_INPUT"],
+      ["COND",
+        ["EQUAL", "$URL", null],
+        ["ABORT", "No URL provided."]
+      ],
+
+      ["VAR", "$DECK_TYPE", "decklist"],
+      ["COND",
+        ["NOT", ["IN_STRING", "$URL", "decklist"]],
+        ["UPDATE_VAR", "$DECK_TYPE", "deck"]
+      ],
+
+      ["VAR", "$TYPE_INDEX", ["INDEX_OF", "$URL", "$DECK_TYPE"]],
+      ["VAR", "$BASE_URL", ["SUBSTRING", "$URL", 0, ["SUBTRACT", "$TYPE_INDEX", 1]]],
+
+      ["VAR", "$VIEW_INDEX", ["INDEX_OF", "$URL", "view"]],
+      ["VAR", "$ID_START", ["ADD", "$VIEW_INDEX", 5]],
+      ["VAR", "$DECK_ID", ["SUBSTRING", "$URL", "$ID_START", ["SUBTRACT", ["LENGTH", "$URL"], "$ID_START"]]],
+
+      ["VAR", "$API_URL", "{{$BASE_URL}}/api/public/{{$DECK_TYPE}}/{{$DECK_ID}}.json"],
+      ["LOG", "{{$ALIAS_N}} is importing a deck from {{$BASE_URL}}..."],
+
+      ["VAR", "$DECKLIST", ["REQUEST_JSON", "$API_URL"]],
+      ["COND",
+        ["EQUAL", "$DECKLIST", null],
+        ["ABORT", "Failed to fetch decklist from URL."]
+      ],
+
+      ["VAR", "$HERO_CODE", "$DECKLIST.hero_code"],
+      ["VAR", "$HERO_A_JSON", ["REQUEST_JSON", "{{$BASE_URL}}/api/public/card/{{$HERO_CODE}}.json"]],
+
+      ["VAR", "$HERO_B_CODE", ["REGEX_REPLACE", "$HERO_CODE", "a$", "b"]],
+      ["VAR", "$HERO_B_JSON", ["REQUEST_JSON", "{{$BASE_URL}}/api/public/card/{{$HERO_B_CODE}}.json"]],
+
+      ["VAR", "$FACE_A", ["BUILD_MC4DB_FACE", "$HERO_A_JSON", "$BASE_URL"]],
+      ["VAR", "$FACE_B", ["BUILD_MC4DB_FACE", "$HERO_B_JSON", "$BASE_URL"]],
+      ["VAR", "$HERO_DETAILS", ["MAP_PUT", ["MAP_PUT", {}, "A", "$FACE_A"], "B", "$FACE_B"]],
+      ["VAR", "$HERO_ITEM", ["PROCESS_MAP", {
+        "databaseId": null,
+        "quantity": 1,
+        "loadGroupId": "playerNPlay1",
+        "cardDetails": "$HERO_DETAILS"
+      }]],
+
+      ["VAR", "$LOAD_LIST", ["LIST", "$HERO_ITEM"]],
+
+      ["FOR_EACH_KEY_VAL", "$SLOT_CODE", "$SLOT_QTY", "$DECKLIST.slots", [
+        ["VAR", "$SLOT_JSON", ["REQUEST_JSON", "{{$BASE_URL}}/api/public/card/{{$SLOT_CODE}}.json"]],
+        ["VAR", "$SLOT_FACE", ["BUILD_MC4DB_FACE", "$SLOT_JSON", "$BASE_URL"]],
+        ["VAR", "$SLOT_DETAILS", ["MAP_PUT", ["MAP_PUT", {}, "A", "$SLOT_FACE"], "B", {"name": "player"}]],
+        ["VAR", "$SLOT_ITEM", ["PROCESS_MAP", {
+          "databaseId": null,
+          "quantity": "$SLOT_QTY",
+          "loadGroupId": "playerNDeck",
+          "cardDetails": "$SLOT_DETAILS"
+        }]],
+        ["UPDATE_VAR", "$LOAD_LIST", ["APPEND", "$LOAD_LIST", "$SLOT_ITEM"]]
+      ]],
+
+      ["LOAD_CARDS", "$LOAD_LIST"],
+      ["LOG", "{{$ALIAS_N}} finished importing deck from mc4db."]
     ]
   }
 }

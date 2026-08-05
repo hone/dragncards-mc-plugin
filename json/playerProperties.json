@@ -1,6 +1,8 @@
 {
   "playerProperties": {
     "hitPoints":  {"type": "integer", "default": 0, "min": 0, "label": "id:hitPoints"},
-    "handSize": {"type": "integer", "default": 0, "min": 0, "label": "id:handSize"}
+    "handSize": {"type": "integer", "default": 0, "min": 0, "label": "id:handSize"},
+    "heroHandSizeModifier": {"type": "integer", "default": 0, "label": "id:heroHandSizeModifier"},
+    "alterEgoHandSizeModifier": {"type": "integer", "default": 0, "label": "id:alterEgoHandSizeModifier"}
   }
 }

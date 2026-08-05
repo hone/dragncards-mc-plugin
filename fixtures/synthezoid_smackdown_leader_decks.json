@@ -1,0 +1,18 @@
+{
+  "leaders": {
+    "She-Hulk": {
+      "mainSchemes": [
+        { "uuid": "ea42de82-a75c-5d63-8a36-a6fbd31bbef7", "name": "Enforce the Law", "loadGroupId": "sharedMainScheme" },
+        { "uuid": "5902b342-e1c6-5a10-80f4-43e2aa08ff42", "name": "Mighty Avengers", "loadGroupId": "sharedMainSchemeDeck" }
+      ],
+      "sets": ["S.H.I.E.L.D. Ops", "Thunderbolts", "Taskmaster", "Deadly Duo"]
+    },
+    "Vision": {
+      "mainSchemes": [
+        { "uuid": "a98846cd-084f-5c5a-a102-02f1a185e0b1", "name": "Protect Secret Identities", "loadGroupId": "sharedMainScheme" },
+        { "uuid": "ade96f58-e446-5cf5-88ca-43adbadd3519", "name": "Expose Overreach", "loadGroupId": "sharedMainSchemeDeck" }
+      ],
+      "sets": ["Young Avengers", "Scarlet Twins", "Moon Knight", "Royal Guard"]
+    }
+  }
+}

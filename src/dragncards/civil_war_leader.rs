@@ -1,6 +1,6 @@
+use crate::dragncards::leader::Leader;
 use serde::Deserialize;
 use std::collections::HashMap;
-use uuid::Uuid;
 
 #[derive(Deserialize)]
 pub struct Doc {
@@ -11,21 +11,6 @@ impl Doc {
     pub fn from_fixture() -> Doc {
         serde_json::from_str(include_str!("../../fixtures/civil_war_leader_decks.json")).unwrap()
     }
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Leader {
-    pub main_schemes: Vec<Card>,
-    pub sets: Vec<String>,
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Card {
-    pub uuid: Uuid,
-    pub name: String,
-    pub load_group_id: String,
 }
 
 #[cfg(test)]

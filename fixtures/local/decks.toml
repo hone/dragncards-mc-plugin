@@ -1,0 +1,16 @@
+[[decks]]
+name = "Spider-Man Starter Deck"
+type = "hero"
+pack = "Spider-Man"
+cards = [
+    { id = "01001a", quantity = 1 },
+    { id = "01001b", quantity = 1 },
+    { id = "01002", quantity = 1 },
+    { id = "01003", quantity = 2 }
+]
+
+[[decks]]
+name = "Rhino Scenario"
+type = "scenario"
+pack = "Rhino"
+set_code = "Rhino"

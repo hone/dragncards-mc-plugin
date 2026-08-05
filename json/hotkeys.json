@@ -24,7 +24,8 @@
       {"key": "Shift+S", "actionList": "shadowsOfThePast", "label": "id:shadowsOfThePast"},
       {"key": "Shift+P", "actionList": "playerEndPhase", "label": "id:playerEndPhase"},
       {"key": "V", "actionList": "villainEncounterPhase", "label": "id:villainEncounterPhase"},
-      {"key": "Shift+V", "actionList": "villainEndPhase", "label": "id:villainEndPhase"}
+      {"key": "Shift+V", "actionList": "villainEndPhase", "label": "id:villainEndPhase"},
+      {"key": "Ctrl+K", "actionList": ["PROMPT", "$PLAYER_N", "importMc4dbDeck"], "label": "Import Deck from mc4db"}
     ],
     "card": [
       {"key": "A", "actionList": "toggleExhaust", "label": "id:exhaustReady"},

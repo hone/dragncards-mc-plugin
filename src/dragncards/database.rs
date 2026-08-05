@@ -1,21 +1,21 @@
 use crate::{
-    cerebro::{
-        Acceleration, Card as CerebroCard, CardType, Classification, Icon, Pack, Printing,
-        ScalingNumber, Set,
-    },
+    cerebro::{Card as CerebroCard, Pack, Printing, Set},
     marvelcdb,
+    rules::{Acceleration, CardRules, CardType, Classification, Icon, ScalingNumber},
 };
 use serde::Serialize;
 use std::collections::HashMap;
 use uuid::Uuid;
 
-const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 const ANDROID_EFFICIENCY_ID_BASE: &'static str = "01144";
 const FIRECRACKER_ID_BASE: &'static str = "47007";
 const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
+const PHOTOGRAPHIC_REFLEXES_ID_BASE: &'static str = "60040";
 const PLASMOID_ENERGY_ID_BASE: &'static str = "47010";
+const REDSKULL_EXPERT_CAMPAIGN_OBLIGATION_IDS: &[&str] = &["04163", "04164", "04165", "04166"];
+const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Card {
     pub database_id: Uuid,
@@ -30,17 +30,18 @@ pub struct Card {
     pub traits: Option<String>,
     pub hand_size: Option<u32>,
     pub hit_points_fixed: Option<i64>,
-    pub hit_points_scaling: Option<i64>,
+    pub hit_points_scaling: Option<usize>,
     pub set: Option<String>,
     pub stage: Option<String>,
     pub starting_threat_fixed: Option<i64>,
-    pub starting_threat_scaling: Option<i64>,
-    pub acceleration_fixed: Option<i64>,
-    pub acceleration_scaling: Option<i64>,
-    pub acceleration: Option<i64>,
-    pub amplify: Option<i64>,
-    pub crisis: Option<i64>,
-    pub hazard: Option<i64>,
+    pub starting_threat_scaling: Option<usize>,
+    pub acceleration_fixed: Option<usize>,
+    pub acceleration_scaling: Option<usize>,
+    // icons on cards
+    pub acceleration: Option<usize>,
+    pub amplify: Option<usize>,
+    pub crisis: Option<usize>,
+    pub hazard: Option<usize>,
     pub toughness: bool,
     pub permanent: bool,
     pub nemesis_minion: bool,
@@ -48,11 +49,11 @@ pub struct Card {
 }
 
 impl Card {
-    pub fn new(
-        card: CerebroCard,
+    pub fn from_cerebro_card(
+        card: &CerebroCard,
         packs: &HashMap<Uuid, Pack>,
         sets: &HashMap<Uuid, Set>,
-    ) -> Vec<Card> {
+    ) -> Vec<(Card, CerebroCard, Printing)> {
         let card_back = card_back(&card);
 
         card.printings
@@ -117,35 +118,31 @@ impl Card {
                         .unwrap_or(false),
                     nemesis_minion,
                     permanent,
-                    victory: card.victory().map(|v| v as i64),
+                    victory: card.victory(),
                     acceleration_fixed: None,
                     acceleration_scaling: None,
                     acceleration: card
                         .icons()
-                        .map(|icons| {
-                            icons
-                                .get(&Icon::Acceleration)
-                                .map(|quantity| *quantity as i64)
-                        })
+                        .map(|icons| icons.get(&Icon::Acceleration).copied())
                         .flatten(),
                     amplify: card
                         .icons()
-                        .map(|icons| icons.get(&Icon::Amplify).map(|quantity| *quantity as i64))
+                        .map(|icons| icons.get(&Icon::Amplify).copied())
                         .flatten(),
                     crisis: card
                         .icons()
-                        .map(|icons| icons.get(&Icon::Crisis).map(|quantity| *quantity as i64))
+                        .map(|icons| icons.get(&Icon::Crisis).copied())
                         .flatten(),
                     hazard: card
                         .icons()
-                        .map(|icons| icons.get(&Icon::Hazard).map(|quantity| *quantity as i64))
+                        .map(|icons| icons.get(&Icon::Hazard).copied())
                         .flatten(),
                 };
 
                 if let Some(health) = card.health.as_ref() {
                     match health {
                         ScalingNumber::Fixed(i) => new_card.hit_points_fixed = Some(*i as i64),
-                        ScalingNumber::Scaling(i) => new_card.hit_points_scaling = Some(*i as i64),
+                        ScalingNumber::Scaling(i) => new_card.hit_points_scaling = Some(*i),
                         ScalingNumber::Infinity => new_card.hit_points_fixed = Some(-1),
                     }
                 }
@@ -153,37 +150,33 @@ impl Card {
                 if let Some(starting_threat) = card.starting_threat.as_ref() {
                     match starting_threat {
                         ScalingNumber::Fixed(i) => new_card.starting_threat_fixed = Some(*i as i64),
-                        ScalingNumber::Scaling(i) => {
-                            new_card.starting_threat_scaling = Some(*i as i64)
-                        }
+                        ScalingNumber::Scaling(i) => new_card.starting_threat_scaling = Some(*i),
                         ScalingNumber::Infinity => new_card.starting_threat_fixed = Some(-1),
                     }
                 }
 
                 if let Some(hinder) = card.hinder() {
                     let existing = new_card.starting_threat_scaling.unwrap_or(0);
-                    new_card.starting_threat_scaling = Some(existing + hinder as i64);
+                    new_card.starting_threat_scaling = Some(existing + hinder);
                 }
 
                 if let Some(acceleration) = card.acceleration.as_ref() {
                     match acceleration {
-                        Acceleration::Fixed(i) => new_card.acceleration_fixed = Some(*i as i64),
-                        Acceleration::Scaling(i) => new_card.acceleration_scaling = Some(*i as i64),
-                        Acceleration::FixedStar(i) => new_card.acceleration_fixed = Some(*i as i64),
-                        Acceleration::ScalingStar(i) => {
-                            new_card.acceleration_scaling = Some(*i as i64)
-                        }
+                        Acceleration::Fixed(i) => new_card.acceleration_fixed = Some(*i),
+                        Acceleration::Scaling(i) => new_card.acceleration_scaling = Some(*i),
+                        Acceleration::FixedStar(i) => new_card.acceleration_fixed = Some(*i),
+                        Acceleration::ScalingStar(i) => new_card.acceleration_scaling = Some(*i),
                         _ => (),
                     }
                 }
 
-                new_card
+                (new_card, card.clone(), printing.clone())
             })
             .collect()
     }
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Debug, PartialEq)]
 #[serde(rename_all = "snake_case")]
 pub enum CardBack {
     MultiSided,
@@ -195,11 +188,12 @@ pub enum CardBack {
 pub fn uuid(code: &str) -> Uuid {
     let id = if let Ok(_) = code.parse::<u32>() {
         code
-    } else if code.contains(WAKANDA_FOREVER_ID_BASE)
-        || code.contains(ANDROID_EFFICIENCY_ID_BASE)
+    } else if code.contains(ANDROID_EFFICIENCY_ID_BASE)
         || code.contains(FIRECRACKER_ID_BASE)
         || code.contains(FLASH_OF_LIGHT_ID_BASE)
+        || code.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
         || code.contains(PLASMOID_ENERGY_ID_BASE)
+        || code.contains(WAKANDA_FOREVER_ID_BASE)
     {
         code
     } else {
@@ -227,12 +221,17 @@ fn image_url(card: &CerebroCard, printing: &Printing) -> String {
 }
 
 fn card_back(card: &CerebroCard) -> CardBack {
-    // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
-    if !card.id.contains(WAKANDA_FOREVER_ID_BASE)
-        && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
+    if REDSKULL_EXPERT_CAMPAIGN_OBLIGATION_IDS.contains(&card.id.as_str()) {
+        return CardBack::Player;
+    }
+
+    // Wakanda Forever / single-sided multi-card sets use A/B/C in id, but are not multi-sided cards
+    if !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
         && !card.id.contains(FIRECRACKER_ID_BASE)
         && !card.id.contains(FLASH_OF_LIGHT_ID_BASE)
+        && !card.id.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
         && !card.id.contains(PLASMOID_ENERGY_ID_BASE)
+        && !card.id.contains(WAKANDA_FOREVER_ID_BASE)
         && card.id.parse::<u32>().is_err()
     {
         return CardBack::MultiSided;

@@ -61,6 +61,7 @@
                 ]
               ]
             ],
+            ["VAR", "$ACCELERATION", "$DISCARD_CARD.tokens.acceleration"],
             ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.discardGroupId", 0],
             ["COND",
               ["AND",
@@ -70,7 +71,8 @@
               [
                 ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainSchemeDeck.parentCardIds.[0]"],
                 ["MOVE_CARD", "$CARD_ID", "sharedMainScheme", 0],
-                ["SET_SCHEME_STARTING_THREAT", "$CARD_ID"]
+                ["SET_SCHEME_STARTING_THREAT", "$CARD_ID"],
+                ["SET", "/cardById/$CARD_ID/tokens/acceleration", "$ACCELERATION"]
               ]
             ]
           ]
@@ -373,6 +375,31 @@
             ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard/left", "70%"]
           ]
         ]
+      ]
+    },
+    "BUILD_MC4DB_FACE": {
+      "args": ["$CARD_JSON", "$BASE_URL"],
+      "code": [
+        ["PROCESS_MAP", {
+          "name": "$CARD_JSON.name",
+          "type": "$CARD_JSON.type_name",
+          "imageUrl": ["JOIN_STRING", "$BASE_URL", "$CARD_JSON.imagesrc"],
+          "hitPointsFixed": "$CARD_JSON.health",
+          "hitPointsScaling": null,
+          "handSize": "$CARD_JSON.hand_size",
+          "accelerationFixed": null,
+          "accelerationScaling": null,
+          "acceleration": "$CARD_JSON.boost",
+          "amplify": null,
+          "crisis": null,
+          "hazard": null,
+          "nemesisMinion": "false",
+          "permanent": "false",
+          "startingThreatFixed": "$CARD_JSON.threat",
+          "startingThreatScaling": null,
+          "toughness": "false",
+          "victory": null
+        }]
       ]
     },
     "TOGGLE_ENCOUNTER_2_DECK": {
