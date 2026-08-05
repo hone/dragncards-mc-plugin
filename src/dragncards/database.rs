@@ -7,12 +7,13 @@ use serde::Serialize;
 use std::collections::HashMap;
 use uuid::Uuid;
 
-const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 const ANDROID_EFFICIENCY_ID_BASE: &'static str = "01144";
 const FIRECRACKER_ID_BASE: &'static str = "47007";
 const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
+const PHOTOGRAPHIC_REFLEXES_ID_BASE: &'static str = "60040";
 const PLASMOID_ENERGY_ID_BASE: &'static str = "47010";
 const REDSKULL_EXPERT_CAMPAIGN_OBLIGATION_IDS: &[&str] = &["04163", "04164", "04165", "04166"];
+const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 
 #[derive(Clone, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -187,11 +188,12 @@ pub enum CardBack {
 pub fn uuid(code: &str) -> Uuid {
     let id = if let Ok(_) = code.parse::<u32>() {
         code
-    } else if code.contains(WAKANDA_FOREVER_ID_BASE)
-        || code.contains(ANDROID_EFFICIENCY_ID_BASE)
+    } else if code.contains(ANDROID_EFFICIENCY_ID_BASE)
         || code.contains(FIRECRACKER_ID_BASE)
         || code.contains(FLASH_OF_LIGHT_ID_BASE)
+        || code.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
         || code.contains(PLASMOID_ENERGY_ID_BASE)
+        || code.contains(WAKANDA_FOREVER_ID_BASE)
     {
         code
     } else {
@@ -223,12 +225,13 @@ fn card_back(card: &CerebroCard) -> CardBack {
         return CardBack::Player;
     }
 
-    // Wakanda Forever uses A/B/C/D in id, but are not multi-sided cards
-    if !card.id.contains(WAKANDA_FOREVER_ID_BASE)
-        && !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
+    // Wakanda Forever / single-sided multi-card sets use A/B/C in id, but are not multi-sided cards
+    if !card.id.contains(ANDROID_EFFICIENCY_ID_BASE)
         && !card.id.contains(FIRECRACKER_ID_BASE)
         && !card.id.contains(FLASH_OF_LIGHT_ID_BASE)
+        && !card.id.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
         && !card.id.contains(PLASMOID_ENERGY_ID_BASE)
+        && !card.id.contains(WAKANDA_FOREVER_ID_BASE)
         && card.id.parse::<u32>().is_err()
     {
         return CardBack::MultiSided;

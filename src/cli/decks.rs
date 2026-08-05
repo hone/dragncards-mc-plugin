@@ -28,6 +28,7 @@ const KANG_SET_ID: Uuid = uuid!("54791d56-2ea6-4d60-a6be-33a553e653f4");
 const LABOR_SET_ID: Uuid = uuid!("ab08506a-9eb2-4b32-ab65-e4768f751e34");
 const MARAUDERS_SET_ID: Uuid = uuid!("66832cbc-fa21-4e99-ab0d-71370a6f23c3");
 const RED_SKULL_SET_ID: Uuid = uuid!("ad4f06da-bdb0-4a17-a18b-c104e55fd903");
+const SENSE_DECK_SET_ID: Uuid = uuid!("e7d39e32-d4f9-4d0d-918f-bc0fbde3944d");
 const SHIP_COMMAND_SET_ID: Uuid = uuid!("a789f0f5-d822-40f6-8e83-d8e5e27d40d2");
 const SPIDER_MAN_MILES_MORALES_HERO_SET_ID: Uuid = uuid!("6c95c419-7658-4d74-935c-5da7a68ceeb0");
 const SPIDER_MAN_MILES_MORALES_NEMESIS_SET_ID: Uuid = uuid!("e6b2b98f-2876-45e9-b489-28d056d39b54");
@@ -844,7 +845,7 @@ fn process_hero_deck(
             // Multi-Sided cards shouldn't be loaded twice
             if (ordered_card.cerebro_card.id.ends_with("B")
                 || ordered_card.cerebro_card.id.ends_with("C"))
-                && !["Firecracker", "Flash of Light", "Plasmoid Energy"]
+                && !["Firecracker", "Flash of Light", "Photographic Reflexes", "Plasmoid Energy"]
                     .contains(&ordered_card.cerebro_card.name.as_str())
             {
                 return None;
@@ -924,7 +925,7 @@ fn process_sets_by_packs(
                         SetType::Supplementary => {
                             if set.id == WEATHER_SET_ID {
                                 Some("playerNPlay1")
-                            } else if set.id == INVOCATION_SET_ID {
+                            } else if set.id == INVOCATION_SET_ID || set.id == SENSE_DECK_SET_ID {
                                 Some("playerNDeck2")
                             } else if [GIFT_SET_ID, LABOR_SET_ID].contains(&set.id) {
                                 Some("playerNOutOfPlay")
