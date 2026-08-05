@@ -181,7 +181,7 @@
         ],
         [
           ["LOG", "LOADING Peni Parker"],
-          ["LOAD_CARDS", "SP\/\/dr (Peni Parker)"]
+          ["LOAD_CARDS", "SP//dr (Peni Parker)"]
         ]
       ],
       ["COND", ["AND", "$LOADED_PLAYER_DECK", ["EQUAL", "$GAME.roundNumber", 0]],
