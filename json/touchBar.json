@@ -179,10 +179,10 @@
               "actionList": "undo"
             },
             {
-              "id": "save",
+              "id": "saveGame",
               "label": "Save",
               "actionType": "engine",
-              "actionList": "save"
+              "actionList": "saveGame"
             }
         ]
     ]
