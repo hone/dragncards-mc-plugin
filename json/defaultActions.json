@@ -13,7 +13,7 @@
         {
           "actionList": "flipCard",
           "label": "id:flipButton",
-          "condition": ["AND", ["EQUAL", "$ACTIVE_CARD.currentSide", "B"], ["NOT", ["EQUAL", "$ACTIVE_CARD.sides.A.type", "Main Scheme"]]],
+          "condition": ["AND", ["EQUAL", "$ACTIVE_CARD.currentSide", "B"], ["NOT_EQUAL", "$ACTIVE_CARD.sides.A.type", "Main Scheme"]],
           "position": "bottom"
         },
         {
