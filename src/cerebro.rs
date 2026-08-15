@@ -199,7 +199,7 @@ impl<'de> Visitor<'de> for SetNumberVisitor {
                 .unwrap_or(Ok(start))?;
 
             Ok(SetNumber::Range(start..=end))
-        } else if ["??", "???"].contains(&value) {
+        } else if ["?", "??", "???"].contains(&value) {
             Ok(SetNumber::Unknown)
         } else {
             Err(E::custom(format!("Not in range format: {value}")))
