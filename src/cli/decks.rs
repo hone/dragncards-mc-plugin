@@ -965,6 +965,12 @@ fn process_sets_by_packs(
                 })
                 .collect();
 
+            let set_cards = set_card_map.get(&set.id).unwrap();
+            let has_villain_or_leader = set_cards.iter().any(|c| {
+                c.cerebro_card.r#type == CardType::Villain
+                    || c.cerebro_card.r#type == CardType::Leader
+            });
+
             let label = set_label(&set);
             let mut post_load_action_list = if [SetType::Villain, SetType::Leader]
                 .contains(&set.r#type)
@@ -979,7 +985,9 @@ fn process_sets_by_packs(
                 } else if set.r#type == SetType::Leader {
                     post_load_action_list_vector.push(json!(["LOAD_LEADER_RECOMMENDS", set.name]));
                 }
-                post_load_action_list_vector.push(json!(["ACTION_LIST", "loadMode"]));
+                if has_villain_or_leader {
+                    post_load_action_list_vector.push(json!(["ACTION_LIST", "loadMode"]));
+                }
                 if SetType::Leader == set.r#type {
                     post_load_action_list_vector.push(json!(["LOAD_LEADER_BY_MODE"]));
                 }
