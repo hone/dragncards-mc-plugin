@@ -45,6 +45,7 @@ pub struct Card {
     pub hazard: Option<usize>,
     pub toughness: bool,
     pub permanent: bool,
+    pub starting: bool,
     pub nemesis_minion: bool,
     pub victory: Option<i64>,
 }
@@ -68,11 +69,8 @@ impl Card {
                     .and_then(|set_id| sets.get(set_id))
                     .map(|set| set.name.clone());
                 let image_url = image_url(&card, &printing);
-                let permanent = card
-                    .rules
-                    .as_ref()
-                    .map(|rules| rules.contains("Permanent."))
-                    .unwrap_or(false);
+                let permanent = card.is_permanent();
+                let starting = card.is_starting();
                 let nemesis_minion = card.r#type == CardType::Minion
                     && (card
                         .rules
@@ -112,13 +110,10 @@ impl Card {
                     starting_threat_fixed: None,
                     starting_threat_scaling: None,
                     stage: card.stage.clone(),
-                    toughness: card
-                        .rules
-                        .clone()
-                        .map(|rules| rules.contains("Toughness."))
-                        .unwrap_or(false),
+                    toughness: card.is_tough(),
                     nemesis_minion,
                     permanent,
+                    starting,
                     victory: card.victory(),
                     acceleration_fixed: None,
                     acceleration_scaling: None,

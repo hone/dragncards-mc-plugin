@@ -81,6 +81,7 @@ impl From<Card> for DragnCard {
         let (acceleration_fixed, acceleration_scaling) = card.acceleration_parsed();
         let toughness = card.is_tough();
         let permanent = card.is_permanent();
+        let starting = card.is_starting();
         let nemesis_minion = card.r#type == CardType::Minion && card.has_nemesis_minion_rule();
         let victory = card.victory();
 
@@ -112,6 +113,7 @@ impl From<Card> for DragnCard {
             hazard: icons.as_ref().and_then(|i| i.get(&Icon::Hazard).copied()),
             toughness,
             permanent,
+            starting,
             nemesis_minion,
             victory,
         }

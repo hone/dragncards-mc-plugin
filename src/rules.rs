@@ -278,6 +278,12 @@ pub trait CardRules {
             .unwrap_or(false)
     }
 
+    fn is_starting(&self) -> bool {
+        self.rules_text()
+            .map(|r| r.contains("Starting."))
+            .unwrap_or(false)
+    }
+
     fn is_tough(&self) -> bool {
         self.rules_text()
             .map(|r| r.contains("Toughness."))
@@ -383,9 +389,10 @@ mod tests {
     #[test]
     fn test_permanent_and_tough() {
         let card = MockCard {
-            rules: Some("Permanent. Toughness.".to_string()),
+            rules: Some("Permanent. Toughness. Starting.".to_string()),
         };
         assert!(card.is_permanent());
         assert!(card.is_tough());
+        assert!(card.is_starting());
     }
 }

@@ -52,7 +52,15 @@
             ],
             ["EQUAL", "$CARD.sides.A.databaseId", "9a11225a-84cd-5f63-9a38-45f0c5f95db1"]
           ],
-          ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Play1", -1]],
+          ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Play1", -1]
+        ],
+        ["COND",
+          ["AND",
+            ["EQUAL", "$CARD.sides.A.starting", true],
+            ["EQUAL", "$CARD.deckGroupId", "{{$PLAYER_N}}Deck"]
+          ],
+          ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Hand", -1]
+        ],
         ["COND",
           ["EQUAL", "$CARD.sides.A.type", "Villain"],
           [
