@@ -29,6 +29,17 @@
       "code": [
         ["VAR", "$DISCARD_CARD", "$GAME.cardById.$DISCARD_CARD_ID"],
         ["COND",
+          ["EQUAL", "$DISCARD_CARD.sides.A.set", "Sense Deck"],
+          [
+            ["COND",
+              ["DEFINED", "$CONTROLLER"],
+              ["LOG", "{{$CONTROLLER}} placed {{$DISCARD_CARD.currentFace.name}} on the bottom of the Sense deck."]
+            ],
+            ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
+            ["SET", "/cardById/$DISCARD_CARD.id/tokens", {}],
+            ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.deckGroupId", -1],
+            ["SET", "/cardById/$DISCARD_CARD.id/currentSide", "A"]
+          ],
           ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
           ["COND",
             ["DEFINED", "$CONTROLLER"],
@@ -351,19 +362,33 @@
       ]
     },
     "TOGGLE_PLAYER_DECK_2": {
-      "args": ["$PLAYER_I", "$VISIBILITY"],
+      "args": ["$PLAYER_I", "$VISIBILITY", {"$HAS_DISCARD": true}],
       "code": [
         ["COND",
           "$VISIBILITY",
           [
             ["LOG", "{{$PLAYER_I}} updated their layout to display their second deck."],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/visible", true],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/visible", true],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", "40%"],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck/left", "40%"],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard/left", "50%"],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/left", "60%"],
-            ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/left", "70%"]
+            ["COND",
+              "$HAS_DISCARD",
+              [
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/visible", true],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/visible", true],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", "40%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck/left", "40%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard/left", "50%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/left", "60%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/left", "70%"]
+              ],
+              ["TRUE"],
+              [
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/visible", true],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard2/visible", false],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", "50%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck/left", "50%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard/left", "60%"],
+                ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck2/left", "70%"]
+              ]
+            ]
           ],
           ["TRUE"],
           [

@@ -228,7 +228,8 @@
               ["LOAD_CARDS", "Sense Deck (Supplementary)"],
               ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.{{$PLAYER_N}}Deck2.parentCardIds", [
                 ["SET", "/cardById/$CARD_ID/currentSide", "A"]
-              ]]
+              ]],
+              ["DEFINE", "$PLAYER_N_DECK_2_NO_DISCARD", true]
             ]
           ],
           ["COND",
@@ -249,7 +250,7 @@
             ["EQUAL", ["LENGTH", "$GAME.groupById.{{$PLAYER_N}}Deck2.stackIds"], 0],
             ["TOGGLE_PLAYER_DECK_2", "$PLAYER_N", false],
             ["TRUE"],
-            ["TOGGLE_PLAYER_DECK_2", "$PLAYER_N", true]
+            ["TOGGLE_PLAYER_DECK_2", "$PLAYER_N", true, ["NOT", ["DEFINED", "$PLAYER_N_DECK_2_NO_DISCARD"]]]
           ],
           ["COND",
             ["EQUAL", "$IDENTITY_CARD.databaseId", "c3a410de-2939-5255-9ea1-cdb9e71f07d7"],
