@@ -244,6 +244,10 @@
 
       ["LOAD_CARDS", "$LOAD_LIST"],
       ["LOG", "{{$ALIAS_N}} finished importing deck from mc4db."]
+    ],
+    "detachCard": [
+      ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.groupId", -1],
+      ["LOG", "{{$ALIAS_N}} detached {{$ACTIVE_FACE.name}}."]
     ]
   }
 }

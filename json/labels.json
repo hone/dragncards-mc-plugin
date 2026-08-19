@@ -479,6 +479,9 @@
     },
     "toggleEncounterDeck2": {
       "English": "Toggle Second Encounter Deck"
+    },
+    "detachCard": {
+      "English": "Detach Card"
     }
   }
 }
