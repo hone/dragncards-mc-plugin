@@ -48,6 +48,10 @@ const COMBAT_SPECIALIST_CARD_ID: &str = "43034";
 const DEFENSE_SPECIALIST_CARD_ID: &str = "43035";
 const FRONT_LINE_SPECIALIST_CARD_ID: &str = "43036";
 const SURVEILLANCE_SPECIALIST_CARD_ID: &str = "43037";
+const SURGE_CARD_ID: &str = "49033";
+const ANOLE_CARD_ID: &str = "49034";
+const BLING_CARD_ID: &str = "49035";
+const INDRA_CARD_ID: &str = "49036";
 const THE_SLEEPER_CARD_ID: &str = "04130";
 const KANGS_DOMINION_CARD_ID: &str = "11023";
 
@@ -384,6 +388,36 @@ pub async fn execute(args: DecksArgs) {
             PreBuiltDeck {
                 label: specialized_training_bundle_label.to_string(),
                 cards: specialized_training_bundle_deck.collect(),
+                post_load_action_list: None,
+            },
+        );
+
+        // Make New Recruits Bundle
+        let new_recruits_bundle_deck = loaded_cards.iter().filter_map(|card| {
+            if [
+                SURGE_CARD_ID,
+                ANOLE_CARD_ID,
+                BLING_CARD_ID,
+                INDRA_CARD_ID,
+            ]
+            .contains(&card.output.cerebro_id.as_str())
+            {
+                Some(dragncards::decks::Card {
+                    load_group_id: String::from("playerNOutOfPlay"),
+                    quantity: 1,
+                    database_id: card.output.database_id,
+                    _name: card.output.name.clone(),
+                })
+            } else {
+                None
+            }
+        });
+        let new_recruits_bundle_label = "New Recruits [ally bundle]";
+        pre_built_decks.insert(
+            new_recruits_bundle_label.to_string(),
+            PreBuiltDeck {
+                label: new_recruits_bundle_label.to_string(),
+                cards: new_recruits_bundle_deck.collect(),
                 post_load_action_list: None,
             },
         );

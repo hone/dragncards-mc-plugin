@@ -183,6 +183,13 @@
           ]
         ],
         ["COND",
+          ["EQUAL", "$CARD.databaseId", "637633f6-f34f-5c44-8cb9-2b6930db63fb"],
+          [
+            ["LOG", "New Recruits Detected"],
+            ["DEFINE", "$NEW_RECRUITS", true]
+          ]
+        ],
+        ["COND",
           ["AND",
             ["EQUAL", "$CARD.groupId", "{{$PLAYER_N}}Deck2"],
             ["NOT", "$GAME.playerData.$PLAYER_N.layout.regions.playerNDeck2.visible"]
@@ -275,6 +282,13 @@
             [
               ["LOAD_CARDS", "Specialized Training [specialist bundle]"],
               ["DEFINE", "$SPECIALIZED_TRAINING", false]
+            ]
+          ],
+          ["COND",
+            ["DEFINED", "$NEW_RECRUITS"],
+            [
+              ["LOAD_CARDS", "New Recruits [ally bundle]"],
+              ["DEFINE", "$NEW_RECRUITS", false]
             ]
           ],
           ["COND",
