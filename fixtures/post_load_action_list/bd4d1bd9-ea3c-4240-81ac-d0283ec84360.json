@@ -1,0 +1,38 @@
+[
+  ["LOG", "Setup: Move captive allies to set-aside area"],
+  ["DEFINE", "$C_1", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "94fb040c-66a2-5113-b16a-b919d9dac1d7"]]],
+  ["MOVE_CARD", "$C_1.id", "sharedOutOfPlay", -1],
+  ["DEFINE", "$C_2", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "2777270b-1879-59e8-8dfe-11bc19dc9fbe"]]],
+  ["MOVE_CARD", "$C_2.id", "sharedOutOfPlay", -1],
+  ["DEFINE", "$C_3", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "59d50d2e-ca84-593e-ba80-ec9ab310bcb8"]]],
+  ["MOVE_CARD", "$C_3.id", "sharedOutOfPlay", -1],
+  ["DEFINE", "$C_4", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "750d69ec-aee3-57d5-8e42-85ae0aee99b5"]]],
+  ["MOVE_CARD", "$C_4.id", "sharedOutOfPlay", -1],
+  ["LOG", "Setup: Reveal \"Operation Zero Tolerance\" and \"Mutants at the Mall\""],
+  ["DEFINE", "$OZT_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "c65aa8ac-ee8b-527c-8d66-ae62e5a9f77f"]]],
+  ["MOVE_CARD", "$OZT_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$OZT_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$OZT_CARD.id"],
+  ["DEFINE", "$MALL_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "08432c81-4f4b-555d-a6cd-89d9711781f2"]]],
+  ["MOVE_CARD", "$MALL_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$MALL_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$MALL_CARD.id"],
+  ["LOG", "Setup (Sentinel When Revealed): Reveal \"Abduction Protocols\""],
+  ["DEFINE", "$ABDUCTION_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "a46599c0-d3fc-5ee3-9772-27a512c9877c"]]],
+  ["MOVE_CARD", "$ABDUCTION_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$ABDUCTION_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$ABDUCTION_CARD.id"],
+  ["SHUFFLE_GROUP", "sharedEncounterDeck"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup (Sentinel II When Revealed): Deal each other player a facedown encounter card"],
+      ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+        ["COND",
+          ["NOT_EQUAL", "$PLAYER_I", "player1"],
+          ["ACTION_LIST", "dealEncounterFacedown"]
+        ]
+      ]]
+    ]
+  ]
+]

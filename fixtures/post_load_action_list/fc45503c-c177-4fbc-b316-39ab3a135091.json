@@ -1,0 +1,44 @@
+[
+  ["LOG", "Setup: Put Magneto ally into play under Player 1's control"],
+  ["DEFINE", "$MAGNETO_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "7b5faa57-ba8b-5b17-9093-a6bdae538a7f"]]
+  ],
+  ["COND",
+    ["DEFINED", "$MAGNETO_CARD"],
+    [
+      ["MOVE_CARD", "$MAGNETO_CARD.id", "player1Play1", -1],
+      ["SET", "/cardById/$MAGNETO_CARD.id/currentSide", "B"],
+      ["SET", "/cardById/$MAGNETO_CARD.id/tokens", {}]
+    ]
+  ],
+  ["LOG", "Setup (The Sentinel Factory 1B When Revealed): Each player discards until a Sentinel minion is found"],
+  ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+    ["VAR", "$FOUND", false],
+    ["WHILE",
+      ["AND",
+        ["NOT", "$FOUND"],
+        ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0]
+      ],
+      [
+        ["VAR", "$TOP_CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
+        ["VAR", "$TOP_CARD", "$GAME.cardById.$TOP_CARD_ID"],
+        ["COND",
+          ["AND",
+            ["EQUAL", "$TOP_CARD.sides.A.type", "Minion"],
+            ["IN_STRING", "$TOP_CARD.sides.A.traits", "Sentinel"]
+          ],
+          [
+            ["LOG", "Setup: Put ", "$TOP_CARD.sides.A.name", " into play engaged with ", ["GET_ALIAS", "$PLAYER_I"]],
+            ["MOVE_CARD", "$TOP_CARD_ID", ["JOIN_STRING", "$PLAYER_I", "Engaged"], -1],
+            ["UPDATE_VAR", "$FOUND", true]
+          ],
+          true,
+          [
+            ["LOG", "Setup: Discarded ", "$TOP_CARD.sides.A.name"],
+            ["MOVE_CARD", "$TOP_CARD_ID", "sharedEncounterDiscard", 0]
+          ]
+        ]
+      ]
+    ]
+  ]]
+]

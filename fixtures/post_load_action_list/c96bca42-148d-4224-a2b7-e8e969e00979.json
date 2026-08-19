@@ -1,0 +1,32 @@
+[
+  ["LOG", "Setup: Put \"Save the School\" environment into play"],
+  ["DEFINE", "$ENV_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "25faac83-b62d-5de1-bd4a-72de30f6ae57"]]
+  ],
+  ["MOVE_CARD", "$ENV_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$ENV_CARD.id/currentSide", "A"],
+  ["LOG", "Setup: Shuffle Main Scheme 2A deck"],
+  ["SHUFFLE_GROUP", "sharedMainSchemeDeck"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["FOR_EACH_VAL", "$V_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds", [
+        ["SET", "/cardById/$V_ID/currentSide", "B"]
+      ]]
+    ],
+    true,
+    [
+      ["FOR_EACH_VAL", "$V_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds", [
+        ["SET", "/cardById/$V_ID/currentSide", "A"]
+      ]]
+    ]
+  ],
+  ["SHUFFLE_GROUP", "sharedVillainDeck"],
+  ["LOG", "Setup: Put random starting villain into play"],
+  ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", -1],
+  ["SET_VILLAIN_HEALTH", "$GAME.groupById.sharedVillain.parentCardIds.[0]"],
+  ["LOG", "Setup (The Brotherhood Strikes! 1B): Deal each player a facedown encounter card"],
+  ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+    ["DEAL_ENCOUNTER_CARD", false, "sharedEncounterDeck", "$PLAYER_I"]
+  ]]
+]

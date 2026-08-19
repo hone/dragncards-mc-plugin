@@ -1,0 +1,24 @@
+[
+  ["LOG", "Setup: Set aside the Orbital Decay side scheme"],
+  ["DEFINE", "$ORBITAL_DECAY",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "6165ae5f-81b8-5c31-aa2c-aff4968ec302"]]
+  ],
+  ["MOVE_CARD", "$ORBITAL_DECAY.id", "sharedOutOfPlay", -1],
+  ["SET", "/cardById/$ORBITAL_DECAY.id/currentSide", "A"],
+  ["LOG", "Setup: Reveal the Boarding Party side scheme"],
+  ["DEFINE", "$BOARDING_PARTY",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ada7ff58-8b8b-58f9-a3eb-db34946e2373"]]
+  ],
+  ["MOVE_CARD", "$BOARDING_PARTY.id", "sharedVillain", -1],
+  ["SET", "/cardById/$BOARDING_PARTY.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$BOARDING_PARTY.id"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup (Magneto II When Revealed): Deal each player a facedown encounter card"],
+      ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+        ["DEAL_ENCOUNTER_CARD", false, "sharedEncounterDeck", "$PLAYER_I"]
+      ]]
+    ]
+  ]
+]

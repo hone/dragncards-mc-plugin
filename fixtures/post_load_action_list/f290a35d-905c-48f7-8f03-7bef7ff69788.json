@@ -1,0 +1,13 @@
+[
+  ["LOG", "Setup: Put \"Find the Senator\" side scheme into play and attach \"Robert Kelly\" to it"],
+  ["DEFINE", "$FIND_SENATOR_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "28758196-9921-56b4-81b5-2f47dd4fe362"]]
+  ],
+  ["MOVE_CARD", "$FIND_SENATOR_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$FIND_SENATOR_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$FIND_SENATOR_CARD.id"],
+  ["DEFINE", "$KELLY_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "9792121b-15cb-572c-be92-bf7013d44d17"]]
+  ],
+  ["ATTACH_CARD", "$KELLY_CARD.id", "$FIND_SENATOR_CARD.id"]
+]

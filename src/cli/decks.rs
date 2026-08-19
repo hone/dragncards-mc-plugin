@@ -52,6 +52,7 @@ const SURGE_CARD_ID: &str = "49033";
 const ANOLE_CARD_ID: &str = "49034";
 const BLING_CARD_ID: &str = "49035";
 const INDRA_CARD_ID: &str = "49036";
+const MAGNETO_ALLY_CARD_ID: &str = "32172B";
 const THE_SLEEPER_CARD_ID: &str = "04130";
 const KANGS_DOMINION_CARD_ID: &str = "11023";
 
@@ -243,6 +244,21 @@ pub async fn execute(args: DecksArgs) {
         process_required_modular_sets(&mut pre_built_decks, &sets);
         // add recommends modulars to villain scenarios
         process_recommends_modular_sets(&mut pre_built_decks, &sets);
+
+        // Master Mold put Magneto ally into play under Player 1
+        if let Some(master_mold) = pre_built_decks.get_mut("Master Mold (Scenario)") {
+            if let Some(card) = loaded_cards
+                .iter()
+                .find(|c| c.output.cerebro_id == MAGNETO_ALLY_CARD_ID)
+            {
+                master_mold.cards.push(dragncards::decks::Card {
+                    load_group_id: String::from("player1Play1"),
+                    quantity: 1,
+                    database_id: card.output.database_id,
+                    _name: card.output.name.clone(),
+                });
+            }
+        }
 
         let mut packs_card_map: HashMap<&Uuid, Vec<&OrderedCard>> = HashMap::new();
 
