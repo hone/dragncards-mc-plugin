@@ -263,10 +263,9 @@
           ["COND",
             ["EQUAL", "$IDENTITY_CARD.databaseId", "90b13a05-6942-58ba-85ab-2fb6aec2dc43"],
             [
+              ["SET", "/groupById/{{$PLAYER_N}}Deck2/onCardEnter/currentSide", "A"],
+              ["SET", "/groupById/{{$PLAYER_N}}Deck2/onCardEnter/discardGroupId", "{{$PLAYER_N}}Deck2"],
               ["LOAD_CARDS", "Sense Deck (Supplementary)"],
-              ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.{{$PLAYER_N}}Deck2.parentCardIds", [
-                ["SET", "/cardById/$CARD_ID/currentSide", "A"]
-              ]],
               ["DEFINE", "$PLAYER_N_DECK_2_NO_DISCARD", true]
             ]
           ],

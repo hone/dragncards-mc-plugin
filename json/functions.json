@@ -37,8 +37,7 @@
             ],
             ["SET", "/cardById/$DISCARD_CARD.id/rotation", 0],
             ["SET", "/cardById/$DISCARD_CARD.id/tokens", {}],
-            ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.deckGroupId", -1],
-            ["SET", "/cardById/$DISCARD_CARD.id/currentSide", "A"]
+            ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.deckGroupId", -1]
           ],
           ["AND",
             "$DISCARD_CARD.inPlay",
