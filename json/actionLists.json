@@ -248,6 +248,48 @@
     "detachCard": [
       ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.groupId", -1],
       ["LOG", "{{$ALIAS_N}} detached {{$ACTIVE_FACE.name}}."]
+    ],
+    "spiralLoadRandomModulars": [
+      ["DEFINE", "$MODULAR_LIST",
+        ["SHUFFLE_LIST",
+          ["LIST", "Crime (Modular)", "Fantasy (Modular)", "Horror (Modular)", "Sci-Fi (Modular)", "Sitcom (Modular)", "Western (Modular)"]
+        ]
+      ],
+      ["LOG", "Loading random modular sets: ", "$MODULAR_LIST.[0]", ", ", "$MODULAR_LIST.[1]", ", and ", "$MODULAR_LIST.[2]"],
+      ["LOAD_CARDS", "$MODULAR_LIST.[0]"],
+      ["LOAD_CARDS", "$MODULAR_LIST.[1]"],
+      ["LOAD_CARDS", "$MODULAR_LIST.[2]"],
+      ["ACTION_LIST", "spiralFinishShowDeck"]
+    ],
+    "spiralFinishShowDeck": [
+      ["LOG", "Setup: Put \"The Search for Spiral\" side scheme into play"],
+      ["DEFINE", "$SEARCH_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "a012269a-3690-5bdf-93a1-bebd8c3f248d"]]
+      ],
+      ["MOVE_CARD", "$SEARCH_CARD.id", "sharedVillain", -1],
+      ["SET", "/cardById/$SEARCH_CARD.id/currentSide", "A"],
+      ["SET_SCHEME_STARTING_THREAT", "$SEARCH_CARD.id"],
+      ["LOG", "Setup: Move \"Cornered!\" treachery and Show environments to Show Deck"],
+      ["DEFINE", "$CORNERED_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "421734a4-2c4a-5f00-9b9f-c8ad3f19ccbd"]]
+      ],
+      ["MOVE_CARD", "$CORNERED_CARD.id", "sharedEncounter2Deck", -1],
+      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds", [
+        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+        ["COND",
+          ["OR",
+            ["IN_STRING", "$CARD.sides.A.traits", "Show"],
+            ["EQUAL", "$CARD.sides.A.type", "Environment"]
+          ],
+          ["MOVE_CARD", "$CARD_ID", "sharedEncounter2Deck", -1]
+        ]
+      ]],
+      ["LOG", "Setup: Shuffle Show Deck and put 1 random Show environment into play"],
+      ["SHUFFLE_GROUP", "sharedEncounter2Deck"],
+      ["VAR", "$TOP_SHOW_CARD_ID", "$GAME.groupById.sharedEncounter2Deck.parentCardIds.[0]"],
+      ["MOVE_CARD", "$TOP_SHOW_CARD_ID", "sharedVillain", -1],
+      ["SET", "/cardById/$TOP_SHOW_CARD_ID/currentSide", "A"],
+      ["SHUFFLE_GROUP", "sharedEncounterDeck"]
     ]
   }
 }

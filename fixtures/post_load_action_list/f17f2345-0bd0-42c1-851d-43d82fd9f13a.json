@@ -1,0 +1,30 @@
+[
+  ["LOG", "Setup: Put MaGog into play"],
+  ["DEFINE", "$MAGOG",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "4e8aa2b5-0752-53fc-9f52-ec75312c00f3"]]
+  ],
+  ["MOVE_CARD", "$MAGOG.id", "sharedVillain", -1],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["SET", "/cardById/$MAGOG.id/currentSide", "B"]
+    ],
+    true,
+    [
+      ["SET", "/cardById/$MAGOG.id/currentSide", "A"]
+    ]
+  ],
+  ["SET_VILLAIN_HEALTH", "$MAGOG.id"],
+  ["LOG", "Setup: Put The Champion environment into play"],
+  ["DEFINE", "$CHAMPION",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "89078bca-7983-5ba3-a83c-c5452f25f465"]]
+  ],
+  ["MOVE_CARD", "$CHAMPION.id", "sharedVillain", -1],
+  ["SET", "/cardById/$CHAMPION.id/currentSide", "A"],
+  ["LOG", "Setup: Put The Challengers environment into play"],
+  ["DEFINE", "$CHALLENGERS",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "10578ce3-62a8-5efd-b543-bce3e2da7cf8"]]
+  ],
+  ["MOVE_CARD", "$CHALLENGERS.id", "sharedVillain", -1],
+  ["SET", "/cardById/$CHALLENGERS.id/currentSide", "A"]
+]

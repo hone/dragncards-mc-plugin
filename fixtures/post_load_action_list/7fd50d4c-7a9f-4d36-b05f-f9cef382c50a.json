@@ -1,0 +1,22 @@
+[
+  ["LOG", "Setup: Put \"Wheel of Genres\" environment into play (Spinning side faceup)"],
+  ["DEFINE", "$WHEEL_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "e332aeb7-7678-51ed-b9b5-41416302dd5f"]]
+  ],
+  ["MOVE_CARD", "$WHEEL_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$WHEEL_CARD.id/currentSide", "A"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup (Mojo II When Revealed): Place 2 threat on each friendly character"],
+      ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+        ["VAR", "$GROUP_ID", ["JOIN_STRING", "$PLAYER_I", "Play1"]],
+        ["VAR", "$ID_CARD_ID", "$GAME.groupById.$GROUP_ID.parentCardIds.[0]"],
+        ["COND",
+          ["DEFINED", "$ID_CARD_ID"],
+          ["INCREASE_VAL", "/cardById/$ID_CARD_ID/tokens/threat", 2]
+        ]
+      ]]
+    ]
+  ]
+]

@@ -65,6 +65,195 @@
           ]
         }
       ]
+    },
+    "spiralSetupModularChoice": {
+      "args": ["$PLAYER"],
+      "message": "Spiral requires 3 modular encounter sets from MojoMania to build the Show Deck. How would you like to choose them?",
+      "options": [
+        {
+          "label": "Load 3 Random Modular Sets",
+          "hotkey": "R",
+          "code": [
+            ["ACTION_LIST", "spiralLoadRandomModulars"]
+          ]
+        },
+        {
+          "label": "Pick 3 Modular Sets Interactively",
+          "hotkey": "P",
+          "code": [
+            ["PROMPT", "$PLAYER", "spiralPickModular1", "$PLAYER"]
+          ]
+        },
+        {
+          "label": "I'll Choose Manually (Stop Setup)",
+          "hotkey": "M",
+          "code": [
+            ["LOG", "Spiral setup: Manual modular selection chosen. Please load 3 modular sets from the menu."]
+          ]
+        }
+      ]
+    },
+    "spiralPickModular1": {
+      "args": ["$PLAYER"],
+      "message": "Spiral setup: Choose your 1st modular set:",
+      "options": [
+        {
+          "label": "Crime",
+          "hotkey": "1",
+          "code": [
+            ["LOAD_CARDS", "Crime (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Crime"]
+          ]
+        },
+        {
+          "label": "Fantasy",
+          "hotkey": "2",
+          "code": [
+            ["LOAD_CARDS", "Fantasy (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Fantasy"]
+          ]
+        },
+        {
+          "label": "Horror",
+          "hotkey": "3",
+          "code": [
+            ["LOAD_CARDS", "Horror (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Horror"]
+          ]
+        },
+        {
+          "label": "Sci-Fi",
+          "hotkey": "4",
+          "code": [
+            ["LOAD_CARDS", "Sci-Fi (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Sci-Fi"]
+          ]
+        },
+        {
+          "label": "Sitcom",
+          "hotkey": "5",
+          "code": [
+            ["LOAD_CARDS", "Sitcom (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Sitcom"]
+          ]
+        },
+        {
+          "label": "Western",
+          "hotkey": "6",
+          "code": [
+            ["LOAD_CARDS", "Western (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Western"]
+          ]
+        }
+      ]
+    },
+    "spiralPickModular2": {
+      "args": ["$PLAYER", "$SET1"],
+      "message": "Spiral setup: Choose your 2nd modular set (1st: {{$SET1}}):",
+      "options": [
+        {
+          "label": "Crime",
+          "hotkey": "1",
+          "code": [
+            ["LOAD_CARDS", "Crime (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Crime"]
+          ]
+        },
+        {
+          "label": "Fantasy",
+          "hotkey": "2",
+          "code": [
+            ["LOAD_CARDS", "Fantasy (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Fantasy"]
+          ]
+        },
+        {
+          "label": "Horror",
+          "hotkey": "3",
+          "code": [
+            ["LOAD_CARDS", "Horror (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Horror"]
+          ]
+        },
+        {
+          "label": "Sci-Fi",
+          "hotkey": "4",
+          "code": [
+            ["LOAD_CARDS", "Sci-Fi (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Sci-Fi"]
+          ]
+        },
+        {
+          "label": "Sitcom",
+          "hotkey": "5",
+          "code": [
+            ["LOAD_CARDS", "Sitcom (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Sitcom"]
+          ]
+        },
+        {
+          "label": "Western",
+          "hotkey": "6",
+          "code": [
+            ["LOAD_CARDS", "Western (Modular)"],
+            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Western"]
+          ]
+        }
+      ]
+    },
+    "spiralPickModular3": {
+      "args": ["$PLAYER", "$SET1", "$SET2"],
+      "message": "Spiral setup: Choose your 3rd modular set (chosen: {{$SET1}}, {{$SET2}}):",
+      "options": [
+        {
+          "label": "Crime",
+          "hotkey": "1",
+          "code": [
+            ["LOAD_CARDS", "Crime (Modular)"],
+            ["ACTION_LIST", "spiralFinishShowDeck"]
+          ]
+        },
+        {
+          "label": "Fantasy",
+          "hotkey": "2",
+          "code": [
+            ["LOAD_CARDS", "Fantasy (Modular)"],
+            ["ACTION_LIST", "spiralFinishShowDeck"]
+          ]
+        },
+        {
+          "label": "Horror",
+          "hotkey": "3",
+          "code": [
+            ["LOAD_CARDS", "Horror (Modular)"],
+            ["ACTION_LIST", "spiralFinishShowDeck"]
+          ]
+        },
+        {
+          "label": "Sci-Fi",
+          "hotkey": "4",
+          "code": [
+            ["LOAD_CARDS", "Sci-Fi (Modular)"],
+            ["ACTION_LIST", "spiralFinishShowDeck"]
+          ]
+        },
+        {
+          "label": "Sitcom",
+          "hotkey": "5",
+          "code": [
+            ["LOAD_CARDS", "Sitcom (Modular)"],
+            ["ACTION_LIST", "spiralFinishShowDeck"]
+          ]
+        },
+        {
+          "label": "Western",
+          "hotkey": "6",
+          "code": [
+            ["LOAD_CARDS", "Western (Modular)"],
+            ["ACTION_LIST", "spiralFinishShowDeck"]
+          ]
+        }
+      ]
     }
   }
 }
