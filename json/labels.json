@@ -357,6 +357,9 @@
     "shuffleIntoDeck": {
       "English": "Shuffle Into Deck"
     },
+    "sendToBottomOfDeck": {
+      "English": "Send to Bottom of Deck"
+    },
     "drawCard": {
       "English": "Draw Card"
     },

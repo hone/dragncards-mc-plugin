@@ -64,6 +64,11 @@
       ["SHUFFLE_GROUP", "$GROUP_ID"],
       ["LOG", "{{$ALIAS_N}} shuffled {{$ACTIVE_FACE.name}} into {{$GAME.groupById.$GROUP_ID.label}}."]
     ],
+    "sendToBottomOfDeck": [
+      ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", -1],
+      ["VAR", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
+      ["LOG", "{{$ALIAS_N}} sent {{$ACTIVE_FACE.name}} to the bottom of {{$GAME.groupById.$GROUP_ID.label}}."]
+    ],
     "zeroTokens": [
       ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
       ["LOG", "{{$ALIAS_N}} removed all tokens from {{$ACTIVE_FACE.name}}."]
