@@ -1,0 +1,26 @@
+[
+  ["LOG", "Setup: Set all 6 villains aside in villain deck"],
+  ["DEFINE", "$V_1", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "c0014750-9750-54be-8af1-7ffa6e40ce35"]]],
+  ["MOVE_CARD", "$V_1.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$V_2", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "69ea44f1-a0bd-5be7-a04e-93b94b952319"]]],
+  ["MOVE_CARD", "$V_2.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$V_3", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "d9372116-0beb-5629-8db6-478f73b78bee"]]],
+  ["MOVE_CARD", "$V_3.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$V_4", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "35f41776-c23b-5696-8aaa-af9a88ea9141"]]],
+  ["MOVE_CARD", "$V_4.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$V_5", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "691f2f3f-a5d6-5555-b49a-141b782e3488"]]],
+  ["MOVE_CARD", "$V_5.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$V_6", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "c15668d3-24f0-582c-9bfc-7dc7fbbf5174"]]],
+  ["MOVE_CARD", "$V_6.id", "sharedVillainDeck", -1],
+  ["SHUFFLE_GROUP", "sharedVillainDeck"],
+  ["VAR", "$STARTING_VILLAINS", ["ADD", ["LENGTH", "$PLAYER_ORDER"], 1]],
+  ["LOG", "Setup: Put {{$STARTING_VILLAINS}} random villains into play"],
+  ["MOVE_STACKS", "sharedVillainDeck", "sharedVillain", "$STARTING_VILLAINS", "bottom"],
+  ["FOR_EACH_VAL", "$V_ID", "$GAME.groupById.sharedVillain.parentCardIds", [
+    ["SET_VILLAIN_HEALTH", "$V_ID"]
+  ]],
+  ["LOG", "Setup: Put \"Light at the End\" side scheme into play (Trap! side faceup)"],
+  ["DEFINE", "$LIGHT_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "de9f3efd-51ca-51e0-a354-9241b482c1b8"]]],
+  ["MOVE_CARD", "$LIGHT_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$LIGHT_CARD.id/currentSide", "A"]
+]
