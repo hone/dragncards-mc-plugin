@@ -1,0 +1,30 @@
+[
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["LOG", "Setup: Attach \"Infinity Gauntlet\" to Thanos"],
+      ["DEFINE", "$GAUNTLET_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "588ac077-fcb5-5bc1-bfa0-03b43756fa0e"]]
+      ],
+      ["MOVE_CARD", "$GAUNTLET_CARD.id", "sharedVillain", -1],
+      ["LOG", "Setup: Reveal top card of the Infinity Stone Deck"],
+      ["SHUFFLE_GROUP", "sharedInfinityGauntletDeck"],
+      ["MOVE_CARD", "$GAME.groupById.sharedInfinityGauntletDeck.parentCardIds.[0]", "sharedVillain", -1]
+    ]
+  ],
+  ["LOG", "Setup: Reveal \"Sanctuary\""],
+  ["DEFINE", "$SANCTUARY_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "94517591-d5cc-5a31-ae45-d5a76d5a5e8b"]]
+  ],
+  ["MOVE_CARD", "$SANCTUARY_CARD.id", "sharedVillain", -1],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup: Reveal \"Thanos's Helmet\""],
+      ["DEFINE", "$HELMET_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "c5201238-a608-5088-84df-5495575970a5"]]
+      ],
+      ["MOVE_CARD", "$HELMET_CARD.id", "sharedVillain", -1]
+    ]
+  ]
+]
