@@ -524,7 +524,13 @@
       }
     },
     "cards": {
-
+      "ff2be8cf-0927-5d6e-ad19-ec40735b8ecb": {
+        "ability": {
+          "A": [
+            ["SURGING_SANDS", "$ACTIVE_CARD_ID"]
+          ]
+        }
+      }
     }
   }
 }

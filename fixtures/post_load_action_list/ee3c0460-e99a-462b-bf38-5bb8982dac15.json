@@ -1,0 +1,15 @@
+[
+  ["LOG", "Setup: Put \"City Streets\" into play with 4 sand counters"],
+  ["DEFINE", "$CITY_STREETS_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "ff2be8cf-0927-5d6e-ad19-ec40735b8ecb"]]
+  ],
+  ["MOVE_CARD", "$CITY_STREETS_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$CITY_STREETS_CARD.id/tokens/generic", 4],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup (Sandman II When Revealed): Resolving \"Surging Sands\" on City Streets..."],
+      ["SURGING_SANDS", "$CITY_STREETS_CARD.id"]
+    ]
+  ]
+]
