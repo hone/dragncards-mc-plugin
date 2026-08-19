@@ -1,0 +1,31 @@
+[
+  ["LOG", "Setup: Put Lower Manhattan, Midtown Manhattan, and Upper Manhattan into play"],
+  ["DEFINE", "$LOWER_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "dc04b321-ad76-5ea2-bc09-f8a727d9d16f"]]],
+  ["MOVE_CARD", "$LOWER_CARD.id", "sharedMainScheme", -1],
+  ["SET", "/cardById/$LOWER_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$LOWER_CARD.id"],
+  ["DEFINE", "$MIDTOWN_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "d480bbae-ebc8-5b2b-abcb-c52786f8f7d1"]]],
+  ["MOVE_CARD", "$MIDTOWN_CARD.id", "sharedMainScheme", -1],
+  ["SET", "/cardById/$MIDTOWN_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$MIDTOWN_CARD.id"],
+  ["DEFINE", "$UPPER_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "6a13a80e-8505-5c76-b54e-9e0882d5f9e0"]]],
+  ["MOVE_CARD", "$UPPER_CARD.id", "sharedMainScheme", -1],
+  ["SET", "/cardById/$UPPER_CARD.id/currentSide", "A"],
+  ["SET_SCHEME_STARTING_THREAT", "$UPPER_CARD.id"],
+  ["LOG", "Setup: Place the glider counter on Midtown Manhattan"],
+  ["SET", "/cardById/$MIDTOWN_CARD.id/tokens/generic", 1],
+  ["LOG", "Setup: Flip Skies Over New York to its Environment side and put into play"],
+  ["DEFINE", "$SKIES_CARD", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "31ed1ef0-e195-5860-af65-a71eafdf0d8d"]]],
+  ["MOVE_CARD", "$SKIES_CARD.id", "sharedVillain", -1],
+  ["SET", "/cardById/$SKIES_CARD.id/currentSide", "B"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup (Venom Goblin II When Revealed): Deal 2 facedown encounter cards to each player"],
+      ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+        ["ACTION_LIST", "dealEncounterFacedown"],
+        ["ACTION_LIST", "dealEncounterFacedown"]
+      ]]
+    ]
+  ]
+]
