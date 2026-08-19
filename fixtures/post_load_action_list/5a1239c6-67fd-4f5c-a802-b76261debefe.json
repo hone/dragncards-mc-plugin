@@ -1,0 +1,25 @@
+[
+  ["LOG", "Setup: Put a \"Shifting Apparition\" minion into play engaged with each player"],
+  ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+    ["DEFINE", "$APPARITION_CARD",
+      ["ONE_CARD", "$CARD",
+        ["AND",
+          ["EQUAL", "$CARD.databaseId", "857a0373-269b-5335-8646-6419a6b51b7f"],
+          ["EQUAL", "$CARD.groupId", "sharedEncounterDeck"]
+        ]
+      ]
+    ],
+    ["MOVE_CARD", "$APPARITION_CARD.id", ["JOIN_STRING", "$PLAYER_I", "Engaged"], -1]
+  ]],
+  ["SHUFFLE_GROUP", "sharedEncounterDeck"],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["LOG", "Setup (Mysterio II When Revealed): Shuffle the top card of the encounter deck into each player's deck"],
+      ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
+        ["MOVE_CARD", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]", ["JOIN_STRING", "$PLAYER_I", "Deck"], -1],
+        ["SHUFFLE_GROUP", ["JOIN_STRING", "$PLAYER_I", "Deck"]]
+      ]]
+    ]
+  ]
+]
