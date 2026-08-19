@@ -1,0 +1,34 @@
+[
+  ["LOG", "Setup: Put Loki villains into villain deck and reveal 1 at random"],
+  ["DEFINE", "$LOKI_1", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "7f3f3cd1-5d7e-5b20-a4ff-5600a70bd0a0"]]],
+  ["MOVE_CARD", "$LOKI_1.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$LOKI_2", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "6fd5c23c-d751-50e6-b721-e6b0c88cd540"]]],
+  ["MOVE_CARD", "$LOKI_2.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$LOKI_3", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "b3016557-48e8-501e-83ba-6b59c596cd1a"]]],
+  ["MOVE_CARD", "$LOKI_3.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$LOKI_4", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "2d12c9cb-34e4-5d18-88bd-1e032a4ebd48"]]],
+  ["MOVE_CARD", "$LOKI_4.id", "sharedVillainDeck", -1],
+  ["DEFINE", "$LOKI_5", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "fd44d0b2-781f-5133-abaa-ce21dff8e332"]]],
+  ["MOVE_CARD", "$LOKI_5.id", "sharedVillainDeck", -1],
+  ["SHUFFLE_GROUP", "sharedVillainDeck"],
+  ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", 0],
+  ["SET_VILLAIN_HEALTH", "$GAME.groupById.sharedVillain.parentCardIds.[0]"],
+  ["LOG", "Setup: Put \"War in Asgard\" into play"],
+  ["DEFINE", "$WAR_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "feb3f068-cf67-5a82-a525-1ba5a84b0280"]]
+  ],
+  ["MOVE_CARD", "$WAR_CARD.id", "sharedVillain", -1],
+  ["COND",
+    "$GAME.loadRequired",
+    [
+      ["LOG", "Setup: Attach \"Infinity Gauntlet\" to Loki"],
+      ["DEFINE", "$GAUNTLET_CARD",
+        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "588ac077-fcb5-5bc1-bfa0-03b43756fa0e"]]
+      ],
+      ["MOVE_CARD", "$GAUNTLET_CARD.id", "sharedVillain", -1],
+      ["LOG", "Setup: Reveal top card of the Infinity Stone Deck"],
+      ["SHUFFLE_GROUP", "sharedInfinityGauntletDeck"],
+      ["MOVE_CARD", "$GAME.groupById.sharedInfinityGauntletDeck.parentCardIds.[0]", "sharedVillain", -1]
+    ]
+  ]
+]

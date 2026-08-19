@@ -19,8 +19,31 @@
           ],
           ["EQUAL", "$GAME.mode", "expert"],
           [
-            ["DEFINE", "$FIRST_STAGE", "II"],
-            ["DEFINE", "$DISCARDED_STAGE", "I"],
+            ["VAR", "$HAS_STAGE_II",
+              ["GREATER_THAN",
+                ["LENGTH",
+                  ["FILTER_CARDS", "$CARD",
+                    ["AND",
+                      ["EQUAL", "$CARD.sides.A.type", "Villain"],
+                      ["EQUAL", "$CARD.sides.A.stage", "II"]
+                    ]
+                  ]
+                ],
+                0
+              ]
+            ],
+            ["COND",
+              "$HAS_STAGE_II",
+              [
+                ["DEFINE", "$FIRST_STAGE", "II"],
+                ["DEFINE", "$DISCARDED_STAGE", "I"]
+              ],
+              true,
+              [
+                ["DEFINE", "$FIRST_STAGE", "I"],
+                ["DEFINE", "$DISCARDED_STAGE", null]
+              ]
+            ],
             ["DEFINE", "$DOUBLE_SIDED_STAGE", "B1"],
             ["DEFINE", "$DOUBLE_SIDED_DISCARDED_STAGE", "A1"]
           ]
