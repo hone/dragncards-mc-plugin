@@ -38,6 +38,33 @@
           ]
         }
       ]
+    },
+    "discardVictoryChoice": {
+      "args": ["$PLAYER", "$CARD_ID"],
+      "message": "This card has the Victory keyword. Where would you like to place it?",
+      "options": [
+        {
+          "label": "Victory Display",
+          "hotkey": "1",
+          "code": [
+            ["SET", "/cardById/$CARD_ID/rotation", 0],
+            ["SET", "/cardById/$CARD_ID/tokens", {}],
+            ["MOVE_CARD", "$CARD_ID", "sharedVictoryDisplay", -1],
+            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} placed {{$GAME.cardById.$CARD_ID.currentFace.name}} in the Victory Display."]
+          ]
+        },
+        {
+          "label": "Discard Pile",
+          "hotkey": "2",
+          "code": [
+            ["VAR", "$DISC_CARD", "$GAME.cardById.$CARD_ID"],
+            ["SET", "/cardById/$CARD_ID/rotation", 0],
+            ["SET", "/cardById/$CARD_ID/tokens", {}],
+            ["MOVE_CARD", "$CARD_ID", "$DISC_CARD.discardGroupId", 0],
+            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} discarded {{$DISC_CARD.currentFace.name}} to the discard pile."]
+          ]
+        }
+      ]
     }
   }
 }

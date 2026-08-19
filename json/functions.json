@@ -40,6 +40,13 @@
             ["MOVE_CARD", "$DISCARD_CARD.id", "$DISCARD_CARD.deckGroupId", -1],
             ["SET", "/cardById/$DISCARD_CARD.id/currentSide", "A"]
           ],
+          ["AND",
+            "$DISCARD_CARD.inPlay",
+            ["NOT_EQUAL", "$DISCARD_CARD.sides.A.victory", null]
+          ],
+          [
+            ["PROMPT", "$PLAYER_N", "discardVictoryChoice", "$PLAYER_N", "$DISCARD_CARD.id"]
+          ],
           ["EQUAL", "$DISCARD_CARD.discardGroupId", null],
           ["COND",
             ["DEFINED", "$CONTROLLER"],
