@@ -1,0 +1,29 @@
+[
+  ["LOG", "Setup: Attach Odin (Captive) to the Main Scheme"],
+  ["DEFINE", "$ODIN_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "4841bd29-be3d-5f60-adba-d7f2d83b1f81"]]
+  ],
+  ["DEFINE", "$MAIN_SCHEME_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "51ccedeb-9d16-56f2-834c-52a670d9fa51"]]
+  ],
+  ["ATTACH_CARD", "$ODIN_CARD.id", "$MAIN_SCHEME_CARD.id"],
+  ["LOG", "Setup: Reveal \"Gnipahellir\""],
+  ["DEFINE", "$GNIPAHELLIR_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "9bb3473f-d0b6-594a-946d-e726e486fd47"]]
+  ],
+  ["MOVE_CARD", "$GNIPAHELLIR_CARD.id", "sharedVillain", -1],
+  ["LOG", "Setup: Put \"Garm\" into play engaged with the first player"],
+  ["DEFINE", "$GARM_CARD",
+    ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "d5b21e6e-09b2-5c50-9c05-f43a0e62c46f"]]
+  ],
+  ["MOVE_CARD", "$GARM_CARD.id", "player1Engaged", -1],
+  ["LOG", "Setup: Set Gjallerbru, Skurge, Hall of Nastrond, and Nidhogg aside, out of play"],
+  ["DEFINE", "$CARD_1", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "51118e72-cec1-5291-a95c-891b73b78a94"]]],
+  ["MOVE_CARD", "$CARD_1.id", "sharedOutOfPlay", -1],
+  ["DEFINE", "$CARD_2", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "1eec51c1-e453-5094-9a66-f67f0b30cdfc"]]],
+  ["MOVE_CARD", "$CARD_2.id", "sharedOutOfPlay", -1],
+  ["DEFINE", "$CARD_3", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "33c005a5-7071-525a-8256-8e70ddcb0137"]]],
+  ["MOVE_CARD", "$CARD_3.id", "sharedOutOfPlay", -1],
+  ["DEFINE", "$CARD_4", ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "05d07215-56e2-57ea-b016-fac8b37b33a6"]]],
+  ["MOVE_CARD", "$CARD_4.id", "sharedOutOfPlay", -1]
+]
