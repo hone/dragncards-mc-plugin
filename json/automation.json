@@ -521,6 +521,16 @@
           "$TARGET.inPlay"
         ],
         "then": ["SET", "/cardById/$TARGET_ID/tokens/tough", 1]
+      },
+      "uses": {
+        "_comment": "When a card with Uses enters play, initialize its generic tokens",
+        "type": "trigger",
+        "listenTo": ["/cardById/*/inPlay"],
+        "condition": ["AND",
+          "$TARGET.inPlay",
+          ["GREATER_THAN", "$TARGET.sides.A.uses", 0]
+        ],
+        "then": ["SET", "/cardById/$TARGET_ID/tokens/generic", "$TARGET.sides.A.uses"]
       }
     },
     "cards": {

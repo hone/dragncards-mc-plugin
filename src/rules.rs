@@ -272,6 +272,19 @@ pub trait CardRules {
         None
     }
 
+    fn uses(&self) -> Option<usize> {
+        if let Some(rules) = self.rules_text() {
+            lazy_static! {
+                static ref USES_RE: Regex =
+                    Regex::new(r"Uses\s*\((?<number>\d+)\s*(?:[a-zA-Z\s]+)?counters?\)").unwrap();
+            }
+            if let Some(captures) = USES_RE.captures(rules) {
+                return captures["number"].parse::<usize>().ok();
+            }
+        }
+        None
+    }
+
     fn is_permanent(&self) -> bool {
         self.rules_text()
             .map(|r| r.contains("Permanent."))
@@ -394,5 +407,23 @@ mod tests {
         assert!(card.is_permanent());
         assert!(card.is_tough());
         assert!(card.is_starting());
+    }
+
+    #[test]
+    fn test_uses_parsing() {
+        let card = MockCard {
+            rules: Some("Attach to Venom. Uses (2 rage counters).".to_string()),
+        };
+        assert_eq!(card.uses(), Some(2));
+
+        let card_tac = MockCard {
+            rules: Some("Uses (3 charge counters).".to_string()),
+        };
+        assert_eq!(card_tac.uses(), Some(3));
+
+        let card_none = MockCard {
+            rules: Some("Attack for 3 damage.".to_string()),
+        };
+        assert_eq!(card_none.uses(), None);
     }
 }

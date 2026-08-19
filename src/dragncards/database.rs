@@ -46,6 +46,7 @@ pub struct Card {
     pub toughness: bool,
     pub permanent: bool,
     pub starting: bool,
+    pub uses: Option<usize>,
     pub nemesis_minion: bool,
     pub victory: Option<i64>,
 }
@@ -114,6 +115,7 @@ impl Card {
                     nemesis_minion,
                     permanent,
                     starting,
+                    uses: card.uses(),
                     victory: card.victory(),
                     acceleration_fixed: None,
                     acceleration_scaling: None,

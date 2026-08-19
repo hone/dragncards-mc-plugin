@@ -82,6 +82,7 @@ impl From<Card> for DragnCard {
         let toughness = card.is_tough();
         let permanent = card.is_permanent();
         let starting = card.is_starting();
+        let uses = card.uses();
         let nemesis_minion = card.r#type == CardType::Minion && card.has_nemesis_minion_rule();
         let victory = card.victory();
 
@@ -114,6 +115,7 @@ impl From<Card> for DragnCard {
             toughness,
             permanent,
             starting,
+            uses,
             nemesis_minion,
             victory,
         }
