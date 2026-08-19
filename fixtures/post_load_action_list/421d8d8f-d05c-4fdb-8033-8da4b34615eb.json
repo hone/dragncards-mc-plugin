@@ -1,0 +1,15 @@
+[
+  ["LOG", "Setup: Put the top card of each player's deck faceup into The Collection"],
+  ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+    ["DEFINE", "$CARD", "$GAME.groupById.{{$PLAYER_N}}Deck.parentCards.[0]"],
+    ["MOVE_CARD", "$CARD.id", "sharedOutOfPlay", -1]
+  ]],
+  ["COND",
+    ["EQUAL", "$GAME.mode", "expert"],
+    [
+      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", [
+        ["PROMPT", "$PLAYER_N", "collector2Choice", "$PLAYER_N"]
+      ]]
+    ]
+  ]
+]

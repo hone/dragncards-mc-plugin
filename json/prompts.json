@@ -17,6 +17,27 @@
           "hotkey": "Escape"
         }
       ]
+    },
+    "collector2Choice": {
+      "args": ["$PLAYER"],
+      "message": "Collector II (When Revealed): Choose to either put the top card of your deck into The Collection or take 3 damage.",
+      "options": [
+        {
+          "label": "Put Top Card into The Collection",
+          "code": [
+            ["DEFINE", "$CARD", "$GAME.groupById.{{$PLAYER}}Deck.parentCards.[0]"],
+            ["MOVE_CARD", "$CARD.id", "sharedOutOfPlay", -1],
+            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} put the top card of their deck into The Collection."]
+          ]
+        },
+        {
+          "label": "Take 3 Damage",
+          "code": [
+            ["DECREASE_VAL", "/playerData/{{$PLAYER}}/hitPoints", 3],
+            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} took 3 damage from Collector II."]
+          ]
+        }
+      ]
     }
   }
 }
