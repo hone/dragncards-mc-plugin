@@ -282,7 +282,10 @@
           ["UPDATE_VAR", "$SCHEME_FACE", "B"]
         ],
         ["COND",
-          ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
+          ["AND",
+            ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatFixed", null],
+            ["GREATER_THAN", "$CARD.sides.$SCHEME_FACE.startingThreatFixed", 0]
+          ],
           ["UPDATE_VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", "$CARD.sides.$SCHEME_FACE.startingThreatFixed"]]
         ],
         ["COND",

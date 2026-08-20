@@ -149,7 +149,7 @@ impl Card {
                     match starting_threat {
                         ScalingNumber::Fixed(i) => new_card.starting_threat_fixed = Some(*i as i64),
                         ScalingNumber::Scaling(i) => new_card.starting_threat_scaling = Some(*i),
-                        ScalingNumber::Infinity => new_card.starting_threat_fixed = Some(-1),
+                        ScalingNumber::Infinity => new_card.starting_threat_fixed = Some(0),
                     }
                 }
 

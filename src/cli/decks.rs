@@ -225,18 +225,6 @@ pub async fn execute(args: DecksArgs) {
         let marauders = pre_built_decks.swap_remove("Marauders (Scenario)").unwrap();
         for deck_name in ["Morlock Siege (Scenario)", "On the Run (Scenario)"] {
             let deck = pre_built_decks.get_mut(deck_name).unwrap();
-            if let Some(action_list) = deck.post_load_action_list.as_mut() {
-                match action_list {
-                    ActionList::List(list) => {
-                        list.push(json!(["ACTION_LIST", "multipleDoubleSidedVillains"]));
-                    }
-                    // should not get here
-                    ActionList::Id(_) => (),
-                }
-            } else {
-                deck.post_load_action_list =
-                    Some(ActionList::Id(String::from("multipleDoubleSidedVillains")));
-            }
             deck.cards.append(&mut marauders.cards.clone());
         }
 

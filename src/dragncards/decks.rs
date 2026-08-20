@@ -55,6 +55,7 @@ pub struct PreBuiltDeck {
 
 #[derive(Clone, Serialize)]
 #[serde(untagged)]
+#[allow(dead_code)]
 pub enum ActionList {
     List(Vec<Value>),
     Id(String),

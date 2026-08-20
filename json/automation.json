@@ -553,6 +553,66 @@
             ["SURGING_SANDS", "$ACTIVE_CARD_ID"]
           ]
         }
+      },
+      "370fbcfa-acca-5a2b-8f24-693692f0d75d": {
+        "ability": {
+          "B": [
+            ["LOG", "Taking Off (2B When Revealed): Attach Flight to Mister Sinister and shuffle the rest of Flight into the encounter deck."],
+            ["DEFINE", "$ATTACHMENT",
+              ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "4e336ee6-33cb-571f-9e5d-3087dc93a971"]]
+            ],
+            ["MOVE_CARD", "$ATTACHMENT.id", "sharedVillain", -1],
+            ["SET", "/cardById/$ATTACHMENT.id/currentSide", "A"],
+            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedOutOfPlay.parentCardIds", [
+              ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+              ["COND",
+                ["EQUAL", "$CARD.sides.A.set", "Flight"],
+                ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", -1]
+              ]
+            ]],
+            ["SHUFFLE_GROUP", "sharedEncounterDeck"]
+          ]
+        }
+      },
+      "d052c376-a65b-5121-8b1e-5ba6d1707f9e": {
+        "ability": {
+          "B": [
+            ["LOG", "Bulking Up (2B When Revealed): Attach Super Strength to Mister Sinister and shuffle the rest of Super Strength into the encounter deck."],
+            ["DEFINE", "$ATTACHMENT",
+              ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "a3f46fd8-5e1e-5009-b180-9156bf2b98c6"]]
+            ],
+            ["MOVE_CARD", "$ATTACHMENT.id", "sharedVillain", -1],
+            ["SET", "/cardById/$ATTACHMENT.id/currentSide", "A"],
+            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedOutOfPlay.parentCardIds", [
+              ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+              ["COND",
+                ["EQUAL", "$CARD.sides.A.set", "Super Strength"],
+                ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", -1]
+              ]
+            ]],
+            ["SHUFFLE_GROUP", "sharedEncounterDeck"]
+          ]
+        }
+      },
+      "d06fe4b8-1dfa-5a34-917d-0080cc1510da": {
+        "ability": {
+          "B": [
+            ["LOG", "Focusing In (2B When Revealed): Attach Telepathy to Mister Sinister and shuffle the rest of Telepathy into the encounter deck."],
+            ["DEFINE", "$ATTACHMENT",
+              ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "9579ef5b-1a1d-5e8e-b868-fc3fc704423b"]]
+            ],
+            ["MOVE_CARD", "$ATTACHMENT.id", "sharedVillain", -1],
+            ["SET", "/cardById/$ATTACHMENT.id/currentSide", "A"],
+            ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedOutOfPlay.parentCardIds", [
+              ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
+              ["COND",
+                ["EQUAL", "$CARD.sides.A.set", "Telepathy"],
+                ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", -1]
+              ]
+            ]],
+            ["SHUFFLE_GROUP", "sharedEncounterDeck"]
+          ]
+        }
       }
     }
   }
