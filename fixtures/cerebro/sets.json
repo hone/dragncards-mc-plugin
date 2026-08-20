@@ -3693,26 +3693,6 @@
   },
   {
     "Deleted": false,
-    "Id": "163da346-e7d7-4816-8e2d-7678954462c2",
-    "Official": true,
-    "AuthorId": null,
-    "Name": "Mister Sinister",
-    "Type": "Villain Set",
-    "CanSimulate": true,
-    "Deviation": false,
-    "Modulars": 1,
-    "PackId": "3c2be1ca-a703-46d2-9fbe-4c0db34f84e7",
-    "Requires": [
-      "727e828d-da69-4323-aa09-6dc28e52b193",
-      "b76c86e1-bd7e-4544-ab8c-2bd38b69a918",
-      "0656ced8-37ce-4b48-b9a8-3a853ca2f135"
-    ],
-    "Recommends": [
-      "f2317c8b-fe41-4abb-afd7-3baac5dd5c3c"
-    ]
-  },
-  {
-    "Deleted": false,
     "Id": "83107f01-5ffe-449e-9a10-37301266b28c",
     "Official": true,
     "AuthorId": null,
@@ -5744,6 +5724,27 @@
     "Recommends": [
       "6fa58bfa-5d26-41d2-9da8-9e0ad19a5964",
       "e628f290-727c-4aa0-82b5-1ca876082ebc"
+    ]
+  },
+  {
+    "Deleted": false,
+    "Id": "163da346-e7d7-4816-8e2d-7678954462c2",
+    "Official": true,
+    "AuthorId": null,
+    "Name": "Mister Sinister",
+    "Type": "Villain Set",
+    "CanSimulate": true,
+    "Deviation": false,
+    "Modulars": 1,
+    "PackId": "3c2be1ca-a703-46d2-9fbe-4c0db34f84e7",
+    "Requires": [
+      "727e828d-da69-4323-aa09-6dc28e52b193",
+      "e058e0f3-a67b-4bf1-ae2f-c889818c8a44",
+      "b76c86e1-bd7e-4544-ab8c-2bd38b69a918",
+      "0656ced8-37ce-4b48-b9a8-3a853ca2f135"
+    ],
+    "Recommends": [
+      "f2317c8b-fe41-4abb-afd7-3baac5dd5c3c"
     ]
   }
 ]
