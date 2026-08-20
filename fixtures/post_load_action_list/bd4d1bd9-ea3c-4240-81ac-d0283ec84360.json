@@ -26,11 +26,11 @@
   ["COND",
     ["EQUAL", "$GAME.mode", "expert"],
     [
-      ["LOG", "Setup (Sentinel II When Revealed): Deal each other player a facedown encounter card"],
+      ["LOG", "Setup (Sentinel II When Revealed): Deal each player other than the first player a facedown encounter card"],
       ["FOR_EACH_VAL", "$PLAYER_I", "$PLAYER_ORDER", [
         ["COND",
-          ["NOT_EQUAL", "$PLAYER_I", "player1"],
-          ["ACTION_LIST", "dealEncounterFacedown"]
+          ["NOT_EQUAL", "$PLAYER_I", "$GAME.firstPlayer"],
+          ["DEAL_ENCOUNTER_CARD", false, "sharedEncounterDeck", "$PLAYER_I"]
         ]
       ]]
     ]
