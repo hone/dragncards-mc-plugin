@@ -1,0 +1,19 @@
+[
+  [
+    "LOG",
+    "Setup: Deal each player a facedown encounter card"
+  ],
+  [
+    "FOR_EACH_VAL",
+    "$PLAYER_I",
+    "$PLAYER_ORDER",
+    [
+      [
+        "DEAL_ENCOUNTER_CARD",
+        false,
+        "sharedEncounterDeck",
+        "$PLAYER_I"
+      ]
+    ]
+  ]
+]

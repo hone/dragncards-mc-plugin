@@ -1,310 +1,1374 @@
 {
   "actionLists": {
     "toggleExhaust": [
-      ["COND",
-        ["AND",
-          ["OR",
-            ["EQUAL", "$ACTIVE_CARD.rotation", 90],
+      [
+        "COND",
+        [
+          "AND",
+          [
+            "OR",
+            [
+              "EQUAL",
+              "$ACTIVE_CARD.rotation",
+              90
+            ],
             "$ACTIVE_CARD.boost"
           ],
           "$ACTIVE_CARD.inPlay"
         ],
-        ["READY_CARD", "$ACTIVE_CARD_ID", "$ALIAS_N"],
-        ["AND", ["EQUAL", "$ACTIVE_CARD.rotation", 0], "$ACTIVE_CARD.inPlay"],
-        ["EXHAUST_CARD", "$ACTIVE_CARD_ID", "$ALIAS_N"]
+        [
+          "READY_CARD",
+          "$ACTIVE_CARD_ID",
+          "$ALIAS_N"
+        ],
+        [
+          "AND",
+          [
+            "EQUAL",
+            "$ACTIVE_CARD.rotation",
+            0
+          ],
+          "$ACTIVE_CARD.inPlay"
+        ],
+        [
+          "EXHAUST_CARD",
+          "$ACTIVE_CARD_ID",
+          "$ALIAS_N"
+        ]
       ]
     ],
     "discardRandomCard": [
-      ["VAR", "$GROUP_ID", "{{$PLAYER_N}}Hand"],
-      ["VAR", "$CURRENT_HAND_SIZE", ["LENGTH", "$GAME.groupById.$GROUP_ID.stackIds"]],
-      ["VAR", "$INDEX", ["RANDOM_INT", 0, ["SUBTRACT", "$CURRENT_HAND_SIZE", 1]]],
-      ["DISCARD_CARD", "$GAME.groupById.$GROUP_ID.parentCardIds.[$INDEX]"]
+      [
+        "VAR",
+        "$GROUP_ID",
+        "{{$PLAYER_N}}Hand"
+      ],
+      [
+        "VAR",
+        "$CURRENT_HAND_SIZE",
+        [
+          "LENGTH",
+          "$GAME.groupById.$GROUP_ID.stackIds"
+        ]
+      ],
+      [
+        "VAR",
+        "$INDEX",
+        [
+          "RANDOM_INT",
+          0,
+          [
+            "SUBTRACT",
+            "$CURRENT_HAND_SIZE",
+            1
+          ]
+        ]
+      ],
+      [
+        "DISCARD_CARD",
+        "$GAME.groupById.$GROUP_ID.parentCardIds.[$INDEX]"
+      ]
     ],
     "flipCard": [
-      ["COND",
-        ["DEFINED", "$ACTIVE_CARD.sides.C"],
+      [
+        "COND",
         [
-          ["COND",
-            ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
-            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"],
-            ["EQUAL", "$ACTIVE_CARD.currentSide", "B"],
-            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "C"],
+          "DEFINED",
+          "$ACTIVE_CARD.sides.C"
+        ],
+        [
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$ACTIVE_CARD.currentSide",
+              "A"
+            ],
+            [
+              "SET",
+              "/cardById/$ACTIVE_CARD_ID/currentSide",
+              "B"
+            ],
+            [
+              "EQUAL",
+              "$ACTIVE_CARD.currentSide",
+              "B"
+            ],
+            [
+              "SET",
+              "/cardById/$ACTIVE_CARD_ID/currentSide",
+              "C"
+            ],
             true,
-            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"]
+            [
+              "SET",
+              "/cardById/$ACTIVE_CARD_ID/currentSide",
+              "A"
+            ]
           ]
         ],
         true,
         [
-          ["COND",
-            ["EQUAL", "$ACTIVE_CARD.currentSide", "A"],
-            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "B"],
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$ACTIVE_CARD.currentSide",
+              "A"
+            ],
+            [
+              "SET",
+              "/cardById/$ACTIVE_CARD_ID/currentSide",
+              "B"
+            ],
             true,
-            ["SET", "/cardById/$ACTIVE_CARD_ID/currentSide", "A"]
+            [
+              "SET",
+              "/cardById/$ACTIVE_CARD_ID/currentSide",
+              "A"
+            ]
           ]
         ]
       ],
-      ["LOG", "{{$ALIAS_N}} flipped the card to {{$ACTIVE_FACE.name}}."]
+      [
+        "LOG",
+        "{{$ALIAS_N}} flipped the card to {{$ACTIVE_FACE.name}}."
+      ]
     ],
     "loadMode": [
-      ["COND",
+      [
+        "COND",
         "$GAME.loadMode",
         [
-          ["VAR", "$EXPERT_SET", null],
-          ["COND",
-            ["EQUAL", "$GAME.mode", "expert"],
-            ["UPDATE_VAR", "$EXPERT_SET", "$GAME.expertSet"]
+          [
+            "VAR",
+            "$EXPERT_SET",
+            null
           ],
-          ["LOAD_MODE_CARDS", "$GAME.standardSet", "$EXPERT_SET"]
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$GAME.mode",
+              "expert"
+            ],
+            [
+              "UPDATE_VAR",
+              "$EXPERT_SET",
+              "$GAME.expertSet"
+            ]
+          ],
+          [
+            "LOAD_MODE_CARDS",
+            "$GAME.standardSet",
+            "$EXPERT_SET"
+          ]
         ]
       ]
     ],
     "shuffleIntoDeck": [
-      ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.deckGroupId", 0],
-      ["VAR", "$GROUP_ID", "$ACTIVE_CARD.deckGroupId"],
-      ["SHUFFLE_GROUP", "$GROUP_ID"],
-      ["LOG", "{{$ALIAS_N}} shuffled {{$ACTIVE_FACE.name}} into {{$GAME.groupById.$GROUP_ID.label}}."]
+      [
+        "MOVE_CARD",
+        "$ACTIVE_CARD_ID",
+        "$ACTIVE_CARD.deckGroupId",
+        0
+      ],
+      [
+        "VAR",
+        "$GROUP_ID",
+        "$ACTIVE_CARD.deckGroupId"
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "$GROUP_ID"
+      ],
+      [
+        "LOG",
+        "{{$ALIAS_N}} shuffled {{$ACTIVE_FACE.name}} into {{$GAME.groupById.$GROUP_ID.label}}."
+      ]
     ],
     "zeroTokens": [
-      ["SET", "/cardById/$ACTIVE_CARD_ID/tokens", {}],
-      ["LOG", "{{$ALIAS_N}} removed all tokens from {{$ACTIVE_FACE.name}}."]
+      [
+        "SET",
+        "/cardById/$ACTIVE_CARD_ID/tokens",
+        {}
+      ],
+      [
+        "LOG",
+        "{{$ALIAS_N}} removed all tokens from {{$ACTIVE_FACE.name}}."
+      ]
     ],
-    "dealEncounterFaceup": ["DEAL_ENCOUNTER_CARD", true],
-    "dealEncounterFacedown": ["DEAL_ENCOUNTER_CARD", false],
-    "dealSecondFaceup": ["DEAL_ENCOUNTER_CARD", true, "sharedEncounter2Deck"],
-    "dealSecondFacedown": ["DEAL_ENCOUNTER_CARD", false, "sharedEncounter2Deck"],
-    "dealThirdFaceup": ["DEAL_ENCOUNTER_CARD", true, "sharedEncounter3Deck"],
-    "dealThirdFacedown": ["DEAL_ENCOUNTER_CARD", false, "sharedEncounter3Deck"],
+    "dealEncounterFaceup": [
+      "DEAL_ENCOUNTER_CARD",
+      true
+    ],
+    "dealEncounterFacedown": [
+      "DEAL_ENCOUNTER_CARD",
+      false
+    ],
+    "dealSecondFaceup": [
+      "DEAL_ENCOUNTER_CARD",
+      true,
+      "sharedEncounter2Deck"
+    ],
+    "dealSecondFacedown": [
+      "DEAL_ENCOUNTER_CARD",
+      false,
+      "sharedEncounter2Deck"
+    ],
+    "dealThirdFaceup": [
+      "DEAL_ENCOUNTER_CARD",
+      true,
+      "sharedEncounter3Deck"
+    ],
+    "dealThirdFacedown": [
+      "DEAL_ENCOUNTER_CARD",
+      false,
+      "sharedEncounter3Deck"
+    ],
     "drawBoost": [
-      ["COND",
-        ["EQUAL", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
+      [
+        "COND",
         [
-          ["COND",
-            ["DEFINED", "$ALIAS_N"],
-            ["LOG", "{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."]
+          "EQUAL",
+          [
+            "LENGTH",
+            "$GAME.groupById.sharedEncounterDeck.stackIds"
           ],
-          ["MOVE_STACKS", "sharedEncounterDiscard", "sharedEncounterDeck", ["LENGTH", "$GAME.groupById.sharedEncounterDiscard.stackIds"], "shuffle"]
+          0
+        ],
+        [
+          [
+            "COND",
+            [
+              "DEFINED",
+              "$ALIAS_N"
+            ],
+            [
+              "LOG",
+              "{{$ALIAS_N}} shuffled the encounter discard pile into the encounter deck."
+            ]
+          ],
+          [
+            "MOVE_STACKS",
+            "sharedEncounterDiscard",
+            "sharedEncounterDeck",
+            [
+              "LENGTH",
+              "$GAME.groupById.sharedEncounterDiscard.stackIds"
+            ],
+            "shuffle"
+          ]
         ]
       ],
-      ["COND",
-        ["GREATER_THAN", ["LENGTH", "$GAME.groupById.sharedEncounterDeck.stackIds"], 0],
+      [
+        "COND",
         [
-          ["VAR", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"],
-          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1, 0, {"allowFlip": false}],
-          ["SET", "/cardById/$CARD_ID/rotation", -30],
-          ["SET", "/cardById/$CARD_ID/boost", true],
-          ["COND",
-            ["DEFINED", "$ALIAS_N"],
-            ["LOG", "{{$ALIAS_N}} drew a boost card."]
+          "GREATER_THAN",
+          [
+            "LENGTH",
+            "$GAME.groupById.sharedEncounterDeck.stackIds"
+          ],
+          0
+        ],
+        [
+          [
+            "VAR",
+            "$CARD_ID",
+            "$GAME.groupById.sharedEncounterDeck.parentCardIds.[0]"
+          ],
+          [
+            "MOVE_CARD",
+            "$CARD_ID",
+            "{{$PLAYER_N}}Engaged",
+            -1,
+            0,
+            {
+              "allowFlip": false
+            }
+          ],
+          [
+            "SET",
+            "/cardById/$CARD_ID/rotation",
+            -30
+          ],
+          [
+            "SET",
+            "/cardById/$CARD_ID/boost",
+            true
+          ],
+          [
+            "COND",
+            [
+              "DEFINED",
+              "$ALIAS_N"
+            ],
+            [
+              "LOG",
+              "{{$ALIAS_N}} drew a boost card."
+            ]
           ]
         ],
         true,
-        ["LOG", "No encounter deck to draw boost card."]
+        [
+          "LOG",
+          "No encounter deck to draw boost card."
+        ]
       ]
     ],
     "mulliganDrawHand": [
-      ["COND",
-        ["EQUAL", "$GAME.roundNumber", 0],
-        ["LOG", "{{$ALIAS_N}} mulliganed."]
+      [
+        "COND",
+        [
+          "EQUAL",
+          "$GAME.roundNumber",
+          0
+        ],
+        [
+          "LOG",
+          "{{$ALIAS_N}} mulliganed."
+        ]
       ],
-      ["DRAW_HAND", "$PLAYER_N", "$ALIAS_N"]
+      [
+        "DRAW_HAND",
+        "$PLAYER_N",
+        "$ALIAS_N"
+      ]
     ],
     "shadowsOfThePast": [
-      ["VAR", "$GROUP_ID", "{{$PLAYER_N}}NemesisSet"],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.$GROUP_ID.parentCardIds", [
-        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-        ["COND",
-          "$CARD.sides.A.nemesisMinion",
-          ["MOVE_CARD", "$CARD_ID", "{{$PLAYER_N}}Engaged", -1],
-          ["EQUAL", "$CARD.sides.A.type", "Side Scheme"],
-          ["MOVE_CARD", "$CARD_ID", "sharedVillain", -1],
-          true,
-          ["MOVE_CARD", "$CARD_ID", "sharedEncounterDeck", 0]
+      [
+        "VAR",
+        "$GROUP_ID",
+        "{{$PLAYER_N}}NemesisSet"
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.$GROUP_ID.parentCardIds",
+        [
+          [
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
+          ],
+          [
+            "COND",
+            "$CARD.sides.A.nemesisMinion",
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "{{$PLAYER_N}}Engaged",
+              -1
+            ],
+            [
+              "EQUAL",
+              "$CARD.sides.A.type",
+              "Side Scheme"
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedVillain",
+              -1
+            ],
+            true,
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedEncounterDeck",
+              0
+            ]
+          ]
         ]
-      ]],
-      ["SHUFFLE_GROUP", "sharedEncounterDeck"]
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "sharedEncounterDeck"
+      ]
     ],
     "playerEndPhase": [
-      ["LOG", "Player Phase - Ends"],
-      ["FOR_EACH_VAL", "$PLAYER", "$PLAYER_ORDER", [
-        ["READY_ALL", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"],
-        ["DRAW_HAND", "$PLAYER", "$GAME.playerInfo.$PLAYER.alias"]
-      ]],
-      ["VAR", "$CARD_ID", "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"],
-      ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-      ["VAR", "$SCHEME_ACCELERATION", ["ADD", "$CARD.sides.B.accelerationFixed", ["MULTIPLY", "$CARD.sides.B.accelerationScaling", "$GAME.numPlayers"]]],
-      ["VAR", "$ACCELERATION_ICONS", 0],
-      ["FOR_EACH_VAL", "$CARD",
-        ["FILTER_CARDS",
+      [
+        "LOG",
+        "Player Phase - Ends"
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$PLAYER",
+        "$PLAYER_ORDER",
+        [
+          [
+            "READY_ALL",
+            "$PLAYER",
+            "$GAME.playerInfo.$PLAYER.alias"
+          ],
+          [
+            "DRAW_HAND",
+            "$PLAYER",
+            "$GAME.playerInfo.$PLAYER.alias"
+          ]
+        ]
+      ],
+      [
+        "VAR",
+        "$CARD_ID",
+        "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"
+      ],
+      [
+        "VAR",
+        "$CARD",
+        "$GAME.cardById.$CARD_ID"
+      ],
+      [
+        "VAR",
+        "$SCHEME_ACCELERATION",
+        [
+          "ADD",
+          "$CARD.sides.B.accelerationFixed",
+          [
+            "MULTIPLY",
+            "$CARD.sides.B.accelerationScaling",
+            "$GAME.numPlayers"
+          ]
+        ]
+      ],
+      [
+        "VAR",
+        "$ACCELERATION_ICONS",
+        0
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$CARD",
+        [
+          "FILTER_CARDS",
           "$CARD",
-          ["AND",
+          [
+            "AND",
             "$CARD.inPlay",
-            ["GREATER_THAN", "$CARD.currentFace.acceleration", 0]
+            [
+              "GREATER_THAN",
+              "$CARD.currentFace.acceleration",
+              0
+            ]
           ]
         ],
-        ["UPDATE_VAR", "$ACCELERATION_ICONS", ["ADD", "$ACCELERATION_ICONS", "$CARD.currentFace.acceleration"]]
+        [
+          "UPDATE_VAR",
+          "$ACCELERATION_ICONS",
+          [
+            "ADD",
+            "$ACCELERATION_ICONS",
+            "$CARD.currentFace.acceleration"
+          ]
+        ]
       ],
-      ["VAR", "$THREAT_INCREASE", ["ADD", ["ADD", "$SCHEME_ACCELERATION", "$CARD.tokens.acceleration"], "$ACCELERATION_ICONS"]],
-      ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/threat", "$THREAT_INCREASE"],
-      ["LOG", "Villain Phase - Begins"],
-      ["LOG", "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."],
-      ["SET", "/stepId", "2.1"]
+      [
+        "VAR",
+        "$THREAT_INCREASE",
+        [
+          "ADD",
+          [
+            "ADD",
+            "$SCHEME_ACCELERATION",
+            "$CARD.tokens.acceleration"
+          ],
+          "$ACCELERATION_ICONS"
+        ]
+      ],
+      [
+        "INCREASE_VAL",
+        "/cardById/$CARD_ID/tokens/threat",
+        "$THREAT_INCREASE"
+      ],
+      [
+        "LOG",
+        "Villain Phase - Begins"
+      ],
+      [
+        "LOG",
+        "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."
+      ],
+      [
+        "SET",
+        "/stepId",
+        "2.1"
+      ]
     ],
     "villainEncounterPhase": [
-      ["LOG", "Villain Phase - Encounter"],
-      ["SET", "/stepId", "2.3"],
-      ["FOR_EACH_VAL", "$PLAYER_N", "$PLAYER_ORDER", ["ACTION_LIST", "dealEncounterFacedown"]]
+      [
+        "LOG",
+        "Villain Phase - Encounter"
+      ],
+      [
+        "SET",
+        "/stepId",
+        "2.3"
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$PLAYER_N",
+        "$PLAYER_ORDER",
+        [
+          "ACTION_LIST",
+          "dealEncounterFacedown"
+        ]
+      ]
     ],
     "villainEndPhase": [
-      ["LOG", "Villain Phase - Ends"],
-      ["SET", "/firstPlayer", ["NEXT_PLAYER", "$GAME.firstPlayer"]],
-      ["SET", "/stepId", "1.1"],
-      ["INCREASE_VAL", "/roundNumber", 1],
-      ["LOG", "Player Phase - Begins"]
+      [
+        "LOG",
+        "Villain Phase - Ends"
+      ],
+      [
+        "SET",
+        "/firstPlayer",
+        [
+          "NEXT_PLAYER",
+          "$GAME.firstPlayer"
+        ]
+      ],
+      [
+        "SET",
+        "/stepId",
+        "1.1"
+      ],
+      [
+        "INCREASE_VAL",
+        "/roundNumber",
+        1
+      ],
+      [
+        "LOG",
+        "Player Phase - Begins"
+      ]
     ],
     "multipleDoubleSidedVillains": [
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedVillain.parentCardIds", [
-        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-        ["COND",
-          ["EQUAL", "$CARD.sides.A.type", "Villain"],
-          ["MOVE_CARD", "$CARD_ID", "sharedVillainDeck", -1]
-        ]
-      ]],
-      ["COND",
-        ["EQUAL", "$GAME.mode", "expert"],
+      [
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.sharedVillain.parentCardIds",
         [
-          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds", [
-            ["SET", "/cardById/$CARD_ID/currentSide", "B"]
-          ]]
+          [
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
+          ],
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$CARD.sides.A.type",
+              "Villain"
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedVillainDeck",
+              -1
+            ]
+          ]
+        ]
+      ],
+      [
+        "COND",
+        [
+          "EQUAL",
+          "$GAME.mode",
+          "expert"
+        ],
+        [
+          [
+            "FOR_EACH_VAL",
+            "$CARD_ID",
+            "$GAME.groupById.sharedVillainDeck.parentCardIds",
+            [
+              [
+                "SET",
+                "/cardById/$CARD_ID/currentSide",
+                "B"
+              ]
+            ]
+          ]
         ],
         true,
         [
-          ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedVillainDeck.parentCardIds", [
-            ["SET", "/cardById/$CARD_ID/currentSide", "A"]
-          ]]
+          [
+            "FOR_EACH_VAL",
+            "$CARD_ID",
+            "$GAME.groupById.sharedVillainDeck.parentCardIds",
+            [
+              [
+                "SET",
+                "/cardById/$CARD_ID/currentSide",
+                "A"
+              ]
+            ]
+          ]
         ]
       ],
-      ["SHUFFLE_GROUP", "sharedVillainDeck"],
-      ["MOVE_CARD", "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]", "sharedVillain", 0]
-    ],
-    "discardMinion": [
-      "DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Engaged",
-      ["POINTER",
-        ["EQUAL", "$CARD_ITEM.sides.A.type", "Minion"]
+      [
+        "SHUFFLE_GROUP",
+        "sharedVillainDeck"
+      ],
+      [
+        "MOVE_CARD",
+        "$GAME.groupById.sharedVillainDeck.parentCardIds.[0]",
+        "sharedVillain",
+        0
       ]
     ],
-    "discardSideScheme": ["DISCARD_UNTIL", "sharedEncounterDeck", "{{$PLAYER_N}}Play1",
-      ["POINTER",
-        ["EQUAL", "$CARD.sides.A.type", "Side Scheme"]
+    "discardMinion": [
+      "DISCARD_UNTIL",
+      "sharedEncounterDeck",
+      "{{$PLAYER_N}}Engaged",
+      [
+        "POINTER",
+        [
+          "EQUAL",
+          "$CARD_ITEM.sides.A.type",
+          "Minion"
+        ]
+      ]
+    ],
+    "discardSideScheme": [
+      "DISCARD_UNTIL",
+      "sharedEncounterDeck",
+      "{{$PLAYER_N}}Play1",
+      [
+        "POINTER",
+        [
+          "EQUAL",
+          "$CARD.sides.A.type",
+          "Side Scheme"
+        ]
       ]
     ],
     "importMc4dbDeck": [
-      ["VAR", "$URL", "$PROMPT_INPUT"],
-      ["COND",
-        ["EQUAL", "$URL", null],
-        ["ABORT", "No URL provided."]
+      [
+        "VAR",
+        "$URL",
+        "$PROMPT_INPUT"
       ],
-
-      ["VAR", "$DECK_TYPE", "decklist"],
-      ["COND",
-        ["NOT", ["IN_STRING", "$URL", "decklist"]],
-        ["UPDATE_VAR", "$DECK_TYPE", "deck"]
+      [
+        "COND",
+        [
+          "EQUAL",
+          "$URL",
+          null
+        ],
+        [
+          "ABORT",
+          "No URL provided."
+        ]
       ],
-
-      ["VAR", "$TYPE_INDEX", ["INDEX_OF", "$URL", "$DECK_TYPE"]],
-      ["VAR", "$BASE_URL", ["SUBSTRING", "$URL", 0, ["SUBTRACT", "$TYPE_INDEX", 1]]],
-
-      ["VAR", "$VIEW_INDEX", ["INDEX_OF", "$URL", "view"]],
-      ["VAR", "$ID_START", ["ADD", "$VIEW_INDEX", 5]],
-      ["VAR", "$DECK_ID", ["SUBSTRING", "$URL", "$ID_START", ["SUBTRACT", ["LENGTH", "$URL"], "$ID_START"]]],
-
-      ["VAR", "$API_URL", "{{$BASE_URL}}/api/public/{{$DECK_TYPE}}/{{$DECK_ID}}.json"],
-      ["LOG", "{{$ALIAS_N}} is importing a deck from {{$BASE_URL}}..."],
-
-      ["VAR", "$DECKLIST", ["REQUEST_JSON", "$API_URL"]],
-      ["COND",
-        ["EQUAL", "$DECKLIST", null],
-        ["ABORT", "Failed to fetch decklist from URL."]
+      [
+        "VAR",
+        "$DECK_TYPE",
+        "decklist"
       ],
-
-      ["VAR", "$HERO_CODE", "$DECKLIST.hero_code"],
-      ["VAR", "$HERO_A_JSON", ["REQUEST_JSON", "{{$BASE_URL}}/api/public/card/{{$HERO_CODE}}.json"]],
-
-      ["VAR", "$HERO_B_CODE", ["REGEX_REPLACE", "$HERO_CODE", "a$", "b"]],
-      ["VAR", "$HERO_B_JSON", ["REQUEST_JSON", "{{$BASE_URL}}/api/public/card/{{$HERO_B_CODE}}.json"]],
-
-      ["VAR", "$FACE_A", ["BUILD_MC4DB_FACE", "$HERO_A_JSON", "$BASE_URL"]],
-      ["VAR", "$FACE_B", ["BUILD_MC4DB_FACE", "$HERO_B_JSON", "$BASE_URL"]],
-      ["VAR", "$HERO_DETAILS", ["MAP_PUT", ["MAP_PUT", {}, "A", "$FACE_A"], "B", "$FACE_B"]],
-      ["VAR", "$HERO_ITEM", ["PROCESS_MAP", {
-        "databaseId": null,
-        "quantity": 1,
-        "loadGroupId": "playerNPlay1",
-        "cardDetails": "$HERO_DETAILS"
-      }]],
-
-      ["VAR", "$LOAD_LIST", ["LIST", "$HERO_ITEM"]],
-
-      ["FOR_EACH_KEY_VAL", "$SLOT_CODE", "$SLOT_QTY", "$DECKLIST.slots", [
-        ["VAR", "$SLOT_JSON", ["REQUEST_JSON", "{{$BASE_URL}}/api/public/card/{{$SLOT_CODE}}.json"]],
-        ["VAR", "$SLOT_FACE", ["BUILD_MC4DB_FACE", "$SLOT_JSON", "$BASE_URL"]],
-        ["VAR", "$SLOT_DETAILS", ["MAP_PUT", ["MAP_PUT", {}, "A", "$SLOT_FACE"], "B", {"name": "player"}]],
-        ["VAR", "$SLOT_ITEM", ["PROCESS_MAP", {
-          "databaseId": null,
-          "quantity": "$SLOT_QTY",
-          "loadGroupId": "playerNDeck",
-          "cardDetails": "$SLOT_DETAILS"
-        }]],
-        ["UPDATE_VAR", "$LOAD_LIST", ["APPEND", "$LOAD_LIST", "$SLOT_ITEM"]]
-      ]],
-
-      ["LOAD_CARDS", "$LOAD_LIST"],
-      ["LOG", "{{$ALIAS_N}} finished importing deck from mc4db."]
+      [
+        "COND",
+        [
+          "NOT",
+          [
+            "IN_STRING",
+            "$URL",
+            "decklist"
+          ]
+        ],
+        [
+          "UPDATE_VAR",
+          "$DECK_TYPE",
+          "deck"
+        ]
+      ],
+      [
+        "VAR",
+        "$TYPE_INDEX",
+        [
+          "INDEX_OF",
+          "$URL",
+          "$DECK_TYPE"
+        ]
+      ],
+      [
+        "VAR",
+        "$BASE_URL",
+        [
+          "SUBSTRING",
+          "$URL",
+          0,
+          [
+            "SUBTRACT",
+            "$TYPE_INDEX",
+            1
+          ]
+        ]
+      ],
+      [
+        "VAR",
+        "$VIEW_INDEX",
+        [
+          "INDEX_OF",
+          "$URL",
+          "view"
+        ]
+      ],
+      [
+        "VAR",
+        "$ID_START",
+        [
+          "ADD",
+          "$VIEW_INDEX",
+          5
+        ]
+      ],
+      [
+        "VAR",
+        "$DECK_ID",
+        [
+          "SUBSTRING",
+          "$URL",
+          "$ID_START",
+          [
+            "SUBTRACT",
+            [
+              "LENGTH",
+              "$URL"
+            ],
+            "$ID_START"
+          ]
+        ]
+      ],
+      [
+        "VAR",
+        "$API_URL",
+        "{{$BASE_URL}}/api/public/{{$DECK_TYPE}}/{{$DECK_ID}}.json"
+      ],
+      [
+        "LOG",
+        "{{$ALIAS_N}} is importing a deck from {{$BASE_URL}}..."
+      ],
+      [
+        "VAR",
+        "$DECKLIST",
+        [
+          "REQUEST_JSON",
+          "$API_URL"
+        ]
+      ],
+      [
+        "COND",
+        [
+          "EQUAL",
+          "$DECKLIST",
+          null
+        ],
+        [
+          "ABORT",
+          "Failed to fetch decklist from URL."
+        ]
+      ],
+      [
+        "VAR",
+        "$HERO_CODE",
+        "$DECKLIST.hero_code"
+      ],
+      [
+        "VAR",
+        "$HERO_A_JSON",
+        [
+          "REQUEST_JSON",
+          "{{$BASE_URL}}/api/public/card/{{$HERO_CODE}}.json"
+        ]
+      ],
+      [
+        "VAR",
+        "$HERO_B_CODE",
+        [
+          "REGEX_REPLACE",
+          "$HERO_CODE",
+          "a$",
+          "b"
+        ]
+      ],
+      [
+        "VAR",
+        "$HERO_B_JSON",
+        [
+          "REQUEST_JSON",
+          "{{$BASE_URL}}/api/public/card/{{$HERO_B_CODE}}.json"
+        ]
+      ],
+      [
+        "VAR",
+        "$FACE_A",
+        [
+          "BUILD_MC4DB_FACE",
+          "$HERO_A_JSON",
+          "$BASE_URL"
+        ]
+      ],
+      [
+        "VAR",
+        "$FACE_B",
+        [
+          "BUILD_MC4DB_FACE",
+          "$HERO_B_JSON",
+          "$BASE_URL"
+        ]
+      ],
+      [
+        "VAR",
+        "$HERO_DETAILS",
+        [
+          "MAP_PUT",
+          [
+            "MAP_PUT",
+            {},
+            "A",
+            "$FACE_A"
+          ],
+          "B",
+          "$FACE_B"
+        ]
+      ],
+      [
+        "VAR",
+        "$HERO_ITEM",
+        [
+          "PROCESS_MAP",
+          {
+            "databaseId": null,
+            "quantity": 1,
+            "loadGroupId": "playerNPlay1",
+            "cardDetails": "$HERO_DETAILS"
+          }
+        ]
+      ],
+      [
+        "VAR",
+        "$LOAD_LIST",
+        [
+          "LIST",
+          "$HERO_ITEM"
+        ]
+      ],
+      [
+        "FOR_EACH_KEY_VAL",
+        "$SLOT_CODE",
+        "$SLOT_QTY",
+        "$DECKLIST.slots",
+        [
+          [
+            "VAR",
+            "$SLOT_JSON",
+            [
+              "REQUEST_JSON",
+              "{{$BASE_URL}}/api/public/card/{{$SLOT_CODE}}.json"
+            ]
+          ],
+          [
+            "VAR",
+            "$SLOT_FACE",
+            [
+              "BUILD_MC4DB_FACE",
+              "$SLOT_JSON",
+              "$BASE_URL"
+            ]
+          ],
+          [
+            "VAR",
+            "$SLOT_DETAILS",
+            [
+              "MAP_PUT",
+              [
+                "MAP_PUT",
+                {},
+                "A",
+                "$SLOT_FACE"
+              ],
+              "B",
+              {
+                "name": "player"
+              }
+            ]
+          ],
+          [
+            "VAR",
+            "$SLOT_ITEM",
+            [
+              "PROCESS_MAP",
+              {
+                "databaseId": null,
+                "quantity": "$SLOT_QTY",
+                "loadGroupId": "playerNDeck",
+                "cardDetails": "$SLOT_DETAILS"
+              }
+            ]
+          ],
+          [
+            "UPDATE_VAR",
+            "$LOAD_LIST",
+            [
+              "APPEND",
+              "$LOAD_LIST",
+              "$SLOT_ITEM"
+            ]
+          ]
+        ]
+      ],
+      [
+        "LOAD_CARDS",
+        "$LOAD_LIST"
+      ],
+      [
+        "LOG",
+        "{{$ALIAS_N}} finished importing deck from mc4db."
+      ]
     ],
     "detachCard": [
-      ["MOVE_CARD", "$ACTIVE_CARD_ID", "$ACTIVE_CARD.groupId", -1],
-      ["LOG", "{{$ALIAS_N}} detached {{$ACTIVE_FACE.name}}."]
+      [
+        "MOVE_CARD",
+        "$ACTIVE_CARD_ID",
+        "$ACTIVE_CARD.groupId",
+        -1
+      ],
+      [
+        "LOG",
+        "{{$ALIAS_N}} detached {{$ACTIVE_FACE.name}}."
+      ]
     ],
     "spiralLoadRandomModulars": [
-      ["DEFINE", "$MODULAR_LIST",
-        ["SHUFFLE_LIST",
-          ["LIST", "Crime (Modular)", "Fantasy (Modular)", "Horror (Modular)", "Sci-Fi (Modular)", "Sitcom (Modular)", "Western (Modular)"]
+      [
+        "DEFINE",
+        "$MODULAR_LIST",
+        [
+          "SHUFFLE_LIST",
+          [
+            "LIST",
+            "Crime (Modular)",
+            "Fantasy (Modular)",
+            "Horror (Modular)",
+            "Sci-Fi (Modular)",
+            "Sitcom (Modular)",
+            "Western (Modular)"
+          ]
         ]
       ],
-      ["LOG", "Loading random modular sets: ", "$MODULAR_LIST.[0]", ", ", "$MODULAR_LIST.[1]", ", and ", "$MODULAR_LIST.[2]"],
-      ["LOAD_CARDS", "$MODULAR_LIST.[0]"],
-      ["LOAD_CARDS", "$MODULAR_LIST.[1]"],
-      ["LOAD_CARDS", "$MODULAR_LIST.[2]"],
-      ["ACTION_LIST", "spiralFinishShowDeck"]
+      [
+        "LOG",
+        "Loading random modular sets: ",
+        "$MODULAR_LIST.[0]",
+        ", ",
+        "$MODULAR_LIST.[1]",
+        ", and ",
+        "$MODULAR_LIST.[2]"
+      ],
+      [
+        "LOAD_CARDS",
+        "$MODULAR_LIST.[0]"
+      ],
+      [
+        "LOAD_CARDS",
+        "$MODULAR_LIST.[1]"
+      ],
+      [
+        "LOAD_CARDS",
+        "$MODULAR_LIST.[2]"
+      ],
+      [
+        "ACTION_LIST",
+        "spiralFinishShowDeck"
+      ]
     ],
     "spiralFinishShowDeck": [
-      ["LOG", "Setup: Put \"The Search for Spiral\" side scheme into play"],
-      ["DEFINE", "$SEARCH_CARD",
-        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "a012269a-3690-5bdf-93a1-bebd8c3f248d"]]
+      [
+        "LOG",
+        "Setup: Put \"The Search for Spiral\" side scheme into play"
       ],
-      ["MOVE_CARD", "$SEARCH_CARD.id", "sharedVillain", -1],
-      ["SET", "/cardById/$SEARCH_CARD.id/currentSide", "A"],
-      ["SET_SCHEME_STARTING_THREAT", "$SEARCH_CARD.id"],
-      ["LOG", "Setup: Move \"Cornered!\" treachery and Show environments to Show Deck"],
-      ["DEFINE", "$CORNERED_CARD",
-        ["ONE_CARD", "$CARD", ["EQUAL", "$CARD.databaseId", "421734a4-2c4a-5f00-9b9f-c8ad3f19ccbd"]]
-      ],
-      ["MOVE_CARD", "$CORNERED_CARD.id", "sharedEncounter2Deck", -1],
-      ["FOR_EACH_VAL", "$CARD_ID", "$GAME.groupById.sharedEncounterDeck.parentCardIds", [
-        ["VAR", "$CARD", "$GAME.cardById.$CARD_ID"],
-        ["COND",
-          ["OR",
-            ["IN_STRING", "$CARD.sides.A.traits", "Show"],
-            ["EQUAL", "$CARD.sides.A.type", "Environment"]
-          ],
-          ["MOVE_CARD", "$CARD_ID", "sharedEncounter2Deck", -1]
+      [
+        "DEFINE",
+        "$SEARCH_CARD",
+        [
+          "ONE_CARD",
+          "$CARD",
+          [
+            "EQUAL",
+            "$CARD.databaseId",
+            "a012269a-3690-5bdf-93a1-bebd8c3f248d"
+          ]
         ]
-      ]],
-      ["LOG", "Setup: Shuffle Show Deck and put 1 random Show environment into play"],
-      ["SHUFFLE_GROUP", "sharedEncounter2Deck"],
-      ["VAR", "$TOP_SHOW_CARD_ID", "$GAME.groupById.sharedEncounter2Deck.parentCardIds.[0]"],
-      ["MOVE_CARD", "$TOP_SHOW_CARD_ID", "sharedVillain", -1],
-      ["SET", "/cardById/$TOP_SHOW_CARD_ID/currentSide", "A"],
-      ["SHUFFLE_GROUP", "sharedEncounterDeck"]
+      ],
+      [
+        "MOVE_CARD",
+        "$SEARCH_CARD.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$SEARCH_CARD.id/currentSide",
+        "A"
+      ],
+      [
+        "SET_SCHEME_STARTING_THREAT",
+        "$SEARCH_CARD.id"
+      ],
+      [
+        "LOG",
+        "Setup: Move \"Cornered!\" treachery and Show environments to Show Deck"
+      ],
+      [
+        "DEFINE",
+        "$CORNERED_CARD",
+        [
+          "ONE_CARD",
+          "$CARD",
+          [
+            "EQUAL",
+            "$CARD.databaseId",
+            "421734a4-2c4a-5f00-9b9f-c8ad3f19ccbd"
+          ]
+        ]
+      ],
+      [
+        "MOVE_CARD",
+        "$CORNERED_CARD.id",
+        "sharedEncounter2Deck",
+        -1
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.sharedEncounterDeck.parentCardIds",
+        [
+          [
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
+          ],
+          [
+            "COND",
+            [
+              "OR",
+              [
+                "IN_STRING",
+                "$CARD.sides.A.traits",
+                "Show"
+              ],
+              [
+                "EQUAL",
+                "$CARD.sides.A.type",
+                "Environment"
+              ]
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedEncounter2Deck",
+              -1
+            ]
+          ]
+        ]
+      ],
+      [
+        "LOG",
+        "Setup: Shuffle Show Deck and put 1 random Show environment into play"
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "sharedEncounter2Deck"
+      ],
+      [
+        "VAR",
+        "$TOP_SHOW_CARD_ID",
+        "$GAME.groupById.sharedEncounter2Deck.parentCardIds.[0]"
+      ],
+      [
+        "MOVE_CARD",
+        "$TOP_SHOW_CARD_ID",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$TOP_SHOW_CARD_ID/currentSide",
+        "A"
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "sharedEncounterDeck"
+      ]
+    ],
+    "darkBeastLoadSavageLand": [
+      [
+        "LOG",
+        "Dark Beast (When Revealed): Reveal The Savage Land environment and shuffle Savage Land into encounter deck."
+      ],
+      [
+        "DEFINE",
+        "$ENV",
+        [
+          "ONE_CARD",
+          "$CARD",
+          [
+            "EQUAL",
+            "$CARD.databaseId",
+            "9dfdf35b-c735-52a8-9bff-05936309971f"
+          ]
+        ]
+      ],
+      [
+        "MOVE_CARD",
+        "$ENV.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$ENV.id/currentSide",
+        "A"
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.sharedOutOfPlay.parentCardIds",
+        [
+          [
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
+          ],
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$CARD.sides.A.set",
+              "Savage Land"
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedEncounterDeck",
+              -1
+            ]
+          ]
+        ]
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "sharedEncounterDeck"
+      ]
+    ],
+    "darkBeastLoadGenosha": [
+      [
+        "LOG",
+        "Dark Beast (When Revealed): Reveal Genosha environment and shuffle Genosha into encounter deck."
+      ],
+      [
+        "DEFINE",
+        "$ENV",
+        [
+          "ONE_CARD",
+          "$CARD",
+          [
+            "EQUAL",
+            "$CARD.databaseId",
+            "4d094b29-1c48-5105-82e8-b4fa686697b6"
+          ]
+        ]
+      ],
+      [
+        "MOVE_CARD",
+        "$ENV.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$ENV.id/currentSide",
+        "A"
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.sharedOutOfPlay.parentCardIds",
+        [
+          [
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
+          ],
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$CARD.sides.A.set",
+              "Genosha"
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedEncounterDeck",
+              -1
+            ]
+          ]
+        ]
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "sharedEncounterDeck"
+      ]
+    ],
+    "darkBeastLoadBlueMoon": [
+      [
+        "LOG",
+        "Dark Beast (When Revealed): Reveal Blue Area of the Moon environment and shuffle Blue Moon into encounter deck."
+      ],
+      [
+        "DEFINE",
+        "$ENV",
+        [
+          "ONE_CARD",
+          "$CARD",
+          [
+            "EQUAL",
+            "$CARD.databaseId",
+            "d1449f8e-0be3-5697-a7a5-2a10f8309f19"
+          ]
+        ]
+      ],
+      [
+        "MOVE_CARD",
+        "$ENV.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$ENV.id/currentSide",
+        "A"
+      ],
+      [
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.sharedOutOfPlay.parentCardIds",
+        [
+          [
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
+          ],
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$CARD.sides.A.set",
+              "Blue Moon"
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedEncounterDeck",
+              -1
+            ]
+          ]
+        ]
+      ],
+      [
+        "SHUFFLE_GROUP",
+        "sharedEncounterDeck"
+      ]
+    ],
+    "darkBeastLoadRandom": [
+      [
+        "DEFINE",
+        "$RANDOM_ENV",
+        [
+          "ONE_CARD",
+          "$CARD",
+          [
+            "AND",
+            [
+              "EQUAL",
+              "$CARD.groupId",
+              "sharedOutOfPlay"
+            ],
+            [
+              "EQUAL",
+              "$CARD.sides.A.type",
+              "Environment"
+            ],
+            [
+              "IN_STRING",
+              "$CARD.sides.A.traits",
+              "Setting"
+            ]
+          ]
+        ]
+      ],
+      [
+        "COND",
+        [
+          "DEFINED",
+          "$RANDOM_ENV"
+        ],
+        [
+          [
+            "LOG",
+            "Dark Beast (When Revealed): Revealed {{$RANDOM_ENV.sides.A.name}} environment and shuffled the {{$RANDOM_ENV.sides.A.set}} encounter set into the encounter deck."
+          ],
+          [
+            "MOVE_CARD",
+            "$RANDOM_ENV.id",
+            "sharedVillain",
+            -1
+          ],
+          [
+            "SET",
+            "/cardById/$RANDOM_ENV.id/currentSide",
+            "A"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$CARD_ID",
+            "$GAME.groupById.sharedOutOfPlay.parentCardIds",
+            [
+              [
+                "VAR",
+                "$CARD",
+                "$GAME.cardById.$CARD_ID"
+              ],
+              [
+                "COND",
+                [
+                  "EQUAL",
+                  "$CARD.sides.A.set",
+                  "$RANDOM_ENV.sides.A.set"
+                ],
+                [
+                  "MOVE_CARD",
+                  "$CARD_ID",
+                  "sharedEncounterDeck",
+                  -1
+                ]
+              ]
+            ]
+          ],
+          [
+            "SHUFFLE_GROUP",
+            "sharedEncounterDeck"
+          ]
+        ],
+        true,
+        [
+          [
+            "LOG",
+            "Dark Beast (When Revealed): No set-aside Setting environments remaining in Out of Play."
+          ]
+        ]
+      ]
     ]
   }
 }

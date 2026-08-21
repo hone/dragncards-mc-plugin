@@ -10,7 +10,10 @@
         {
           "label": "Import Deck",
           "hotkey": "Enter",
-          "code": ["ACTION_LIST", "importMc4dbDeck"]
+          "code": [
+            "ACTION_LIST",
+            "importMc4dbDeck"
+          ]
         },
         {
           "label": "Cancel",
@@ -19,238 +22,548 @@
       ]
     },
     "collector2Choice": {
-      "args": ["$PLAYER"],
+      "args": [
+        "$PLAYER"
+      ],
       "message": "Collector II (When Revealed): Choose to either put the top card of your deck into The Collection or take 3 damage.",
       "options": [
         {
           "label": "Put Top Card into The Collection",
           "code": [
-            ["DEFINE", "$CARD", "$GAME.groupById.{{$PLAYER}}Deck.parentCards.[0]"],
-            ["MOVE_CARD", "$CARD.id", "sharedOutOfPlay", -1],
-            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} put the top card of their deck into The Collection."]
+            [
+              "DEFINE",
+              "$CARD",
+              "$GAME.groupById.{{$PLAYER}}Deck.parentCards.[0]"
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD.id",
+              "sharedOutOfPlay",
+              -1
+            ],
+            [
+              "LOG",
+              "{{$GAME.playerInfo.$PLAYER.alias}} put the top card of their deck into The Collection."
+            ]
           ]
         },
         {
           "label": "Take 3 Damage",
           "code": [
-            ["DECREASE_VAL", "/playerData/{{$PLAYER}}/hitPoints", 3],
-            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} took 3 damage from Collector II."]
+            [
+              "DECREASE_VAL",
+              "/playerData/{{$PLAYER}}/hitPoints",
+              3
+            ],
+            [
+              "LOG",
+              "{{$GAME.playerInfo.$PLAYER.alias}} took 3 damage from Collector II."
+            ]
           ]
         }
       ]
     },
     "discardVictoryChoice": {
-      "args": ["$PLAYER", "$CARD_ID"],
+      "args": [
+        "$PLAYER",
+        "$CARD_ID"
+      ],
       "message": "This card has the Victory keyword. Where would you like to place it?",
       "options": [
         {
           "label": "Victory Display",
           "hotkey": "1",
           "code": [
-            ["SET", "/cardById/$CARD_ID/rotation", 0],
-            ["SET", "/cardById/$CARD_ID/tokens", {}],
-            ["MOVE_CARD", "$CARD_ID", "sharedVictoryDisplay", -1],
-            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} placed {{$GAME.cardById.$CARD_ID.currentFace.name}} in the Victory Display."]
+            [
+              "SET",
+              "/cardById/$CARD_ID/rotation",
+              0
+            ],
+            [
+              "SET",
+              "/cardById/$CARD_ID/tokens",
+              {}
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "sharedVictoryDisplay",
+              -1
+            ],
+            [
+              "LOG",
+              "{{$GAME.playerInfo.$PLAYER.alias}} placed {{$GAME.cardById.$CARD_ID.currentFace.name}} in the Victory Display."
+            ]
           ]
         },
         {
           "label": "Discard Pile",
           "hotkey": "2",
           "code": [
-            ["VAR", "$DISC_CARD", "$GAME.cardById.$CARD_ID"],
-            ["SET", "/cardById/$CARD_ID/rotation", 0],
-            ["SET", "/cardById/$CARD_ID/tokens", {}],
-            ["MOVE_CARD", "$CARD_ID", "$DISC_CARD.discardGroupId", 0],
-            ["LOG", "{{$GAME.playerInfo.$PLAYER.alias}} discarded {{$DISC_CARD.currentFace.name}} to the discard pile."]
+            [
+              "VAR",
+              "$DISC_CARD",
+              "$GAME.cardById.$CARD_ID"
+            ],
+            [
+              "SET",
+              "/cardById/$CARD_ID/rotation",
+              0
+            ],
+            [
+              "SET",
+              "/cardById/$CARD_ID/tokens",
+              {}
+            ],
+            [
+              "MOVE_CARD",
+              "$CARD_ID",
+              "$DISC_CARD.discardGroupId",
+              0
+            ],
+            [
+              "LOG",
+              "{{$GAME.playerInfo.$PLAYER.alias}} discarded {{$DISC_CARD.currentFace.name}} to the discard pile."
+            ]
           ]
         }
       ]
     },
     "spiralSetupModularChoice": {
-      "args": ["$PLAYER"],
+      "args": [
+        "$PLAYER"
+      ],
       "message": "Spiral requires 3 modular encounter sets from MojoMania to build the Show Deck. How would you like to choose them?",
       "options": [
         {
           "label": "Load 3 Random Modular Sets",
           "hotkey": "R",
           "code": [
-            ["ACTION_LIST", "spiralLoadRandomModulars"]
+            [
+              "ACTION_LIST",
+              "spiralLoadRandomModulars"
+            ]
           ]
         },
         {
           "label": "Pick 3 Modular Sets Interactively",
           "hotkey": "P",
           "code": [
-            ["PROMPT", "$PLAYER", "spiralPickModular1", "$PLAYER"]
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular1",
+              "$PLAYER"
+            ]
           ]
         },
         {
           "label": "I'll Choose Manually (Stop Setup)",
           "hotkey": "M",
           "code": [
-            ["LOG", "Spiral setup: Manual modular selection chosen. Please load 3 modular sets from the menu."]
+            [
+              "LOG",
+              "Spiral setup: Manual modular selection chosen. Please load 3 modular sets from the menu."
+            ]
           ]
         }
       ]
     },
     "spiralPickModular1": {
-      "args": ["$PLAYER"],
+      "args": [
+        "$PLAYER"
+      ],
       "message": "Spiral setup: Choose your 1st modular set:",
       "options": [
         {
           "label": "Crime",
           "hotkey": "1",
           "code": [
-            ["LOAD_CARDS", "Crime (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Crime"]
+            [
+              "LOAD_CARDS",
+              "Crime (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular2",
+              "$PLAYER",
+              "Crime"
+            ]
           ]
         },
         {
           "label": "Fantasy",
           "hotkey": "2",
           "code": [
-            ["LOAD_CARDS", "Fantasy (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Fantasy"]
+            [
+              "LOAD_CARDS",
+              "Fantasy (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular2",
+              "$PLAYER",
+              "Fantasy"
+            ]
           ]
         },
         {
           "label": "Horror",
           "hotkey": "3",
           "code": [
-            ["LOAD_CARDS", "Horror (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Horror"]
+            [
+              "LOAD_CARDS",
+              "Horror (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular2",
+              "$PLAYER",
+              "Horror"
+            ]
           ]
         },
         {
           "label": "Sci-Fi",
           "hotkey": "4",
           "code": [
-            ["LOAD_CARDS", "Sci-Fi (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Sci-Fi"]
+            [
+              "LOAD_CARDS",
+              "Sci-Fi (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular2",
+              "$PLAYER",
+              "Sci-Fi"
+            ]
           ]
         },
         {
           "label": "Sitcom",
           "hotkey": "5",
           "code": [
-            ["LOAD_CARDS", "Sitcom (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Sitcom"]
+            [
+              "LOAD_CARDS",
+              "Sitcom (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular2",
+              "$PLAYER",
+              "Sitcom"
+            ]
           ]
         },
         {
           "label": "Western",
           "hotkey": "6",
           "code": [
-            ["LOAD_CARDS", "Western (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular2", "$PLAYER", "Western"]
+            [
+              "LOAD_CARDS",
+              "Western (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular2",
+              "$PLAYER",
+              "Western"
+            ]
           ]
         }
       ]
     },
     "spiralPickModular2": {
-      "args": ["$PLAYER", "$SET1"],
+      "args": [
+        "$PLAYER",
+        "$SET1"
+      ],
       "message": "Spiral setup: Choose your 2nd modular set (1st: {{$SET1}}):",
       "options": [
         {
           "label": "Crime",
           "hotkey": "1",
           "code": [
-            ["LOAD_CARDS", "Crime (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Crime"]
+            [
+              "LOAD_CARDS",
+              "Crime (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular3",
+              "$PLAYER",
+              "$SET1",
+              "Crime"
+            ]
           ]
         },
         {
           "label": "Fantasy",
           "hotkey": "2",
           "code": [
-            ["LOAD_CARDS", "Fantasy (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Fantasy"]
+            [
+              "LOAD_CARDS",
+              "Fantasy (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular3",
+              "$PLAYER",
+              "$SET1",
+              "Fantasy"
+            ]
           ]
         },
         {
           "label": "Horror",
           "hotkey": "3",
           "code": [
-            ["LOAD_CARDS", "Horror (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Horror"]
+            [
+              "LOAD_CARDS",
+              "Horror (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular3",
+              "$PLAYER",
+              "$SET1",
+              "Horror"
+            ]
           ]
         },
         {
           "label": "Sci-Fi",
           "hotkey": "4",
           "code": [
-            ["LOAD_CARDS", "Sci-Fi (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Sci-Fi"]
+            [
+              "LOAD_CARDS",
+              "Sci-Fi (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular3",
+              "$PLAYER",
+              "$SET1",
+              "Sci-Fi"
+            ]
           ]
         },
         {
           "label": "Sitcom",
           "hotkey": "5",
           "code": [
-            ["LOAD_CARDS", "Sitcom (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Sitcom"]
+            [
+              "LOAD_CARDS",
+              "Sitcom (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular3",
+              "$PLAYER",
+              "$SET1",
+              "Sitcom"
+            ]
           ]
         },
         {
           "label": "Western",
           "hotkey": "6",
           "code": [
-            ["LOAD_CARDS", "Western (Modular)"],
-            ["PROMPT", "$PLAYER", "spiralPickModular3", "$PLAYER", "$SET1", "Western"]
+            [
+              "LOAD_CARDS",
+              "Western (Modular)"
+            ],
+            [
+              "PROMPT",
+              "$PLAYER",
+              "spiralPickModular3",
+              "$PLAYER",
+              "$SET1",
+              "Western"
+            ]
           ]
         }
       ]
     },
     "spiralPickModular3": {
-      "args": ["$PLAYER", "$SET1", "$SET2"],
+      "args": [
+        "$PLAYER",
+        "$SET1",
+        "$SET2"
+      ],
       "message": "Spiral setup: Choose your 3rd modular set (chosen: {{$SET1}}, {{$SET2}}):",
       "options": [
         {
           "label": "Crime",
           "hotkey": "1",
           "code": [
-            ["LOAD_CARDS", "Crime (Modular)"],
-            ["ACTION_LIST", "spiralFinishShowDeck"]
+            [
+              "LOAD_CARDS",
+              "Crime (Modular)"
+            ],
+            [
+              "ACTION_LIST",
+              "spiralFinishShowDeck"
+            ]
           ]
         },
         {
           "label": "Fantasy",
           "hotkey": "2",
           "code": [
-            ["LOAD_CARDS", "Fantasy (Modular)"],
-            ["ACTION_LIST", "spiralFinishShowDeck"]
+            [
+              "LOAD_CARDS",
+              "Fantasy (Modular)"
+            ],
+            [
+              "ACTION_LIST",
+              "spiralFinishShowDeck"
+            ]
           ]
         },
         {
           "label": "Horror",
           "hotkey": "3",
           "code": [
-            ["LOAD_CARDS", "Horror (Modular)"],
-            ["ACTION_LIST", "spiralFinishShowDeck"]
+            [
+              "LOAD_CARDS",
+              "Horror (Modular)"
+            ],
+            [
+              "ACTION_LIST",
+              "spiralFinishShowDeck"
+            ]
           ]
         },
         {
           "label": "Sci-Fi",
           "hotkey": "4",
           "code": [
-            ["LOAD_CARDS", "Sci-Fi (Modular)"],
-            ["ACTION_LIST", "spiralFinishShowDeck"]
+            [
+              "LOAD_CARDS",
+              "Sci-Fi (Modular)"
+            ],
+            [
+              "ACTION_LIST",
+              "spiralFinishShowDeck"
+            ]
           ]
         },
         {
           "label": "Sitcom",
           "hotkey": "5",
           "code": [
-            ["LOAD_CARDS", "Sitcom (Modular)"],
-            ["ACTION_LIST", "spiralFinishShowDeck"]
+            [
+              "LOAD_CARDS",
+              "Sitcom (Modular)"
+            ],
+            [
+              "ACTION_LIST",
+              "spiralFinishShowDeck"
+            ]
           ]
         },
         {
           "label": "Western",
           "hotkey": "6",
           "code": [
-            ["LOAD_CARDS", "Western (Modular)"],
-            ["ACTION_LIST", "spiralFinishShowDeck"]
+            [
+              "LOAD_CARDS",
+              "Western (Modular)"
+            ],
+            [
+              "ACTION_LIST",
+              "spiralFinishShowDeck"
+            ]
+          ]
+        }
+      ]
+    },
+    "darkBeastEnvironmentChoice": {
+      "args": [
+        "$PLAYER"
+      ],
+      "message": "Dark Beast setup: Choose a set-aside Setting environment to reveal and shuffle into the encounter deck:",
+      "options": [
+        {
+          "label": "Reveal 1 Random Environment (Recommended)",
+          "hotkey": "1",
+          "code": [
+            [
+              "ACTION_LIST",
+              "darkBeastLoadRandom"
+            ]
+          ]
+        },
+        {
+          "label": "Pick Environment Interactively",
+          "hotkey": "2",
+          "code": [
+            [
+              "PROMPT",
+              "$PLAYER",
+              "darkBeastPickEnvironment",
+              "$PLAYER"
+            ]
+          ]
+        },
+        {
+          "label": "I'll Choose Manually (Skip)",
+          "hotkey": "3",
+          "code": [
+            [
+              "LOG",
+              "Dark Beast setup: Manual environment choice selected. Setting sets remain in Out of Play."
+            ]
+          ]
+        }
+      ]
+    },
+    "darkBeastPickEnvironment": {
+      "args": [
+        "$PLAYER"
+      ],
+      "message": "Dark Beast setup: Choose the starting Setting environment:",
+      "options": [
+        {
+          "label": "The Savage Land",
+          "hotkey": "1",
+          "code": [
+            [
+              "ACTION_LIST",
+              "darkBeastLoadSavageLand"
+            ]
+          ]
+        },
+        {
+          "label": "Genosha",
+          "hotkey": "2",
+          "code": [
+            [
+              "ACTION_LIST",
+              "darkBeastLoadGenosha"
+            ]
+          ]
+        },
+        {
+          "label": "Blue Area of the Moon",
+          "hotkey": "3",
+          "code": [
+            [
+              "ACTION_LIST",
+              "darkBeastLoadBlueMoon"
+            ]
           ]
         }
       ]
