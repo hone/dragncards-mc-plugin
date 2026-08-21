@@ -137,7 +137,7 @@
       "options": [
         {
           "label": "Load 3 Random Modular Sets",
-          "hotkey": "R",
+          "hotkey": "1",
           "code": [
             [
               "ACTION_LIST",
@@ -147,7 +147,7 @@
         },
         {
           "label": "Pick 3 Modular Sets Interactively",
-          "hotkey": "P",
+          "hotkey": "2",
           "code": [
             [
               "PROMPT",
@@ -159,7 +159,7 @@
         },
         {
           "label": "I'll Choose Manually (Stop Setup)",
-          "hotkey": "M",
+          "hotkey": "3",
           "code": [
             [
               "LOG",
