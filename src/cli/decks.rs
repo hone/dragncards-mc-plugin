@@ -1084,12 +1084,26 @@ fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &V
     for scenario in villain_scenarios_requires {
         if let Some(requires) = scenario.requires.as_ref() {
             let label = format!("{} (Scenario) [required]", scenario.name);
+            let mut post_load_action_list_vector = Vec::new();
             let cards: Vec<crate::dragncards::decks::Card> = requires
                 .iter()
                 .map(|require| {
                     let set = sets.iter().find(|set| &set.id == require).unwrap();
+                    let set_label_str = set_label(&set);
+                    if let Some(modular_deck) = pre_built_decks.get(set_label_str.as_str()) {
+                        if let Some(action_list) = &modular_deck.post_load_action_list {
+                            match action_list {
+                                ActionList::List(list) => {
+                                    post_load_action_list_vector.extend(list.clone());
+                                }
+                                ActionList::Id(id) => {
+                                    post_load_action_list_vector.push(json!(["ACTION_LIST", id]));
+                                }
+                            }
+                        }
+                    }
                     let mut cards = pre_built_decks
-                        .get(set_label(&set).as_str())
+                        .get(set_label_str.as_str())
                         .unwrap()
                         .cards
                         .clone();
@@ -1111,12 +1125,18 @@ fn process_required_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: &V
                 .flatten()
                 .collect();
 
+            let post_load_action_list = if !post_load_action_list_vector.is_empty() {
+                Some(ActionList::List(post_load_action_list_vector))
+            } else {
+                None
+            };
+
             pre_built_decks.insert(
                 label.clone(),
                 PreBuiltDeck {
                     label,
                     cards,
-                    post_load_action_list: None,
+                    post_load_action_list,
                 },
             );
         }
@@ -1130,12 +1150,26 @@ fn process_recommends_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: 
     for scenario in villain_scenarios_recommends {
         if let Some(recommmends) = scenario.recommends.as_ref() {
             let label = format!("{} (Scenario) [recommends]", scenario.name);
+            let mut post_load_action_list_vector = Vec::new();
             let cards: Vec<crate::dragncards::decks::Card> = recommmends
                 .iter()
                 .map(|require| {
                     let set = sets.iter().find(|set| &set.id == require).unwrap();
+                    let set_label_str = set_label(&set);
+                    if let Some(modular_deck) = pre_built_decks.get(set_label_str.as_str()) {
+                        if let Some(action_list) = &modular_deck.post_load_action_list {
+                            match action_list {
+                                ActionList::List(list) => {
+                                    post_load_action_list_vector.extend(list.clone());
+                                }
+                                ActionList::Id(id) => {
+                                    post_load_action_list_vector.push(json!(["ACTION_LIST", id]));
+                                }
+                            }
+                        }
+                    }
                     let cards = pre_built_decks
-                        .get(set_label(&set).as_str())
+                        .get(set_label_str.as_str())
                         .unwrap()
                         .cards
                         .clone();
@@ -1145,12 +1179,18 @@ fn process_recommends_modular_sets(pre_built_decks: &mut PreBuiltDeckMap, sets: 
                 .flatten()
                 .collect();
 
+            let post_load_action_list = if !post_load_action_list_vector.is_empty() {
+                Some(ActionList::List(post_load_action_list_vector))
+            } else {
+                None
+            };
+
             pre_built_decks.insert(
                 label.clone(),
                 PreBuiltDeck {
                     label,
                     cards,
-                    post_load_action_list: None,
+                    post_load_action_list,
                 },
             );
         }

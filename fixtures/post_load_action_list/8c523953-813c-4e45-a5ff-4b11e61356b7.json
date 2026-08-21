@@ -1,0 +1,51 @@
+[
+  [
+    "LOG",
+    "Setup (Trickster Magic): Set aside linked Allies (Absorbing Man, Titania, Whirlwind, Zzzax) into Out of Play"
+  ],
+  [
+    "FOR_EACH_VAL",
+    "$CARD_ID",
+    "$GAME.groupById.sharedEncounterDeck.parentCardIds",
+    [
+      [
+        "VAR",
+        "$CARD",
+        "$GAME.cardById.$CARD_ID"
+      ],
+      [
+        "COND",
+        [
+          "AND",
+          [
+            "EQUAL",
+            "$CARD.sides.A.set",
+            "Trickster Magic"
+          ],
+          [
+            "EQUAL",
+            "$CARD.sides.A.type",
+            "Ally"
+          ]
+        ],
+        [
+          [
+            "MOVE_CARD",
+            "$CARD_ID",
+            "sharedOutOfPlay",
+            -1
+          ],
+          [
+            "SET",
+            "/cardById/$CARD_ID/currentSide",
+            "A"
+          ]
+        ]
+      ]
+    ]
+  ],
+  [
+    "SHUFFLE_GROUP",
+    "sharedEncounterDeck"
+  ]
+]
