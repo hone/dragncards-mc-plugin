@@ -1,0 +1,8 @@
+[
+  [
+    "PROMPT",
+    "$PLAYER_N",
+    "thunderboltsSetupModularChoice",
+    "$PLAYER_N"
+  ]
+]

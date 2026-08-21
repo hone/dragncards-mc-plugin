@@ -292,9 +292,12 @@
           ["NOT_EQUAL", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", null],
           ["UPDATE_VAR", "$STARTING_THREAT", ["ADD", "$STARTING_THREAT", ["MULTIPLY", "$CARD.sides.$SCHEME_FACE.startingThreatScaling", "$GAME.numPlayers"]]]
         ],
-        [
-          ["LOG", "Setting starting threat for {{$CARD.sides.$SCHEME_FACE.name}} to {{$STARTING_THREAT}}."],
-          ["SET", "/cardById/$CARD_ID/tokens/threat", "$STARTING_THREAT"]
+        ["COND",
+          ["GREATER_THAN", "$STARTING_THREAT", 0],
+          [
+            ["LOG", "Adding {{$STARTING_THREAT}} starting threat to {{$CARD.sides.$SCHEME_FACE.name}}."],
+            ["INCREASE_VAL", "/cardById/$CARD_ID/tokens/threat", "$STARTING_THREAT"]
+          ]
         ]
       ]
     },

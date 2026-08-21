@@ -1,0 +1,34 @@
+[
+  [
+    "LOG",
+    "Setup (The Widow's Web 1A): Each player searches the encounter deck for a minion and puts it into play engaged with them."
+  ],
+  [
+    "COND",
+    [
+      "EQUAL",
+      "$GAME.mode",
+      "expert"
+    ],
+    [
+      [
+        "LOG",
+        "Setup (Black Widow II When Revealed): Place 2 threat per player on the main scheme"
+      ],
+      [
+        "VAR",
+        "$MAIN_SCHEME_ID",
+        "$GAME.groupById.sharedMainScheme.parentCardIds.[0]"
+      ],
+      [
+        "INCREASE_VAL",
+        "/cardById/$MAIN_SCHEME_ID/tokens/threat",
+        [
+          "MULTIPLY",
+          2,
+          "$GAME.numPlayers"
+        ]
+      ]
+    ]
+  ]
+]

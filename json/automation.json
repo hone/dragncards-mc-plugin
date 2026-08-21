@@ -1816,6 +1816,16 @@
             ]
           ]
         }
+      },
+      "8faf8248-efb6-553b-8c95-695223f681a8": {
+        "ability": {
+          "B": [
+            [
+              "ACTION_LIST",
+              "thunderboltBackupEndRound"
+            ]
+          ]
+        }
       }
     }
   }
