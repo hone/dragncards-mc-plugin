@@ -1563,7 +1563,7 @@
         ]
       },
       "uses": {
-        "_comment": "When a card with Uses enters play, initialize its generic tokens",
+        "_comment": "When a card with Uses enters play faceup, initialize its generic tokens",
         "type": "trigger",
         "listenTo": [
           "/cardById/*/inPlay"
@@ -1572,15 +1572,57 @@
           "AND",
           "$TARGET.inPlay",
           [
+            "NOT",
+            "$TARGET.boost"
+          ],
+          [
             "GREATER_THAN",
-            "$TARGET.sides.A.uses",
+            "$TARGET.currentFace.uses",
             0
           ]
         ],
         "then": [
           "SET",
           "/cardById/$TARGET_ID/tokens/generic",
-          "$TARGET.sides.A.uses"
+          "$TARGET.currentFace.uses"
+        ]
+      },
+      "usesOnFlip": {
+        "_comment": "When a card with Uses is flipped faceup, initialize its generic tokens if not already set",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/currentSide"
+        ],
+        "condition": [
+          "AND",
+          "$TARGET.inPlay",
+          [
+            "NOT",
+            "$TARGET.boost"
+          ],
+          [
+            "GREATER_THAN",
+            "$TARGET.currentFace.uses",
+            0
+          ],
+          [
+            "OR",
+            [
+              "EQUAL",
+              "$TARGET.tokens.generic",
+              null
+            ],
+            [
+              "EQUAL",
+              "$TARGET.tokens.generic",
+              0
+            ]
+          ]
+        ],
+        "then": [
+          "SET",
+          "/cardById/$TARGET_ID/tokens/generic",
+          "$TARGET.currentFace.uses"
         ]
       }
     },
