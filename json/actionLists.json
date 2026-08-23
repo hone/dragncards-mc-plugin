@@ -878,13 +878,117 @@
       [
         "COND",
         [
-          "EQUAL",
-          "$URL",
-          null
+          "OR",
+          [
+            "EQUAL",
+            "$URL",
+            null
+          ],
+          [
+            "EQUAL",
+            "$URL",
+            ""
+          ]
         ],
         [
           "ABORT",
           "No URL provided."
+        ]
+      ],
+      [
+        "VAR",
+        "$CLEAN_URL",
+        [
+          "REGEX_REPLACE",
+          "$URL",
+          "[?#].*$",
+          ""
+        ]
+      ],
+      [
+        "UPDATE_VAR",
+        "$CLEAN_URL",
+        [
+          "REGEX_REPLACE",
+          "$CLEAN_URL",
+          "[/]+$",
+          ""
+        ]
+      ],
+      [
+        "COND",
+        [
+          "NOT",
+          [
+            "IN_STRING",
+            "$CLEAN_URL",
+            "://"
+          ]
+        ],
+        [
+          "UPDATE_VAR",
+          "$CLEAN_URL",
+          "https://{{$CLEAN_URL}}"
+        ]
+      ],
+      [
+        "VAR",
+        "$BASE_URL",
+        [
+          "REGEX_REPLACE",
+          "$CLEAN_URL",
+          "^(https?://[^/]+).*$",
+          "\\1"
+        ]
+      ],
+      [
+        "VAR",
+        "$URL_TAIL",
+        [
+          "REGEX_REPLACE",
+          "$CLEAN_URL",
+          "^.*/",
+          ""
+        ]
+      ],
+      [
+        "COND",
+        [
+          "IN_STRING",
+          "$CLEAN_URL",
+          "view/"
+        ],
+        [
+          "UPDATE_VAR",
+          "$URL_TAIL",
+          [
+            "REGEX_REPLACE",
+            "$CLEAN_URL",
+            "^.*view/",
+            ""
+          ]
+        ]
+      ],
+      [
+        "VAR",
+        "$DECK_ID",
+        [
+          "REGEX_REPLACE",
+          "$URL_TAIL",
+          "[^0-9].*$",
+          ""
+        ]
+      ],
+      [
+        "COND",
+        [
+          "EQUAL",
+          "$DECK_ID",
+          ""
+        ],
+        [
+          "ABORT",
+          "Could not read a deck id from '{{$URL}}'. Expected something like https://mc4db.merlindumesnil.net/decklist/view/268"
         ]
       ],
       [
@@ -898,7 +1002,7 @@
           "NOT",
           [
             "IN_STRING",
-            "$URL",
+            "$CLEAN_URL",
             "decklist"
           ]
         ],
@@ -906,64 +1010,6 @@
           "UPDATE_VAR",
           "$DECK_TYPE",
           "deck"
-        ]
-      ],
-      [
-        "VAR",
-        "$TYPE_INDEX",
-        [
-          "INDEX_OF",
-          "$URL",
-          "$DECK_TYPE"
-        ]
-      ],
-      [
-        "VAR",
-        "$BASE_URL",
-        [
-          "SUBSTRING",
-          "$URL",
-          0,
-          [
-            "SUBTRACT",
-            "$TYPE_INDEX",
-            1
-          ]
-        ]
-      ],
-      [
-        "VAR",
-        "$VIEW_INDEX",
-        [
-          "INDEX_OF",
-          "$URL",
-          "view"
-        ]
-      ],
-      [
-        "VAR",
-        "$ID_START",
-        [
-          "ADD",
-          "$VIEW_INDEX",
-          5
-        ]
-      ],
-      [
-        "VAR",
-        "$DECK_ID",
-        [
-          "SUBSTRING",
-          "$URL",
-          "$ID_START",
-          [
-            "SUBTRACT",
-            [
-              "LENGTH",
-              "$URL"
-            ],
-            "$ID_START"
-          ]
         ]
       ],
       [
@@ -984,25 +1030,25 @@
         ]
       ],
       [
-        "COND",
-        [
-          "EQUAL",
-          "$DECKLIST",
-          null
-        ],
-        [
-          "ABORT",
-          "Failed to fetch decklist from URL."
-        ]
-      ],
-      [
         "VAR",
         "$HERO_CODE",
         "$DECKLIST.hero_code"
       ],
       [
+        "COND",
+        [
+          "EQUAL",
+          "$HERO_CODE",
+          null
+        ],
+        [
+          "ABORT",
+          "That deck does not have a hero."
+        ]
+      ],
+      [
         "VAR",
-        "$HERO_A_JSON",
+        "$HERO_JSON",
         [
           "REQUEST_JSON",
           "{{$BASE_URL}}/api/public/card/{{$HERO_CODE}}.json"
@@ -1010,66 +1056,12 @@
       ],
       [
         "VAR",
-        "$HERO_B_CODE",
-        [
-          "REGEX_REPLACE",
-          "$HERO_CODE",
-          "a$",
-          "b"
-        ]
-      ],
-      [
-        "VAR",
-        "$HERO_B_JSON",
-        [
-          "REQUEST_JSON",
-          "{{$BASE_URL}}/api/public/card/{{$HERO_B_CODE}}.json"
-        ]
-      ],
-      [
-        "VAR",
-        "$FACE_A",
-        [
-          "BUILD_MC4DB_FACE",
-          "$HERO_A_JSON",
-          "$BASE_URL"
-        ]
-      ],
-      [
-        "VAR",
-        "$FACE_B",
-        [
-          "BUILD_MC4DB_FACE",
-          "$HERO_B_JSON",
-          "$BASE_URL"
-        ]
-      ],
-      [
-        "VAR",
         "$HERO_DETAILS",
         [
-          "MAP_PUT",
-          [
-            "MAP_PUT",
-            {},
-            "A",
-            "$FACE_A"
-          ],
-          "B",
-          "$FACE_B"
-        ]
-      ],
-      [
-        "VAR",
-        "$HERO_ITEM",
-        [
-          "PROCESS_MAP",
-          {
-            "databaseId": null,
-            "quantity": 1,
-            "loadGroupId": "playerNPlay1",
-            "cardDetails": "$HERO_DETAILS"
-          }
+          "BUILD_MC4DB_CARD_DETAILS",
+          "$HERO_JSON",
+          "$BASE_URL",
+          "player"
         ]
       ],
       [
@@ -1077,7 +1069,15 @@
         "$LOAD_LIST",
         [
           "LIST",
-          "$HERO_ITEM"
+          [
+            "PROCESS_MAP",
+            {
+              "databaseId": null,
+              "quantity": 1,
+              "loadGroupId": "playerNPlay1",
+              "cardDetails": "$HERO_DETAILS"
+            }
+          ]
         ]
       ],
       [
@@ -1096,41 +1096,30 @@
           ],
           [
             "VAR",
-            "$SLOT_FACE",
-            [
-              "BUILD_MC4DB_FACE",
-              "$SLOT_JSON",
-              "$BASE_URL"
-            ]
-          ],
-          [
-            "VAR",
             "$SLOT_DETAILS",
             [
-              "MAP_PUT",
-              [
-                "MAP_PUT",
-                {},
-                "A",
-                "$SLOT_FACE"
-              ],
-              "B",
-              {
-                "name": "player"
-              }
+              "BUILD_MC4DB_CARD_DETAILS",
+              "$SLOT_JSON",
+              "$BASE_URL",
+              "player"
             ]
           ],
           [
             "VAR",
-            "$SLOT_ITEM",
+            "$SLOT_GROUP_ID",
+            "playerNDeck"
+          ],
+          [
+            "COND",
             [
-              "PROCESS_MAP",
-              {
-                "databaseId": null,
-                "quantity": "$SLOT_QTY",
-                "loadGroupId": "playerNDeck",
-                "cardDetails": "$SLOT_DETAILS"
-              }
+              "EQUAL",
+              "$SLOT_DETAILS.A.permanent",
+              "true"
+            ],
+            [
+              "UPDATE_VAR",
+              "$SLOT_GROUP_ID",
+              "playerNPlay1"
             ]
           ],
           [
@@ -1139,7 +1128,288 @@
             [
               "APPEND",
               "$LOAD_LIST",
-              "$SLOT_ITEM"
+              [
+                "PROCESS_MAP",
+                {
+                  "databaseId": null,
+                  "quantity": "$SLOT_QTY",
+                  "loadGroupId": "$SLOT_GROUP_ID",
+                  "cardDetails": "$SLOT_DETAILS"
+                }
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        "VAR",
+        "$PACK_CODE",
+        "$HERO_JSON.pack_code"
+      ],
+      [
+        "VAR",
+        "$HERO_SET_CODE",
+        "$HERO_JSON.card_set_code"
+      ],
+      [
+        "COND",
+        [
+          "OR",
+          [
+            "EQUAL",
+            "$PACK_CODE",
+            null
+          ],
+          [
+            "EQUAL",
+            "$HERO_SET_CODE",
+            null
+          ]
+        ],
+        [
+          "LOG",
+          "Could not work out which set {{$HERO_JSON.name}} belongs to, so no obligation or nemesis set was loaded."
+        ],
+        [
+          "TRUE"
+        ],
+        [
+          [
+            "VAR",
+            "$PACK_JSON",
+            [
+              "REQUEST_JSON",
+              "{{$BASE_URL}}/api/public/cards/{{$PACK_CODE}}.json"
+            ]
+          ],
+          [
+            "VAR",
+            "$NEMESIS_SET_CODE",
+            "{{$HERO_SET_CODE}}_nemesis"
+          ],
+          [
+            "VAR",
+            "$PACK_NEMESIS_SET_CODES",
+            [
+              "MAP_SET"
+            ]
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PACK_CARD",
+            "$PACK_JSON",
+            [
+              [
+                "COND",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PACK_CARD.card_set_type_name_code",
+                    "nemesis"
+                  ],
+                  [
+                    "NOT_EQUAL",
+                    "$PACK_CARD.card_set_code",
+                    null
+                  ]
+                ],
+                [
+                  "UPDATE_VAR",
+                  "$PACK_NEMESIS_SET_CODES",
+                  [
+                    "MAP_SET_PUT",
+                    "$PACK_NEMESIS_SET_CODES",
+                    "$PACK_CARD.card_set_code"
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "NOT",
+                [
+                  "IN_LIST",
+                  [
+                    "MAP_SET_TO_LIST",
+                    "$PACK_NEMESIS_SET_CODES"
+                  ],
+                  "$NEMESIS_SET_CODE"
+                ]
+              ],
+              [
+                "EQUAL",
+                [
+                  "LENGTH",
+                  "$PACK_NEMESIS_SET_CODES"
+                ],
+                1
+              ]
+            ],
+            [
+              "UPDATE_VAR",
+              "$NEMESIS_SET_CODE",
+              [
+                "AT_INDEX",
+                [
+                  "MAP_SET_TO_LIST",
+                  "$PACK_NEMESIS_SET_CODES"
+                ],
+                0
+              ]
+            ]
+          ],
+          [
+            "VAR",
+            "$ENCOUNTER_CARD_COUNT",
+            0
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PACK_CARD",
+            "$PACK_JSON",
+            [
+              [
+                "VAR",
+                "$SET_CODE",
+                "$PACK_CARD.card_set_code"
+              ],
+              [
+                "VAR",
+                "$IS_OBLIGATION",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PACK_CARD.type_code",
+                    "obligation"
+                  ],
+                  [
+                    "OR",
+                    [
+                      "EQUAL",
+                      "$SET_CODE",
+                      "$HERO_SET_CODE"
+                    ],
+                    [
+                      "EQUAL",
+                      "$SET_CODE",
+                      "$NEMESIS_SET_CODE"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_NEMESIS",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$SET_CODE",
+                    "$NEMESIS_SET_CODE"
+                  ],
+                  [
+                    "NOT_EQUAL",
+                    "$PACK_CARD.type_code",
+                    "obligation"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "OR",
+                  "$IS_OBLIGATION",
+                  "$IS_NEMESIS"
+                ],
+                [
+                  [
+                    "VAR",
+                    "$ENCOUNTER_GROUP_ID",
+                    "playerNNemesisSet"
+                  ],
+                  [
+                    "COND",
+                    "$IS_OBLIGATION",
+                    [
+                      "UPDATE_VAR",
+                      "$ENCOUNTER_GROUP_ID",
+                      "sharedEncounterDeck"
+                    ]
+                  ],
+                  [
+                    "VAR",
+                    "$ENCOUNTER_QTY",
+                    "$PACK_CARD.quantity"
+                  ],
+                  [
+                    "COND",
+                    [
+                      "EQUAL",
+                      "$ENCOUNTER_QTY",
+                      null
+                    ],
+                    [
+                      "UPDATE_VAR",
+                      "$ENCOUNTER_QTY",
+                      1
+                    ]
+                  ],
+                  [
+                    "VAR",
+                    "$ENCOUNTER_DETAILS",
+                    [
+                      "BUILD_MC4DB_CARD_DETAILS",
+                      "$PACK_CARD",
+                      "$BASE_URL",
+                      "encounter"
+                    ]
+                  ],
+                  [
+                    "UPDATE_VAR",
+                    "$LOAD_LIST",
+                    [
+                      "APPEND",
+                      "$LOAD_LIST",
+                      [
+                        "PROCESS_MAP",
+                        {
+                          "databaseId": null,
+                          "quantity": "$ENCOUNTER_QTY",
+                          "loadGroupId": "$ENCOUNTER_GROUP_ID",
+                          "cardDetails": "$ENCOUNTER_DETAILS"
+                        }
+                      ]
+                    ]
+                  ],
+                  [
+                    "UPDATE_VAR",
+                    "$ENCOUNTER_CARD_COUNT",
+                    [
+                      "ADD",
+                      "$ENCOUNTER_CARD_COUNT",
+                      1
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "EQUAL",
+              "$ENCOUNTER_CARD_COUNT",
+              0
+            ],
+            [
+              "LOG",
+              "No obligation or nemesis set was found for {{$HERO_JSON.name}} in pack '{{$PACK_CODE}}'."
             ]
           ]
         ]
