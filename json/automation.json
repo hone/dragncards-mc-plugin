@@ -2850,6 +2850,365 @@
             ]
           }
         }
+      },
+      "c9815d46-386b-546f-be50-f29ae87719e3": {
+        "rules": {
+          "nebulasShipAddEvasionCounter": {
+            "type": "trigger",
+            "listenTo": [
+              "/stepId"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$GAME.stepId",
+                "2.1"
+              ]
+            ],
+            "then": [
+              [
+                "INCREASE_VAL",
+                "/cardById/$THIS_ID/tokens/generic",
+                1
+              ],
+              [
+                "LOG",
+                "Nebula's Ship (Step 2.1 Forced Interrupt): Placed 1 evasion counter on Nebula's Ship."
+              ]
+            ]
+          }
+        }
+      },
+      "9017f11e-add0-5696-b210-cb536efcdf7b": {
+        "rules": {
+          "regenerativeResearchHeal": {
+            "type": "trigger",
+            "listenTo": [
+              "/stepId"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$GAME.stepId",
+                "2.1"
+              ]
+            ],
+            "then": [
+              [
+                "FOR_EACH_VAL",
+                "$MINION",
+                [
+                  "FILTER_CARDS",
+                  "$CARD",
+                  [
+                    "AND",
+                    "$CARD.inPlay",
+                    [
+                      "EQUAL",
+                      "$CARD.sides.A.type",
+                      "Minion"
+                    ],
+                    [
+                      "GREATER_THAN",
+                      "$CARD.tokens.damage",
+                      0
+                    ]
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/cardById/$MINION.id/tokens/damage",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$VILLAIN",
+                [
+                  "ONE_CARD",
+                  "$CARD",
+                  [
+                    "AND",
+                    "$CARD.inPlay",
+                    [
+                      "EQUAL",
+                      "$CARD.groupId",
+                      "sharedVillain"
+                    ],
+                    [
+                      "EQUAL",
+                      "$CARD.sides.A.type",
+                      "Villain"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "DEFINED",
+                  "$VILLAIN"
+                ],
+                [
+                  [
+                    "COND",
+                    [
+                      "GREATER_THAN",
+                      "$VILLAIN.tokens.damage",
+                      0
+                    ],
+                    [
+                      "DECREASE_VAL",
+                      "/cardById/$VILLAIN.id/tokens/damage",
+                      1
+                    ],
+                    [
+                      "NOT_EQUAL",
+                      "$GAME.villainHitPoints",
+                      null
+                    ],
+                    [
+                      "INCREASE_VAL",
+                      "/villainHitPoints",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Regenerative Research (Step 2.1 Forced Interrupt): Healed 1 damage from each enemy."
+              ]
+            ]
+          }
+        }
+      },
+      "922ea99b-fbec-504d-b2c9-19b2bb563188": {
+        "rules": {
+          "lizardHeal": {
+            "type": "trigger",
+            "listenTo": [
+              "/stepId"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$GAME.stepId",
+                "2.1"
+              ],
+              [
+                "GREATER_THAN",
+                "$THIS.tokens.damage",
+                0
+              ]
+            ],
+            "then": [
+              [
+                "DECREASE_VAL",
+                "/cardById/$THIS_ID/tokens/damage",
+                1
+              ],
+              [
+                "LOG",
+                "The Lizard (Step 2.1 Forced Interrupt): Healed 1 damage from The Lizard."
+              ]
+            ]
+          }
+        }
+      },
+      "b4946da9-b9e1-5ae3-9514-248904f0331d": {
+        "rules": {
+          "offTheRailsAddSpeedCounter": {
+            "type": "trigger",
+            "listenTo": [
+              "/stepId"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$GAME.stepId",
+                "2.1"
+              ]
+            ],
+            "then": [
+              [
+                "INCREASE_VAL",
+                "/cardById/$THIS_ID/tokens/generic",
+                1
+              ],
+              [
+                "LOG",
+                "Off the Rails (Step 2.1 Forced Interrupt): Placed 1 speed counter on Off the Rails."
+              ]
+            ]
+          }
+        }
+      },
+      "7f5667fd-8c5b-521a-b849-b34c6d021e17": {
+        "ability": {
+          "B": [
+            [
+              "INCREASE_VAL",
+              "/cardById/$THIS_ID/tokens/generic",
+              1
+            ],
+            [
+              "LOG",
+              "The Island of Dr. Zola: Placed 1 test counter here."
+            ],
+            [
+              "COND",
+              [
+                "GREATER_EQUAL",
+                "$GAME.cardById.$THIS_ID.tokens.generic",
+                3
+              ],
+              [
+                [
+                  "DECREASE_VAL",
+                  "/cardById/$THIS_ID/tokens/generic",
+                  3
+                ],
+                [
+                  "VAR",
+                  "$FP",
+                  "$GAME.firstPlayer"
+                ],
+                [
+                  "LOG",
+                  "The Island of Dr. Zola: 3 or more test counters reached. Removed 3 test counters and discarding until a minion is revealed."
+                ],
+                [
+                  "DISCARD_UNTIL",
+                  "sharedEncounterDeck",
+                  "{{$FP}}Engaged",
+                  [
+                    "POINTER",
+                    [
+                      "EQUAL",
+                      "$CARD_ITEM.sides.A.type",
+                      "Minion"
+                    ]
+                  ]
+                ],
+                [
+                  "LOG",
+                  "The Island of Dr. Zola: Spawned minion engaged with {{$GAME.playerInfo.$FP.alias}}."
+                ]
+              ]
+            ]
+          ]
+        },
+        "rules": {
+          "islandOfDrZolaStepOne": {
+            "type": "trigger",
+            "listenTo": [
+              "/stepId"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.currentSide",
+                "B"
+              ],
+              [
+                "EQUAL",
+                "$GAME.stepId",
+                "2.1"
+              ]
+            ],
+            "then": [
+              [
+                "ABILITY",
+                "$THIS_ID",
+                "B"
+              ]
+            ]
+          }
+        }
+      },
+      "5c2647ca-1b72-5b2d-84c1-a7237b43ff1a": {
+        "ability": {
+          "A": [
+            [
+              "RESOLVE_FOUL_PLAY",
+              "$PLAYER_N"
+            ]
+          ]
+        }
+      },
+      "ca6ebe18-37a2-511a-87ff-56225291f16a": {
+        "ability": {
+          "A": [
+            [
+              "RESOLVE_FOUL_PLAY",
+              "$PLAYER_N"
+            ]
+          ]
+        }
+      },
+      "2cc21da8-18e9-5d8f-a7da-e86df323b84c": {
+        "ability": {
+          "A": [
+            [
+              "RESOLVE_FOUL_PLAY",
+              "$PLAYER_N"
+            ]
+          ]
+        }
+      },
+      "eda49ee6-b721-5202-a661-353f607149c9": {
+        "rules": {
+          "crimeStateFoulPlayStepOne": {
+            "type": "trigger",
+            "listenTo": [
+              "/stepId"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.currentSide",
+                "B"
+              ],
+              [
+                "EQUAL",
+                "$GAME.stepId",
+                "2.1"
+              ]
+            ],
+            "then": [
+              [
+                "LOG",
+                "Crime State (Stage 3B Forced Response): Resolving Foul Play for each player in player order."
+              ],
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "RESOLVE_FOUL_PLAY",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ]
+            ]
+          }
+        }
       }
     }
   }
