@@ -1839,35 +1839,28 @@
         "Justice, Like Lightning (When Revealed): Each player reveals a random set-aside Thunderbolt minion."
       ],
       [
+        "SHUFFLE_GROUP",
+        "sharedOutOfPlay"
+      ],
+      [
         "FOR_EACH_VAL",
         "$PLAYER_I",
         "$PLAYER_ORDER",
         [
           [
-            "DEFINE",
-            "$TB_MINION",
+            "VAR",
+            "$TB_MINION_ID",
             [
-              "ONE_CARD",
-              "$CARD",
-              [
-                "AND",
-                [
-                  "EQUAL",
-                  "$CARD.groupId",
-                  "sharedOutOfPlay"
-                ],
-                [
-                  "IN_STRING",
-                  "$CARD.sides.A.traits",
-                  "Thunderbolt"
-                ],
-                [
-                  "EQUAL",
-                  "$CARD.sides.A.type",
-                  "Minion"
-                ]
-              ]
+              "GET_CARD_ID",
+              "sharedOutOfPlay",
+              0,
+              0
             ]
+          ],
+          [
+            "VAR",
+            "$TB_MINION",
+            "$GAME.cardById.$TB_MINION_ID"
           ],
           [
             "COND",
@@ -1915,30 +1908,19 @@
         "Justice, Like Lightning: Reveal and attach the remaining set-aside Thunderbolt minion faceup here."
       ],
       [
-        "DEFINE",
-        "$BACKUP_MINION",
+        "VAR",
+        "$BACKUP_MINION_ID",
         [
-          "ONE_CARD",
-          "$CARD",
-          [
-            "AND",
-            [
-              "EQUAL",
-              "$CARD.groupId",
-              "sharedOutOfPlay"
-            ],
-            [
-              "IN_STRING",
-              "$CARD.sides.A.traits",
-              "Thunderbolt"
-            ],
-            [
-              "EQUAL",
-              "$CARD.sides.A.type",
-              "Minion"
-            ]
-          ]
+          "GET_CARD_ID",
+          "sharedOutOfPlay",
+          0,
+          0
         ]
+      ],
+      [
+        "VAR",
+        "$BACKUP_MINION",
+        "$GAME.cardById.$BACKUP_MINION_ID"
       ],
       [
         "COND",

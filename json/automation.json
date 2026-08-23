@@ -1923,6 +1923,29 @@
               "thunderboltBackupEndRound"
             ]
           ]
+        },
+        "rules": {
+          "thunderboltBackupEndRound": {
+            "type": "trigger",
+            "listenTo": [
+              "/roundNumber"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.currentSide",
+                "B"
+              ]
+            ],
+            "then": [
+              [
+                "ACTION_LIST",
+                "thunderboltBackupEndRound"
+              ]
+            ]
+          }
         }
       },
       "133463c7-6bfa-5906-83ce-5fed1e93741e": {
