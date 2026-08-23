@@ -1,0 +1,39 @@
+[
+  [
+    "LOG",
+    "Setup: Put \"Genosha\" into play"
+  ],
+  [
+    "VAR",
+    "$SETTING_CARD",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "4d094b29-1c48-5105-82e8-b4fa686697b6"
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "DEFINED",
+      "$SETTING_CARD"
+    ],
+    [
+      [
+        "MOVE_CARD",
+        "$SETTING_CARD.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$SETTING_CARD.id/currentSide",
+        "A"
+      ]
+    ]
+  ]
+]

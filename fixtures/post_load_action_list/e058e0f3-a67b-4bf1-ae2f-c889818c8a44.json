@@ -1,0 +1,39 @@
+[
+  [
+    "LOG",
+    "Setup: Put Hope Summers into play under the first player's control"
+  ],
+  [
+    "VAR",
+    "$HOPE",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "e9d08f29-af52-590d-bc2c-37498c3fc919"
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "DEFINED",
+      "$HOPE"
+    ],
+    [
+      [
+        "MOVE_CARD",
+        "$HOPE.id",
+        "{{$GAME.firstPlayer}}Play1",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$HOPE.id/currentSide",
+        "A"
+      ]
+    ]
+  ]
+]

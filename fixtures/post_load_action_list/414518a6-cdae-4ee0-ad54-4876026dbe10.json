@@ -5,45 +5,56 @@
   ],
   [
     "FOR_EACH_VAL",
-    "$CARD_ID",
-    "$GAME.groupById.sharedEncounterDeck.parentCardIds",
+    "$GROUP_ID",
+    [
+      "LIST",
+      "sharedEncounterDeck",
+      "sharedVillain"
+    ],
     [
       [
-        "VAR",
-        "$CARD",
-        "$GAME.cardById.$CARD_ID"
-      ],
-      [
-        "COND",
-        [
-          "OR",
-          [
-            "EQUAL",
-            "$CARD.sides.A.set",
-            "Blue Moon"
-          ],
-          [
-            "EQUAL",
-            "$CARD.sides.A.set",
-            "Genosha"
-          ],
-          [
-            "EQUAL",
-            "$CARD.sides.A.set",
-            "Savage Land"
-          ]
-        ],
+        "FOR_EACH_VAL",
+        "$CARD_ID",
+        "$GAME.groupById.$GROUP_ID.parentCardIds",
         [
           [
-            "MOVE_CARD",
-            "$CARD_ID",
-            "sharedOutOfPlay",
-            -1
+            "VAR",
+            "$CARD",
+            "$GAME.cardById.$CARD_ID"
           ],
           [
-            "SET",
-            "/cardById/$CARD_ID/currentSide",
-            "A"
+            "COND",
+            [
+              "OR",
+              [
+                "EQUAL",
+                "$CARD.sides.A.set",
+                "Blue Moon"
+              ],
+              [
+                "EQUAL",
+                "$CARD.sides.A.set",
+                "Genosha"
+              ],
+              [
+                "EQUAL",
+                "$CARD.sides.A.set",
+                "Savage Land"
+              ]
+            ],
+            [
+              [
+                "MOVE_CARD",
+                "$CARD_ID",
+                "sharedOutOfPlay",
+                -1
+              ],
+              [
+                "SET",
+                "/cardById/$CARD_ID/currentSide",
+                "A"
+              ]
+            ]
           ]
         ]
       ]
@@ -62,7 +73,7 @@
         "Setup (Dark Beast II Expert): Attach High-Tech Goggles to Dark Beast and deal each player an encounter card"
       ],
       [
-        "DEFINE",
+        "VAR",
         "$GOGGLES",
         [
           "ONE_CARD",

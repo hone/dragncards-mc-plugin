@@ -1,0 +1,39 @@
+[
+  [
+    "LOG",
+    "Setup: Put \"The Savage Land\" into play"
+  ],
+  [
+    "VAR",
+    "$SETTING_CARD",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "9dfdf35b-c735-52a8-9bff-05936309971f"
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "DEFINED",
+      "$SETTING_CARD"
+    ],
+    [
+      [
+        "MOVE_CARD",
+        "$SETTING_CARD.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$SETTING_CARD.id/currentSide",
+        "A"
+      ]
+    ]
+  ]
+]

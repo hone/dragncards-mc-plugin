@@ -1,98 +1,34 @@
 [
   [
     "LOG",
-    "Setup: Put Board Member environments into play"
+    "Setup (Zemo's Manipulations 1A): Place 2 secret counters on each Board Member environment"
   ],
   [
-    "DEFINE",
-    "$MED_OFFICER",
+    "FOR_EACH_VAL",
+    "$CARD_ID",
+    "$GAME.groupById.sharedVillain.parentCardIds",
     [
-      "ONE_CARD",
-      "$CARD",
       [
-        "EQUAL",
-        "$CARD.databaseId",
-        "d461d179-8240-5b3f-9160-297b9c035ede"
+        "VAR",
+        "$CARD",
+        "$GAME.cardById.$CARD_ID"
+      ],
+      [
+        "COND",
+        [
+          "EQUAL",
+          "$CARD.sides.A.set",
+          "S.H.I.E.L.D. Executive Board"
+        ],
+        [
+          [
+            "SET",
+            "/cardById/$CARD_ID/tokens/generic",
+            2
+          ]
+        ]
       ]
     ]
-  ],
-  [
-    "MOVE_CARD",
-    "$MED_OFFICER.id",
-    "sharedVillain",
-    -1
-  ],
-  [
-    "SET",
-    "/cardById/$MED_OFFICER.id/currentSide",
-    "A"
-  ],
-  [
-    "DEFINE",
-    "$SURV_OFFICER",
-    [
-      "ONE_CARD",
-      "$CARD",
-      [
-        "EQUAL",
-        "$CARD.databaseId",
-        "70fd2d4c-f9d7-5014-a5e1-1a38cd4ba0c1"
-      ]
-    ]
-  ],
-  [
-    "MOVE_CARD",
-    "$SURV_OFFICER.id",
-    "sharedVillain",
-    -1
-  ],
-  [
-    "SET",
-    "/cardById/$SURV_OFFICER.id/currentSide",
-    "A"
-  ],
-  [
-    "DEFINE",
-    "$TACT_OFFICER",
-    [
-      "ONE_CARD",
-      "$CARD",
-      [
-        "EQUAL",
-        "$CARD.databaseId",
-        "54475fb3-bd95-5f7c-beb5-d461508d6e05"
-      ]
-    ]
-  ],
-  [
-    "MOVE_CARD",
-    "$TACT_OFFICER.id",
-    "sharedVillain",
-    -1
-  ],
-  [
-    "SET",
-    "/cardById/$TACT_OFFICER.id/currentSide",
-    "A"
-  ],
-  [
-    "LOG",
-    "Setup: Place 2 secret counters on each Board Member environment"
-  ],
-  [
-    "SET",
-    "/cardById/$MED_OFFICER.id/tokens/generic",
-    2
-  ],
-  [
-    "SET",
-    "/cardById/$SURV_OFFICER.id/tokens/generic",
-    2
-  ],
-  [
-    "SET",
-    "/cardById/$TACT_OFFICER.id/tokens/generic",
-    2
   ],
   [
     "LOG",

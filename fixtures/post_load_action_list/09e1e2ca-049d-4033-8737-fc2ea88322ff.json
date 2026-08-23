@@ -1,0 +1,39 @@
+[
+  [
+    "LOG",
+    "Setup: Put \"Blue Area of the Moon\" into play"
+  ],
+  [
+    "VAR",
+    "$SETTING_CARD",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "d1449f8e-0be3-5697-a7a5-2a10f8309f19"
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "DEFINED",
+      "$SETTING_CARD"
+    ],
+    [
+      [
+        "MOVE_CARD",
+        "$SETTING_CARD.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$SETTING_CARD.id/currentSide",
+        "A"
+      ]
+    ]
+  ]
+]

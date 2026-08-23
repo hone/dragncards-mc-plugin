@@ -1,34 +1,6 @@
 [
   [
     "LOG",
-    "Setup: Put Hope Summers into play under the first player's control"
-  ],
-  [
-    "DEFINE",
-    "$HOPE",
-    [
-      "ONE_CARD",
-      "$CARD",
-      [
-        "EQUAL",
-        "$CARD.databaseId",
-        "e9d08f29-af52-590d-bc2c-37498c3fc919"
-      ]
-    ]
-  ],
-  [
-    "MOVE_CARD",
-    "$HOPE.id",
-    "player1Play1",
-    -1
-  ],
-  [
-    "SET",
-    "/cardById/$HOPE.id/currentSide",
-    "A"
-  ],
-  [
-    "LOG",
     "Setup: Reveal Stryfe's Grasp"
   ],
   [
