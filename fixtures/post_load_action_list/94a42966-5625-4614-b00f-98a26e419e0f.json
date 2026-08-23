@@ -1,0 +1,86 @@
+[
+  [
+    "LOG",
+    "Setup (The Getaway): Place speed counter on main scheme and put Out Front into play"
+  ],
+  [
+    "VAR",
+    "$MAIN_SCHEME",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "AND",
+        "$CARD.inPlay",
+        [
+          "EQUAL",
+          "$CARD.sides.A.type",
+          "Main Scheme"
+        ]
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "EQUAL",
+      "$GAME.mode",
+      "expert"
+    ],
+    [
+      [
+        "SET",
+        "/cardById/$MAIN_SCHEME.id/tokens/generic",
+        2
+      ],
+      [
+        "LOG",
+        "Setup: Placed 2 speed counters on The Getaway."
+      ]
+    ],
+    true,
+    [
+      [
+        "SET",
+        "/cardById/$MAIN_SCHEME.id/tokens/generic",
+        1
+      ],
+      [
+        "LOG",
+        "Setup: Placed 1 speed counter on The Getaway."
+      ]
+    ]
+  ],
+  [
+    "VAR",
+    "$OUT_FRONT",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "fb00f833-6463-5a21-ae52-efc11fea7ed0"
+      ]
+    ]
+  ],
+  [
+    "MOVE_CARD",
+    "$OUT_FRONT.id",
+    "sharedVillain",
+    -1
+  ],
+  [
+    "SET",
+    "/cardById/$OUT_FRONT.id/currentSide",
+    "A"
+  ],
+  [
+    "LOG",
+    "Setup: Put Out Front into play."
+  ],
+  [
+    "SHUFFLE_GROUP",
+    "sharedEncounterDeck"
+  ]
+]

@@ -1442,18 +1442,74 @@
           ],
           [
             "DEFINE",
-            "$SCHEME_CARD_ID",
+            "$ACTIVE_SCHEME",
             [
-              "GET_CARD_ID",
-              "sharedMainScheme",
-              0,
-              0
+              "ONE_CARD",
+              "$CARD",
+              [
+                "AND",
+                "$CARD.inPlay",
+                [
+                  "EQUAL",
+                  "$CARD.sides.A.type",
+                  "Main Scheme"
+                ],
+                [
+                  "GREATER_THAN",
+                  "$CARD.tokens.generic",
+                  0
+                ]
+              ]
             ]
           ],
           [
-            "INCREASE_VAL",
-            "/cardById/$SCHEME_CARD_ID/tokens/acceleration",
-            1
+            "COND",
+            [
+              "DEFINED",
+              "$ACTIVE_SCHEME"
+            ],
+            [
+              [
+                "INCREASE_VAL",
+                "/cardById/$ACTIVE_SCHEME.id/tokens/acceleration",
+                1
+              ],
+              [
+                "LOG",
+                "Placed 1 acceleration token on {{$ACTIVE_SCHEME.currentFace.name}}."
+              ]
+            ],
+            true,
+            [
+              [
+                "FOR_EACH_VAL",
+                "$SCHEME_CARD",
+                [
+                  "FILTER_CARDS",
+                  "$CARD",
+                  [
+                    "AND",
+                    "$CARD.inPlay",
+                    [
+                      "EQUAL",
+                      "$CARD.sides.A.type",
+                      "Main Scheme"
+                    ]
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/cardById/$SCHEME_CARD.id/tokens/acceleration",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Placed 1 acceleration token on {{$SCHEME_CARD.currentFace.name}}."
+                  ]
+                ]
+              ]
+            ]
           ]
         ]
       },
@@ -1867,6 +1923,421 @@
               "thunderboltBackupEndRound"
             ]
           ]
+        }
+      },
+      "133463c7-6bfa-5906-83ce-5fed1e93741e": {
+        "ability": {
+          "B": [
+            [
+              "COND",
+              [
+                "GREATER_THAN",
+                "$THIS.tokens.threat",
+                0
+              ],
+              [
+                [
+                  "LOG",
+                  "The Getaway (1B Forced Interrupt): Resolving end of round effect."
+                ],
+                [
+                  "INCREASE_VAL",
+                  "/cardById/$THIS_ID/tokens/generic",
+                  1
+                ],
+                [
+                  "LOG",
+                  "Placed 1 speed counter on The Getaway."
+                ],
+                [
+                  "VAR",
+                  "$ATTACHMENT",
+                  [
+                    "ONE_CARD",
+                    "$CARD",
+                    [
+                      "AND",
+                      "$CARD.inPlay",
+                      [
+                        "EQUAL",
+                        "$CARD.databaseId",
+                        "fb00f833-6463-5a21-ae52-efc11fea7ed0"
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "COND",
+                  [
+                    "AND",
+                    [
+                      "DEFINED",
+                      "$ATTACHMENT"
+                    ],
+                    [
+                      "EQUAL",
+                      "$ATTACHMENT.currentSide",
+                      "B"
+                    ]
+                  ],
+                  [
+                    [
+                      "SET",
+                      "/cardById/$ATTACHMENT.id/currentSide",
+                      "A"
+                    ],
+                    [
+                      "LOG",
+                      "Flipped Alongside to Out Front."
+                    ]
+                  ],
+                  true,
+                  [
+                    [
+                      "INCREASE_VAL",
+                      "/cardById/$THIS_ID/tokens/generic",
+                      1
+                    ],
+                    [
+                      "LOG",
+                      "Alongside is not in play: Placed 1 additional speed counter on The Getaway."
+                    ]
+                  ]
+                ]
+              ],
+              true,
+              [
+                [
+                  "LOG",
+                  "The Getaway (1B): No threat on main scheme, end of round effect skipped."
+                ]
+              ]
+            ]
+          ]
+        },
+        "rules": {
+          "theGetawayEndRound": {
+            "type": "trigger",
+            "listenTo": [
+              "/roundNumber"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.currentSide",
+                "B"
+              ]
+            ],
+            "then": [
+              [
+                "ABILITY",
+                "$THIS_ID",
+                "B"
+              ]
+            ]
+          }
+        }
+      },
+      "94001ccc-b7d1-5779-aef6-e2ea03d9af86": {
+        "ability": {
+          "A": [
+            [
+              "LOG",
+              "Change of Venue (When Revealed): Swapping main scheme with a random set-aside main scheme."
+            ],
+            [
+              "VAR",
+              "$ENGAGED_GROUP_ID",
+              "{{$PLAYER_N}}Engaged"
+            ],
+            [
+              "COND",
+              [
+                "AND",
+                [
+                  "NOT_EQUAL",
+                  "$THIS.groupId",
+                  null
+                ],
+                [
+                  "IN_STRING",
+                  "$THIS.groupId",
+                  "Engaged"
+                ]
+              ],
+              [
+                "UPDATE_VAR",
+                "$ENGAGED_GROUP_ID",
+                "$THIS.groupId"
+              ]
+            ],
+            [
+              "SHUFFLE_GROUP",
+              "sharedOutOfPlay"
+            ],
+            [
+              "VAR",
+              "$OLD_SCHEME",
+              [
+                "ONE_CARD",
+                "$CARD",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CARD.groupId",
+                    "$ENGAGED_GROUP_ID"
+                  ],
+                  [
+                    "EQUAL",
+                    "$CARD.sides.A.type",
+                    "Main Scheme"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "VAR",
+              "$NEW_SCHEME_ID",
+              [
+                "GET_CARD_ID",
+                "sharedOutOfPlay",
+                0,
+                0
+              ]
+            ],
+            [
+              "VAR",
+              "$NEW_SCHEME",
+              "$GAME.cardById.$NEW_SCHEME_ID"
+            ],
+            [
+              "COND",
+              [
+                "AND",
+                [
+                  "DEFINED",
+                  "$OLD_SCHEME"
+                ],
+                [
+                  "DEFINED",
+                  "$NEW_SCHEME"
+                ]
+              ],
+              [
+                [
+                  "VAR",
+                  "$PREV_THREAT",
+                  0
+                ],
+                [
+                  "COND",
+                  [
+                    "NOT_EQUAL",
+                    "$OLD_SCHEME.tokens.threat",
+                    null
+                  ],
+                  [
+                    "UPDATE_VAR",
+                    "$PREV_THREAT",
+                    "$OLD_SCHEME.tokens.threat"
+                  ]
+                ],
+                [
+                  "MOVE_CARD",
+                  "$OLD_SCHEME.id",
+                  "sharedOutOfPlay",
+                  -1
+                ],
+                [
+                  "SET",
+                  "/cardById/$OLD_SCHEME.id/tokens/threat",
+                  0
+                ],
+                [
+                  "MOVE_CARD",
+                  "$NEW_SCHEME.id",
+                  "$ENGAGED_GROUP_ID",
+                  0
+                ],
+                [
+                  "SET",
+                  "/cardById/$NEW_SCHEME.id/currentSide",
+                  "B"
+                ],
+                [
+                  "SET",
+                  "/cardById/$NEW_SCHEME.id/tokens/threat",
+                  "$PREV_THREAT"
+                ],
+                [
+                  "LOG",
+                  "Change of Venue: Swapped {{$OLD_SCHEME.sides.B.name}} with {{$NEW_SCHEME.sides.B.name}} in {{$ENGAGED_GROUP_ID}} (transferred {{$PREV_THREAT}} threat)."
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "18a43400-b8d7-517d-b83f-6e6747227070": {
+        "ability": {
+          "B": [
+            [
+              "VAR",
+              "$THREAT_COST",
+              5
+            ],
+            [
+              "COND",
+              [
+                "EQUAL",
+                "$GAME.mode",
+                "expert"
+              ],
+              [
+                "UPDATE_VAR",
+                "$THREAT_COST",
+                4
+              ]
+            ],
+            [
+              "COND",
+              [
+                "GREATER_EQUAL",
+                "$THIS.tokens.threat",
+                "$THREAT_COST"
+              ],
+              [
+                [
+                  "LOG",
+                  "The King's Gambit (1B Hero Action): Removing {{$THREAT_COST}} threat."
+                ],
+                [
+                  "DECREASE_VAL",
+                  "/cardById/$THIS_ID/tokens/threat",
+                  "$THREAT_COST"
+                ],
+                [
+                  "MOVE_STACKS",
+                  "sharedEncounterDiscard",
+                  "sharedEncounterDeck"
+                ],
+                [
+                  "SHUFFLE_GROUP",
+                  "sharedEncounterDeck"
+                ],
+                [
+                  "DISCARD_UNTIL",
+                  "sharedEncounterDeck",
+                  "{{$PLAYER_N}}Engaged",
+                  [
+                    "POINTER",
+                    [
+                      "EQUAL",
+                      "$CARD_ITEM.sides.A.type",
+                      "Minion"
+                    ]
+                  ]
+                ],
+                [
+                  "LOG",
+                  "The King's Gambit: Discarded until a minion was revealed and engaged with {{$PLAYER_N}}."
+                ]
+              ],
+              true,
+              [
+                [
+                  "LOG",
+                  "The King's Gambit: Cannot resolve Hero Action - requires {{$THREAT_COST}} threat, but only {{$THIS.tokens.threat}} threat is present."
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "aeb16733-592d-54c3-a592-02c7be4f4edc": {
+        "rules": {
+          "disturbedPsycheEndRound": {
+            "type": "trigger",
+            "listenTo": [
+              "/roundNumber"
+            ],
+            "condition": [
+              "AND",
+              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.currentSide",
+                "A"
+              ]
+            ],
+            "then": [
+              [
+                "VAR",
+                "$MARY_VILLAIN",
+                [
+                  "ONE_CARD",
+                  "$CARD",
+                  [
+                    "AND",
+                    "$CARD.inPlay",
+                    [
+                      "EQUAL",
+                      "$CARD.groupId",
+                      "sharedVillain"
+                    ],
+                    [
+                      "EQUAL",
+                      "$CARD.sides.A.type",
+                      "Villain"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "DEFINED",
+                  "$MARY_VILLAIN"
+                ],
+                [
+                  [
+                    "COND",
+                    [
+                      "EQUAL",
+                      "$MARY_VILLAIN.currentSide",
+                      "A"
+                    ],
+                    [
+                      [
+                        "SET",
+                        "/cardById/$MARY_VILLAIN.id/currentSide",
+                        "B"
+                      ],
+                      [
+                        "LOG",
+                        "Disturbed Psyche (Forced Interrupt): Flipped Typhoid Mary to Bloody Mary (Side B)."
+                      ]
+                    ],
+                    true,
+                    [
+                      [
+                        "SET",
+                        "/cardById/$MARY_VILLAIN.id/currentSide",
+                        "A"
+                      ],
+                      [
+                        "LOG",
+                        "Disturbed Psyche (Forced Interrupt): Flipped Bloody Mary to Typhoid Mary (Side A)."
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          }
         }
       }
     }

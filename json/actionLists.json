@@ -388,10 +388,6 @@
     ],
     "playerEndPhase": [
       [
-        "LOG",
-        "Player Phase - Ends"
-      ],
-      [
         "FOR_EACH_VAL",
         "$PLAYER",
         "$PLAYER_ORDER",
@@ -405,29 +401,6 @@
             "DRAW_HAND",
             "$PLAYER",
             "$GAME.playerInfo.$PLAYER.alias"
-          ]
-        ]
-      ],
-      [
-        "VAR",
-        "$CARD_ID",
-        "$GAME.groupById.sharedMainScheme.parentCardIds.[0]]"
-      ],
-      [
-        "VAR",
-        "$CARD",
-        "$GAME.cardById.$CARD_ID"
-      ],
-      [
-        "VAR",
-        "$SCHEME_ACCELERATION",
-        [
-          "ADD",
-          "$CARD.sides.B.accelerationFixed",
-          [
-            "MULTIPLY",
-            "$CARD.sides.B.accelerationScaling",
-            "$GAME.numPlayers"
           ]
         ]
       ],
@@ -453,40 +426,293 @@
           ]
         ],
         [
-          "UPDATE_VAR",
-          "$ACCELERATION_ICONS",
           [
-            "ADD",
+            "UPDATE_VAR",
             "$ACCELERATION_ICONS",
-            "$CARD.currentFace.acceleration"
+            [
+              "ADD",
+              "$ACCELERATION_ICONS",
+              "$CARD.currentFace.acceleration"
+            ]
           ]
         ]
       ],
       [
-        "VAR",
-        "$THREAT_INCREASE",
+        "DEFINE",
+        "$ACTIVE_SCHEME",
         [
-          "ADD",
+          "ONE_CARD",
+          "$CARD",
           [
-            "ADD",
-            "$SCHEME_ACCELERATION",
-            "$CARD.tokens.acceleration"
-          ],
-          "$ACCELERATION_ICONS"
+            "AND",
+            "$CARD.inPlay",
+            [
+              "EQUAL",
+              "$CARD.sides.A.type",
+              "Main Scheme"
+            ],
+            [
+              "GREATER_THAN",
+              "$CARD.tokens.generic",
+              0
+            ]
+          ]
         ]
       ],
       [
-        "INCREASE_VAL",
-        "/cardById/$CARD_ID/tokens/threat",
-        "$THREAT_INCREASE"
+        "COND",
+        [
+          "DEFINED",
+          "$ACTIVE_SCHEME"
+        ],
+        [
+          [
+            "VAR",
+            "$SCHEME_FACE",
+            "A"
+          ],
+          [
+            "COND",
+            [
+              "OR",
+              [
+                "NOT_EQUAL",
+                "$ACTIVE_SCHEME.sides.B.accelerationScaling",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$ACTIVE_SCHEME.sides.B.accelerationFixed",
+                null
+              ]
+            ],
+            [
+              "UPDATE_VAR",
+              "$SCHEME_FACE",
+              "B"
+            ]
+          ],
+          [
+            "VAR",
+            "$FIXED_ACCEL",
+            0
+          ],
+          [
+            "COND",
+            [
+              "NOT_EQUAL",
+              "$ACTIVE_SCHEME.sides.$SCHEME_FACE.accelerationFixed",
+              null
+            ],
+            [
+              "UPDATE_VAR",
+              "$FIXED_ACCEL",
+              "$ACTIVE_SCHEME.sides.$SCHEME_FACE.accelerationFixed"
+            ]
+          ],
+          [
+            "VAR",
+            "$SCALING_ACCEL",
+            0
+          ],
+          [
+            "COND",
+            [
+              "NOT_EQUAL",
+              "$ACTIVE_SCHEME.sides.$SCHEME_FACE.accelerationScaling",
+              null
+            ],
+            [
+              "UPDATE_VAR",
+              "$SCALING_ACCEL",
+              [
+                "MULTIPLY",
+                "$ACTIVE_SCHEME.sides.$SCHEME_FACE.accelerationScaling",
+                "$GAME.numPlayers"
+              ]
+            ]
+          ],
+          [
+            "VAR",
+            "$CARD_ACCEL_TOKENS",
+            0
+          ],
+          [
+            "COND",
+            [
+              "NOT_EQUAL",
+              "$ACTIVE_SCHEME.tokens.acceleration",
+              null
+            ],
+            [
+              "UPDATE_VAR",
+              "$CARD_ACCEL_TOKENS",
+              "$ACTIVE_SCHEME.tokens.acceleration"
+            ]
+          ],
+          [
+            "VAR",
+            "$THREAT_INCREASE",
+            [
+              "ADD",
+              [
+                "ADD",
+                "$FIXED_ACCEL",
+                "$SCALING_ACCEL"
+              ],
+              [
+                "ADD",
+                "$CARD_ACCEL_TOKENS",
+                "$ACCELERATION_ICONS"
+              ]
+            ]
+          ],
+          [
+            "INCREASE_VAL",
+            "/cardById/$ACTIVE_SCHEME.id/tokens/threat",
+            "$THREAT_INCREASE"
+          ],
+          [
+            "LOG",
+            "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} threat on {{$ACTIVE_SCHEME.sides.$SCHEME_FACE.name}}."
+          ]
+        ],
+        true,
+        [
+          [
+            "FOR_EACH_VAL",
+            "$SCHEME_CARD",
+            [
+              "FILTER_CARDS",
+              "$CARD",
+              [
+                "AND",
+                "$CARD.inPlay",
+                [
+                  "EQUAL",
+                  "$CARD.sides.A.type",
+                  "Main Scheme"
+                ]
+              ]
+            ],
+            [
+              [
+                "VAR",
+                "$SCHEME_FACE",
+                "A"
+              ],
+              [
+                "COND",
+                [
+                  "OR",
+                  [
+                    "NOT_EQUAL",
+                    "$SCHEME_CARD.sides.B.accelerationScaling",
+                    null
+                  ],
+                  [
+                    "NOT_EQUAL",
+                    "$SCHEME_CARD.sides.B.accelerationFixed",
+                    null
+                  ]
+                ],
+                [
+                  "UPDATE_VAR",
+                  "$SCHEME_FACE",
+                  "B"
+                ]
+              ],
+              [
+                "VAR",
+                "$FIXED_ACCEL",
+                0
+              ],
+              [
+                "COND",
+                [
+                  "NOT_EQUAL",
+                  "$SCHEME_CARD.sides.$SCHEME_FACE.accelerationFixed",
+                  null
+                ],
+                [
+                  "UPDATE_VAR",
+                  "$FIXED_ACCEL",
+                  "$SCHEME_CARD.sides.$SCHEME_FACE.accelerationFixed"
+                ]
+              ],
+              [
+                "VAR",
+                "$SCALING_ACCEL",
+                0
+              ],
+              [
+                "COND",
+                [
+                  "NOT_EQUAL",
+                  "$SCHEME_CARD.sides.$SCHEME_FACE.accelerationScaling",
+                  null
+                ],
+                [
+                  "UPDATE_VAR",
+                  "$SCALING_ACCEL",
+                  [
+                    "MULTIPLY",
+                    "$SCHEME_CARD.sides.$SCHEME_FACE.accelerationScaling",
+                    "$GAME.numPlayers"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$CARD_ACCEL_TOKENS",
+                0
+              ],
+              [
+                "COND",
+                [
+                  "NOT_EQUAL",
+                  "$SCHEME_CARD.tokens.acceleration",
+                  null
+                ],
+                [
+                  "UPDATE_VAR",
+                  "$CARD_ACCEL_TOKENS",
+                  "$SCHEME_CARD.tokens.acceleration"
+                ]
+              ],
+              [
+                "VAR",
+                "$THREAT_INCREASE",
+                [
+                  "ADD",
+                  [
+                    "ADD",
+                    "$FIXED_ACCEL",
+                    "$SCALING_ACCEL"
+                  ],
+                  [
+                    "ADD",
+                    "$CARD_ACCEL_TOKENS",
+                    "$ACCELERATION_ICONS"
+                  ]
+                ]
+              ],
+              [
+                "INCREASE_VAL",
+                "/cardById/$SCHEME_CARD.id/tokens/threat",
+                "$THREAT_INCREASE"
+              ],
+              [
+                "LOG",
+                "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} threat on {{$SCHEME_CARD.sides.$SCHEME_FACE.name}}."
+              ]
+            ]
+          ]
+        ]
       ],
       [
         "LOG",
         "Villain Phase - Begins"
-      ],
-      [
-        "LOG",
-        "Villain Phase - Acceleration: Place {{$THREAT_INCREASE}} on {{$CARD.sides.B.name}}."
       ],
       [
         "SET",

@@ -100,7 +100,13 @@ impl Card {
                     classification: card.classification.clone(),
                     image_url,
                     card_back: card_back.clone(),
-                    traits: card.traits.as_ref().map(|traits| traits.join(",")),
+                    traits: card.traits.as_ref().map(|traits| {
+                        traits
+                            .iter()
+                            .map(|t| normalize_trait(t))
+                            .collect::<Vec<_>>()
+                            .join(",")
+                    }),
                     hand_size: card
                         .hand
                         .as_ref()
@@ -204,6 +210,31 @@ pub fn uuid(code: &str) -> Uuid {
     Uuid::new_v5(&Uuid::NAMESPACE_OID, id.as_bytes())
 }
 
+pub fn normalize_trait(trait_str: &str) -> String {
+    if trait_str.contains('.') {
+        return trait_str.to_string();
+    }
+
+    trait_str
+        .split(' ')
+        .map(|word| {
+            word.split('-')
+                .map(|part| {
+                    let mut c = part.chars();
+                    match c.next() {
+                        None => String::new(),
+                        Some(first) => {
+                            first.to_uppercase().collect::<String>() + &c.as_str().to_lowercase()
+                        }
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join("-")
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
 fn image_url(card: &CerebroCard, printing: &Printing) -> String {
     let official = if card.official {
         "official"
@@ -235,6 +266,17 @@ fn card_back(card: &CerebroCard) -> CardBack {
         && card.id.parse::<u32>().is_err()
     {
         return CardBack::MultiSided;
+    }
+
+    if card.classification == Classification::Encounter
+        && card.r#type == CardType::Ally
+        && card
+            .rules
+            .as_ref()
+            .map(|rules| rules.contains("When Revealed"))
+            .unwrap_or(false)
+    {
+        return CardBack::Encounter;
     }
 
     match card.r#type {

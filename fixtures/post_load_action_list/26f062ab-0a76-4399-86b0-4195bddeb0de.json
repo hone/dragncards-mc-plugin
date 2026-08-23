@@ -1,0 +1,43 @@
+[
+  [
+    "LOG",
+    "Setup (Kingpin): Put Public Support environment into play"
+  ],
+  [
+    "DEFINE",
+    "$PUBLIC_SUPPORT",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "ab94109d-d60a-55ef-8ef0-d1c04e777448"
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "DEFINED",
+      "$PUBLIC_SUPPORT"
+    ],
+    [
+      [
+        "MOVE_CARD",
+        "$PUBLIC_SUPPORT.id",
+        "sharedVillain",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$PUBLIC_SUPPORT.id/currentSide",
+        "A"
+      ]
+    ]
+  ],
+  [
+    "SHUFFLE_GROUP",
+    "sharedEncounterDeck"
+  ]
+]

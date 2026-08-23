@@ -1,0 +1,43 @@
+[
+  [
+    "LOG",
+    "Setup (Electro): Find Electric Charge, put into play, and place charge counters on it"
+  ],
+  [
+    "VAR",
+    "$CHARGE",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "03afe8a5-3184-50e2-ab3e-6f38c6cc4ae1"
+      ]
+    ]
+  ],
+  [
+    "MOVE_CARD",
+    "$CHARGE.id",
+    "sharedVillain",
+    -1
+  ],
+  [
+    "SET",
+    "/cardById/$CHARGE.id/currentSide",
+    "A"
+  ],
+  [
+    "SET",
+    "/cardById/$CHARGE.id/tokens/generic",
+    [
+      "MULTIPLY",
+      2,
+      "$GAME.numPlayers"
+    ]
+  ],
+  [
+    "SHUFFLE_GROUP",
+    "sharedEncounterDeck"
+  ]
+]
