@@ -1047,9 +1047,54 @@
             "$TARGET.controller"
           ],
           [
-            "VAR",
-            "$MODIFIER",
-            0
+            "COND",
+            [
+              "AND",
+              [
+                "OR",
+                [
+                  "EQUAL",
+                  "$TARGET.currentFace.type",
+                  "Hero"
+                ],
+                [
+                  "EQUAL",
+                  "$TARGET.currentFace.type",
+                  "Alter-Ego"
+                ]
+              ],
+              [
+                "OR",
+                [
+                  "EQUAL",
+                  [
+                    "PREV",
+                    "$TARGET.inPlay"
+                  ],
+                  false
+                ],
+                [
+                  "EQUAL",
+                  [
+                    "PREV",
+                    "$TARGET.inPlay"
+                  ],
+                  null
+                ]
+              ]
+            ],
+            [
+              [
+                "SET",
+                "/playerData/$CONTROLLER/heroHandSizeModifier",
+                0
+              ],
+              [
+                "SET",
+                "/playerData/$CONTROLLER/alterEgoHandSizeModifier",
+                0
+              ]
+            ]
           ],
           [
             "COND",
@@ -1059,40 +1104,57 @@
               "Hero"
             ],
             [
-              "UPDATE_VAR",
-              "$MODIFIER",
-              "$GAME.playerData.$CONTROLLER.heroHandSizeModifier"
-            ],
+              [
+                "SET",
+                "/playerData/$CONTROLLER/handSize",
+                [
+                  "ADD",
+                  "$TARGET.currentFace.handSize",
+                  "$GAME.playerData.$CONTROLLER.heroHandSizeModifier"
+                ]
+              ],
+              [
+                "LOG",
+                "$ALIAS_N",
+                " set their hand size to ",
+                [
+                  "ADD",
+                  "$TARGET.currentFace.handSize",
+                  "$GAME.playerData.$CONTROLLER.heroHandSizeModifier"
+                ],
+                "."
+              ]
+            ]
+          ],
+          [
+            "COND",
             [
               "EQUAL",
               "$TARGET.currentFace.type",
               "Alter-Ego"
             ],
             [
-              "UPDATE_VAR",
-              "$MODIFIER",
-              "$GAME.playerData.$CONTROLLER.alterEgoHandSizeModifier"
+              [
+                "SET",
+                "/playerData/$CONTROLLER/handSize",
+                [
+                  "ADD",
+                  "$TARGET.currentFace.handSize",
+                  "$GAME.playerData.$CONTROLLER.alterEgoHandSizeModifier"
+                ]
+              ],
+              [
+                "LOG",
+                "$ALIAS_N",
+                " set their hand size to ",
+                [
+                  "ADD",
+                  "$TARGET.currentFace.handSize",
+                  "$GAME.playerData.$CONTROLLER.alterEgoHandSizeModifier"
+                ],
+                "."
+              ]
             ]
-          ],
-          [
-            "SET",
-            "/playerData/$CONTROLLER/handSize",
-            [
-              "ADD",
-              "$TARGET.currentFace.handSize",
-              "$MODIFIER"
-            ]
-          ],
-          [
-            "LOG",
-            "$ALIAS_N",
-            " set their hand size to ",
-            [
-              "ADD",
-              "$TARGET.currentFace.handSize",
-              "$MODIFIER"
-            ],
-            "."
           ]
         ]
       },
@@ -1166,17 +1228,17 @@
                   [
                     "ADD",
                     "$CARD.currentFace.handSize",
-                    "$TARGET.heroHandSizeModifier"
+                    "$GAME.playerData.$TARGET_ID.heroHandSizeModifier"
                   ]
                 ],
                 [
                   "LOG",
-                  "$ALIAS_N",
+                  "{{$GAME.playerInfo.$TARGET_ID.alias}}",
                   " updated their hand size to ",
                   [
                     "ADD",
                     "$CARD.currentFace.handSize",
-                    "$TARGET.heroHandSizeModifier"
+                    "$GAME.playerData.$TARGET_ID.heroHandSizeModifier"
                   ],
                   "."
                 ]
@@ -1255,17 +1317,17 @@
                   [
                     "ADD",
                     "$CARD.currentFace.handSize",
-                    "$TARGET.alterEgoHandSizeModifier"
+                    "$GAME.playerData.$TARGET_ID.alterEgoHandSizeModifier"
                   ]
                 ],
                 [
                   "LOG",
-                  "$ALIAS_N",
+                  "{{$GAME.playerInfo.$TARGET_ID.alias}}",
                   " updated their hand size to ",
                   [
                     "ADD",
                     "$CARD.currentFace.handSize",
-                    "$TARGET.alterEgoHandSizeModifier"
+                    "$GAME.playerData.$TARGET_ID.alterEgoHandSizeModifier"
                   ],
                   "."
                 ]
@@ -1680,6 +1742,1666 @@
           "/cardById/$TARGET_ID/tokens/generic",
           "$TARGET.currentFace.uses"
         ]
+      },
+      "ironManTechHandSize": {
+        "_comment": "When cards enter/leave play or change controller, recalculate Iron Man's heroHandSizeModifier based on Tech upgrades controlled (up to +6).",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/controller"
+        ],
+        "condition": [
+          "GREATER_THAN",
+          [
+            "LENGTH",
+            [
+              "FILTER_CARDS",
+              "$CARD",
+              [
+                "AND",
+                "$CARD.inPlay",
+                [
+                  "EQUAL",
+                  "$CARD.databaseId",
+                  "7050bee0-051f-5b81-9b35-80a294d032df"
+                ]
+              ]
+            ]
+          ],
+          0
+        ],
+        "then": [
+          [
+            "FOR_EACH_VAL",
+            "$IRON_MAN",
+            [
+              "FILTER_CARDS",
+              "$CARD",
+              [
+                "AND",
+                "$CARD.inPlay",
+                [
+                  "EQUAL",
+                  "$CARD.databaseId",
+                  "7050bee0-051f-5b81-9b35-80a294d032df"
+                ]
+              ]
+            ],
+            [
+              [
+                "VAR",
+                "$CONTROLLER",
+                "$IRON_MAN.controller"
+              ],
+              [
+                "VAR",
+                "$TECH_COUNT",
+                [
+                  "LENGTH",
+                  [
+                    "FILTER_CARDS",
+                    "$CARD",
+                    [
+                      "AND",
+                      "$CARD.inPlay",
+                      [
+                        "EQUAL",
+                        "$CARD.controller",
+                        "$CONTROLLER"
+                      ],
+                      [
+                        "EQUAL",
+                        "$CARD.sides.A.type",
+                        "Upgrade"
+                      ],
+                      [
+                        "IN_STRING",
+                        "$CARD.sides.A.traits",
+                        "Tech"
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$MOD",
+                [
+                  "MIN",
+                  [
+                    "LIST",
+                    "$TECH_COUNT",
+                    6
+                  ]
+                ]
+              ],
+              [
+                "SET",
+                "/playerData/$CONTROLLER/heroHandSizeModifier",
+                "$MOD"
+              ]
+            ]
+          ]
+        ]
+      },
+      "starLordHelmetHandSize": {
+        "_comment": "When cards enter/leave play or change groups, recalculate Star-Lord's heroHandSizeModifier based on facedown encounter cards engaged (up to +3).",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/groupId"
+        ],
+        "condition": [
+          "GREATER_THAN",
+          [
+            "LENGTH",
+            [
+              "FILTER_CARDS",
+              "$HELMET",
+              [
+                "AND",
+                "$HELMET.inPlay",
+                [
+                  "EQUAL",
+                  "$HELMET.databaseId",
+                  "c6f8826a-dd43-5c2b-b721-e95e6719f6d1"
+                ]
+              ]
+            ]
+          ],
+          0
+        ],
+        "then": [
+          [
+            "FOR_EACH_VAL",
+            "$HELMET",
+            [
+              "FILTER_CARDS",
+              "$CARD",
+              [
+                "AND",
+                "$CARD.inPlay",
+                [
+                  "EQUAL",
+                  "$CARD.databaseId",
+                  "c6f8826a-dd43-5c2b-b721-e95e6719f6d1"
+                ]
+              ]
+            ],
+            [
+              [
+                "VAR",
+                "$CONTROLLER",
+                "$HELMET.controller"
+              ],
+              [
+                "VAR",
+                "$FACEDOWN_COUNT",
+                [
+                  "LENGTH",
+                  [
+                    "FILTER_CARDS",
+                    "$CARD",
+                    [
+                      "AND",
+                      "$CARD.inPlay",
+                      [
+                        "EQUAL",
+                        "$CARD.groupId",
+                        "{{$CONTROLLER}}Engaged"
+                      ],
+                      [
+                        "EQUAL",
+                        "$CARD.currentSide",
+                        "B"
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$MOD",
+                [
+                  "MIN",
+                  [
+                    "LIST",
+                    "$FACEDOWN_COUNT",
+                    3
+                  ]
+                ]
+              ],
+              [
+                "SET",
+                "/playerData/$CONTROLLER/heroHandSizeModifier",
+                "$MOD"
+              ]
+            ]
+          ]
+        ]
+      },
+      "theViperEngaged": {
+        "_comment": "When The Viper enters/leaves play or changes groups, update the engaged player's hand size modifier.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/groupId"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "8cb8d93c-4abd-5ce8-b2f1-27bf7e66e834"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_GROUP",
+            [
+              "PREV",
+              "$TARGET.groupId"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_GROUP",
+            "$TARGET.groupId"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
+            [
+              [
+                "VAR",
+                "$ENGAGED_GROUP",
+                "{{$PLAYER_I}}Engaged"
+              ],
+              [
+                "VAR",
+                "$WAS_ENGAGED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PREV_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$PREV_GROUP",
+                    "$ENGAGED_GROUP"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_ENGAGED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CURR_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$CURR_GROUP",
+                    "$ENGAGED_GROUP"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$WAS_ENGAGED",
+                  [
+                    "NOT",
+                    "$IS_ENGAGED"
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "The Viper: Restored {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier."
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$IS_ENGAGED",
+                  [
+                    "NOT",
+                    "$WAS_ENGAGED"
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "The Viper: Reduced {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier by 1."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "tempoEngaged": {
+        "_comment": "When Tempo enters/leaves play or changes groups, update the engaged player's hand size modifier.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/groupId"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "75d695cd-cb18-580d-a3fe-96cb63cd2e99"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_GROUP",
+            [
+              "PREV",
+              "$TARGET.groupId"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_GROUP",
+            "$TARGET.groupId"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
+            [
+              [
+                "VAR",
+                "$ENGAGED_GROUP",
+                "{{$PLAYER_I}}Engaged"
+              ],
+              [
+                "VAR",
+                "$WAS_ENGAGED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PREV_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$PREV_GROUP",
+                    "$ENGAGED_GROUP"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_ENGAGED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CURR_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$CURR_GROUP",
+                    "$ENGAGED_GROUP"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$WAS_ENGAGED",
+                  [
+                    "NOT",
+                    "$IS_ENGAGED"
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Tempo: Removed {{$GAME.playerInfo.$PLAYER_I.alias}}'s +1 hand size modifier."
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$IS_ENGAGED",
+                  [
+                    "NOT",
+                    "$WAS_ENGAGED"
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Tempo: Granted {{$GAME.playerInfo.$PLAYER_I.alias}} +1 hand size modifier."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "asgardHandSize": {
+        "_comment": "When Asgard enters/leaves play or changes controller, update the controlling player's hand size modifier.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/controller"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "7477e302-14a5-531a-beb7-54d22a50270c"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_CONTROLLER",
+            [
+              "PREV",
+              "$TARGET.controller"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_CONTROLLER",
+            "$TARGET.controller"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
+            [
+              [
+                "VAR",
+                "$WAS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PREV_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$PREV_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CURR_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$CURR_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$WAS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$IS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Asgard: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier by 1."
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$IS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$WAS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Asgard: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier by 1."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "symbioteSuitHandSize": {
+        "_comment": "When Symbiote Suit enters/leaves play or changes controller, update the controlling player's hand size modifier.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/controller"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "d2286508-2af4-57b5-94cc-3941d16ad0a5"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_CONTROLLER",
+            [
+              "PREV",
+              "$TARGET.controller"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_CONTROLLER",
+            "$TARGET.controller"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
+            [
+              [
+                "VAR",
+                "$WAS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PREV_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$PREV_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CURR_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$CURR_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$WAS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$IS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Symbiote Suit: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier by 1."
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$IS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$WAS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Symbiote Suit: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier by 1."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "sorcererSupremeHandSize": {
+        "_comment": "When The Sorcerer Supreme enters/leaves play or changes controller, update the controlling player's Hero hand size modifier.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/controller"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "538319de-2d75-56c0-8546-1d02c0e2c6ab"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_CONTROLLER",
+            [
+              "PREV",
+              "$TARGET.controller"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_CONTROLLER",
+            "$TARGET.controller"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
+            [
+              [
+                "VAR",
+                "$WAS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PREV_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$PREV_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CURR_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$CURR_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$WAS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$IS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "The Sorcerer Supreme: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s Hero hand size modifier by 1."
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$IS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$WAS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "The Sorcerer Supreme: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s Hero hand size modifier by 1."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "visionMassFormHandSize": {
+        "_comment": "When Vision's Mass Form enters/leaves play or changes side/controller, update Alter-Ego hand size modifier (+1 in Intangible side A, +0 in Dense side B or when out of play).",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/currentSide",
+          "/cardById/*/controller"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "7d6563e4-1f0d-5abe-865e-d3971dc5ed61"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$CONTROLLER",
+            "$TARGET.controller"
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              "$TARGET.inPlay",
+              [
+                "NOT_EQUAL",
+                "$CONTROLLER",
+                "shared"
+              ]
+            ],
+            [
+              [
+                "COND",
+                [
+                  "EQUAL",
+                  "$TARGET.currentSide",
+                  "A"
+                ],
+                [
+                  [
+                    "SET",
+                    "/playerData/$CONTROLLER/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Vision (Intangible Form): Set {{$GAME.playerInfo.$CONTROLLER.alias}}'s Alter-Ego hand size modifier to +1."
+                  ]
+                ],
+                true,
+                [
+                  [
+                    "SET",
+                    "/playerData/$CONTROLLER/alterEgoHandSizeModifier",
+                    0
+                  ],
+                  [
+                    "LOG",
+                    "Vision (Dense Form): Set {{$GAME.playerInfo.$CONTROLLER.alias}}'s Alter-Ego hand size modifier to +0."
+                  ]
+                ]
+              ]
+            ],
+            true,
+            [
+              [
+                "COND",
+                [
+                  "NOT_EQUAL",
+                  "$CONTROLLER",
+                  "shared"
+                ],
+                [
+                  [
+                    "SET",
+                    "/playerData/$CONTROLLER/alterEgoHandSizeModifier",
+                    0
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      },
+      "liveDangerouslyHandSize": {
+        "_comment": "When Live Dangerously enters/leaves play, update each player's hand size modifier by 2.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "7d5ec696-709c-535d-a9b5-da3009d51c7b"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    2
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    2
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Live Dangerously: Increased each identity's hand size modifier by 2."
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    2
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    2
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Live Dangerously: Decreased each identity's hand size modifier by 2."
+              ]
+            ]
+          ]
+        ]
+      },
+      "foolsParadiseHandSize": {
+        "_comment": "When Fool's Paradise enters/leaves play, update each player's hand size modifier by 2.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "3cea8feb-c28e-5f69-9cbb-318e494b4493"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    2
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    2
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Fool's Paradise: Increased each identity's hand size modifier by 2."
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    2
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    2
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Fool's Paradise: Decreased each identity's hand size modifier by 2."
+              ]
+            ]
+          ]
+        ]
+      },
+      "playingForKeepsHandSize": {
+        "_comment": "When Playing for Keeps enters/leaves play, update each player's hand size modifier by 1.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "762226e0-63cf-5dc7-8655-0a71c498574b"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Playing for Keeps: Increased each identity's hand size modifier by 1."
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Playing for Keeps: Decreased each identity's hand size modifier by 1."
+              ]
+            ]
+          ]
+        ]
+      },
+      "leftToYourFateHandSize": {
+        "_comment": "When Left to Your Fate (Stage 2B) enters/leaves play, update each player's hand size modifier by 2.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/currentSide"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "b99d2385-a1af-5c20-8cba-4f23357ad766"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_SIDE",
+            [
+              "PREV",
+              "$TARGET.currentSide"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_SIDE",
+            "$TARGET.currentSide"
+          ],
+          [
+            "VAR",
+            "$WAS_ACTIVE",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ],
+              [
+                "EQUAL",
+                "$PREV_SIDE",
+                "B"
+              ]
+            ]
+          ],
+          [
+            "VAR",
+            "$IS_ACTIVE",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ],
+              [
+                "EQUAL",
+                "$CURR_SIDE",
+                "B"
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              "$WAS_ACTIVE",
+              [
+                "NOT",
+                "$IS_ACTIVE"
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    2
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    2
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Left to Your Fate: Decreased each identity's hand size modifier by 2."
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              "$IS_ACTIVE",
+              [
+                "NOT",
+                "$WAS_ACTIVE"
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    2
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    2
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "Left to Your Fate (Stage 2B): Increased each identity's hand size modifier by 2."
+              ]
+            ]
+          ]
+        ]
+      },
+      "gameOfMojosHandSize": {
+        "_comment": "When A Game of Mojo's enters/leaves play, update each player's hand size modifier by 1.",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "96630e12-0487-5ddb-8fb0-24ab93fdcba4"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "A Game of Mojo's: Increased each player's hand size modifier by 1."
+              ]
+            ]
+          ],
+          [
+            "COND",
+            [
+              "AND",
+              [
+                "EQUAL",
+                "$PREV_IN_PLAY",
+                true
+              ],
+              [
+                "NOT_EQUAL",
+                "$CURR_IN_PLAY",
+                true
+              ]
+            ],
+            [
+              [
+                "FOR_EACH_VAL",
+                "$PLAYER_I",
+                "$PLAYER_ORDER",
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "LOG",
+                "A Game of Mojo's: Decreased each player's hand size modifier by 1."
+              ]
+            ]
+          ]
+        ]
+      },
+      "martialLawHandSize": {
+        "_comment": "When Martial Law enters/leaves play or changes controller, update the controlling player's hand size modifier (-1 while controlled).",
+        "type": "trigger",
+        "listenTo": [
+          "/cardById/*/inPlay",
+          "/cardById/*/controller"
+        ],
+        "condition": [
+          "EQUAL",
+          "$TARGET.databaseId",
+          "c106d37f-70e6-5e2d-b4f6-59dcd3d24ca1"
+        ],
+        "then": [
+          [
+            "VAR",
+            "$PREV_IN_PLAY",
+            [
+              "PREV",
+              "$TARGET.inPlay"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
+          ],
+          [
+            "VAR",
+            "$PREV_CONTROLLER",
+            [
+              "PREV",
+              "$TARGET.controller"
+            ]
+          ],
+          [
+            "VAR",
+            "$CURR_CONTROLLER",
+            "$TARGET.controller"
+          ],
+          [
+            "FOR_EACH_VAL",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
+            [
+              [
+                "VAR",
+                "$WAS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$PREV_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$PREV_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "VAR",
+                "$IS_CONTROLLED",
+                [
+                  "AND",
+                  [
+                    "EQUAL",
+                    "$CURR_IN_PLAY",
+                    true
+                  ],
+                  [
+                    "EQUAL",
+                    "$CURR_CONTROLLER",
+                    "$PLAYER_I"
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$WAS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$IS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "INCREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Martial Law: Restored {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier."
+                  ]
+                ]
+              ],
+              [
+                "COND",
+                [
+                  "AND",
+                  "$IS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$WAS_CONTROLLED"
+                  ]
+                ],
+                [
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/heroHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "DECREASE_VAL",
+                    "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                    1
+                  ],
+                  [
+                    "LOG",
+                    "Martial Law: Reduced {{$GAME.playerInfo.$PLAYER_I.alias}}'s hand size modifier by 1."
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
       }
     },
     "cards": {
@@ -1932,7 +3654,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2046,7 +3772,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2289,7 +4019,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2372,7 +4106,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2455,7 +4193,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2533,7 +4275,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2641,7 +4387,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2749,7 +4499,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -2860,7 +4614,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$GAME.stepId",
@@ -2890,7 +4648,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$GAME.stepId",
@@ -2998,7 +4760,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$GAME.stepId",
@@ -3033,7 +4799,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$GAME.stepId",
@@ -3117,7 +4887,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
@@ -3178,7 +4952,11 @@
             ],
             "condition": [
               "AND",
-              "$THIS.inPlay",
+              [
+                "EQUAL",
+                "$THIS.inPlay",
+                true
+              ],
               [
                 "EQUAL",
                 "$THIS.currentSide",
