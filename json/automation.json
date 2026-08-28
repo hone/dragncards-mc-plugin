@@ -9118,6 +9118,76 @@
             ]
           }
         }
+      },
+      "7f3f3cd1-5d7e-5b20-a4ff-5600a70bd0a0": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "lokiWhenDefeatedDiscard"
+            ]
+          ]
+        }
+      },
+      "6fd5c23c-d751-50e6-b721-e6b0c88cd540": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "lokiWhenDefeatedDiscard"
+            ]
+          ]
+        }
+      },
+      "b3016557-48e8-501e-83ba-6b59c596cd1a": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "lokiWhenDefeatedDiscard"
+            ]
+          ]
+        }
+      },
+      "2d12c9cb-34e4-5d18-88bd-1e032a4ebd48": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "lokiWhenDefeatedDiscard"
+            ]
+          ]
+        }
+      },
+      "fd44d0b2-781f-5133-abaa-ce21dff8e332": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "lokiWhenDefeatedDiscard"
+            ]
+          ]
+        }
+      },
+      "fe2ec2ed-df8e-5ace-8954-86ef43a43698": {
+        "ability": {
+          "B": [
+            [
+              "ACTION_LIST",
+              "lokiSwap"
+            ]
+          ]
+        }
+      },
+      "0fe5505a-961f-5ac6-83d5-ce7d70f73ae7": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "lokiSwap"
+            ]
+          ]
+        }
       }
     }
   }

@@ -376,7 +376,7 @@
             "MOVE_CARD",
             "$CARD_ITEM_ID",
             "$DEST_GROUP_ID",
-            0
+            -1
           ],
           true,
           [
