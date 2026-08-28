@@ -114,6 +114,28 @@
   ],
   [
     "LOG",
+    "Setup: Set remaining Loki villains aside in Out of Play"
+  ],
+  [
+    "FOR_EACH_VAL",
+    "$LOKI_ID",
+    "$GAME.groupById.sharedVillainDeck.parentCardIds",
+    [
+      [
+        "MOVE_CARD",
+        "$LOKI_ID",
+        "sharedOutOfPlay",
+        -1
+      ],
+      [
+        "SET",
+        "/cardById/$LOKI_ID/currentSide",
+        "A"
+      ]
+    ]
+  ],
+  [
+    "LOG",
     "Setup: Put \"War in Asgard\" into play"
   ],
   [

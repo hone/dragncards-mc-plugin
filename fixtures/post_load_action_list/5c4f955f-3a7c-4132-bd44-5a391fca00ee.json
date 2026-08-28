@@ -1,6 +1,36 @@
 [
   [
     "LOG",
+    "Setup: Set Loki, God of Lies aside in Out of Play"
+  ],
+  [
+    "DEFINE",
+    "$GOD_OF_LIES",
+    [
+      "ONE_CARD",
+      "$CARD",
+      [
+        "EQUAL",
+        "$CARD.databaseId",
+        "c325b292-44ea-5b34-9772-19eb2fc266a4"
+      ]
+    ]
+  ],
+  [
+    "COND",
+    [
+      "DEFINED",
+      "$GOD_OF_LIES"
+    ],
+    [
+      "MOVE_CARD",
+      "$GOD_OF_LIES.id",
+      "sharedOutOfPlay",
+      -1
+    ]
+  ],
+  [
+    "LOG",
     "Setup: Put a random Avatar of Loki villain into play"
   ],
   [

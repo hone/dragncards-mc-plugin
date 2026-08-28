@@ -9188,6 +9188,56 @@
             ]
           ]
         }
+      },
+      "ce9471fc-5666-5e58-877f-c40037a7996b": {
+        "ability": {
+          "A": [
+            [
+              "ACTION_LIST",
+              "avatarOfLokiSwap"
+            ]
+          ]
+        }
+      },
+      "4f7d6486-782d-51fc-9979-942978fe0449": {
+        "ability": {
+          "B": [
+            [
+              "ACTION_LIST",
+              "avatarOfLokiShatter"
+            ]
+          ]
+        }
+      },
+      "5fe063fb-63b4-54cd-88fa-3d393338f174": {
+        "ability": {
+          "B": [
+            [
+              "ACTION_LIST",
+              "avatarOfLokiShatter"
+            ]
+          ]
+        }
+      },
+      "0f5109f5-ef33-5b59-9940-831cd61a17e7": {
+        "ability": {
+          "B": [
+            [
+              "ACTION_LIST",
+              "avatarOfLokiShatter"
+            ]
+          ]
+        }
+      },
+      "1ae6365c-b49c-5935-af7f-f201a3dd3de3": {
+        "ability": {
+          "B": [
+            [
+              "ACTION_LIST",
+              "avatarOfLokiShatter"
+            ]
+          ]
+        }
       }
     }
   }
