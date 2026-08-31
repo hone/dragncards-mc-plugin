@@ -217,6 +217,10 @@ pub trait CardRules {
     fn acceleration(&self) -> Option<Acceleration>;
     fn stage(&self) -> Option<&str>;
 
+    fn id(&self) -> Option<&str> {
+        None
+    }
+
     fn icons(&self) -> Option<HashMap<Icon, usize>> {
         if let Some(rules) = self.rules_text() {
             let mut icons = HashMap::new();
@@ -309,6 +313,128 @@ pub trait CardRules {
             .unwrap_or(false)
     }
 
+    fn global_hand_size_modifier(&self) -> Option<i32> {
+        if let Some(rules) = self.rules_text() {
+            lazy_static! {
+                static ref GLOBAL_HAND_SIZE_RE: Regex = Regex::new(
+                    r"(?i)(?:each|every)\s+(?:identity|player)\s+gets\s+([+-]\d+)\s+hand\s+size"
+                )
+                .unwrap();
+            }
+            if let Some(captures) = GLOBAL_HAND_SIZE_RE.captures(rules) {
+                return captures[1].parse::<i32>().ok();
+            }
+        }
+        None
+    }
+
+    fn hero_hand_size_modifier(&self) -> Option<i32> {
+        if self.global_hand_size_modifier().is_some() {
+            return None;
+        }
+
+        if let Some(rules) = self.rules_text() {
+            if rules.contains("for each") || rules.contains("until the end of the phase") {
+                return None;
+            }
+
+            lazy_static! {
+                static ref HERO_HAND_SIZE_RE: Regex = Regex::new(
+                    r"(?i)(?:you\s+get|your\s+hero\s+gets)\s+([+-]\d+)\s+hand\s+size\s+while\s+(?:you\s+are\s+)?in\s+hero\s+form|while\s+(?:you\s+are\s+)?in\s+hero\s+form,\s+(?:you|your\s+hero)\s+gets?\s+([+-]\d+)\s+hand\s+size"
+                )
+                .unwrap();
+                static ref GENERAL_HAND_SIZE_INC_RE: Regex = Regex::new(
+                    r"(?i)(?:you\s+get|your\s+identity\s+gets).*?([+-]\d+)\s+hand\s+size"
+                )
+                .unwrap();
+                static ref GENERAL_HAND_SIZE_DEC_RE: Regex =
+                    Regex::new(r"(?i)(?:your\s+)?hand\s+size\s+is\s+reduced\s+by\s+(\d+)").unwrap();
+            }
+
+            if let Some(captures) = HERO_HAND_SIZE_RE.captures(rules) {
+                let val = captures
+                    .get(1)
+                    .or_else(|| captures.get(2))
+                    .unwrap()
+                    .as_str();
+                return val.parse::<i32>().ok();
+            }
+
+            if self.r#type() != CardType::Hero && self.r#type() != CardType::AlterEgo {
+                if let Some(captures) = GENERAL_HAND_SIZE_INC_RE.captures(rules) {
+                    return captures[1].parse::<i32>().ok();
+                }
+                if let Some(captures) = GENERAL_HAND_SIZE_DEC_RE.captures(rules) {
+                    if let Ok(val) = captures[1].parse::<i32>() {
+                        return Some(-val);
+                    }
+                }
+            }
+        }
+
+        None
+    }
+
+    fn alter_ego_hand_size_modifier(&self) -> Option<i32> {
+        if self.global_hand_size_modifier().is_some() {
+            return None;
+        }
+
+        // Vision Intangible Mass Form
+        if self.id() == Some("26002A") || self.id() == Some("57046B") {
+            return Some(1);
+        }
+
+        if let Some(rules) = self.rules_text() {
+            if rules.contains("for each") || rules.contains("until the end of the phase") {
+                return None;
+            }
+
+            lazy_static! {
+                static ref ALTER_EGO_HAND_SIZE_RE: Regex = Regex::new(
+                    r"(?i)(?:you\s+get|your\s+alter-ego\s+gets)\s+([+-]\d+)\s+hand\s+size\s+while\s+(?:you\s+are\s+)?in\s+alter-ego\s+form|while\s+(?:you\s+are\s+)?in\s+alter-ego\s+form,\s+(?:you|your\s+alter-ego)\s+gets?\s+([+-]\d+)\s+hand\s+size"
+                )
+                .unwrap();
+                static ref HERO_HAND_SIZE_RE: Regex = Regex::new(
+                    r"(?i)(?:you\s+get|your\s+hero\s+gets)\s+([+-]\d+)\s+hand\s+size\s+while\s+(?:you\s+are\s+)?in\s+hero\s+form|while\s+(?:you\s+are\s+)?in\s+hero\s+form,\s+(?:you|your\s+hero)\s+gets?\s+([+-]\d+)\s+hand\s+size"
+                )
+                .unwrap();
+                static ref GENERAL_HAND_SIZE_INC_RE: Regex = Regex::new(
+                    r"(?i)(?:you\s+get|your\s+identity\s+gets).*?([+-]\d+)\s+hand\s+size"
+                )
+                .unwrap();
+                static ref GENERAL_HAND_SIZE_DEC_RE: Regex =
+                    Regex::new(r"(?i)(?:your\s+)?hand\s+size\s+is\s+reduced\s+by\s+(\d+)").unwrap();
+            }
+
+            if let Some(captures) = ALTER_EGO_HAND_SIZE_RE.captures(rules) {
+                let val = captures
+                    .get(1)
+                    .or_else(|| captures.get(2))
+                    .unwrap()
+                    .as_str();
+                return val.parse::<i32>().ok();
+            }
+
+            if HERO_HAND_SIZE_RE.is_match(rules) {
+                return None;
+            }
+
+            if self.r#type() != CardType::Hero && self.r#type() != CardType::AlterEgo {
+                if let Some(captures) = GENERAL_HAND_SIZE_INC_RE.captures(rules) {
+                    return captures[1].parse::<i32>().ok();
+                }
+                if let Some(captures) = GENERAL_HAND_SIZE_DEC_RE.captures(rules) {
+                    if let Ok(val) = captures[1].parse::<i32>() {
+                        return Some(-val);
+                    }
+                }
+            }
+        }
+
+        None
+    }
+
     fn health_parsed(&self) -> (Option<i64>, Option<usize>) {
         self.health().map(|s| s.as_tuple()).unwrap_or((None, None))
     }
@@ -337,12 +463,18 @@ mod tests {
     use super::*;
 
     struct MockCard {
+        id: Option<String>,
         rules: Option<String>,
+        card_type: Option<CardType>,
     }
 
     impl CardRules for MockCard {
+        fn id(&self) -> Option<&str> {
+            self.id.as_deref()
+        }
+
         fn r#type(&self) -> CardType {
-            CardType::Hero
+            self.card_type.clone().unwrap_or(CardType::Upgrade)
         }
 
         fn rules_text(&self) -> Option<&str> {
@@ -369,12 +501,16 @@ mod tests {
     #[test]
     fn test_victory_parsing() {
         let card = MockCard {
+            id: None,
             rules: Some("Victory 1.".to_string()),
+            card_type: None,
         };
         assert_eq!(card.victory(), Some(1));
 
         let card_neg = MockCard {
+            id: None,
             rules: Some("Victory -2.".to_string()),
+            card_type: None,
         };
         assert_eq!(card_neg.victory(), Some(-2));
     }
@@ -382,7 +518,9 @@ mod tests {
     #[test]
     fn test_hinder_parsing() {
         let card = MockCard {
+            id: None,
             rules: Some("Hinder 3{i}.".to_string()),
+            card_type: None,
         };
         assert_eq!(card.hinder(), Some(3)); // usize
     }
@@ -390,7 +528,9 @@ mod tests {
     #[test]
     fn test_icon_parsing() {
         let card = MockCard {
+            id: None,
             rules: Some("Rules with {a}{a} and {c} and {h}.".to_string()),
+            card_type: None,
         };
         let icons = card.icons().unwrap();
         assert_eq!(icons.get(&Icon::Acceleration), Some(&2)); // usize
@@ -402,7 +542,9 @@ mod tests {
     #[test]
     fn test_permanent_and_tough() {
         let card = MockCard {
+            id: None,
             rules: Some("Permanent. Toughness. Starting.".to_string()),
+            card_type: None,
         };
         assert!(card.is_permanent());
         assert!(card.is_tough());
@@ -412,18 +554,134 @@ mod tests {
     #[test]
     fn test_uses_parsing() {
         let card = MockCard {
+            id: None,
             rules: Some("Attach to Venom. Uses (2 rage counters).".to_string()),
+            card_type: None,
         };
         assert_eq!(card.uses(), Some(2));
 
         let card_tac = MockCard {
+            id: None,
             rules: Some("Uses (3 charge counters).".to_string()),
+            card_type: None,
         };
         assert_eq!(card_tac.uses(), Some(3));
 
         let card_none = MockCard {
+            id: None,
             rules: Some("Attack for 3 damage.".to_string()),
+            card_type: None,
         };
         assert_eq!(card_none.uses(), None);
+    }
+
+    #[test]
+    fn test_global_hand_size_modifier() {
+        let card_live = MockCard {
+            id: None,
+            rules: Some("Each identity gets +2 hand size.".to_string()),
+            card_type: Some(CardType::PlayerSideScheme),
+        };
+        assert_eq!(card_live.global_hand_size_modifier(), Some(2));
+        assert_eq!(card_live.hero_hand_size_modifier(), None);
+        assert_eq!(card_live.alter_ego_hand_size_modifier(), None);
+
+        let card_mojo = MockCard {
+            id: None,
+            rules: Some("Each player gets +1 hand size.".to_string()),
+            card_type: Some(CardType::Environment),
+        };
+        assert_eq!(card_mojo.global_hand_size_modifier(), Some(1));
+
+        let card_freeze = MockCard {
+            id: None,
+            rules: Some("Each player gets -1 hand size.".to_string()),
+            card_type: Some(CardType::Environment),
+        };
+        assert_eq!(card_freeze.global_hand_size_modifier(), Some(-1));
+
+        let card_asgard = MockCard {
+            id: None,
+            rules: Some("You get +1 hand size.".to_string()),
+            card_type: Some(CardType::Support),
+        };
+        assert_eq!(card_asgard.global_hand_size_modifier(), None);
+    }
+
+    #[test]
+    fn test_hero_and_alter_ego_hand_size_modifiers() {
+        // Hero-only: The Sorcerer Supreme
+        let card_sorcerer = MockCard {
+            id: None,
+            rules: Some(
+                "Play only if you have the Mystic trait. You get +1 hand size while in hero form."
+                    .to_string(),
+            ),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(card_sorcerer.hero_hand_size_modifier(), Some(1));
+        assert_eq!(card_sorcerer.alter_ego_hand_size_modifier(), None);
+
+        // General: Asgard
+        let card_asgard = MockCard {
+            id: None,
+            rules: Some("You get +1 hand size.".to_string()),
+            card_type: Some(CardType::Support),
+        };
+        assert_eq!(card_asgard.hero_hand_size_modifier(), Some(1));
+        assert_eq!(card_asgard.alter_ego_hand_size_modifier(), Some(1));
+
+        // General: Symbiote Suit
+        let card_symbiote = MockCard {
+            id: None,
+            rules: Some("Your identity gets +1 to each of its basic powers, +1 hand size, and +10 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(card_symbiote.hero_hand_size_modifier(), Some(1));
+        assert_eq!(card_symbiote.alter_ego_hand_size_modifier(), Some(1));
+
+        // General Reduction: Martial Law
+        let card_martial = MockCard {
+            id: None,
+            rules: Some("Your hand size is reduced by 1.".to_string()),
+            card_type: Some(CardType::Obligation),
+        };
+        assert_eq!(card_martial.hero_hand_size_modifier(), Some(-1));
+        assert_eq!(card_martial.alter_ego_hand_size_modifier(), Some(-1));
+
+        // Vision Intangible Mass Form
+        let card_intangible = MockCard {
+            id: Some("26002A".to_string()),
+            rules: Some("Vision cannot attack or defend.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(card_intangible.hero_hand_size_modifier(), None);
+        assert_eq!(card_intangible.alter_ego_hand_size_modifier(), Some(1));
+
+        // Vision Dense Mass Form
+        let card_dense = MockCard {
+            id: Some("26002B".to_string()),
+            rules: Some("While in hero form, Vision gets +2 ATK and +2 DEF.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(card_dense.hero_hand_size_modifier(), None);
+        assert_eq!(card_dense.alter_ego_hand_size_modifier(), None);
+
+        // Dynamic cards must return None (handled by dynamic gameRules)
+        let card_iron_man = MockCard {
+            id: None,
+            rules: Some("You get +1 hand size for each Tech upgrade you control (to a maximum hand size of 7).".to_string()),
+            card_type: Some(CardType::Hero),
+        };
+        assert_eq!(card_iron_man.hero_hand_size_modifier(), None);
+        assert_eq!(card_iron_man.alter_ego_hand_size_modifier(), None);
+
+        let card_star_lord = MockCard {
+            id: None,
+            rules: Some("While you are in hero form, you get +1 hand size for each facedown encounter card in front of you (to a maximum of +3 hand size).".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(card_star_lord.hero_hand_size_modifier(), None);
+        assert_eq!(card_star_lord.alter_ego_hand_size_modifier(), None);
     }
 }

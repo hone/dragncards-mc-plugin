@@ -49,6 +49,9 @@ pub struct Card {
     pub uses: Option<usize>,
     pub nemesis_minion: bool,
     pub victory: Option<i64>,
+    pub hero_hand_size_modifier: Option<i32>,
+    pub alter_ego_hand_size_modifier: Option<i32>,
+    pub global_hand_size_modifier: Option<i32>,
 }
 
 impl Card {
@@ -123,6 +126,9 @@ impl Card {
                     starting,
                     uses: card.uses(),
                     victory: card.victory(),
+                    hero_hand_size_modifier: card.hero_hand_size_modifier(),
+                    alter_ego_hand_size_modifier: card.alter_ego_hand_size_modifier(),
+                    global_hand_size_modifier: card.global_hand_size_modifier(),
                     acceleration_fixed: None,
                     acceleration_scaling: None,
                     acceleration: card

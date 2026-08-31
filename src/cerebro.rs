@@ -91,6 +91,10 @@ impl CardRules for Card {
     fn stage(&self) -> Option<&str> {
         self.stage.as_deref()
     }
+
+    fn id(&self) -> Option<&str> {
+        Some(&self.id)
+    }
 }
 
 #[derive(Clone, Debug, Deserialize)]
