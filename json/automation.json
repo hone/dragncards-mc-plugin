@@ -1677,7 +1677,20 @@
             "$TARGET.boost"
           ],
           "$TARGET.sides.A.toughness",
-          "$TARGET.inPlay"
+          "$TARGET.inPlay",
+          [
+            "OR",
+            [
+              "EQUAL",
+              "$TARGET.tokens.tough",
+              null
+            ],
+            [
+              "EQUAL",
+              "$TARGET.tokens.tough",
+              0
+            ]
+          ]
         ],
         "then": [
           "SET",
@@ -1702,6 +1715,19 @@
             "GREATER_THAN",
             "$TARGET.currentFace.uses",
             0
+          ],
+          [
+            "OR",
+            [
+              "EQUAL",
+              "$TARGET.tokens.generic",
+              null
+            ],
+            [
+              "EQUAL",
+              "$TARGET.tokens.generic",
+              0
+            ]
           ]
         ],
         "then": [
