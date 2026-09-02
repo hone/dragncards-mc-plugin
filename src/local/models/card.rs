@@ -89,6 +89,7 @@ impl From<Card> for DragnCard {
         let uses = card.uses();
         let nemesis_minion = card.r#type == CardType::Minion && card.has_nemesis_minion_rule();
         let victory = card.victory();
+        let identity_hit_points_modifier = card.identity_hit_points_modifier();
         let hero_hand_size_modifier = card.hero_hand_size_modifier();
         let alter_ego_hand_size_modifier = card.alter_ego_hand_size_modifier();
         let global_hand_size_modifier = card.global_hand_size_modifier();
@@ -125,6 +126,7 @@ impl From<Card> for DragnCard {
             uses,
             nemesis_minion,
             victory,
+            identity_hit_points_modifier,
             hero_hand_size_modifier,
             alter_ego_hand_size_modifier,
             global_hand_size_modifier,

@@ -435,6 +435,43 @@ pub trait CardRules {
         None
     }
 
+    fn identity_hit_points_modifier(&self) -> Option<i32> {
+        if let Some(rules) = self.rules_text() {
+            let lower_rules = rules.to_lowercase();
+            // Exclude temporary/conditional modifiers or ally/minion/character attachments
+            if lower_rules.contains("for each")
+                || lower_rules.contains("until the end of")
+                || lower_rules.contains("attached minion")
+                || lower_rules.contains("attached ally")
+                || lower_rules.contains("attached character")
+                || lower_rules.contains("attached enemy")
+                || lower_rules.contains("each ally")
+                || lower_rules.contains("allies get")
+                || lower_rules.contains("ally gets")
+                || lower_rules.contains("each minion")
+                || lower_rules.contains("minions get")
+            {
+                return None;
+            }
+
+            if self.r#type() != CardType::Upgrade && self.r#type() != CardType::Support {
+                return None;
+            }
+
+            lazy_static! {
+                static ref IDENTITY_HP_RE: Regex = Regex::new(
+                    r"(?i)(?:you\s+get|your\s+identity\s+gets|[a-z\-0-9\s]+\s+gets|\band)\s+([+-]\d+)\s+hit\s+points?"
+                )
+                .unwrap();
+            }
+
+            if let Some(captures) = IDENTITY_HP_RE.captures(rules) {
+                return captures[1].parse::<i32>().ok();
+            }
+        }
+        None
+    }
+
     fn health_parsed(&self) -> (Option<i64>, Option<usize>) {
         self.health().map(|s| s.as_tuple()).unwrap_or((None, None))
     }
@@ -683,5 +720,115 @@ mod tests {
         };
         assert_eq!(card_star_lord.hero_hand_size_modifier(), None);
         assert_eq!(card_star_lord.alter_ego_hand_size_modifier(), None);
+    }
+
+    #[test]
+    fn test_identity_hit_points_modifier() {
+        // Rocket Boots
+        let rocket_boots = MockCard {
+            id: None,
+            rules: Some("You get +1 hit point.\nHero Action: Exhaust Rocket Boots...".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(rocket_boots.identity_hit_points_modifier(), Some(1));
+
+        // Mark V Armor
+        let mark_v = MockCard {
+            id: None,
+            rules: Some("You get +6 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(mark_v.identity_hit_points_modifier(), Some(6));
+
+        // Endurance
+        let endurance = MockCard {
+            id: None,
+            rules: Some("Play under any player's control. Max 1 per player.\nYou get +3 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(endurance.identity_hit_points_modifier(), Some(3));
+
+        // Thor's Helmet
+        let thors_helmet = MockCard {
+            id: None,
+            rules: Some("You get +5 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(thors_helmet.identity_hit_points_modifier(), Some(5));
+
+        // Hercules upgrades (named character)
+        let nemean = MockCard {
+            id: None,
+            rules: Some("Permanent.\nHercules gets +2 hit points and gains steady.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(nemean.identity_hit_points_modifier(), Some(2));
+
+        let sword_peleus = MockCard {
+            id: None,
+            rules: Some("Permanent. Restricted.\nHercules gets +1 hit point and his basic attacks gain piercing.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(sword_peleus.identity_hit_points_modifier(), Some(1));
+
+        // Symbiote Suit
+        let symbiote = MockCard {
+            id: None,
+            rules: Some("Max 1 per deck.\nYour identity gets +1 to each of its basic powers, +1 hand size, and +10 hit points.\n{h}".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(symbiote.identity_hit_points_modifier(), Some(10));
+
+        // Front Line Specialist
+        let front_line = MockCard {
+            id: None,
+            rules: Some("Linked (Specialized Training).\nYour identity gets +4 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(front_line.identity_hit_points_modifier(), Some(4));
+
+        // Impact-Dampening Suit (Side A and B)
+        let impact_a = MockCard {
+            id: None,
+            rules: Some("Setup. Permanent.\nYour identity gets +2 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(impact_a.identity_hit_points_modifier(), Some(2));
+
+        let impact_b = MockCard {
+            id: None,
+            rules: Some("Permanent.\nYour identity gets +3 hit points.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(impact_b.identity_hit_points_modifier(), Some(3));
+
+        // Exclusions: Ally buffs must return None
+        let team_training = MockCard {
+            id: None,
+            rules: Some("Play under any player's control. Max 1 per player.\nEach ally you control gets +1 hit point.".to_string()),
+            card_type: Some(CardType::Support),
+        };
+        assert_eq!(team_training.identity_hit_points_modifier(), None);
+
+        let sidekick = MockCard {
+            id: None,
+            rules: Some("Attach to an identity-specific ally you control.\nAttached ally gets +2 hit points and is your \"sidekick.\"".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(sidekick.identity_hit_points_modifier(), None);
+
+        let shield_deputy = MockCard {
+            id: None,
+            rules: Some("Attach to a friendly character.\nAttached character gets +1 hit point and gains the S.H.I.E.L.D. trait.".to_string()),
+            card_type: Some(CardType::Upgrade),
+        };
+        assert_eq!(shield_deputy.identity_hit_points_modifier(), None);
+
+        let defeat_hydra = MockCard {
+            id: None,
+            rules: Some("Attached minion gets +6 hit points and gains the Elite trait.".to_string()),
+            card_type: Some(CardType::Attachment),
+        };
+        assert_eq!(defeat_hydra.identity_hit_points_modifier(), None);
     }
 }

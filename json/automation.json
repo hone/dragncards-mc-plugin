@@ -1940,308 +1940,8 @@
           ]
         ]
       },
-      "rocketBootsHitPoints": {
-        "_comment": "When Rocket Boots enters/leaves play or changes controller, update the controlling player's hit points (+1 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "8f555eec-8405-52af-8d54-be22619e718e"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Rocket Boots: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Rocket Boots: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "markVArmorHitPoints": {
-        "_comment": "When Mark V Armor enters/leaves play or changes controller, update the controlling player's hit points (+6 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "52fc993f-ad9f-5908-9dd2-305b1861d2ab"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    6
-                  ],
-                  [
-                    "LOG",
-                    "Mark V Armor: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 6."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    6
-                  ],
-                  [
-                    "LOG",
-                    "Mark V Armor: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 6."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "enduranceHitPoints": {
-        "_comment": "When Endurance enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
+      "controllerIdentityHitPoints": {
+        "_comment": "When a card with identityHitPointsModifier enters/leaves play, flips, or changes controller, update the controlling player's hit points.",
         "type": "trigger",
         "listenTo": [
           "/cardById/*/inPlay",
@@ -2251,19 +1951,30 @@
         "condition": [
           "OR",
           [
-            "EQUAL",
-            "$TARGET.databaseId",
-            "9dea3718-60f9-5b5f-9a49-f692f21e819c"
+            "AND",
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.A.identityHitPointsModifier",
+              null
+            ],
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.A.identityHitPointsModifier",
+              ""
+            ]
           ],
           [
-            "EQUAL",
-            "$TARGET.databaseId",
-            "0cff20ff-74d6-58a2-b7e5-06d37179039d"
-          ],
-          [
-            "EQUAL",
-            "$TARGET.databaseId",
-            "10df105a-60f4-5a20-8073-6db719e5bd5c"
+            "AND",
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.B.identityHitPointsModifier",
+              null
+            ],
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.B.identityHitPointsModifier",
+              ""
+            ]
           ]
         ],
         "then": [
@@ -2323,11 +2034,6 @@
                   ],
                   [
                     "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
                     "$PREV_CONTROLLER",
                     "$PLAYER_I"
                   ]
@@ -2342,11 +2048,6 @@
                     "EQUAL",
                     "$CURR_IN_PLAY",
                     true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
                   ],
                   [
                     "EQUAL",
@@ -2367,3337 +2068,83 @@
                 ],
                 [
                   [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
+                    "VAR",
+                    "$HP_MOD",
+                    "$TARGET.sides.$PREV_SIDE.identityHitPointsModifier"
                   ],
-                  [
-                    "LOG",
-                    "Endurance: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Endurance: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "thorsHelmetHitPoints": {
-        "_comment": "When Thor's Helmet enters/leaves play or changes controller, update the controlling player's hit points (+5 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "13a14d7d-e386-5538-ab66-04962af70dde"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    5
-                  ],
-                  [
-                    "LOG",
-                    "Thor's Helmet: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 5."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    5
-                  ],
-                  [
-                    "LOG",
-                    "Thor's Helmet: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 5."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "immovableObjectHitPoints": {
-        "_comment": "When Immovable Object enters/leaves play or changes controller, update the controlling player's hit points (+4 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "fc16adeb-cb34-5ffe-a20c-e3150edeba55"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Immovable Object: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Immovable Object: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "cyberneticSkeletonHitPoints": {
-        "_comment": "When Cybernetic Skeleton enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "01ed5409-80b1-5d3e-8514-2312b3ad239d"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Cybernetic Skeleton: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Cybernetic Skeleton: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "adamantiumSkeletonHitPoints": {
-        "_comment": "When Adamantium Skeleton enters/leaves play or changes controller, update the controlling player's hit points (+4 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "9f14f0e1-4708-5130-9e81-47481a68c9e1"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Adamantium Skeleton: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Adamantium Skeleton: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "adamantiumLacingHitPoints": {
-        "_comment": "When Adamantium Lacing enters/leaves play or changes controller, update the controlling player's hit points (+2 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "bf554131-f5d4-5489-94c6-c826d231006f"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Adamantium Lacing: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Adamantium Lacing: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "powerBeltHitPoints": {
-        "_comment": "When Power Belt enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "66c7745e-8e36-5dab-9ba0-ebd2a28a411d"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Power Belt: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Power Belt: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "aggressiveConditioningHitPoints": {
-        "_comment": "When Aggressive Conditioning enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "c1e4159c-b488-5784-8164-4b0ee0cb6c74"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Aggressive Conditioning: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Aggressive Conditioning: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "defensiveConditioningHitPoints": {
-        "_comment": "When Defensive Conditioning enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "8958cb51-76de-5242-8727-74a99336064e"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Defensive Conditioning: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Defensive Conditioning: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "heroicConditioningHitPoints": {
-        "_comment": "When Heroic Conditioning enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "d994b834-740b-525d-b971-a11a5672dd82"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Heroic Conditioning: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Heroic Conditioning: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "aragornHitPoints": {
-        "_comment": "When Aragorn enters/leaves play or changes controller, update the controlling player's hit points (+4 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "15f9be53-52a8-5482-8c30-e590b7b366fd"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Aragorn: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Aragorn: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "photonBlastersHitPoints": {
-        "_comment": "When Photon Blasters enters/leaves play or changes controller, update the controlling player's hit points (+2 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "80af967f-a05a-5c79-92d3-4acaa7614eda"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Photon Blasters: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Photon Blasters: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "propulsionJetsHitPoints": {
-        "_comment": "When Propulsion Jets enters/leaves play or changes controller, update the controlling player's hit points (+2 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "37eef69a-71b9-58f6-96a6-ae58e74d249c"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Propulsion Jets: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Propulsion Jets: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "frontLineSpecialistHitPoints": {
-        "_comment": "When Front Line Specialist enters/leaves play or changes controller, update the controlling player's hit points (+4 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "9181423a-e362-59b1-9a46-5e9f62135916"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Front Line Specialist: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Front Line Specialist: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "winterArmorHitPoints": {
-        "_comment": "When Winter Armor enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "fcccd1f4-2302-5c79-ba5c-1b32d554b236"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Winter Armor: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Winter Armor: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "nemeanLionSkinHitPoints": {
-        "_comment": "When Nemean Lion Skin enters/leaves play or changes controller, update the controlling player's hit points (+2 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "45922dd4-dc47-5844-ae74-aae597bde9af"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Nemean Lion Skin: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Nemean Lion Skin: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "shieldOfPerseusHitPoints": {
-        "_comment": "When Shield of Perseus enters/leaves play or changes controller, update the controlling player's hit points (+1 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "b7797850-ffec-5c41-b0be-d221e6fcb17d"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Shield of Perseus: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Shield of Perseus: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "swordOfPeleusHitPoints": {
-        "_comment": "When Sword of Peleus enters/leaves play or changes controller, update the controlling player's hit points (+1 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "60c5fb67-6278-5e5f-86b9-25f6b516ba7c"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Sword of Peleus: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Sword of Peleus: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "basicImprovedThwartUpgradeHitPoints": {
-        "_comment": "When Basic/Improved Thwart Upgrade enters/leaves play or changes controller, update the controlling player's hit points (+2 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "da0868cb-a279-501d-b7f3-f4fecc7efa53"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Thwart Upgrade: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    2
-                  ],
-                  [
-                    "LOG",
-                    "Thwart Upgrade: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 2."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "basicImprovedAttackUpgradeHitPoints": {
-        "_comment": "When Basic/Improved Attack Upgrade enters/leaves play or changes controller, update the controlling player's hit points (+1 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "37fe1bb0-f140-5fa0-985e-6edbf1beb122"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Attack Upgrade: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    1
-                  ],
-                  [
-                    "LOG",
-                    "Attack Upgrade: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 1."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "basicImprovedDefenseUpgradeHitPoints": {
-        "_comment": "When Basic/Improved Defense Upgrade enters/leaves play or changes controller, update the controlling player's hit points (+3 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "839595f4-66f1-51e3-8d52-1b549cae936b"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Defense Upgrade: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    3
-                  ],
-                  [
-                    "LOG",
-                    "Defense Upgrade: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 3."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "basicImprovedRecoveryUpgradeHitPoints": {
-        "_comment": "When Basic/Improved Recovery Upgrade enters/leaves play or changes controller, update the controlling player's hit points (+4 HP).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "8bbd841c-2637-59e5-afe6-57d5c4da78ac"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$WAS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "VAR",
-                "$IS_CONTROLLED",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_SIDE",
-                    "A"
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$WAS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$IS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Recovery Upgrade: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  "$IS_CONTROLLED",
-                  [
-                    "NOT",
-                    "$WAS_CONTROLLED"
-                  ]
-                ],
-                [
-                  [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    4
-                  ],
-                  [
-                    "LOG",
-                    "Recovery Upgrade: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by 4."
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      },
-      "impactDampeningSuitHitPoints": {
-        "_comment": "When Impact-Dampening Suit enters/leaves play or changes side/controller, update the controlling player's hit points (+2 HP on Side A, +3 HP on Side B).",
-        "type": "trigger",
-        "listenTo": [
-          "/cardById/*/inPlay",
-          "/cardById/*/currentSide",
-          "/cardById/*/controller"
-        ],
-        "condition": [
-          "EQUAL",
-          "$TARGET.databaseId",
-          "b06cd176-94e4-5005-9e5a-17e3c2ee410e"
-        ],
-        "then": [
-          [
-            "VAR",
-            "$PREV_IN_PLAY",
-            [
-              "PREV",
-              "$TARGET.inPlay"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_IN_PLAY",
-            "$TARGET.inPlay"
-          ],
-          [
-            "VAR",
-            "$PREV_SIDE",
-            [
-              "PREV",
-              "$TARGET.currentSide"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_SIDE",
-            "$TARGET.currentSide"
-          ],
-          [
-            "VAR",
-            "$PREV_CONTROLLER",
-            [
-              "PREV",
-              "$TARGET.controller"
-            ]
-          ],
-          [
-            "VAR",
-            "$CURR_CONTROLLER",
-            "$TARGET.controller"
-          ],
-          [
-            "FOR_EACH_VAL",
-            "$PLAYER_I",
-            "$PLAYER_ORDER",
-            [
-              [
-                "VAR",
-                "$PREV_VAL",
-                0
-              ],
-              [
-                "COND",
-                [
-                  "AND",
-                  [
-                    "EQUAL",
-                    "$PREV_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$PREV_CONTROLLER",
-                    "$PLAYER_I"
-                  ]
-                ],
-                [
                   [
                     "COND",
                     [
-                      "EQUAL",
-                      "$PREV_SIDE",
-                      "B"
-                    ],
-                    [
+                      "AND",
                       [
-                        "VAR",
-                        "$PREV_VAL",
-                        3
+                        "NOT_EQUAL",
+                        "$HP_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$HP_MOD",
+                        ""
                       ]
                     ],
-                    true,
                     [
                       [
-                        "VAR",
-                        "$PREV_VAL",
-                        2
+                        "DECREASE_VAL",
+                        "/playerData/$PLAYER_I/hitPoints",
+                        "$HP_MOD"
+                      ],
+                      [
+                        "LOG",
+                        "{{$TARGET.currentFace.name}}: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by ",
+                        "$HP_MOD",
+                        "."
                       ]
                     ]
                   ]
                 ]
-              ],
-              [
-                "VAR",
-                "$CURR_VAL",
-                0
               ],
               [
                 "COND",
                 [
                   "AND",
+                  "$IS_CONTROLLED",
                   [
-                    "EQUAL",
-                    "$CURR_IN_PLAY",
-                    true
-                  ],
-                  [
-                    "EQUAL",
-                    "$CURR_CONTROLLER",
-                    "$PLAYER_I"
+                    "NOT",
+                    "$WAS_CONTROLLED"
                   ]
                 ],
                 [
+                  [
+                    "VAR",
+                    "$HP_MOD",
+                    "$TARGET.sides.$CURR_SIDE.identityHitPointsModifier"
+                  ],
                   [
                     "COND",
                     [
-                      "EQUAL",
-                      "$CURR_SIDE",
-                      "B"
-                    ],
-                    [
+                      "AND",
                       [
-                        "VAR",
-                        "$CURR_VAL",
-                        3
+                        "NOT_EQUAL",
+                        "$HP_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$HP_MOD",
+                        ""
                       ]
                     ],
-                    true,
                     [
                       [
-                        "VAR",
-                        "$CURR_VAL",
-                        2
+                        "INCREASE_VAL",
+                        "/playerData/$PLAYER_I/hitPoints",
+                        "$HP_MOD"
+                      ],
+                      [
+                        "LOG",
+                        "{{$TARGET.currentFace.name}}: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by ",
+                        "$HP_MOD",
+                        "."
                       ]
                     ]
                   ]
@@ -5706,58 +2153,71 @@
               [
                 "COND",
                 [
-                  "GREATER_THAN",
-                  "$PREV_VAL",
-                  "$CURR_VAL"
-                ],
-                [
+                  "AND",
+                  "$WAS_CONTROLLED",
+                  "$IS_CONTROLLED",
                   [
-                    "DECREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
-                    [
-                      "SUBTRACT",
-                      "$PREV_VAL",
-                      "$CURR_VAL"
-                    ]
-                  ],
-                  [
-                    "LOG",
-                    "Impact-Dampening Suit: Decreased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by ",
-                    [
-                      "SUBTRACT",
-                      "$PREV_VAL",
-                      "$CURR_VAL"
-                    ],
-                    "."
+                    "NOT_EQUAL",
+                    "$PREV_SIDE",
+                    "$CURR_SIDE"
                   ]
-                ]
-              ],
-              [
-                "COND",
-                [
-                  "GREATER_THAN",
-                  "$CURR_VAL",
-                  "$PREV_VAL"
                 ],
                 [
                   [
-                    "INCREASE_VAL",
-                    "/playerData/$PLAYER_I/hitPoints",
+                    "VAR",
+                    "$PREV_HP_MOD",
+                    "$TARGET.sides.$PREV_SIDE.identityHitPointsModifier"
+                  ],
+                  [
+                    "VAR",
+                    "$CURR_HP_MOD",
+                    "$TARGET.sides.$CURR_SIDE.identityHitPointsModifier"
+                  ],
+                  [
+                    "COND",
                     [
-                      "SUBTRACT",
-                      "$CURR_VAL",
-                      "$PREV_VAL"
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$PREV_HP_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$PREV_HP_MOD",
+                        ""
+                      ]
+                    ],
+                    [
+                      [
+                        "DECREASE_VAL",
+                        "/playerData/$PLAYER_I/hitPoints",
+                        "$PREV_HP_MOD"
+                      ]
                     ]
                   ],
                   [
-                    "LOG",
-                    "Impact-Dampening Suit: Increased {{$GAME.playerInfo.$PLAYER_I.alias}}'s hit points by ",
+                    "COND",
                     [
-                      "SUBTRACT",
-                      "$CURR_VAL",
-                      "$PREV_VAL"
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$CURR_HP_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$CURR_HP_MOD",
+                        ""
+                      ]
                     ],
-                    "."
+                    [
+                      [
+                        "INCREASE_VAL",
+                        "/playerData/$PLAYER_I/hitPoints",
+                        "$CURR_HP_MOD"
+                      ]
+                    ]
                   ]
                 ]
               ]
@@ -5777,158 +2237,213 @@
           "AND",
           [
             "EQUAL",
-            ".currentFace.type",
+            "$TARGET.currentFace.type",
             "Minion"
           ],
           [
             "OR",
             [
-              "NOT_EQUAL",
-              ".sides.A.heroHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.heroHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.heroHandSizeModifier",
+                ""
+              ]
             ],
             [
-              "NOT_EQUAL",
-              ".sides.A.alterEgoHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.alterEgoHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.alterEgoHandSizeModifier",
+                ""
+              ]
             ],
             [
-              "NOT_EQUAL",
-              ".sides.B.heroHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.heroHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.heroHandSizeModifier",
+                ""
+              ]
             ],
             [
-              "NOT_EQUAL",
-              ".sides.B.alterEgoHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.alterEgoHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.alterEgoHandSizeModifier",
+                ""
+              ]
             ]
           ]
         ],
         "then": [
           [
             "VAR",
-            "",
+            "$PREV_IN_PLAY",
             [
               "PREV",
-              ".inPlay"
+              "$TARGET.inPlay"
             ]
           ],
           [
             "VAR",
-            "",
-            ".inPlay"
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
           ],
           [
             "VAR",
-            "",
+            "$PREV_SIDE",
             [
               "PREV",
-              ".currentSide"
+              "$TARGET.currentSide"
             ]
           ],
           [
             "VAR",
-            "",
-            ".currentSide"
+            "$CURR_SIDE",
+            "$TARGET.currentSide"
           ],
           [
             "VAR",
-            "",
+            "$PREV_GROUP_ID",
             [
               "PREV",
-              ".groupId"
+              "$TARGET.groupId"
             ]
           ],
           [
             "VAR",
-            "",
-            ".groupId"
+            "$CURR_GROUP_ID",
+            "$TARGET.groupId"
           ],
           [
             "FOR_EACH_VAL",
-            "",
-            "",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
             [
               [
                 "VAR",
-                "",
-                "{{}}Engaged"
+                "$ENGAGED_GROUP_ID",
+                "{{$PLAYER_I}}Engaged"
               ],
               [
                 "VAR",
-                "",
+                "$WAS_ENGAGED",
                 [
                   "AND",
                   [
                     "EQUAL",
-                    "",
+                    "$PREV_IN_PLAY",
                     true
                   ],
                   [
                     "EQUAL",
-                    "",
-                    ""
+                    "$PREV_GROUP_ID",
+                    "$ENGAGED_GROUP_ID"
                   ]
                 ]
               ],
               [
                 "VAR",
-                "",
+                "$IS_ENGAGED",
                 [
                   "AND",
                   [
                     "EQUAL",
-                    "",
+                    "$CURR_IN_PLAY",
                     true
                   ],
                   [
                     "EQUAL",
-                    "",
-                    ""
+                    "$CURR_GROUP_ID",
+                    "$ENGAGED_GROUP_ID"
                   ]
                 ]
               ],
               [
                 "COND",
-                "",
+                [
+                  "AND",
+                  "$WAS_ENGAGED",
+                  [
+                    "NOT",
+                    "$IS_ENGAGED"
+                  ]
+                ],
                 [
                   [
                     "VAR",
-                    "",
-                    ".sides..heroHandSizeModifier"
+                    "$HERO_MOD",
+                    "$TARGET.sides.$PREV_SIDE.heroHandSizeModifier"
                   ],
                   [
                     "VAR",
-                    "",
-                    ".sides..alterEgoHandSizeModifier"
+                    "$ALTER_EGO_MOD",
+                    "$TARGET.sides.$PREV_SIDE.alterEgoHandSizeModifier"
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "DECREASE_VAL",
-                        "/playerData//heroHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/heroHandSizeModifier",
+                        "$HERO_MOD"
                       ]
                     ]
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "DECREASE_VAL",
-                        "/playerData//alterEgoHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                        "$ALTER_EGO_MOD"
                       ]
                     ]
                   ]
@@ -5936,45 +2451,68 @@
               ],
               [
                 "COND",
-                "",
+                [
+                  "AND",
+                  "$IS_ENGAGED",
+                  [
+                    "NOT",
+                    "$WAS_ENGAGED"
+                  ]
+                ],
                 [
                   [
                     "VAR",
-                    "",
-                    ".sides..heroHandSizeModifier"
+                    "$HERO_MOD",
+                    "$TARGET.sides.$CURR_SIDE.heroHandSizeModifier"
                   ],
                   [
                     "VAR",
-                    "",
-                    ".sides..alterEgoHandSizeModifier"
+                    "$ALTER_EGO_MOD",
+                    "$TARGET.sides.$CURR_SIDE.alterEgoHandSizeModifier"
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "INCREASE_VAL",
-                        "/playerData//heroHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/heroHandSizeModifier",
+                        "$HERO_MOD"
                       ]
                     ]
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "INCREASE_VAL",
-                        "/playerData//alterEgoHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                        "$ALTER_EGO_MOD"
                       ]
                     ]
                   ]
@@ -5996,153 +2534,208 @@
           "AND",
           [
             "NOT_EQUAL",
-            ".currentFace.type",
+            "$TARGET.currentFace.type",
             "Minion"
           ],
           [
             "OR",
             [
-              "NOT_EQUAL",
-              ".sides.A.heroHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.heroHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.heroHandSizeModifier",
+                ""
+              ]
             ],
             [
-              "NOT_EQUAL",
-              ".sides.A.alterEgoHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.alterEgoHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.A.alterEgoHandSizeModifier",
+                ""
+              ]
             ],
             [
-              "NOT_EQUAL",
-              ".sides.B.heroHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.heroHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.heroHandSizeModifier",
+                ""
+              ]
             ],
             [
-              "NOT_EQUAL",
-              ".sides.B.alterEgoHandSizeModifier",
-              null
+              "AND",
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.alterEgoHandSizeModifier",
+                null
+              ],
+              [
+                "NOT_EQUAL",
+                "$TARGET.sides.B.alterEgoHandSizeModifier",
+                ""
+              ]
             ]
           ]
         ],
         "then": [
           [
             "VAR",
-            "",
+            "$PREV_IN_PLAY",
             [
               "PREV",
-              ".inPlay"
+              "$TARGET.inPlay"
             ]
           ],
           [
             "VAR",
-            "",
-            ".inPlay"
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
           ],
           [
             "VAR",
-            "",
+            "$PREV_SIDE",
             [
               "PREV",
-              ".currentSide"
+              "$TARGET.currentSide"
             ]
           ],
           [
             "VAR",
-            "",
-            ".currentSide"
+            "$CURR_SIDE",
+            "$TARGET.currentSide"
           ],
           [
             "VAR",
-            "",
+            "$PREV_CONTROLLER",
             [
               "PREV",
-              ".controller"
+              "$TARGET.controller"
             ]
           ],
           [
             "VAR",
-            "",
-            ".controller"
+            "$CURR_CONTROLLER",
+            "$TARGET.controller"
           ],
           [
             "FOR_EACH_VAL",
-            "",
-            "",
+            "$PLAYER_I",
+            "$PLAYER_ORDER",
             [
               [
                 "VAR",
-                "",
+                "$WAS_CONTROLLED",
                 [
                   "AND",
                   [
                     "EQUAL",
-                    "",
+                    "$PREV_IN_PLAY",
                     true
                   ],
                   [
                     "EQUAL",
-                    "",
-                    ""
+                    "$PREV_CONTROLLER",
+                    "$PLAYER_I"
                   ]
                 ]
               ],
               [
                 "VAR",
-                "",
+                "$IS_CONTROLLED",
                 [
                   "AND",
                   [
                     "EQUAL",
-                    "",
+                    "$CURR_IN_PLAY",
                     true
                   ],
                   [
                     "EQUAL",
-                    "",
-                    ""
+                    "$CURR_CONTROLLER",
+                    "$PLAYER_I"
                   ]
                 ]
               ],
               [
                 "COND",
-                "",
+                [
+                  "AND",
+                  "$WAS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$IS_CONTROLLED"
+                  ]
+                ],
                 [
                   [
                     "VAR",
-                    "",
-                    ".sides..heroHandSizeModifier"
+                    "$HERO_MOD",
+                    "$TARGET.sides.$PREV_SIDE.heroHandSizeModifier"
                   ],
                   [
                     "VAR",
-                    "",
-                    ".sides..alterEgoHandSizeModifier"
+                    "$ALTER_EGO_MOD",
+                    "$TARGET.sides.$PREV_SIDE.alterEgoHandSizeModifier"
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "DECREASE_VAL",
-                        "/playerData//heroHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/heroHandSizeModifier",
+                        "$HERO_MOD"
                       ]
                     ]
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "DECREASE_VAL",
-                        "/playerData//alterEgoHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                        "$ALTER_EGO_MOD"
                       ]
                     ]
                   ]
@@ -6150,45 +2743,68 @@
               ],
               [
                 "COND",
-                "",
+                [
+                  "AND",
+                  "$IS_CONTROLLED",
+                  [
+                    "NOT",
+                    "$WAS_CONTROLLED"
+                  ]
+                ],
                 [
                   [
                     "VAR",
-                    "",
-                    ".sides..heroHandSizeModifier"
+                    "$HERO_MOD",
+                    "$TARGET.sides.$CURR_SIDE.heroHandSizeModifier"
                   ],
                   [
                     "VAR",
-                    "",
-                    ".sides..alterEgoHandSizeModifier"
+                    "$ALTER_EGO_MOD",
+                    "$TARGET.sides.$CURR_SIDE.alterEgoHandSizeModifier"
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$HERO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "INCREASE_VAL",
-                        "/playerData//heroHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/heroHandSizeModifier",
+                        "$HERO_MOD"
                       ]
                     ]
                   ],
                   [
                     "COND",
                     [
-                      "NOT_EQUAL",
-                      "",
-                      null
+                      "AND",
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        null
+                      ],
+                      [
+                        "NOT_EQUAL",
+                        "$ALTER_EGO_MOD",
+                        ""
+                      ]
                     ],
                     [
                       [
                         "INCREASE_VAL",
-                        "/playerData//alterEgoHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                        "$ALTER_EGO_MOD"
                       ]
                     ]
                   ]
@@ -6208,78 +2824,102 @@
         "condition": [
           "OR",
           [
-            "NOT_EQUAL",
-            ".sides.A.globalHandSizeModifier",
-            null
+            "AND",
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.A.globalHandSizeModifier",
+              null
+            ],
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.A.globalHandSizeModifier",
+              ""
+            ]
           ],
           [
-            "NOT_EQUAL",
-            ".sides.B.globalHandSizeModifier",
-            null
+            "AND",
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.B.globalHandSizeModifier",
+              null
+            ],
+            [
+              "NOT_EQUAL",
+              "$TARGET.sides.B.globalHandSizeModifier",
+              ""
+            ]
           ]
         ],
         "then": [
           [
             "VAR",
-            "",
+            "$PREV_IN_PLAY",
             [
               "PREV",
-              ".inPlay"
+              "$TARGET.inPlay"
             ]
           ],
           [
             "VAR",
-            "",
-            ".inPlay"
+            "$CURR_IN_PLAY",
+            "$TARGET.inPlay"
           ],
           [
             "VAR",
-            "",
+            "$PREV_SIDE",
             [
               "PREV",
-              ".currentSide"
+              "$TARGET.currentSide"
             ]
           ],
           [
             "VAR",
-            "",
-            ".currentSide"
+            "$CURR_SIDE",
+            "$TARGET.currentSide"
           ],
           [
             "COND",
             [
               "EQUAL",
-              "",
+              "$PREV_IN_PLAY",
               true
             ],
             [
               [
                 "VAR",
-                "",
-                ".sides..globalHandSizeModifier"
+                "$PREV_GLOBAL_MOD",
+                "$TARGET.sides.$PREV_SIDE.globalHandSizeModifier"
               ],
               [
                 "COND",
                 [
-                  "NOT_EQUAL",
-                  "",
-                  null
+                  "AND",
+                  [
+                    "NOT_EQUAL",
+                    "$PREV_GLOBAL_MOD",
+                    null
+                  ],
+                  [
+                    "NOT_EQUAL",
+                    "$PREV_GLOBAL_MOD",
+                    ""
+                  ]
                 ],
                 [
                   [
                     "FOR_EACH_VAL",
-                    "",
-                    "",
+                    "$PLAYER_I",
+                    "$PLAYER_ORDER",
                     [
                       [
                         "DECREASE_VAL",
-                        "/playerData//heroHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/heroHandSizeModifier",
+                        "$PREV_GLOBAL_MOD"
                       ],
                       [
                         "DECREASE_VAL",
-                        "/playerData//alterEgoHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                        "$PREV_GLOBAL_MOD"
                       ]
                     ]
                   ]
@@ -6291,37 +2931,45 @@
             "COND",
             [
               "EQUAL",
-              "",
+              "$CURR_IN_PLAY",
               true
             ],
             [
               [
                 "VAR",
-                "",
-                ".sides..globalHandSizeModifier"
+                "$CURR_GLOBAL_MOD",
+                "$TARGET.sides.$CURR_SIDE.globalHandSizeModifier"
               ],
               [
                 "COND",
                 [
-                  "NOT_EQUAL",
-                  "",
-                  null
+                  "AND",
+                  [
+                    "NOT_EQUAL",
+                    "$CURR_GLOBAL_MOD",
+                    null
+                  ],
+                  [
+                    "NOT_EQUAL",
+                    "$CURR_GLOBAL_MOD",
+                    ""
+                  ]
                 ],
                 [
                   [
                     "FOR_EACH_VAL",
-                    "",
-                    "",
+                    "$PLAYER_I",
+                    "$PLAYER_ORDER",
                     [
                       [
                         "INCREASE_VAL",
-                        "/playerData//heroHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/heroHandSizeModifier",
+                        "$CURR_GLOBAL_MOD"
                       ],
                       [
                         "INCREASE_VAL",
-                        "/playerData//alterEgoHandSizeModifier",
-                        ""
+                        "/playerData/$PLAYER_I/alterEgoHandSizeModifier",
+                        "$CURR_GLOBAL_MOD"
                       ]
                     ]
                   ]

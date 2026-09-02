@@ -16,6 +16,10 @@
     "startingThreatScaling" : {"type": "integer", "default": null},
     "toughness" : {"type": "boolean", "default": false},
     "uses": {"type": "integer", "default": null},
-    "victory": {"type": "integer", "default": null}
+    "victory": {"type": "integer", "default": null},
+    "identityHitPointsModifier": {"type": "integer", "default": null},
+    "heroHandSizeModifier": {"type": "integer", "default": null},
+    "alterEgoHandSizeModifier": {"type": "integer", "default": null},
+    "globalHandSizeModifier": {"type": "integer", "default": null}
   }
 }
