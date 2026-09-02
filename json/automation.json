@@ -224,6 +224,11 @@
                 "EQUAL",
                 "$CARD.sides.A.databaseId",
                 "9a11225a-84cd-5f63-9a38-45f0c5f95db1"
+              ],
+              [
+                "EQUAL",
+                "$CARD.sides.A.databaseId",
+                "a2c91b59-0554-59ef-8990-a5500c996824"
               ]
             ],
             [

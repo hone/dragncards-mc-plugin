@@ -16,6 +16,7 @@ use std::{collections::HashMap, fmt, fs::File, io::Write, path::PathBuf};
 use uuid::{uuid, Uuid};
 
 const TOUCHED_ID: &str = "38002";
+const DEATH_GLOW_ID: &str = "25002";
 
 const CAMPAIGN_SHIELD_TECH_SET_ID: Uuid = uuid!("ff3e5af7-6054-4e60-a7c6-7569819524e9");
 const CROSSBONES_SET_ID: Uuid = uuid!("1d99fd72-94e2-4b3b-81fa-2d438b4bb98f");
@@ -896,6 +897,7 @@ fn process_hero_deck(
                     // Keep Campaign S.H.I.E.L.D. cards in the campaign area
                     && ordered_card.printing.set_id != Some(CAMPAIGN_SHIELD_TECH_SET_ID))
                     || ordered_card.cerebro_card.id == TOUCHED_ID
+                    || ordered_card.cerebro_card.id == DEATH_GLOW_ID
                 {
                     load_group_id = "playerNPlay1";
                 }
