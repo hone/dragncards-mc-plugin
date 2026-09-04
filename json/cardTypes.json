@@ -10,7 +10,11 @@
         "acceleration",
         "confused",
         "stunned",
-        "tough"
+        "tough",
+        "atk",
+        "thw",
+        "def",
+        "rec"
       ]
     },
     "Alter-Ego": {
@@ -23,7 +27,11 @@
         "acceleration",
         "confused",
         "stunned",
-        "tough"
+        "tough",
+        "atk",
+        "thw",
+        "def",
+        "rec"
       ]
     },
     "Event": {
@@ -49,7 +57,11 @@
         "acceleration",
         "confused",
         "stunned",
-        "tough"
+        "tough",
+        "atk",
+        "thw",
+        "def",
+        "rec"
       ]
     },
     "Resource": {
@@ -189,7 +201,11 @@
         "acceleration",
         "confused",
         "stunned",
-        "tough"
+        "tough",
+        "atk",
+        "thw",
+        "def",
+        "rec"
       ]
     },
     "Obligation": {
@@ -254,7 +270,11 @@
         "acceleration",
         "confused",
         "stunned",
-        "tough"
+        "tough",
+        "atk",
+        "thw",
+        "def",
+        "rec"
       ]
     }
   }

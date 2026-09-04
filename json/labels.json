@@ -288,6 +288,18 @@
     "toughToken": {
       "English": "tough"
     },
+    "atkToken": {
+      "English": "attack"
+    },
+    "thwToken": {
+      "English": "thwart"
+    },
+    "defToken": {
+      "English": "defense"
+    },
+    "recToken": {
+      "English": "recovery"
+    },
     "round": {
       "English": "round"
     },
