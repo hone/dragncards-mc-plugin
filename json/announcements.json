@@ -1,5 +1,6 @@
 {
   "announcements": [
+    "2026-10-10: Fix: Update cerebro image urls to new location.",
     "2026-10-05: Feat: Add Jessica Jones and Luke Cage Hero Packs.",
     "2026-08-23: Fix: mc4db deck import (Ctrl+K) now also loads the hero's obligation and nemesis set.",
     "2026-08-15: Feat: Add Fear No Evil encounter cards.",
