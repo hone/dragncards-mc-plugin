@@ -14,6 +14,7 @@ const FLASH_OF_LIGHT_ID_BASE: &'static str = "47008";
 const PHOTOGRAPHIC_REFLEXES_ID_BASE: &'static str = "60040";
 const PLASMOID_ENERGY_ID_BASE: &'static str = "47010";
 const REDSKULL_EXPERT_CAMPAIGN_OBLIGATION_IDS: &[&str] = &["04163", "04164", "04165", "04166"];
+const SUGGESTION_ID_BASE: &'static str = "61033";
 const WAKANDA_FOREVER_ID_BASE: &'static str = "01043";
 
 #[derive(Clone, Debug, Serialize)]
@@ -206,6 +207,7 @@ pub fn uuid(code: &str) -> Uuid {
         || code.contains(FLASH_OF_LIGHT_ID_BASE)
         || code.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
         || code.contains(PLASMOID_ENERGY_ID_BASE)
+        || code.contains(SUGGESTION_ID_BASE)
         || code.contains(WAKANDA_FOREVER_ID_BASE)
     {
         code
@@ -270,6 +272,7 @@ fn card_back(card: &CerebroCard) -> CardBack {
         && !card.id.contains(FLASH_OF_LIGHT_ID_BASE)
         && !card.id.contains(PHOTOGRAPHIC_REFLEXES_ID_BASE)
         && !card.id.contains(PLASMOID_ENERGY_ID_BASE)
+        && !card.id.contains(SUGGESTION_ID_BASE)
         && !card.id.contains(WAKANDA_FOREVER_ID_BASE)
         && card.id.parse::<u32>().is_err()
     {

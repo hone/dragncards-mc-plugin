@@ -948,6 +948,7 @@ fn process_sets_by_packs(
                     if (card.id.ends_with("B") || card.id.ends_with("C"))
                         && card.name != "Android Efficiency"
                         && !card.name.starts_with("A.I.M. Interference")
+                        && !card.name.starts_with("Suggestion")
                     {
                         return None;
                     }
